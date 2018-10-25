@@ -6,16 +6,6 @@
 
 (in-package :cyco)
 
-;; Dummy PigIron functions
-;; 
-(defun jnull (obj)
-  (or obj nil))
-
-
-
-
-(in-package :cyco)
-
 (defun dismiss (&rest args)
   "Informs SBCL compiler that arguments may be ignored."
   args)
@@ -56,8 +46,7 @@
 
 
 (let* ((current "")
-       (manifest '(
-		   "src/constants"
+       (manifest '("src/constants"
 		   "src/globals"
 		   "src/generics"
 		   "src/string-utilities"

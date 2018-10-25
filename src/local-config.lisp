@@ -1,12 +1,8 @@
-;;;; PigIron CYCO local-config
+;;;; CYCO local-config
 ;;;;
 
-(setf *cyco-config-directory* (join-path (user-home) "pigiron/cyco-config" :as-file))
+(setf *cyco-config-directory* (join-path (user-home) ".config/cyco3" :as-file))
 (setf *cyco-config-file* "cyco-config.lisp")
-
-(defun set-config-path (cpath &optional (cfile "cyco-config.lisp"))
-  (setf *cyco-config-directory* cpath
-	*cyco-config-file* cfile))
 
 (defun load-config-file (filename)
   "Load file relative to config directory."
@@ -19,7 +15,5 @@
       (cyco-warning
        (sformat "Configuration file ~S does not exists." fqn)))))
 
-(defun load-config (&optional cpath cfile)
-  (if (or cpath cfile)
-      (set-config-path cpath cfile))
+(defun load-config ()
   (load-config-file *cyco-config-file*))

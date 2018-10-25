@@ -1,4 +1,4 @@
-;;;; PigIron paths.lisp
+;;;;  paths.lisp
 ;;;;
 
 
@@ -12,7 +12,7 @@
 	       *os-homedir-alias* #\~))
 	(t (let ((msg1 (sformat  "Platform ~A not currently supported." platform))
 		 (msg2 "Using default (Linux) path parameters."))
-	     (pig-warning msg1 msg2)))))
+	     (cyco-warning msg1 msg2)))))
 
 (defun cwd ()
   *default-pathname-defaults*)

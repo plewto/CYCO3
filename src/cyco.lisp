@@ -1,9 +1,6 @@
 ;;;; CYCO
 ;;;;
 
-;; (if (not (equalp (lisp-implementation-type) "Armed Bear Common Lisp"))
-;;     (load "src/cyco-defpackage"))
-
 (defpackage :cyco
   (:use common-lisp))
 
@@ -14,16 +11,7 @@
 (defun jnull (obj)
   (or obj nil))
 
-(defun pig-status (msg)
-  (format t "PIG-STATUS: ~A~%" MSG))
 
-(defun pig-warning (&rest args)
-  (dolist (m args)
-    (format t "PIG-WARNING: ~A~%" m)))
-
-(defun pig-notify (&rest args)
-  (dolist (q args)
-    (format t "PIG-NOTIFY: ~A~%" q)))
 
 
 (in-package :cyco)

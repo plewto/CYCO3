@@ -1,4 +1,4 @@
-;;;; PigIron cyco/generics
+;;;; cyco/generics
 ;;;;
 
 
@@ -142,7 +142,7 @@ an integer between 0 and 15 inclusive."))
 (defmethod channel-index ((channel integer))
   (if (and (plusp channel)(<= channel 16))
       (1- channel)
-    (pig-warning (format nil "Invalid MIDI channel ~A.~%" channel))))
+    (format t "WARNING: Invalid MIDI channel ~A.~%" channel)))
 
 ;; ---------------------------------------------------------------------- 
 ;;			    CHANNEL & CHANNEL!

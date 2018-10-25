@@ -1,4 +1,4 @@
-;;;; PigIron cyco notifications
+;;;; cyco notifications
 ;;;;
 
 (constant +BANNER-BAR1+ (scopies 68 #\*))
@@ -53,7 +53,6 @@
 	 (error-message (text)
 			(format t "ERROR: ~A~%" text))
 	 (cyco-error (message)
-		     (pig-notify "CYCO-ERROR")
 		     (if (not *cyco-error-as-warning*)
 			 (error message))
 		     (cr)
@@ -156,8 +155,7 @@
 	(format t "CYCO-CUE-WARNING function : ~A~%" function-name)
 	(format t "CYCO-CUE-WARNING arguments: ~A~%" args)
 	(dolist (q more) (format t "WARNING: ~A~%" q))
-	(cr)
-	(pig-notify "CYCO-WARNING"))))
+	(cr))))
 
 (defun cyco-undefined-chord-warning (chord-name &rest more)
   (if *enable-warnings*
@@ -165,7 +163,5 @@
 	(format t "~A WARNING~%" +banner-bar1+)
 	(format t "WARNING Undefined chord: ~A~%" chord-name)
 	(dolist (q more)(format t "WARNING: ~A~%" q))
-	(cr)
-	(pig-notify "CYCO-WARNING"))))
-	  
+	(cr))))
 	

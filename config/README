@@ -1,0 +1,42 @@
+			 CYCO Configuration Readme
+
+The user is free to structure CYCO configuration files to meet their
+specific needs.  There are no predefined configuration requirements.
+
+The intended use for configuration is to define the properties of the
+available MIDI instruments.   Two example configuration schemes are
+provided:
+
+   1) general, a basic scheme based on general MIDI instruments.
+   2) sj, a much more involved scheme fro my personal use.
+
+
+
+Two global variables establish the location and name of the configuration
+files:
+
+    *CYCO-CONFIG-DIRECTORY*
+
+      Location of the configuration directory.
+      default  "~/pigiorn/cyco-config/"
+
+
+    *CYCO-CONFIG-FILE*
+
+      Name of main configuration file relative to above directory.
+      defaults  "cyco-config.lisp"
+
+
+The function LOAD-CONFIG loads the main configuration file.  It takes two
+optional arguments which may be used to bypass either
+*CYCO-CONFIG-DIRECTORY* or *CYCO-CONFIG-FILE*
+
+The function LOAD-CONFIG-FILE loads a lisp file relative to the location
+contained in *CYCO-CONFIG-DIRECTORY*
+
+
+
+The configuration files are not automaticaly loaded when CYCO starts.  This
+allows more flexibility for creating executable snapshots of the current
+CYCO state.   Use (LOAD-CONFIG) 
+

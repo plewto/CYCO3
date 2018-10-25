@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi midi
+;;;; CYCO3 src/midi/midi
 ;;;;
 
 (defgeneric mnemonic (obj)
@@ -73,4 +73,5 @@ no-overwrite - if true throw error if filename exists."))
 
 ;; Lower values have higher priority
 ;;
+
 

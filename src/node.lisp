@@ -1,4 +1,4 @@
-;;;; PigIron cyco node
+;;;; CYCO3 src/node
 ;;;;
 ;;;;  cyco-node
 ;;;;    |
@@ -195,3 +195,4 @@
   (dolist (k (property-keys n))
     (format t "      [~24A] --> ~A~%" k (property n k))))
   
+

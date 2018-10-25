@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts epart-render
+;;;; CYCO3 src/composition/parts/epart-render
 ;;;;
 
 (labels ((generate-touch-events
@@ -231,3 +231,4 @@
 	      (msg (cdr evn)))
 	  (push (cons (+ offset (* i period) reltime) msg) acc))))
     (sort-midi-events acc)))
+

@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts metronome
+;;;; CYCO3 src/composition/parts/metronome
 ;;;;
 
 
@@ -93,3 +93,4 @@ symbol name."
 		:instrument ,instrument)))
      (defparameter ,name met)
      met))
+

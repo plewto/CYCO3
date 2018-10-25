@@ -1,4 +1,4 @@
-;;;; PigIron cyco metrics
+;;;; CYCO3 src/metrics
 ;;;;
 ;;;; Metric values specify relative times. The basic metric values are:
 ;;;;
@@ -166,3 +166,4 @@
 
 (defmethod metric-expression ((lst list))
   (mapcar #'metric-expression lst))
+

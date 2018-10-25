@@ -1,4 +1,4 @@
-;;;; PigIron cyco coin pattern
+;;;; CYCO3 src/patterns/coin
 ;;;;
 ;;;; A COIN is a PATTERN with binary choice: head or tail.
 ;;;; The head and tail values my individually be:
@@ -53,3 +53,4 @@
     (setf (pointer c)
 	  (rem (1+ (pointer c))(cardinality c)))
     (value c)))
+

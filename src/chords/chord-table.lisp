@@ -1,4 +1,4 @@
-;;;; PigIron CYCO chords chord-table
+;;;; CYCO3 src/chords/chord-table
 ;;;;
 
 (defclass chord-table (chord-model)
@@ -52,3 +52,4 @@
 (defmethod chord-template ((cm chord-table)(name symbol))
   (or (gethash name (chord-table-templates cm))
       (and (cyco-undefined-chord-warning name) '(0))))
+

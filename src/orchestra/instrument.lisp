@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra instrument
+;;;; CYCO3 src/orchestra/instrument
 ;;;;
 ;;;; NOTE: Child node of an Insrtument must also be an Instrument.
 
@@ -264,3 +264,4 @@
   
 	  
   
+

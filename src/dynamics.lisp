@@ -1,4 +1,4 @@
-;;;; PigIron cyco/dyanmics.lisp
+;;;; CYCO3 src/dynamics
 ;;;;
 ;;;; Defines symbolic representation of note dynamics.
 ;;;; Dynamics are normalized between 0 and 1 and map to MIDI velocity 0..127
@@ -108,3 +108,4 @@ value - float between 0 and 1 inclusive"
 
 (defmethod dynamic->velocity ((lst list))
   (mapcar #'dynamic->velocity lst))
+

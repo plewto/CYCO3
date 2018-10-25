@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts qball
+;;;; CYCO3 src/composition/parts/qball
 ;;;; A QBall is a recombinative note generator.
 ;;;; The user specifies instrument, time, key-number, duration and
 ;;;; dynamic patterns.  These are recombined according to their
@@ -284,3 +284,4 @@ named name."
     (dolist (c (children src))
       (clone c :new-name frmt :new-parent prt))
     prt))
+

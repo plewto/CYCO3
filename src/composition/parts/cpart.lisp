@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts cpart
+;;;; CYCO3 src/composition/parts/cpart
 ;;;;
 ;;;; A CPart generates MIDI bend, channel-pressure and controller signals.
 ;;;; Single-point or control curves may be produced.
@@ -407,3 +407,4 @@ parent   - Parent node, most likely another part.
     prt))
      
 			  
+

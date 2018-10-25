@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts programs
+;;;; CYCO3 src/composition/parts/programs
 ;;;; Programs is a type of Part for generating MIDI program change events.
 ;;;;
 ;;;; Programs are always leaf nodes
@@ -130,3 +130,4 @@ Programs are always a leaf node."
    'connect parent
    "Attempt to add child to leaf Programs node."))
    
+

@@ -1,4 +1,4 @@
-;;;; PigIron CYCO chords chord-model
+;;;; CYCO3 src/chords/chord-model
 ;;;;
 
 (defgeneric chord-model-p (obj))
@@ -49,3 +49,4 @@
 	  (if (and (not (rest-p head))(< head 116))
 	      (setf key-list (append key-list (list (+ (* 12 add-octave) head)))))))
     key-list))
+

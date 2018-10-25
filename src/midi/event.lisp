@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi event
+;;;; CYCO3 src/midi/event
 ;;;;
 ;;;; Defines hierarchy of MIDI event classes.  All instances of MIDI events
 ;;;; are immutable.
@@ -277,3 +277,4 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value lsb)
 			       (assert-midi-data-value msb))))
+

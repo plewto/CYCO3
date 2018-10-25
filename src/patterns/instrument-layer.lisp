@@ -1,4 +1,4 @@
-;;;; PigIron CYCO Pattern Instrument-Layer
+;;;; CYCO3 src/patterns/instrument-layer
 ;;;;
 ;;;; A Instrument-Layer is a highly specilized Pattern which always returns
 ;;;; a list of all of it's elements.
@@ -30,3 +30,4 @@
 
 (defmethod remaining ((obj instrument-layer))
   (length (elements obj)))
+

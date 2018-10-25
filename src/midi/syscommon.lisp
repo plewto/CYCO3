@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi syscommon
+;;;; CYCO3 src/midi/syscommon
 ;;;;
 
 
@@ -84,3 +84,4 @@ If arg is a integer an empty (all 0) vector of that length is created."
 (defmethod render-midi-event ((evn midi-end-system-exclusive))
   (list +END-EXCLUSIVE+))
   
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi smf-track
+;;;; CYCO3 src/midi/smf-track
 ;;;;
 
 
@@ -166,3 +166,4 @@
 		    (logand (ash bcount -8) #xFF)
 		    (logand bcount #xFF))
 	      data))))
+

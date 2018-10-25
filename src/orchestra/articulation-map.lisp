@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra articulation-map
+;;;; CYCO3 src/orchestra/articulation-map
 ;;;;
 ;;;; An articulation map is a function of form  (lmabda (dy &key time-scale))
 ;;;; which returns float for key-down duration.
@@ -60,3 +60,4 @@
 		((eq m 'beat)
 		 dbeat)
 		(t dbeat))))))
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco compositin group
+;;;; CYCO3 src/composition/group
 ;;;;
 ;;;; syntax within section context
 ;;;;
@@ -105,3 +105,4 @@
 ;; (defmethod clone ((grp group) &key new-name new-parent)
 ;;   (dismiss grp new-name new-parent)
 ;;   grp)
+

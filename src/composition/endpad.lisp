@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition endpad
+;;;; CYCO3 src/composition/endpad
 ;;;;
 ;;;; ENDPAD provides a final section to pad-out the end of a MIDI track
 ;;;; to allow for final note decays..
@@ -56,3 +56,4 @@
 
 
   
+

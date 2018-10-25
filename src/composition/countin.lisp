@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition countin
+;;;; CYCO3 src/composition/countin
 ;;;;
 ;;;; Countin provides MIDI initialization and metronome count-in.
 ;;;;
@@ -74,3 +74,4 @@
 			    :instruments (property src :instruments))))
     dst))
 			    
+

@@ -1,4 +1,4 @@
-;;;; cyco notifications
+;;;; CYCO3 src/notifications
 ;;;;
 
 (constant +BANNER-BAR1+ (scopies 68 #\*))
@@ -165,3 +165,4 @@
 	(dolist (q more)(format t "WARNING: ~A~%" q))
 	(cr))))
 	
+

@@ -1,4 +1,4 @@
-;;;; PigIron CYCO patterns/pattern-generics.lisp
+;;;; CYCO3 src/patterns/pattern-generics
 ;;;;
 
 
@@ -51,4 +51,5 @@ n - nil   -> call NEXT-1 on pattern.
 n = int   -> return next n elements as list.
 n = :REST -> return remaining elements as a list.  
 n = :ALL  -> return list of all pattern elements."))
+
 

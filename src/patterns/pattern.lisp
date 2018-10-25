@@ -1,4 +1,4 @@
-;;;; PigIron CYCO patterns/pattern.lisp
+;;;; CYCO3 src/patterns/pattern
 ;;;;
 ;;;; PATTERN
 ;;;;  |
@@ -110,3 +110,4 @@
 (defmethod retrograde ((p pattern))
   (setf (elements p)(retrograde (elements p)))
   p)
+

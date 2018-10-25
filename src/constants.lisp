@@ -1,4 +1,4 @@
-;;;; PigIron cyco/constants.lisp
+;;;; CYCO3 src/constants
 ;;;; 
 
 
@@ -97,3 +97,4 @@
 (constant +REST+ -1)
 (constant +EQ12+ (expt 2.0d0 1/12))
 (constant +CENT+ (expt 2.0d0 1/1200))
+

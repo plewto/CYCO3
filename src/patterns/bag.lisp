@@ -1,4 +1,4 @@
-;;;; PigIron cyco bag pattern
+;;;; CYCO3 src/patterns/bag
 ;;;;
 
 (defclass bag (pattern)
@@ -39,3 +39,4 @@
 	  (next-1 (final-value b)))
     (setf (elements b)
 	  (cdr (elements b)))))
+

@@ -1,4 +1,4 @@
-;;;; PigIron CYCO math-utilities
+;;;; CYCO3 src/math-utilities
 ;;;;
 
 (defun 2+ (n)(+ 2 n))
@@ -29,5 +29,6 @@ value  - number,
 		  (+ value delta))))
 	    min max)))
 		
+
 
 

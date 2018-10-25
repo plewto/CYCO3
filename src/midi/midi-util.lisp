@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi midi-util
+;;;; CYCO3 src/midi/midi-util
 ;;;;
 
 
@@ -167,4 +167,5 @@ Returns number."
 		     (t 1))))
     (/ (* scale 60.0)
        (* bpm +TICKS-PER-BEAT+))))
+
 

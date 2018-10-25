@@ -1,4 +1,4 @@
-;;;; PigIron CYCO chords default-chords
+;;;; CYCO3 src/chords/default-chords
 ;;;;
 
 (global *chord-table* (make-instance 'chord-table
@@ -119,4 +119,5 @@
 (defchord '[circle-6]    '(0 9 18 27) "Circle of 6ths")
 (defchord '[circle-min7] '(0 10 20 30 40 50) "Circle of minor 7ths")
 (defchord '[circle-7]    '(0 11 22 33 44 55) "1/2 circle of major 7ths")
+
 

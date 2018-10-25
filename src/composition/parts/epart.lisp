@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts epart
+;;;; CYCO3 src/composition/parts/epart
 ;;;;
 ;;;; EPART is a Part with explicit event specifications.
 ;;;; 
@@ -909,3 +909,4 @@ See make-epart for more details."
       (format t "[~3D] -----------------------------------~%" index)
       (format t "~A~%" s)
       (setf index (1+ index)))))
+

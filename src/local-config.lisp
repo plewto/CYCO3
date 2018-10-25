@@ -1,4 +1,4 @@
-;;;; CYCO local-config
+;;;; CYCO3 src/local-config
 ;;;;
 
 (setf *cyco-config-directory* (join-path (user-home) ".config/cyco3" :as-file))
@@ -17,3 +17,4 @@
 
 (defun load-config ()
   (load-config-file *cyco-config-file*))
+

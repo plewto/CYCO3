@@ -1,4 +1,4 @@
-;;;; PigIron cyco comp time-signature
+;;;; CYCO3 src/composition/time-signature
 ;;;;
 
 (defgeneric init-time-signature (obj))
@@ -170,3 +170,4 @@
   (dolist (key +time-signature-properties+)
     (put dst key (property src key)))
   dst)
+

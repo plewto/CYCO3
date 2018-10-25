@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi meta
+;;;; CYCO3 src/midi/meta
 ;;;;
 ;;;; Not all meta messages are defined.
 ;;;; Implemented:
@@ -275,3 +275,4 @@
 
 (defmethod render-midi-event ((evn midi-key-signature))
   (list +META+ +KEY-SIGNATURE+ 2 (slot-value evn 'sf)(slot-value evn 'mi))) 
+

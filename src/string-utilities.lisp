@@ -1,4 +1,4 @@
-;;;; PigIron string-utilities.lisp
+;;;; CYCO3 src/string-utilities
 ;;;;
 
 (defmethod clone ((str string) &key new-name new-parent)
@@ -114,3 +114,4 @@ Convenience function, same as calling (format nil frmt args...)"
     (if (minusp diff)
 	str
       (str+ (scopies (+ (/ diff 2) shift) #\space) str))))
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco seq-utilities.lisp
+;;;; CYCO3 src/seq-utilities
 ;;;;
 
 (defmethod ->list ((obj t)) (list obj))
@@ -231,4 +231,5 @@ each resulting item is a unique object."
 		(< time-a time-b))))))
 	      
 	    
+
 

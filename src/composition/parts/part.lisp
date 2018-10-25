@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts part
+;;;; CYCO3 src/composition/parts/part
 
 
 (constant +part-properties+
@@ -84,3 +84,4 @@
 			(filter #'false)
 			(render nil))
   (dump-events (render-once prt) :range range :filter filter :render render))
+

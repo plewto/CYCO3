@@ -1,4 +1,4 @@
-;;;; CYCO Inspection
+;;;; CYCO3 src/inspection
 ;;;;
 
 (defun ?d (sym)(describe sym))
@@ -37,3 +37,4 @@
 		       
   
   
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra channel-assingments
+;;;; CYCO3 src/orchestra/channel-assignments
 ;;;; Defines nested symbolic MIDI channel name assignments.
 ;;;;
 ;;;; (meta-channel nil)    --> nil
@@ -90,3 +90,4 @@
   (defun meta-channel-assignment-p (obj)
     (or (and (integerp obj)(plusp obj)(<= obj 16))
 	(assoc obj assignments))) )
+

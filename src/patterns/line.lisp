@@ -1,4 +1,4 @@
-;;;; PigIron cyco line pattern
+;;;; CYCO3 src/patterns/line
 ;;;;
 
 (defclass line (pattern) nil
@@ -22,4 +22,5 @@ once all previous valuers have been returned."))
 	  (min (1+ ptr)(1- (cardinality q))))
     (setf (slot-value q 'value) val)
     val))
+
 

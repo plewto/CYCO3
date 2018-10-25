@@ -1,4 +1,4 @@
-;;;; PigIron cyco comp section
+;;;; CYCO3 src/composition/section
 ;;;;
 ;;;;
 ;;;; properties
@@ -260,3 +260,4 @@
     
 	 
   
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra keynumber-map
+;;;; CYCO3 src/orchestra/keynumber-map
 ;;;;
 ;;;; Functions to map elements to MIDI keynumbers.
 ;;;;
@@ -117,3 +117,4 @@
 			(docfn)
 		      (or (gethash kn ktab) +rest+)))))
 	fn))))
+

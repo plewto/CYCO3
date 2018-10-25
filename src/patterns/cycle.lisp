@@ -1,4 +1,4 @@
-;;;; PigIron cyco cycle pattern
+;;;; CYCO3 src/patterns/cycle
 ;;;;
 
 (defclass cycle (pattern) nil
@@ -34,3 +34,4 @@ cycle repeats."))
 
 (defmethod ->cycle ((obj t))
   (cycle :of (->list obj)))
+

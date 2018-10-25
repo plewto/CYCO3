@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts raw-part
+;;;; CYCO3 src/composition/parts/raw-part
 ;;;;
 ;;; raw-part is always a leaf node.
 
@@ -136,3 +136,4 @@
   (cyco-not-implemented-error
    'connect parent
    "Attempt to add child to leaf raw-part node."))
+

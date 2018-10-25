@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra dynamic-map
+;;;; CYCO3 src/orchestra/dynamic-map
 ;;;;
 
 (defun basic-dynamic-map (&key (scale 1)(min 0.0)(max 1.0))
@@ -39,3 +39,4 @@
 
 (constant +default-dynamic-map+ (basic-dynamic-map))
 	      
+

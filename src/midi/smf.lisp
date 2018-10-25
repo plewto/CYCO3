@@ -1,4 +1,4 @@
-;;;; PigIron cyco midi smf
+;;;; CYCO3 src/midi/smf
 ;;;;
 
 (defclass smf nil
@@ -83,5 +83,6 @@ division - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
       (format t "TRACK: ~s~%" (name trk))
       (dump-events trk :range range :filter filter :render render)))
   (smf-track-count obj))
+
 
 

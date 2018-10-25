@@ -1,4 +1,4 @@
-;;;; PigIron cyco orchestra program-map
+;;;; CYCO3 src/orchestra/program-map
 ;;;;
 ;;;; Program maps are functions of form
 ;;;;
@@ -98,3 +98,4 @@
 			  (t (warnfn pnum)))))))
       (program-map! instrument fn)
       fn)))
+

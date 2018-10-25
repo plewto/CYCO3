@@ -1,4 +1,4 @@
-;;;; PigIron cyco keynumbers.lisp
+;;;; CYCO3 src/keynumbers
 ;;;; CYCO representation of MIDI key numbers.
 ;;;;
 
@@ -148,3 +148,4 @@ value - an integer -1 or in (0..127)"
 
 (defmethod invert ((lst list)(pivot t))
   (mapcar #'(lambda (q)(invert q pivot)) lst))
+

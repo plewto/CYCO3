@@ -1,4 +1,4 @@
-;;;; PigIron CYCO comp project
+;;;; CYCO3 src/composition/project
 ;;;;
 
 ;; (defgeneric project-p (obj))
@@ -290,3 +290,4 @@
     smf))
 		
 		 
+

@@ -1,4 +1,4 @@
-;;;; PigIron cyco/constants.lisp
+;;;; CYCO3 src/globals
 ;;;;
 
 (global *os-path-root* "/")
@@ -16,4 +16,5 @@
 (global *metronome* nil)
 (global *countin* nil)
 (global *endpad* nil)
+
 

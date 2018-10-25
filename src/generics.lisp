@@ -1,4 +1,4 @@
-;;;; cyco/generics
+;;;; CYCO3 src/generics
 ;;;;
 
 
@@ -376,3 +376,4 @@ It is an error if expression is invalid."))
 ;; pad-end in seconds
 (defgeneric ->smf (obj &key filename offset repeat pad))
   
+

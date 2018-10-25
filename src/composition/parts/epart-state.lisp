@@ -1,4 +1,4 @@
-;;;; PigIron CYCO composition parts epart-state
+;;;; CYCO3 src/composition/parts/epart-state
 ;;;; EPART helper object.
 
 (constant +strum-directions+ '(:up :down :dice :random))
@@ -116,3 +116,4 @@
     (setf (epart-state-grace-key state)
 	  (invert gk pivot))
     state))
+

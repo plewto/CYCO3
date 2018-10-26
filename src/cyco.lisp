@@ -50,6 +50,7 @@
 		   "src/globals"
 		   "src/generics"
 		   "src/string-utilities"
+		   "src/banner"
 		   "src/notifications"
 		   "src/seq-utilities"
 		   "src/math-utilities"

@@ -61,7 +61,6 @@
 (defmethod next-1 ((obj t)) obj)
 
 (defmethod next-1 ((p pattern))
-  ;;(cyco-error (sformat "NEXT-1 not defined for ~A" (type-of p)))) ; :ERROR pattern not-implemented
   (cyco-not-implemented-error 'next-1 P))
 
   

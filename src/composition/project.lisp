@@ -1,21 +1,6 @@
 ;;;; CYCO3 src/composition/project
 ;;;;
 
-;; (defgeneric project-p (obj))
-;; (defgeneric section-p (obj))
-;; (defgeneric part-p (obj))
-;; (defgeneric group-p (obj))
-(defgeneric seq-order (sections &key project))
-(defgeneric groups (section))
-(defgeneric has-group-p (section group-name))
-(defgeneric add-group (section group))
-(defgeneric mute (obj &optional state))  ;; state one of :mute :unmute :solo or nil
-(defgeneric solo (obj))
-(defgeneric unmute (obj))
-(defgeneric muted-p (obj))
-(defgeneric mute-all (obj))
-(defgeneric unmute-all (obj))
-
 (global *default-project-main-file* "main")
 
 (constant +project-properties+
@@ -28,6 +13,8 @@
 			   :chord-model
 			   :section-order
 			   :current-section)))
+
+;; ISSUE: Include retrograde?
 (defstruct seq-mode
   section-name
   count ;; <= 0 --> skip
@@ -159,6 +146,7 @@
       (put project :current-section section))))
 
 
+;; ISSUE: Include specific seq-order method documentation.
 (defmethod seq-order ((s seq-mode) &key (project *project*))
   (let ((sname (seq-mode-section-name s)))
     (if (find-child project sname)

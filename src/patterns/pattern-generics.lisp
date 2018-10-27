@@ -7,9 +7,7 @@
 (defgeneric cycle-p (obj)(:documentation "Predicate"))
 (defgeneric bag-p (obj)(:documentation "Predicate"))
 (defgeneric dice-p (obj)(:documentation "Predicate"))
-;; (defgeneric wrapperp (obj)(:documentation "Predicate"))
-;; (defgeneric shift-registerp (obj)(:documentation "Predicate"))
-;; (defgeneric adderp (obj))
+
 
 (defgeneric ->cycle (obj)
   (:documentation

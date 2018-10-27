@@ -48,12 +48,16 @@
        ;; Include keyword :stop to prevent remaining files being loaded.
        (manifest '("src/constants"
 		   "src/globals"
-		   "src/generics"
+		   ;; "src/generics"
+		   "src/api"
+		   :stop
 		   "src/util/string-utilities"
 		   "src/util/banner"
 		   "src/util/notifications"
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
+
+		   
 		   "src/util/paths"
 		   "src/keynumbers"
 		   "src/dynamics"

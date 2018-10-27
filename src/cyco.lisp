@@ -44,6 +44,8 @@
 (constant-function false nil)
 
 (let* ((current "")
+       ;; List of CYCO source files
+       ;; Include keyword :stop to prevent remaining files being loaded.
        (manifest '("src/constants"
 		   "src/globals"
 		   "src/generics"

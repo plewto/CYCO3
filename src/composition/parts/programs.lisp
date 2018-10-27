@@ -45,7 +45,8 @@ Programs are always a leaf node."
 			section)
 		       ((project-p *project*)
 			(property *project* :current-section))
-		       (t (cyco-no-project-error 'make-programs))))
+		       (t (cyco-composition-error 'make-programs
+						  "No default project"))))
 	 (obj (make-instance 'programs
 			     :properties +programs-properties+
 			     :name name
@@ -126,8 +127,8 @@ Programs are always a leaf node."
     
 
 (defmethod connect ((parent programs)(child cyco-node))
-  (cyco-not-implemented-error
-   'connect parent
-   "Attempt to add child to leaf Programs node."))
-   
-
+  (cyco-type-error
+   'connect '?
+   child
+   (sformat "Attempt to connect NODE ~A to leaf node ~A"
+	    (name child)(name parent)))) 

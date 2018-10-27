@@ -130,7 +130,9 @@
 	(if (hah-property-p node key)
 	    t
 	  (progn 
-	    (cyco-property-error node key)
+	    ;;(cyco-property-error node key)
+	    (cyco-error
+	     (sformat "CYCO-NODE ~A does not have ~A property" (name node) key))
 	    nil))))
 
     (defmethod put ((node cyco-node)(key symbol)(value t))
@@ -169,8 +171,9 @@
   
 (defmethod clone ((node cyco-node) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (cyco-not-implemented-error 'clone node))
-
+  ;;(cyco-not-implemented-error 'clone node))
+  (cyco-type-error 'clone '?cyco-node node))
+  
 (defmethod ->string ((n cyco-node))
   (sformat "~A name: ~A" (type-of n)(name n)))
 

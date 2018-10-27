@@ -35,7 +35,8 @@ for a generic metronome pattern.
 		      ((and (project-p *project*)
 			    (property *project* :current-section))
 		       (property *project* :current-section))
-		      (t (cyco-no-project-error 'make-metronome))))
+		      (t (cyco-composition-error 'make-metronome
+						 "No Default Project"))))
   (setf name (->symbol (or name
 			   (sformat "~A-~A" (name section) "METRONOME"))))
   (setf tempo (or tempo (property section :tempo)))

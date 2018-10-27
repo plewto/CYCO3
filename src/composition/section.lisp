@@ -135,7 +135,7 @@
       (format t "~AGroup ~16A State ~7A : " gtab (name grp)(mute-state grp))
       (dolist (prt (group-members grp))
 	(format t "~A " (name prt)))
-      (foramt t "~%"))))
+      (format t "~%"))))
 
 (labels ((clone-groups
 	  (src dst)
@@ -234,7 +234,7 @@
 		  (and (project-p *project*)
 		       (property *project* :current-section))
 		  (progn
-		    (cyco-no-project-error 'section-filename)
+		    (cyco-composition-error 'section-filename "No default project")
 		    (return-from section-filename nil))))
 	 (project (parent sec))
 	 (pdir (property project :project-directory))

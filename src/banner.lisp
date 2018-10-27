@@ -5,7 +5,8 @@
 (constant +BANNER-HEADER1+ "*** ")
 (constant +BANNER-BAR2+ (scopies 68 #\-))
 (constant +BANNER-HEADER2+ "--- ")
-(constant +BANNER-ERROR+ (sformat "ERROR: ~A" (scopies 30 #\*)))
+(constant +BANNER-ERROR+ (sformat "ERROR ~A" (scopies 30 #\*)))
+(constant +BANNER-WARNING+ (sformat "WARNING ~A" (scopies 30 #\*)))
 
 (defun cyco-banner ()
   (format t "~%~A~%" +BANNER+)

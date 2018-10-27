@@ -125,7 +125,7 @@
 			(format t "]")))
 		  (format t "~%")))))
 	(length lst))
-    (cyco-invalid-midi-track-error)))
+    (cyco-error "Invalid MIDI track")))
 
 (flet ((render-events (trk pad)
 		      (let* ((events (events trk))

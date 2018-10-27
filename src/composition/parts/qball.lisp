@@ -25,7 +25,7 @@
 			  (cyco-type-error 'make-qball '(section nil) section)
 			  nil)
 			 ((not (project-p *project*))
-			  (cyco-no-project-error
+			  (cyco-composition-error
 			   'make-qball
 			   (sformat "No default project while creating qball ~A" part-name))
 			  nil)

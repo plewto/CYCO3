@@ -30,7 +30,10 @@
 	  (dolist (evnt events)
 	    (if (not (validate-event evnt))
 	 	(progn 
-	 	  (cyco-malformed-part-event-error part evnt)
+		  (cyco-composition-error
+		   'make-raw-part
+		   (sformat "RAW-PART ~A" (name part))
+		   (sformat "Malformed part event: ~A" evnt))
 	 	  (return-from validate-event-list nil))))
 	  t))
   
@@ -45,7 +48,10 @@
   		   (and (project-p *project*)
   			(property *project* :current-section)))))
       (if (not sec)
-  	  (cyco-section-does-not-exists-error 'make-raw-part sec name)
+	  (cyco-composition-error
+	   'make-raw-part
+	   (sformat "part name : ~A" name)
+	   "No currne tSection")
   	(let ((part (make-instance 'raw-part
 				   :name name
 				   :properties +raw-part-properties+
@@ -128,12 +134,12 @@
 		(msg (cdr evn)))
 	    (push (cons (+ tshift reltime) msg) acc)))))
     (sort-midi-events acc)))
-    
-
-
 
 (defmethod connect ((parent raw-part)(child cyco-node))
-  (cyco-not-implemented-error
-   'connect parent
-   "Attempt to add child to leaf raw-part node."))
+  (cyco-type-error
+   'connect '?
+   child
+   (sformat "Attempt to connect NODE ~A to leaf node ~A"
+	    (name child)(name parent))))
+	    
 

@@ -49,7 +49,7 @@
 
   (defun .meta-channel. (target-name name depth)
     (if (zerop depth)
-  	(cyco-circular-assignment-error 'meta-channel! target-name)
+	(cyco-error 'meta-channel! name "Circular channel assignment")
     (let* ((p (cdr (assoc name assignments)))
   	   (chan (and p (meta-channel-value p))))
       (if (and (integerp chan)(plusp chan)(<= chan 16))

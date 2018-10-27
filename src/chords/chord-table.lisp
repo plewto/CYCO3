@@ -51,5 +51,10 @@
 
 (defmethod chord-template ((cm chord-table)(name symbol))
   (or (gethash name (chord-table-templates cm))
-      (and (cyco-undefined-chord-warning name) '(0))))
-
+      (and
+       (progn 
+	 (cyco-warning
+	  (sformat "Undefined Chord: ~A" name)
+	  "Using default (0)")
+	 '(0)))))
+		     

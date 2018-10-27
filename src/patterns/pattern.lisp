@@ -61,8 +61,7 @@
 (defmethod next-1 ((obj t)) obj)
 
 (defmethod next-1 ((p pattern))
-  (cyco-not-implemented-error 'next-1 P))
-
+  (cyco-type-error 'next-1 '?pattern p))
   
 (defmethod next-n ((obj t)(n integer))
   (copies n obj))

@@ -159,7 +159,9 @@
 (defmethod metric-expression ((exp symbol))
   (let ((value (metric-expression-p exp)))
     (or value
-	(cyco-metric-expression-error exp))))
+	(cyco-composition-error
+	 'metric-expression
+	 (sformat "Invalid metric expression: ~A" exp)))))
 
 (defmethod metric-expression ((n number))
   (metric-expression-p n))

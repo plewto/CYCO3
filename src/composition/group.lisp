@@ -73,18 +73,19 @@
 			     (progn
 			       (push prt acc)
 			       (put prt :group group-name))
-			   (cyco-part-does-not-exists-error function-name
-							    (name section)
-							    part-name))))
+			   (cyco-composition-error function-name
+						   (sformat "Section Name : ~A" (name section))
+						   (sformat "Part ~A does not exists" part-name)))))
 		     acc)) )
 
   (defun make-group (name &key member-names section)
     (let ((sec (or section (and (project-p *project*)
 				(property *project* :current-section)))))
       (if (not sec)
-	  (cyco-section-does-not-exists-error
+	  (cyco-composition-error
 	   'make-group
-	   (name (or section "current-section")))
+	   ;;(name (or section "current-section")))
+	   "No default section")
 	(let* ((members (find-parts 'make-group name sec
 				    (->list member-names)))
 	       (grp (make-instance 'group

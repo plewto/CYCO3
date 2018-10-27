@@ -122,7 +122,8 @@
 
 (defmethod connect ((project project)(section cyco-node))
   (if (not (section-p section))
-      (cyco-section-does-not-exists-error 'project.connect 'section section)
+      (cyco-composition-error 'project.connect
+			      (sformat "Section ~A does not exists" section))
     (progn
       (call-next-method)
       (init-time-signature section)
@@ -134,7 +135,8 @@
     (if (find-child project sname)
 	(put project :section-order
 	      (reverse (cons s (reverse (property project :section-order)))))
-      (cyco-section-does-not-exists-error 'project.seq-order sname))))
+      (cyco-composition-error 'seq-order
+			      (sformat "Section ~A does not exists" sname)) )))
 
 (defmethod seq-order ((section-name symbol) &key (project *project*))
   (if (find-child project section-name)
@@ -143,7 +145,8 @@
 				  :transpose 0
 				  :invert nil)))
 	(seq-order smode :project *project*))
-    (cyco-section-does-not-exists-error 'project.seq-order section-name)))
+    (cyco-composition-error 'seq-order
+			    (sformat "Sectioon ~A does not exists" section-name))))
 
 (flet ((type-error (spec expected offending)
 		   (cyco-type-error 'project.seq-order expected offending
@@ -199,7 +202,9 @@
 	  (progn 
 	    (format t frmt current-project-main-file)
 	    (load current-project-main-file))
-	(cyco-no-project-error 'lp "Try (lp 'project-name)"))))
+	(cyco-composition-error 'lp
+				"No default project"
+				"Try loading or creating project first."))))
   
   (defun load-project-file (name)
     (let ((sname (cond ((symbolp name)
@@ -221,7 +226,9 @@
 	  (progn 
 	    (format t frmt current-filename)
 	    (load current-filename))
-	(cyco-section-does-not-exists-error 'lpf name "Try (lpf 'name)")))) ) 
+	(cyco-composition-error 'lpf name
+				"Section does not exists")))) )
+  
 
 ;; NOTE 1: current-section property is not preserved.
 ;; NOTE 2: global *project* is not altered.

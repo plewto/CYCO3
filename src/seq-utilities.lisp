@@ -9,16 +9,16 @@
 (defmethod ->vector ((v vector)) v)
 
 (defmethod final ((obj t))
-  (let ((frmt "FINAL not defined for ~A ~A"))
-    (error (format nil frmt obj (type-of obj)))))
+  (cyco-type-error 'final '? obj
+		   (sformat "FINALE not defined for ~A" (type-of obj))))
 
 (defmethod final ((lst list))(car (reverse lst)))
 
 (defmethod final ((v vector))(final (->list v)))
 
 (defmethod butfinal ((obj t))
-  (let ((frmt "BUTFINAL not defined for ~A ~A"))
-    (error (format nil frmt obj (type-of obj)))))
+  (cyco-type-error 'butfinal '? obj
+		   (sformat "BUTFINAL not defined for ~A" (type-of obj))))
 
 (defmethod butfinal ((lst list))
   (reverse (cdr (reverse lst))))
@@ -104,7 +104,7 @@ If n > 0, rotate right."
 	 (limit (length bcc)))
     (if (not (evenp (length bcc)))
 	(let ((msg "Expected even number of elements for ->alist, encountered ~A"))
-	  (error (sformat msg lst)))
+	  (cyco-error (sformat msg lst)))
       (while (< i limit)
 	(push (cons (aref bcc i)(aref bcc (1+ i))) acc)
 	(setf i (+ 2 i))))
@@ -117,8 +117,7 @@ If n > 0, rotate right."
 	(dolist (a alst)
 	  (setf (gethash (car a) htab) (cdr a)))
 	htab)
-    (let ((msg "Argument to ALIST->HASH-TABLE is not an association list: ~A"))
-      (error (sformat msg alst)))))
+      (cyco-type-error 'alist->hash-table 'alist alst)))
 
 (defmethod palindrome ((lst list) &key (elide nil))
   (let ((rev (reverse lst)))

@@ -252,7 +252,7 @@
 			  (cyco-type-error 'make-epart '(section nil) section)
 			  nil)
 			 ((not (project-p *project*))
-			  (cyco-no-project-error
+			  (cyco-composition-error
 			   'make-epart
 			   (sformat "No default project while creating epart ~A" part-name))
 			  nil)

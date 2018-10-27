@@ -40,7 +40,7 @@
 ;;;
 (constant +META+ #xFF)
 (constant +SEQUENCE-NUMBER+ #x00)
-(constant +TEXT-EVENT+ #x01)
+(constant +TEXT-MESSAGE+ #x01)
 (constant +COPYRIGHT+ #x02)
 (constant +TRACK-NAME+ #x03)
 (constant +INSTRUMENT-NAME+ #x04)
@@ -78,7 +78,7 @@
 	    (setf (gethash +TUNE-REQUEST+ table) "TUNE  ")
 	    (setf (gethash +META+ table) "META  ")
 	    (setf (gethash +SEQUENCE-NUMBER+ table) "SEQNUM   ")
-	    (setf (gethash +TEXT-EVENT+ table) "TEXT     ")
+	    (setf (gethash +TEXT-MESSAGE+ table) "TEXT     ")
 	    (setf (gethash +COPYRIGHT+ table) "COPYRGHT ")
 	    (setf (gethash +TRACK-NAME+ table) "TRK-NAME ")
 	    (setf (gethash +INSTRUMENT-NAME+ table) "INS-NAME ")

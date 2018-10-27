@@ -23,7 +23,7 @@
 	  (event)
 	  (and (consp event)
 	       (numberp (car event))
-	       (midi-event-p (cdr event))))
+	       (midi-message-p (cdr event))))
 	 
 	 (validate-event-list
 	  (part events)

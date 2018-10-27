@@ -2,15 +2,15 @@
 ;;;;
 
 
-(defclass midi-system-common-event (midi-event) nil)
+(defclass midi-system-common-message (midi-message) nil)
 
-(defmethod midi-system-common-event-p ((obj t)) nil)
-(defmethod midi-system-common-event-p ((evn midi-system-common-event)) t)
+(defmethod midi-system-common-message-p ((obj t)) nil)
+(defmethod midi-system-common-message-p ((evn midi-system-common-message)) t)
 
 ;;; ---------------------------------------------------------------------- 
 ;;;                       MIDI-SYSTEM-EXCLUSIVE
 
-(defclass midi-system-exclusive (midi-system-common-event)
+(defclass midi-system-exclusive (midi-system-common-message)
   ((command
     :initform +SYSTEM-EXCLUSIVE+)
    (priority
@@ -22,7 +22,7 @@
     :initarg :data)))
 
 (defun midi-system-exclusive (arg)
-  "Creates instance of MIDI-SYSTEM-EXCLUSIVE event.
+  "Creates instance of MIDI-SYSTEM-EXCLUSIVE message.
 arg may either be a integer, list or vector.
 If arg is a list or vector it should contain the sysex data bytes.
 If arg is a integer an empty (all 0) vector of that length is created."
@@ -53,7 +53,7 @@ If arg is a integer an empty (all 0) vector of that length is created."
     (str+ (sformat  "~A " (gethash +SYSTEM-EXCLUSIVE+ +MNEMONICS+))
 	  (sformat  "~A~%" acc))))
 
-(defmethod render-midi-event ((evn midi-system-exclusive))
+(defmethod render-midi-message ((evn midi-system-exclusive))
   (let* ((data (data-array evn))
 	 (acc (list (command evn))))
     (dotimes (i (length data))
@@ -64,7 +64,7 @@ If arg is a integer an empty (all 0) vector of that length is created."
 ;;; ---------------------------------------------------------------------- 
 ;;;			 MIDI-END-SYSTEM-EXCLUSIVE (Singleton)
 
-(defclass midi-end-system-exclusive (midi-system-common-event)
+(defclass midi-end-system-exclusive (midi-system-common-message)
   ((command
     :initform +END-EXCLUSIVE+)
    (priority
@@ -81,7 +81,7 @@ If arg is a integer an empty (all 0) vector of that length is created."
 (defmethod ->string ((evn midi-end-system-exclusive))
   (sformat  "~A " (gethash +END-EXCLUSIVE+ +MNEMONICS+)))
 
-(defmethod render-midi-event ((evn midi-end-system-exclusive))
+(defmethod render-midi-message ((evn midi-end-system-exclusive))
   (list +END-EXCLUSIVE+))
   
 

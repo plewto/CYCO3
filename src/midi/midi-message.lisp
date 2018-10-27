@@ -1,13 +1,13 @@
-;;;; CYCO3 src/midi/event
+;;;; CYCO3 src/midi/midi-message
 ;;;;
 ;;;; Defines hierarchy of MIDI event classes.  All instances of MIDI events
 ;;;; are immutable.
 ;;;;
-;;;; MIDI-EVENT
+;;;; MIDI-MESSAGE
 ;;;;  |
-;;;;  +-- MIDI-CHANNEL-EVENT
+;;;;  +-- MIDI-CHANNEL-MESSAGE
 ;;;;  |    |
-;;;;  |    +-- MIDI-KEY-EVENT
+;;;;  |    +-- MIDI-KEY-MESSAGE
 ;;;;  |    |    |
 ;;;;  |    |    +-- MIDI-NOTE-OFF
 ;;;;  |    |    +-- MIDI-NOTE-ON
@@ -18,12 +18,12 @@
 ;;;;  |    +-- MIDI-PROGRAM-CHANGE
 ;;;;  |    +-- MIDI-PITCH-BEND
 ;;;;  |
-;;;;  +-- MIDI-SYSTEM-COMMON-EVENT
+;;;;  +-- MIDI-SYSTEM-COMMON-MESSAGE
 ;;;;  |    |
 ;;;;  |    +--- MIDI-SYSTEM-EXCLUSIVE
 ;;;;  |    +--- --MIDI-END-SYSTEM-EXCLUSIVE (singleton)
 ;;;;  |
-;;;;  +-- MIDI-META-EVENT
+;;;;  +-- MIDI-META-MESSAGE
 ;;;;       |
 ;;;;       +-- MIDI-META-TEXT
 ;;;;       |    |
@@ -57,9 +57,9 @@
     n))
 
 ;;; ---------------------------------------------------------------------- 
-;;;			     MIDI-EVENT class
+;;;			     MIDI-MESSAGE class
 
-(defclass midi-event nil
+(defclass midi-message nil
   ((command 				; MIDI status command
     :type integer			; See constants
     :reader command
@@ -70,28 +70,28 @@
     :initform 0				; before higher values.
     :initarg :priority)))
 
-  (defmethod mnemonic ((evn midi-event))
+  (defmethod mnemonic ((evn midi-message))
     (gethash (command evn) +MNEMONICS+))
 
-  (defmethod ->string ((evn midi-event))
+  (defmethod ->string ((evn midi-message))
     (sformat "~A " (mnemonic evn)))
   
-(defmethod midi-event-p ((obj t)) nil)
-(defmethod midi-event-p ((me midi-event)) t)
+(defmethod midi-message-p ((obj t)) nil)
+(defmethod midi-message-p ((me midi-message)) t)
 
-(defmethod clone ((evn midi-event) &key new-name new-parent)
+(defmethod clone ((evn midi-message) &key new-name new-parent)
   (dismiss new-name new-parent)
   evn)
 
-(defmethod transpose ((e midi-event)(n integer)) e)
+(defmethod transpose ((e midi-message)(n integer)) e)
 
-(defmethod invert ((e midi-event)(pivot integer)) e)
+(defmethod invert ((e midi-message)(pivot integer)) e)
 
 
 ;;; ---------------------------------------------------------------------- 
-;;;			       MIDI-CHANNEL-EVENT
+;;;			       MIDI-CHANNEL-MESSAGE
 
-(defclass midi-channel-event (midi-event)
+(defclass midi-channel-message (midi-message)
   ((channel-index			; MIDI channel index
     :type integer			; between 0..15 inclusive.
     :accessor channel-index
@@ -103,66 +103,66 @@
     :accessor data-array
     :initarg :data)))
 
-(defmethod midi-channel-event-p ((obj t)) nil)
-(defmethod midi-channel-event-p ((obj midi-channel-event)) t)
+(defmethod midi-channel-message-p ((obj t)) nil)
+(defmethod midi-channel-message-p ((obj midi-channel-message)) t)
 
-(defmethod channel ((evn midi-channel-event) &optional _)
+(defmethod channel ((evn midi-channel-message) &optional _)
   (dismiss _)
   (1+ (channel-index evn)))
 
-(defmethod data ((evn midi-channel-event)(index integer))
+(defmethod data ((evn midi-channel-message)(index integer))
   (aref (data-array evn) index))
 
-(defmethod data-count ((evn midi-channel-event)) 2)
+(defmethod data-count ((evn midi-channel-message)) 2)
   
-(defmethod ->string ((evn midi-channel-event))
+(defmethod ->string ((evn midi-channel-message))
   (let ((acc (str+ (call-next-method)
 		   (sformat "channel: ~2d  " (1+ (channel-index evn))))))
     (dotimes (i (data-count evn))
       (setf acc (str+ acc (sformat "data-~d: ~3d  " (1+ i) (data evn i)))))
     acc))
 
-(defmethod render-midi-event ((evn midi-channel-event))
+(defmethod render-midi-message ((evn midi-channel-message))
   (let ((acc (list (+ (command evn)(channel-index evn)))))
     (dotimes (i (data-count evn))
       (push (data evn i) acc))
     (reverse acc)))
 
 ;;; ---------------------------------------------------------------------- 
-;;;			MIDI-KEY-EVENT
+;;;			MIDI-KEY-MESSAGE
 
-(defclass midi-key-event (midi-channel-event)  nil)
+(defclass midi-key-message (midi-channel-message)  nil)
 
-(defmethod midi-key-event-p ((obj t)) nil)
-(defmethod midi-key-event-p ((evn midi-key-event)) t)
+(defmethod midi-key-message-p ((obj t)) nil)
+(defmethod midi-key-message-p ((evn midi-key-message)) t)
 
-(defmethod transpose ((evn midi-key-event)(n integer))
+(defmethod transpose ((evn midi-key-message)(n integer))
   (let ((kn (+ n (data evn 0))))
     (while (> kn 128)(setf kn (- kn 12)))
     (while (minusp kn)(setf kn (+ kn 12)))
     (setf (aref (data-array evn) 0) kn)
     evn))
 
-(defmethod invert ((evn midi-key-event)(pivot t))
+(defmethod invert ((evn midi-key-message)(pivot t))
   (let* ((kn (invert (data evn 0)(keynumber pivot))))
     (while (> kn 128)(setf kn (- kn 12)))
     (while (minusp kn)(setf kn (+ kn 12)))
     (setf (aref (data-array evn) 0) kn)
     evn))
 
-(defclass midi-note-off (midi-key-event)
+(defclass midi-note-off (midi-key-message)
   ((command
     :initform +NOTE-OFF+)
    (priority
     :initform 11)))
 
-(defclass midi-note-on (midi-key-event)
+(defclass midi-note-on (midi-key-message)
   ((command
     :initform +NOTE-ON+)
    (priority
     :initform 10)))
 
-(defclass midi-poly-pressure (midi-key-event)
+(defclass midi-poly-pressure (midi-key-message)
   ((command
     :initform +POLY-PRESSURE+)
    (priority
@@ -202,7 +202,7 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 ;;; ---------------------------------------------------------------------- 
 ;;;			    MIDI-CONTROL-CHANGE
   
-(defclass midi-control-change (midi-channel-event)
+(defclass midi-control-change (midi-channel-message)
   ((command
     :initform +CONTROL-CHANGE+)
    (priority
@@ -221,7 +221,7 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 ;;; ---------------------------------------------------------------------- 
 ;;;			   MIDI-CHANNEL-PRESSURE
 
-(defclass midi-channel-pressure (midi-channel-event)
+(defclass midi-channel-pressure (midi-channel-message)
   ((command
     :initform +CHANNEL-PRESSURE+)
    (priority
@@ -241,7 +241,7 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 ;;; ---------------------------------------------------------------------- 
 ;;;			    MIDI-PROGRAM-CHANGE
 
-(defclass midi-program-change (midi-channel-event)
+(defclass midi-program-change (midi-channel-message)
   ((command
     :initform +PROGRAM-CHANGE+)
    (priority
@@ -262,7 +262,7 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 ;;; ---------------------------------------------------------------------- 
 ;;;			      MIDI-PITCH-BEND
 
-(defclass midi-pitch-bend (midi-channel-event)
+(defclass midi-pitch-bend (midi-channel-message)
   ((command
     :initform +PITCH-BEND+)
    (priority

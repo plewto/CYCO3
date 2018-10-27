@@ -16,7 +16,7 @@
 ;;;;    sequencer-specific
 
 
-(defclass midi-meta-event (midi-event)
+(defclass midi-meta-message (midi-message)
   ((command
     :initform +META+)
    (meta-type
@@ -27,18 +27,18 @@
    (priority
     :initform 0)))
 
-(defmethod midi-meta-event-p ((obj t)) nil)
-(defmethod midi-meta-event-p ((evn midi-meta-event)) t)
+(defmethod midi-meta-message-p ((obj t)) nil)
+(defmethod midi-meta-message-p ((evn midi-meta-message)) t)
 
-(defmethod ->string ((obj midi-meta-event))
+(defmethod ->string ((obj midi-meta-message))
   (sformat  "META ~9A " (gethash (meta-type obj) +MNEMONICS+)))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			      MIDI-META-TEXT
 
-(defclass midi-meta-text (midi-meta-event)
+(defclass midi-meta-text (midi-meta-message)
   ((meta-type
-    :initform +TEXT-EVENT+)
+    :initform +TEXT-MESSAGE+)
    (text
     :type string
     :reader text
@@ -113,10 +113,10 @@
 
 (defun midi-meta-text (txt)
   (make-instance 'midi-meta-text
-		 :meta-type +TEXT-EVENT+
+		 :meta-type +TEXT-MESSAGE+
 		 :text (->string txt)))
 
-(defmethod render-midi-event ((evn midi-meta-text))
+(defmethod render-midi-message ((evn midi-meta-text))
   (let ((count (data-count evn))
 	(acc '()))
     (dotimes (i count)
@@ -129,7 +129,7 @@
 ;;; ---------------------------------------------------------------------- 
 ;;;			  MIDI-META-END-OF-TRACK (Singleton)
   
-(defclass %midi-end-of-track% (midi-meta-event)
+(defclass %midi-end-of-track% (midi-meta-message)
   ((meta-type
     :initform +END-OF-TRACK+)
    (priority
@@ -138,7 +138,7 @@
 (defmethod midi-end-of-track-p ((obj t)) nil)
 (defmethod midi-end-of-track-p ((obj %midi-end-of-track%)) t)
 
-(defmethod render-midi-event ((evn %midi-end-of-track%))
+(defmethod render-midi-message ((evn %midi-end-of-track%))
   '(#xFF #x2F 0))
 
 (constant-function midi-end-of-track
@@ -147,7 +147,7 @@
 ;;; ---------------------------------------------------------------------- 
 ;;;			     MIDI-TEMPO-CHANGE
 
-(defclass midi-tempo-event (midi-meta-event)
+(defclass midi-tempo-message (midi-meta-message)
   ((meta-type
     :initform +TEMPO-CHANGE+)
    (priority
@@ -158,20 +158,20 @@
     :initform 120.0
     :initarg :bpm)))
 
-(defmethod midi-tempo-event-p ((obj t)) nil)
-(defmethod midi-tempo-event-p ((obj midi-tempo-event)) t)
+(defmethod midi-tempo-message-p ((obj t)) nil)
+(defmethod midi-tempo-message-p ((obj midi-tempo-message)) t)
 
-(defun midi-tempo-event (bpm)
-  (make-instance 'midi-tempo-event :bpm (float bpm)))
+(defun midi-tempo-message (bpm)
+  (make-instance 'midi-tempo-message :bpm (float bpm)))
 
-(defmethod ->string ((evn midi-tempo-event))
+(defmethod ->string ((evn midi-tempo-message))
   (str+ (call-next-method)
 	(sformat  "BPM: ~A" (slot-value evn 'tempo))))
 
-(defmethod tick-duration ((evn midi-tempo-event) &key (unit 'q))
+(defmethod tick-duration ((evn midi-tempo-message) &key (unit 'q))
   (tick-duration (slot-value evn 'tempo) :unit unit))
 
-(defmethod render-midi-event ((evn midi-tempo-event))
+(defmethod render-midi-message ((evn midi-tempo-message))
   (let* ((usec (bpm->microseconds (slot-value evn 'tempo)))
 	 (d0 (logand (ash usec -16) #xFF))
 	 (d1 (logand (ash usec -8) #xFF))
@@ -181,7 +181,7 @@
 ;;; ---------------------------------------------------------------------- 
 ;;;			    MIDI-TIME-SIGNATURE
 
-(defclass midi-time-signature (midi-meta-event)
+(defclass midi-time-signature (midi-meta-message)
   ((meta-type
     :initform +TIME-SIGNATURE+)
    (priority
@@ -226,7 +226,7 @@
 		(timesig-numerator evn)
 		(timesig-unit evn))))
 
-(defmethod render-midi-event ((evn midi-time-signature))
+(defmethod render-midi-message ((evn midi-time-signature))
   (list +META+ +TIME-SIGNATURE+ 4
 	(timesig-numerator evn)
 	(.map-midi-timesig-unit. (timesig-unit evn))
@@ -242,7 +242,7 @@
 ;;; sharps/flats) field.   It should be fine for positive sf values.
 ;;;
 
-(defclass midi-key-signature (midi-meta-event)
+(defclass midi-key-signature (midi-meta-message)
   ((meta-type
     :initform +KEY-SIGNATURE+)
    (priority
@@ -273,6 +273,6 @@
 	    (sformat  "~A sharps " sf))
 	  (if (zerop mi) "major" "minor"))))
 
-(defmethod render-midi-event ((evn midi-key-signature))
+(defmethod render-midi-message ((evn midi-key-signature))
   (list +META+ +KEY-SIGNATURE+ 2 (slot-value evn 'sf)(slot-value evn 'mi))) 
 

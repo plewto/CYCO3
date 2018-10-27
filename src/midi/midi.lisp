@@ -1,5 +1,11 @@
 ;;;; CYCO3 src/midi/midi
 ;;;;
+;;;; Terminology:
+;;;;
+;;;;   1) A MIDI 'message' is a class or instance or byte array representing a
+;;;;      single MIDI command without reference to time.
+;;;;   2) A MIDI 'event' is a cons of event-time and MIDI message:
+;;;;      (time . message)
 
 (defgeneric mnemonic (obj)
   (:documentation
@@ -11,9 +17,9 @@
   (:documentation
    "Returns data value from object."))
 
-(defgeneric render-midi-event (obj)
+(defgeneric render-midi-message (obj)
   (:documentation
-   "Translates object into list of MIDi bytes."))
+   "Translates object into list of MIDI bytes."))
 
 (defgeneric render-smf-header (obj track-count))
 
@@ -45,9 +51,9 @@ filename - string
 pad - Number of seconds added to final track event.
 no-overwrite - if true throw error if filename exists."))
 
-(defgeneric midi-event-p (obj))
-(defgeneric midi-channel-event-p (obj))
-(defgeneric midi-key-event-p (obj))
+(defgeneric midi-message-p (obj))
+(defgeneric midi-channel-message-p (obj))
+(defgeneric midi-key-message-p (obj))
 (defgeneric midi-note-off-p (obj))
 (defgeneric midi-note-on-p (obj))
 (defgeneric midi-poly-pressure-p (obj))
@@ -55,10 +61,10 @@ no-overwrite - if true throw error if filename exists."))
 (defgeneric midi-channel-pressure-p (obj))
 (defgeneric midi-program-change-p (obj))
 (defgeneric midi-pitch-bend-p (obj))
-(defgeneric midi-system-common-event-p (obj))
+(defgeneric midi-system-common-message-p (obj))
 (defgeneric midi-system-exclusive-p (obj))
 (defgeneric midi-end-system-exclusive-p (obj))
-(defgeneric midi-metat-event-p (obj))
+(defgeneric midi-meta-message-p (obj))
 (defgeneric midi-meta-text-p (obj))
 (defgeneric midi-meta-copyright-p (obj))
 (defgeneric midi-meta-track-name-p (obj))
@@ -67,11 +73,9 @@ no-overwrite - if true throw error if filename exists."))
 (defgeneric midi-meta-cue-p (obj))
 (defgeneric midi-meta-marker-p (obj))
 (defgeneric midi-end-of-track-p (obj))
-(defgeneric midi-tempo-event-p (obj))
+(defgeneric midi-tempo-message-p (obj))
 (defgeneric midi-time-signature-p (obj))
 (defgeneric midi-key-signature-p (obj))
 
 ;; Lower values have higher priority
 ;;
-
-

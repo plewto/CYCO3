@@ -43,8 +43,6 @@
 (constant-function true t)
 (constant-function false nil)
 
-
-
 (let* ((current "")
        (manifest '("src/constants"
 		   "src/globals"
@@ -65,12 +63,11 @@
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"
-		   "src/patterns/slew"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi"
 		   "src/midi/midi-util"
-		   "src/midi/event"
+		   "src/midi/midi-message"
 		   "src/midi/syscommon"
 		   "src/midi/meta"
 		   "src/midi/smf-header"
@@ -105,9 +102,9 @@
 		   "src/util/inspection"
 		   "src/local-config"
 		   )))
-
  
   (defun ld (filename &key (verbose t)(print nil))
+    "Loads CYCO source file."
     (let ((temp *load-print*))
       (setf current filename)
       (if verbose
@@ -124,25 +121,26 @@
   (defun build-cyco (&key (verbose t)(print nil))
     "Reloads all CYCO source files."
     (dolist (file manifest)
+      (if (eq file :stop)
+	  (return-from build-cyco))
       (ld file :verbose verbose :print print))) )
   
 (build-cyco)
 
-;; #| *** ISSUE: Uncomment in production 
+#| *** ISSUE: Uncomment in production 
 (let ((lit (lisp-implementation-type)))
   (cond
-   ;;((equalp lit "Armed Bear Common Lisp")
-    ;;(ld "src/cyco-abcl"))
    ((equalp lit "SBCL")
     (ld "src/sbcl"))
    (t
     (format t "WARNING: ~A is an unsupoted Lisp.  Using  SBCL instead.~%" lit)
     (ld "src/sbcl"))))
-;; *** |#
+*** |#
 
 (in-package :common-lisp-user)
 
 (defun cyco ()
+  "Switch to CYCO namespace"
   (in-package :cyco)
   (cyco::set-cyco-prompt)
   (cyco::cyco-banner)

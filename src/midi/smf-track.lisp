@@ -25,8 +25,8 @@
 	  (clone (slot-value trk 'events)))
     other))
 
-(defmethod push-event ((time number)(event midi-event)(trk smf-track))
-  (push (cons time event)(slot-value trk 'events)))
+(defmethod push-event ((time number)(msg midi-message)(trk smf-track))
+  (push (cons (float time) msg)(slot-value trk 'events)))
 
 (flet ((track-name-test (trk)
 			(if (not (some #'(lambda (q)
@@ -37,9 +37,9 @@
        
        (track-tempo-test (trk)
 			 (if (not (some #'(lambda (q)
-					    (midi-tempo-event-p (cdr q)))
+					    (midi-tempo-message-p (cdr q)))
 					(slot-value trk 'events)))
-			     (push-event 0 (midi-tempo-event 60.0) trk))
+			     (push-event 0 (midi-tempo-message 60.0) trk))
 			 nil)
        
        (track-timesig-test (trk)
@@ -88,7 +88,7 @@
 	(if render
 	    (progn 
 	      (format t "MIDI[ ")
-	      (dolist (b (render-midi-event ev))
+	      (dolist (b (render-midi-message ev))
 		(format t "~2X " b))
 	      (format t "]")))
 	(format t "~%")))
@@ -99,7 +99,7 @@
   (if (every #'(lambda (q)
 		 (and (consp q)
 		      (numberp (car q))
-		      (midi-event-p (cdr q))))
+		      (midi-message-p (cdr q))))
 	     lst)
       (let ((acc (sort lst #'(lambda (a b)
 			       (let ((ta (car a))
@@ -120,7 +120,7 @@
 		  (if render
 		      (progn 
 			(format t "MIDI[ ")
-			(dolist (b (render-midi-event ev))
+			(dolist (b (render-midi-message ev))
 			  (format t "~2X " b))
 			(format t "]")))
 		  (format t "~%")))))
@@ -147,13 +147,13 @@
 				 (ticks (truncate (/ delta tickdur))))
 			    (cond ((midi-time-signature-p event)
 				   (setf beat-unit (timesig-unit event)))
-				  ((midi-tempo-event-p event)
+				  ((midi-tempo-message-p event)
 				   (setf tickdur (tick-duration 
 						  (slot-value event 'tempo) 
 						  :unit beat-unit)))
 				  (t nil))
 			    (push (int->midi-vlv ticks) acc)
-			    (push (render-midi-event event) acc)))
+			    (push (render-midi-message event) acc)))
 			(flatten (reverse acc)))))
   
   ;; Renders track chunk, including ID, data-count and data.

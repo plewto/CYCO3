@@ -1,11 +1,7 @@
-# Java clas files
-out/*
-
-# Intellij files
-.idea/workspace.xml
-
 # Temp emacs files
 *backup*
 *~
 [#]*[#]
 .\#*
+
+current-project-name

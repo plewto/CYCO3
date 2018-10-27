@@ -65,6 +65,7 @@
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"
+		   "src/patterns/slew"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi"
@@ -101,7 +102,7 @@
 		   "src/composition/parts/metronome"
 		   "src/composition/countin"
 		   "src/composition/endpad"
-		   "src/inspection"
+		   "src/util/inspection"
 		   "src/local-config"
 		   )))
 

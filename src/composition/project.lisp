@@ -47,6 +47,34 @@
 
 (defmethod project-p ((p project)) t)
 
+
+(global *persistent--project-name-namestring* "current-project-name")
+
+(defun save-persistent-project-name (name)
+  (let* ((filename (join-path *cyco-config-directory*
+			      *persistent--project-name-namestring*
+			      :as-file))
+	 (stream (open filename
+		       :direction :output
+		       :if-does-not-exist :create
+		       :if-exists :overwrite)))
+    (format stream (->string name))
+    (close stream)))
+
+
+(defun read-persistent-project-name ()
+  (let* ((filename (join-path *cyco-config-directory*
+			      *persistent--project-name-namestring*
+			      :as-file))
+	 (stream (if (probe-file filename)
+		     (open filename
+			   :direction :input))))
+    (if stream
+	(prog1
+	    (read-line stream)
+	  (close stream))
+      nil))) 
+
 (defun make-project (name &key
 			  title
 			  (catalog-number "")
@@ -62,6 +90,7 @@
 			  (remarks "")
 			  (make-current t))
   (banner1 (sformat "Project ~A" name))
+  (save-persistent-project-name name)
   (let ((proj (make-instance 'project
 			     :name (->symbol name)
 			     :remarks (->string remarks)
@@ -180,31 +209,40 @@
 (let ((current-project-main-file nil)
       (current-filename nil)
       (frmt "Loading project file ~A~%"))
+
+  (defun default-project-name (name)
+    (string-downcase
+     (->string (or name
+		   (and (project-p *project*)(name *project*))
+		   (read-persistent-project-name)))))
   
   (defun load-project (name &key
 			    (project-directory *default-project-directory*)
 			    (main-file *default-project-main-file*))
-    (let ((pname (cond ((symbolp name)
-			(string-downcase (->string name)))
-		       ((stringp name)
-			name)
-		       (t (cyco-type-error 'load-project '(string symbol) name)))))
+    (let ((pname (default-project-name name)))
       (if pname
 	  (let ((fqn (join-path project-directory pname main-file :as-file)))
 	    (setf current-project-main-file fqn)
 	    (format t frmt fqn)
-	    (load fqn)))))
+	    (load fqn))
+	(cyco-composition-error
+	 'load-project
+	 "Either there is no default project name,"
+	 (sformat "or name argument is invalid: ~A ~A" (type-of name) name)))))
+
+  ;; (defun lp (&optional name)
+  ;;   (if name
+  ;; 	(load-project name)
+  ;;     (if current-project-main-file
+  ;; 	  (progn 
+  ;; 	    (format t frmt current-project-main-file)
+  ;; 	    (load current-project-main-file))
+  ;; 	(cyco-composition-error 'lp
+  ;; 				"No default project"
+  ;; 				"Try loading or creating project first."))))
 
   (defun lp (&optional name)
-    (if name
-	(load-project name)
-      (if current-project-main-file
-	  (progn 
-	    (format t frmt current-project-main-file)
-	    (load current-project-main-file))
-	(cyco-composition-error 'lp
-				"No default project"
-				"Try loading or creating project first."))))
+    (load-project name))
   
   (defun load-project-file (name)
     (let ((sname (cond ((symbolp name)

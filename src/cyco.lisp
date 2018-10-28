@@ -48,7 +48,6 @@
        ;; Include keyword :stop to prevent remaining files being loaded.
        (manifest '("src/constants"
 		   "src/globals"
-		   ;; "src/generics"  ;; DEPRECIATED
 		   "src/api"
 		   "src/util/string-utilities"
 		   "src/util/banner"
@@ -59,7 +58,6 @@
 		   "src/keynumbers"
 		   "src/dynamics"
 		   "src/metrics"
-		   ;; "src/patterns/pattern-generics" ;; DEPRECIATED
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
@@ -68,7 +66,6 @@
 		   "src/patterns/dice"
 		   "src/patterns/instrument-layer"
 		   "src/node"
-		   ;; "src/midi/midi" ;; DEPRECIATED 
 		   "src/midi/midi-util"
 		   "src/midi/midi-message"
 		   "src/midi/syscommon"

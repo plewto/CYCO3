@@ -16,13 +16,10 @@
   (strum-direction (line :of :down)) ; pattern {:down :up :dice :random}
   (strum-amp-scale 1.0)	             ; float > 0
   (strum-end-together t)             ; bool
-
   (grace-key nil)		     ; Grace notes
   (grace-delay 0.0)
   (grace-amp-scale 1.0)
   (grace-articulation 1.0)
-  
-  
   (articulation 0.0)	             ; float (note duration)
   (dynamic (cycle :of '(0.5)))
   (dynamic-blur 0.0)
@@ -57,11 +54,9 @@
   (setf (epart-state-strum-direction state) (line :of :down))
   (setf (epart-state-strum-amp-scale state) 1.0)
   (setf (epart-state-strum-end-together state) t)
-
   (setf (epart-state-grace-delay state) 0.0)
   (setf (epart-state-grace-amp-scale state) 1.0)
   (setf (epart-state-grace-articulation state) 1.0)
-  
   (setf (epart-state-articulation state) nil)
   (setf (epart-state-controller-number state) nil)
   (setf (epart-state-dynamic state) (line :of '(0.5)))

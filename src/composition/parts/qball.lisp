@@ -1,4 +1,5 @@
 ;;;; CYCO3 src/composition/parts/qball
+;;;;
 ;;;; A QBall is a recombinative note generator.
 ;;;; The user specifies instrument, time, key-number, duration and
 ;;;; dynamic patterns.  These are recombined according to their
@@ -156,7 +157,7 @@ used."
   		      amp
   		      reset-on-repeat
   		      remarks)
-  "Same as make-qball except the new qball object is bound to a symbol 
+  "Same as make-qball except the new qball object is bound to symbol 
 named name."
   `(progn
      (part-banner (name ,section) ',name)

@@ -8,9 +8,13 @@
 			       +section-properties+
 			       '(:shift :render-once)))
 
-(defclass endpad (section) nil)
+(defclass endpad (section) nil
+  (:documentation
+   "ENDPAD is a specialized type of Section used to extend the end time of a
+project."))
 
 (defun make-endpad (&key (project *project*)(bars 2) beats )
+  "Creates ENDPAD section"
   (setf project (or project *project*))
   (if (not (project-p project))
       (cyco-value-error 'endpad project
@@ -33,6 +37,7 @@
       epad)))
 
 (defmacro endpad (&key project bars beats)
+  "Same as make-endpad except binds result to symbol named name."
   `(progn
        (banner2 "EndPad")
        (let ((epad (make-endpad :project ,project :bars ,bars :beats ,beats)))
@@ -53,7 +58,3 @@
 
 (defmethod render-n ((epad endpad)(n integer) &key (offset))
   (render-once epad :offset offset))
-
-
-  
-

@@ -1,5 +1,5 @@
 ;;;; CYCO3 src/composition/parts/part
-
+;;;;
 
 (constant +part-properties+
 	  (append +time-signature-properties+
@@ -11,7 +11,18 @@
 		    :reversible
 		    :group)))
 		    
-(defclass part (time-signature) nil)
+(defclass part (time-signature) nil
+  (:documentation
+   "Parts form the lowest element of a project,  they are where the bulk 
+of a composition is defined.   Parts take combine one or more instruments
+together with instructions on what they are to perform.  The parent of 
+a Part is always a Section, and a Part may have child nodes as sub-parts.
+
+Parts inherit time-signature and other properties from their parent section
+but may override them if required.
+
+The Part class is the base class for several other part types.  It is not
+used directly."))
 
 (defmethod part-p ((obj part)) t)
 
@@ -56,7 +67,7 @@
 ;;    2) A list of instruments
 ;;    3) A single instrument object.
 ;;    Patterns are returned directly
-;;    List and single instruments are convertd to Instrument-Layer objects.
+;;    List and single instruments are converted to Instrument-Layer objects.
 ;;
 (flet ((validate
 	(ilist)

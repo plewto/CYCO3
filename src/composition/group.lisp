@@ -30,12 +30,18 @@
     :type list ;; list of parts
     :accessor group-members
     :initform '()
-    :initarg :members)))
+    :initarg :members))
+  (:documentation
+   "A Group is an auxiliary object used in the context of a Section to 
+combine related parts.  Members of a group may be muted or soloed in
+tandem."))
+
 
 (defmethod group-p ((obj null)) nil)
 (defmethod group-p ((grp group)) t)
 
 (defmethod mute ((grp group) &optional state)
+  "Change mute state of all group members."
   (cond ((eq state :mute)
 	 (setf (mute-state grp) :mute)
 	 (dolist (prt (group-members grp))
@@ -79,6 +85,11 @@
 		     acc)) )
 
   (defun make-group (name &key member-names section)
+    "Creates new instance of Group.  
+name - symbol
+:member-names - list of symbols.  Each symbol must be the name of a Part 
+within in the section.
+:section - Parent section, defaults to current section of *project*."
     (let ((sec (or section (and (project-p *project*)
 				(property *project* :current-section)))))
       (if (not sec)
@@ -96,6 +107,7 @@
 	  grp))))
 
   (defmacro group (name member-names)
+    "Same as make-group except binds the new group to the symbol name."
    `(let ((grp (make-group ',name :member-names ,member-names)))
       (defparameter ,name grp)
       grp)) )

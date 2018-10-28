@@ -12,13 +12,15 @@
     :type list
     :accessor event-list
     :initform '()
-    :initarg :events)))
-	  
-	  
-;; Events: nested list  ((time . midi-message)
-;;                       (time . midi-message) ...)		
-;;
+    :initarg :events))
+  (:documentation
+   "A RAW-PART is a primitive type of PART where each MIDI event is 
+explicitly specified.  Typically you'll want to use some other part 
+type.  Raw-parts are intended as a fallback where some odd combination
+of MIDI events not addressed by the other part types is required.
 
+Raw-parts can not have sub-parts."))
+	  
 (labels ((validate-event
 	  (event)
 	  (and (consp event)
@@ -43,7 +45,30 @@
 			     beats
 			     render-once
 			     (transposable t)
-			     section (remarks ""))
+			     section
+			     (remarks ""))
+    "Creates new instance of RAW-PART named name.
+:events - event list, see below for format.
+:bars - number of bars per phrase, defaults to parent section value.
+:beats - number of beats per bar, defaults to parent section value.
+:render-once - bool, if true the part events are rendered only once
+when the section is rendered.  For example if the section has length of 4 bars
+and the part has a length of 2, the part is repeated twice unless render-once
+is true.   Default nil.
+:transposable - bool, if nil the part is immune to transpose and invert 
+operations.
+:section - parent section, defaults to current section of *project*
+:remarks - optional remarks text.
+
+Raw-part events are specified as a nested list of MIDI events.
+  
+   ((time-1 . midi-message-1)
+    (time-2 . midi-message-2)
+     .......................
+    (time-n . midi-message-n))
+
+The time values are offsets in seconds from the start of the part, they are not
+subject to the Section cueing function."
     (let ((sec (or section
   		   (and (project-p *project*)
   			(property *project* :current-section)))))
@@ -51,7 +76,7 @@
 	  (cyco-composition-error
 	   'make-raw-part
 	   (sformat "part name : ~A" name)
-	   "No currne tSection")
+	   "No current Section")
   	(let ((part (make-instance 'raw-part
 				   :name name
 				   :properties +raw-part-properties+
@@ -77,6 +102,7 @@
 			 (transposable t)
 			 section
 			 remarks)
+  "Same as make-raw-part except binds the part to a symbol named name."
   `(progn
      (part-banner (name ,section) ',name)
      (let ((prt (make-raw-part ',name
@@ -109,7 +135,6 @@
   (let ((acc '()))
     (if (not (muted-p part))
 	(progn 
-	  ;; intermediate form  nested list: ((time . midi-message) ...)
 	  (dolist (event (event-list part))
 	    (push (cons (+ offset (car event)) (cdr event)) acc))
 	  (setf acc (sort acc #'(lambda (a b)
@@ -141,5 +166,3 @@
    child
    (sformat "Attempt to connect NODE ~A to leaf node ~A"
 	    (name child)(name parent))))
-	    
-

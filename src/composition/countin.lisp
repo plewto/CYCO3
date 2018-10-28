@@ -1,6 +1,7 @@
 ;;;; CYCO3 src/composition/countin
 ;;;;
-;;;; Countin provides MIDI initialization and metronome count-in.
+;;;; Coutin is a specialized Section for MIDI initialization and
+;;;; metronome count-in.
 ;;;;
 
 (constant +countin-properties+
@@ -16,6 +17,13 @@
 		     instruments
 		     (metronome t)
 		     remarks)
+  "Creates Coutin section.
+name - Symbol, defaults to 'countin
+:project - defaults to *project*
+:tempo, :unit, :bars, :beats, :subbeats - Sets metronome time-signature
+:instruments - list of instruments ISSUE: What do these instruments do?
+:metronome - bool, if t generate metronome events.              
+:remarks - optional remarks text."
   (if (not (project-p project))
       (cyco-value-error 'make-countin project
 			"project = nil"
@@ -47,6 +55,7 @@
 		     instruments
 		     (metronome t)
 		     remarks)
+  "Same as make-countin bu binds result to symbol named name."
   `(progn
      (banner2 "Countin")
      (let* ((cntin (make-countin :project ,project
@@ -73,5 +82,3 @@
 			    :subbeats (property src :subbeats)
 			    :instruments (property src :instruments))))
     dst))
-			    
-

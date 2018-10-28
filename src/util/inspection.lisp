@@ -1,22 +1,30 @@
 ;;;; CYCO3 src/inspection
 ;;;;
 
-(defun ?d (sym)(describe sym))
-(defun ?a (sym)(apropos sym))
+(defun ?d (sym)
+  "A shortcut abbreviation for describe"
+  (describe sym))
+  
+(defun ?a (sym)
+  "A shortcut abbreviation for apropos"
+  (apropos sym))
 
 (defmethod ? ((n integer))
   (format t "INTEGER~%"))
 
 (defun ?tree (&optional (what 'o))
+  "Displays tree structure.
+Optional what argument indicates which tree to display
+'o - show orchestra tree starting with +root-instrument+
+'p - show project tree using *project*"
   (let ((options '(o p)))
     (cond ((eq what 'p)   			; project
 	   (if (project-p *project*)
 	       (print-tree *project*)
 	     (format t "There is no current project.~%")))
-	  ((eq what 'o)			        ; orchesgtra
+	  ((eq what 'o)			        ; orchestra
 	   (print-tree +root-instrument+))
 	  (t "Expected optional argument on of ~A~%" options))))
-	
 
 (let ((ary (->vector (copies 16 '()))))
   (labels ((walk (inst)
@@ -27,6 +35,7 @@
 		   (dolist (c (children inst))
 		     (walk c)))))
     (defun ?channels ()
+      "Displays list of instruments on each MIDI channel."
       (setf ary (->vector (copies 16 '())))
       (walk +root-instrument+)
       (dotimes (i (length ary))
@@ -34,7 +43,3 @@
 	      (ilst (aref ary i)))
 	  (dolist (iname ilst)
 	    (format t "[~2D] ~A~%" chan iname)))))))
-		       
-  
-  
-

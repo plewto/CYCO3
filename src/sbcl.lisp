@@ -1,4 +1,5 @@
-
+;;;; Steel Banks Common Lisp specific
+;;;;
 
 (format t "Using SBCL options~%")
 
@@ -12,6 +13,7 @@
 	      (format s "~%CYCO: ")))))
 
 (defun save-snapshot (filename)
+  "Save snapshot of CYCO as an executable."
   (let ((fname (resolve-user-home filename)))
     (format t "Creating CYCO executable, ~S~%" fname)
     (setf sb-int:*REPL-PROMPT-FUN* #'(lambda (s)(format s "~%* ")))

@@ -1,62 +1,72 @@
 ;;;; CYCO3 src/composition/parts/cpart
-;;;;
-;;;; A CPart generates MIDI bend, channel-pressure and controller signals.
-;;;; Single-point or control curves may be produced.
-;;;; CParts do not directly have instruments or mute status, instead they 
-;;;; depend on their parent node to provide these parameters.
-;;;;
-;;;; :time t1 t2
-;;;;    Sets time range, arguments t1 and t2 must be in format required by
-;;;;    the part's cue-function.
-;;;;    The special value of '= for either argument uses the current value.
-;;;;
-;;;; :to tnew
-;;;;     Like :time but takes the current t2 value as the initial time
-;;;;     :to is a shorthand for :time t2 tnew.
-;;;;
-;;;; :steps n
-;;;;    Number of events generated between times 1 and 2, default 16
-;;;;    The actual event count is steps times number of instruments.
-;;;;
-;;;; :value v1 v2
-;;;;   Sets curve value range (time1, v1), (time2, v2)
-;;;;   The special value of = for either argument uses the current value.
-;;;;   Values are expected to be normalized for MIDI controller and pressure
-;;;;   evens, and signed-normalized for bend events.
-;;;;
-;;;; :type t
-;;;;    Sets event type
-;;;;       integer --> MIDI controller event, 0 <= n < 128.
-;;;;       'touch  --> MIDI channel-pressure
-;;;;       'bend   --> MIDI pitch-bend
-;;;;
-;;;; :curve c [param]
-;;;;   Selects the curve type, the meaning of the optional param argument
-;;;;   is dependent on the curve type.
-;;;;   'point   - Creates a single event at (time2, value1), param not used.
-;;;;   'line    - Generates line between points (time1,value1) and
-;;;;              (time2,value2).  Param sets exponential degree, 0 < param.
-;;;;   'saw     - Generates Sawtooth waves between (time1,value1) and
-;;;;              (time2,value2), slope is inverted for value1>value2.
-;;;;              param argument sets number of sawtooth cycles.
-;;;;   'tri     - Generates triangle waves, param -> cycle count.
-;;;;   'sin     - Generates sine waves, param -> cycle count.
-;;;;   'cos     - Identical to sin except phase-shifted 90 degrees.
-;;;;   'sin2    - Generates sin(x)+(1/2)*sin(2x) wave, param -> cycle count.
-;;;;   'cos2    - Identical to sin2 but phase shifted 90 degrees.
-;;;;   'lin+cos - Generates curve that is the sum of a line and a cosine
-;;;;              waves.  The cosine amplitude is fixed. param -> cycle count.
-;;;;   'random  - Generates random values between times t1 and t2, with
-;;;;              values between v1 and v2.  param is not used.
-;;;;
-;;;; :blur b
-;;;;    Blurring ratio, 0 <= b <= 1, See approximate function.
-;;;;
-;;;; :TRACE off
-;;;; :TRACE events
-;;;; :TRACE states
-;;;; :TRACE all     
-;;;;     Selects debug trace modes.
+
+(constant +cpart-documentation+
+" Creates new CPART instance.
+
+ A CPart generates MIDI bend, channel-pressure and controller signals.
+ Single-point or control curves may be produced.
+ CParts do not directly have instruments or mute status, instead they 
+ depend on their parent node to provide these parameters.  
+
+ name         - Symbol
+ parent       - Parent node, most likely another part.
+ :render-once - flag
+ :remarks     - String 
+ :events      - see below
+
+
+ :time t1 t2
+    Sets time range, arguments t1 and t2 must be in format required by
+    the part's cue-function.
+    The special value of '= for either argument uses the current value.
+
+ :to tnew
+     Like :time but takes the current t2 value as the initial time
+     :to is a shorthand for :time t2 tnew.
+
+ :steps n
+    Number of events generated between times 1 and 2, default 16
+    The actual event count is steps times number of instruments.
+
+ :value v1 v2
+   Sets curve value range (time1, v1), (time2, v2)
+   The special value of = for either argument uses the current value.
+   Values are expected to be normalized for MIDI controller and pressure
+   evens, and signed-normalized for bend events.
+
+ :type t
+    Sets event type
+       integer --> MIDI controller event, 0 <= n < 128.
+       'touch  --> MIDI channel-pressure
+       'bend   --> MIDI pitch-bend
+
+ :curve c [param]
+   Selects the curve type, the meaning of the optional param argument
+   is dependent on the curve type.
+   'point   - Creates a single event at (time2, value1), param not used.
+   'line    - Generates line between points (time1,value1) and
+              (time2,value2).  Param sets exponential degree, 0 < param.
+   'saw     - Generates Sawtooth waves between (time1,value1) and
+              (time2,value2), slope is inverted for value1>value2.
+              param argument sets number of sawtooth cycles.
+   'tri     - Generates triangle waves, param -> cycle count.
+   'sin     - Generates sine waves, param -> cycle count.
+   'cos     - Identical to sin except phase-shifted 90 degrees.
+   'sin2    - Generates sin(x)+(1/2)*sin(2x) wave, param -> cycle count.
+   'cos2    - Identical to sin2 but phase shifted 90 degrees.
+   'lin+cos - Generates curve that is the sum of a line and a cosine
+              waves.  The cosine amplitude is fixed. param -> cycle count.
+   'random  - Generates random values between times t1 and t2, with
+              values between v1 and v2.  param is not used.
+
+ :blur b
+    Blurring ratio, 0 <= b <= 1, See approximate function.
+
+ :TRACE off
+ :TRACE events
+ :TRACE states
+ :TRACE all     
+     Selects debug trace modes.")
 
 (defstruct cpart-state
   (source "")
@@ -343,34 +353,7 @@
 			  render-once
 			  remarks
 			  events)
-    "Creates new CPART instance.
-name     - Symbol
-parent   - Parent node, most likely another part.
-:render-once - 
-:remarks - String 
-:events  - List of event specification.
-              :trace off|events|states|all
-              :break
-              :stop
-              :reset
-              :time start stop
-              :to new-stop-time
-              :steps n
-              :value v1 v2, normalized for MIDI controller and touch events,
-                            signed-normal for bend events.
-              :type n|touch|bend  0 <= n < 128.
-              :curve c [param]
-                  point, param not used
-                  line [degree, 1=linear, 2=quadratic...]
-                  saw [cycles]
-                  tri [cycles]
-                  sin [cycles]
-                  cos [cycles]
-                  sin2 [cycles]
-                  cos2 [cycles]
-                  lin+cos [cycles]
-                  random, param not used.
-:blur   - r, blurring ratio  0.0 <= r <= 1"
+ 
     (let* ((cpart (make-instance 'cpart
 				 :name name
 				 :remarks (->string (or remarks ""))
@@ -384,7 +367,9 @@ parent   - Parent node, most likely another part.
       (setf (cpart-events cpart)
       	    (reverse (process-events cpart (->list events))))
       cpart)) )
-  
+
+(setf (documentation 'make-cpart 'function) +cpart-documentation+)
+
 (defmacro cpart (name parent &key render-once remarks events)
   "Identical to make-cpart but binds part object to symbol name."
   `(progn
@@ -405,6 +390,3 @@ parent   - Parent node, most likely another part.
       (push (clone q) acc))
     (setf (cpart-events prt)(reverse acc))
     prt))
-     
-			  
-

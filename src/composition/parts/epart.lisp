@@ -738,62 +738,6 @@
 			  chord-model
 			  remarks
 			  events)
-    "Creates new EPART instance.
-name          - Symbol, part name
-instruments   - Instrument, list or Pattern of Instruments.
-                Individual Instrument or list of Instruments are converted 
-                to an instrument-layer and are used in parallel.  Other 
-                Pattern types are possible but they should not be nested.
-                Patterns apply only to key events, touch, controller, bend
-                and program events apply to all instruments.
-:section      - Parent section, defaults to current-section of *project*
-:cuefn        - Cueing-function, default #'bar
-:shift        - Offset time for initial event.  The format of shift is
-                dependent on cuefn.  When rendering and Epart within a
-                section, the first iteration is offset by shift amount.
-                Defaults to 0.0.
-:render-once  - Flag, if true, render-n only renders events one time. 
-:transposable - Flag, if true this part may be transposed and inverted.
-:chord-model  - Establish chord-model, defaults to chord-model of 
-                parent section.
-:remarks      - String, remarks text.
-:events       - List of event specifications
-                     :trace off|events|states|all
-                     :break
-                     :stop
-                     :reset
-                     :time arguments to cuefn
-                     :key k
-                     :chord name|template-list
-                     :inversion degree
-                     :octave n
-                     :strum delay
-                     :strum* scale
-                     :direction strum-direction  up|down|dice|random
-                          list of directions are converted to Cycle pattern.
-                     :amp* scale
-                     :end-together bool
-                     :dur metric-expression
-                     :amp dynamic
-                         list of dynamics are converted to Cycle pattern.
-                     :cres start end count
-                         Converted to Line pattern of dynamic values.
-                     :amp-blur percent
-                     :amp-range min max
-                     :touch n     0 <= n <= 1
-                     :bend n     -1 <= n <= +1 
-                     :ctrl n     MIDI controller number
-                     :cc n       0 <= n <= 1. controller value
-                     :program p  simple program change
-                     :bank b p   program and bank change
-                                 A value of 'default' for either program or 
-                                 bank instructs each instrument to generate 
-                                 their default program/bank values.
-:tempo    - Time signature tempo, defaults to parent's value.
-:unit     - Time signature unit, defaults to parent's value.
-:bars     - Time signature bars, defaults to parent's value.
-:beats    - Time signature beats, defaults to parent's value.
-:subbeats - Time signature subbeats, defaults to parent's value. "
     (let* ((parent (or (validate-section name section)
 		       (return-from make-epart nil))))
       (let* ((instrument-pattern (or (validate-instruments name instruments)
@@ -823,6 +767,8 @@ instruments   - Instrument, list or Pattern of Instruments.
 	epart)))
   ) ;; end labels
 
+(setf (documentation 'make-epart 'function) +epart-documentation+)
+
 (defmacro epart (name instruments &key 
 		      section
 		      shift
@@ -834,8 +780,7 @@ instruments   - Instrument, list or Pattern of Instruments.
 		      chord-model
 		      remarks
 		      events)
-  "Creates new epart and assigns to symbol name.
-See make-epart for more details."
+ "Same as epart except binds the part to a symbol named name."
   `(progn
      (part-banner (name ,section) ',name)
      (let ((ep (make-epart ',name ,instruments
@@ -899,8 +844,6 @@ See make-epart for more details."
     (dolist (c (children src))
       (clone c :new-name new-name :new-parent prt))
     prt))
-      
-
 
 (defmethod dump-epart-events ((epart epart))
   (format t "Section.EPart  ~A.~A~%" (name (parent epart))(name epart))

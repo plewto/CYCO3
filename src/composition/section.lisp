@@ -1,8 +1,5 @@
 ;;;; CYCO3 src/composition/section
 ;;;;
-;;;;
-;;;; properties
-;;;;    groups
 
 (constant +section-properties+
 	  (append +time-signature-properties+
@@ -13,7 +10,15 @@
 		    :reversible
 		    :transposable)))
 
-(defclass section (time-signature) nil)
+(defclass section (time-signature) nil
+  (:Documentation
+   "A Section represents a major division of a composition, such as verse, 
+chorus, etc...  The parent of a Section is always a Project and it's 
+child nodes are always some type of Part.   A section inherits the default
+time-signature from the project but may override any of the time-signature
+parameters: tempo, unit, bars, beats, sub-beats and cueing-function.  
+Sections also inherit a chord-model from the project but may override it 
+with one another model."))
 
 (defmethod section-p ((s section)) t)
 
@@ -47,6 +52,19 @@
 			  (transposable t)
 			  (reversible t)
 			  (remarks ""))
+  "Creates new Section named name.
+:project - Parent project, defaults to *project*
+:cuefn - Cueing function, defaults project's value.
+:tempo - tempo in BPM, defaults to project's value.
+:unit - time signature beat unit, defaults to project's value.
+:bars - time signature bars per phrase, defaults to project's value.
+:beats - time signature beats per bar, defaults to project's value.
+:subbeats - time signature subbeats per beat, defaults to project's value.
+:transposable - bool, if nil this Section is immune to transpose and 
+and invert operations, default t.
+:reservable - bool, if nil this Section is immune to retrograde 
+operations, default t.
+:remarks - Optional remarks text."
   (if (not (project-p project))
       (cyco-value-error 'make-section project
 			"project = nil"
@@ -83,6 +101,7 @@
 			(reversible t)
 			(transposable t)
 			(remarks ""))
+  "Same as make-section except binds the new section to a symbol named name."
   `(progn
      (banner2 (sformat "Section ~A" ',name))
      (if (not (symbolp ',name))
@@ -226,6 +245,16 @@
   (dump-events (render-once s) :range range :filter filter :render render))
   
 (defun section-filename (&key section fname)
+  "Creates MIDI filename used to save section.  
+Using the defaults with a project name 'foo and section name 'alpha
+the filename is <user-home>/cyco-projects/foo/MIDI/alpha.mid
+
+:section - sets an explicit section, defaults to the current section 
+of *project*
+:fname - sets an alternate filename.  If fname is an absolute position 
+the it is used directly, otherwise the value of fname replaces the 
+section name in the example above.   In all cases a .mid extension
+is appended to the name if needed."
   (if (absolute-path-p fname)
       (return-from section-filename fname))
   (let* ((sec (or (and (section-p section) section)
@@ -248,6 +277,7 @@
 		  (offset 0.0)
 		  (repeat 1)
 		  (pad 2.0))
+  "Write section contents to Standard MIDI file."
   (let* ((fname (section-filename :section s :fname filename))
 	 (events (render-n s repeat :offset offset))
 	 (track (make-instance 'smf-track :events events))
@@ -255,7 +285,3 @@
     (setf (aref (smf-tracks smf) 0) track)
     (write-smf smf fname :pad pad)
     smf))
-    
-	 
-  
-

@@ -87,12 +87,12 @@
 		   "src/chords/default-chords"
 		   "src/composition/time-signature"
 		   "src/composition/cueing-functions"
-
 		   "src/composition/project"
 		   "src/composition/group"
 		   "src/composition/section"
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
+		   "src/composition/parts/epart-docs"
 		   "src/composition/parts/epart-state"
 		   "src/composition/parts/epart"
 		   "src/composition/parts/epart-render"
@@ -104,8 +104,7 @@
 		   "src/composition/countin"
 		   "src/composition/endpad"
 		   "src/util/inspection"
-		   "src/local-config"
-		   )))
+		   "src/local-config" )))
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."
@@ -131,15 +130,15 @@
   
 (build-cyco)
 
-;; #| *** ISSUE: Uncomment in production 
+;; Customize for specific Lisp implementations
 (let ((lit (lisp-implementation-type)))
   (cond
    ((equalp lit "SBCL")
     (ld "src/sbcl"))
    (t
-    (format t "WARNING: ~A is an unsupoted Lisp.  Using  SBCL instead.~%" lit)
+    (format t "WARNING: ~A is an unsupoted Lisp.  Using SBCL instead.~%" lit)
     (ld "src/sbcl"))))
-;; *** |#
+
 
 (in-package :common-lisp-user)
 

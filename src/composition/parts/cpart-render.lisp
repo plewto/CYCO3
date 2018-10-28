@@ -32,7 +32,7 @@
 	      (push (cons time (midi-channel-pressure ci data)) bcc))
 	    bcc))
 
-	 ;; For each channel-index,generates a single MIDI controller,
+	 ;; For each channel-index, generates a single MIDI controller,
 	 ;; channel-pressure or bend event at time2.
 	 ;; Returns nested list. 
 	 (create-point

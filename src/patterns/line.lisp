@@ -6,8 +6,6 @@
    "A LINE is a PATTERN which continues to return its final value
 once all previous valuers have been returned."))
 
-(defmethod line-p ((obj t)) nil)
-
 (defmethod line-p ((obj line)) obj)
 
 (defun line (&key (of '()))

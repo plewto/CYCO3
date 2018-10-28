@@ -45,8 +45,6 @@
 	    (setf (gethash 'R acc) (float -1))
 	    acc))
 
-(defmethod metric-p ((obj t)) nil)
-
 (defmethod metric-p ((n number))
   (bool (float (max -1 n))))
 

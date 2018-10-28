@@ -2,34 +2,6 @@
 ;;;;
 ;;;; NOTE: Child node of an Insrtument must also be an Instrument.
 
-(defgeneric instrument-p (obj))
-(defgeneric program-number! (inst pnumber))
-(defgeneric program-bank! (inst pbank))
-
-
-;; Returns list of events
-;;   ((time-1 . event-1)
-;;    (time-2 . event-2)
-;;     .................)
-
-(defgeneric program-change-events (inst time &key bank program))
-
-
-(defgeneric keynumber-map! (inst mapfn))
-(defgeneric keynumber-map (inst))
-(defgeneric dynamic-map! (inst mapfn))
-(defgeneric dynamic-map (inst))
-(defgeneric articulation-map! (inst mapfn))
-(defgeneric articulation-map (inst))
-(defgeneric channel! (inst channel))
-
-;; Low level function
-;; key, duration, dynamic arguments shoukld be numeric
-;; Returns list of events
-;;   ((time-1 . note-on)
-;;    (time-2 . note-off))
-;;
-(defgeneric note-events (inst time keynum duration dynamic &key time-scale))
 
 
 (constant +instrument-properties+
@@ -38,8 +10,6 @@
 			 :channel :channel-index))
 
 (defclass instrument (cyco-node) nil)
-
-(defmethod instrument-p ((obj t)) nil)
 
 (defmethod instrument-p ((inst instrument)) t)
 

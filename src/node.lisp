@@ -22,21 +22,6 @@
 ;;;;    +-- instrument
 ;;;;
 
-(defgeneric root-p (obj))
-(defgeneric child-of-p (parent child))
-(defgeneric path-to-root (obj))
-(defgeneric disconnect (child))
-(defgeneric connect (parent child))
-(defgeneric prune (node &optional force))
-(defgeneric hah-property-p (node key))
-(defgeneric put (obj key value))
-(defgeneric property* (obj key))  ;; private - no key validity test
-(defgeneric property (obj key))
-(defgeneric properties (obj &optional acc))
-(defgeneric local-properties (obj))
-(defgeneric print-tree (node &optional depth))
-(defgeneric find-child (parent child))   ;; nil -> child not found
-
 (defclass cyco-node ()
   ((name
     :type symbol
@@ -116,18 +101,18 @@
 	  (disconnect c)
 	  (prune c)))))
 
-(defmethod hah-property-p ((n null)(key symbol)) nil)
+(defmethod has-property-p ((n null)(key symbol)) nil)
 
-(defmethod hah-property-p ((node cyco-node)(key symbol))
+(defmethod has-property-p ((node cyco-node)(key symbol))
   (bool (or (member key (property-keys node))
-	    (hah-property-p (parent node) key))))
+	    (has-property-p (parent node) key))))
 
 (defmethod put ((node cyco-node)(key t)(_ t))
   (dismiss _)
   (cyco-type-error 'put 'symbol key))
 
 (flet ((assert-valid-property (node key)
-	(if (hah-property-p node key)
+	(if (has-property-p node key)
 	    t
 	  (progn 
 	    ;;(cyco-property-error node key)

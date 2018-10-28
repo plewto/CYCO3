@@ -1,11 +1,6 @@
 ;;;; CYCO3 src/midi/smf-track
 ;;;;
 
-
-(defgeneric push-event (time event obj)
-  (:documentation
-   "Push event to end of object's events list"))
-
 (defclass smf-track nil
   ((track-name
     :type string

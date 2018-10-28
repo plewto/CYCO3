@@ -7,8 +7,6 @@
 cyclical manner.  Once all elements have been extracted the
 cycle repeats."))
 
-(defmethod cycle-p ((obj t)) nil)
-
 (defmethod cycle-p ((obj cycle)) obj)
 
 (defun cycle (&key (of '()))

@@ -24,8 +24,6 @@
   (dismiss _)
   (next-1 q))
 		 
-(defgeneric instrument-layer-p (obj))
-(defmethod instrument-layer-p ((obj t)) nil)
 (defmethod instrument-layer-p ((obj instrument-layer)) t)
 
 (defmethod remaining ((obj instrument-layer))

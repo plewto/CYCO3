@@ -6,8 +6,6 @@
    "A DICE is a PATTERN where elements are drawn at random with 
 replacement."))
 
-(defmethod dice-p ((obj t)) nil)
-
 (defmethod dice-p ((obj dice)) obj)
 
 (defun dice (&key (of '()))

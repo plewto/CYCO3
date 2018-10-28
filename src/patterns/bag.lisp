@@ -17,8 +17,6 @@
   replacement.  Once all elements have been retrieved, bag returns a
   final value indefinitely.  The final value may be a pattern."))
 
-(defmethod bag-p ((obj t)) nil)
-
 (defmethod bag-p ((obj bag)) obj)
 
 (defun bag (&key of final)

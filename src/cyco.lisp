@@ -50,19 +50,16 @@
 		   "src/globals"
 		   ;; "src/generics"
 		   "src/api"
-		   :stop
 		   "src/util/string-utilities"
 		   "src/util/banner"
 		   "src/util/notifications"
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
-
-		   
 		   "src/util/paths"
 		   "src/keynumbers"
 		   "src/dynamics"
 		   "src/metrics"
-		   "src/patterns/pattern-generics"
+		   ;; "src/patterns/pattern-generics" ;; DEPRECIATED
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
@@ -71,7 +68,7 @@
 		   "src/patterns/dice"
 		   "src/patterns/instrument-layer"
 		   "src/node"
-		   "src/midi/midi"
+		   ;; "src/midi/midi" ;; DEPRECIATED 
 		   "src/midi/midi-util"
 		   "src/midi/midi-message"
 		   "src/midi/syscommon"
@@ -133,7 +130,7 @@
   
 (build-cyco)
 
-#| *** ISSUE: Uncomment in production 
+;; #| *** ISSUE: Uncomment in production 
 (let ((lit (lisp-implementation-type)))
   (cond
    ((equalp lit "SBCL")
@@ -141,7 +138,7 @@
    (t
     (format t "WARNING: ~A is an unsupoted Lisp.  Using  SBCL instead.~%" lit)
     (ld "src/sbcl"))))
-*** |#
+;; *** |#
 
 (in-package :common-lisp-user)
 

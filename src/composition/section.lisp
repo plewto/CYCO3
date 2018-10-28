@@ -15,9 +15,7 @@
 
 (defclass section (time-signature) nil)
 
-(defmethod section-p ((obj t)) nil)
 (defmethod section-p ((s section)) t)
-
 
 (flet ((typerror
 	(parent child)

@@ -4,10 +4,6 @@
 ;;;; (meta-channel nil)    --> nil
 ;;;; (meta-channel nil resolve) --> 0
 
-;; Returns MIDI channel assigned to key.
-;;
-(defgeneric meta-channel (key  &optional resolve))
-
 (defstruct meta-channel
   name
   value

@@ -1,25 +1,6 @@
 ;;;; CYCO3 src/composition/time-signature
 ;;;;
 
-(defgeneric init-time-signature (obj))
-(defgeneric tempo (obj))
-(defgeneric unit (obj))
-(defgeneric bars (obj))
-(defgeneric beats (obj))
-(defgeneric subbeats (obj))
-(defgeneric tempo! (obj value))
-(defgeneric unit! (obj value))
-(defgeneric bars! (obj value))
-(defgeneric beats! (obj value))
-(defgeneric subbeats! (obj value))
-(defgeneric phrase-duration (obj))
-(defgeneric bar-duration (obj))
-(defgeneric beat-duration (obj))
-(defgeneric subbeat-duration (obj))
-;;(defgeneric tick-duration (obj))
-(defgeneric ticks-per-beat (obj))
-(defgeneric ticks-per-subbeat (obj))
-
 (defclass time-signature (cyco-node) ())
 
 (constant +time-signature-properties+ '(:tempo :unit :bars :beats :subbeats

@@ -1,6 +1,7 @@
 ;;;; CYCO3 src/patterns/pattern-generics
 ;;;;
-
+;;;;            *** DEPRECIATED ***
+;;;;
 
 (defgeneric pattern-p (obj)(:documentation "Predicate"))
 (defgeneric line-p (obj)(:documentation "Predicate"))

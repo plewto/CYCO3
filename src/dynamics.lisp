@@ -72,8 +72,6 @@ value - float between 0 and 1 inclusive"
       +rest+
     (float n)))
 
-(defmethod dynamic-p ((obj t)) nil)
-
 (defmethod dynamic-p ((n float)) n)
 
 (defmethod dynamic-p ((s symbol))

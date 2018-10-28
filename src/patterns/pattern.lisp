@@ -27,8 +27,6 @@
   (:documentation
    "PATTERN is the super class for all other pattern types."))
 
-(defmethod pattern-p ((obj t)) nil)
-
 (defmethod pattern-p ((obj pattern)) obj)
 
 (defmethod clone ((p pattern) &key new-name new-parent)

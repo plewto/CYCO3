@@ -1,16 +1,9 @@
 ;;;; CYCO3 src/chords/chord-model
 ;;;;
 
-(defgeneric chord-model-p (obj))
-(defgeneric defines-chord-p (model name))
-(defgeneric chord-template (model name))
-(defgeneric chord-types (model))
-(defgeneric define-chord (model name template &optional description))
-(defgeneric dump-chords (model))
 
 (defclass chord-model nil nil)
 
-(defmethod chord-model-p ((obj t)) nil)
 (defmethod chord-model-p ((obj chord-model)) t)
 
 ;; Transformations on chords
@@ -49,4 +42,3 @@
 	  (if (and (not (rest-p head))(< head 116))
 	      (setf key-list (append key-list (list (+ (* 12 add-octave) head)))))))
     key-list))
-

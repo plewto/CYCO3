@@ -13,7 +13,6 @@
 		    
 (defclass part (time-signature) nil)
 
-(defmethod part-p ((obj t)) nil)
 (defmethod part-p ((obj part)) t)
 
 (defmethod mute ((prt part) &optional state)

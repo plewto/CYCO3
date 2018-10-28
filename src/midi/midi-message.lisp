@@ -1,7 +1,13 @@
 ;;;; CYCO3 src/midi/midi-message
 ;;;;
-;;;; Defines hierarchy of MIDI event classes.  All instances of MIDI events
-;;;; are immutable.
+;;;; Terminology:  
+;;;;
+;;;;   1) A MIDI 'message' is a class or instance or byte array representing a
+;;;;      single MIDI command without reference to time.
+;;;;   2) A MIDI 'event' is a cons of event-time and MIDI message:
+;;;;      (time . message)
+;;;;
+;;;; Defines hierarchy of MIDI message classes.
 ;;;;
 ;;;; MIDI-MESSAGE
 ;;;;  |
@@ -76,7 +82,6 @@
   (defmethod ->string ((evn midi-message))
     (sformat "~A " (mnemonic evn)))
   
-(defmethod midi-message-p ((obj t)) nil)
 (defmethod midi-message-p ((me midi-message)) t)
 
 (defmethod clone ((evn midi-message) &key new-name new-parent)
@@ -103,7 +108,6 @@
     :accessor data-array
     :initarg :data)))
 
-(defmethod midi-channel-message-p ((obj t)) nil)
 (defmethod midi-channel-message-p ((obj midi-channel-message)) t)
 
 (defmethod channel ((evn midi-channel-message) &optional _)
@@ -133,7 +137,6 @@
 
 (defclass midi-key-message (midi-channel-message)  nil)
 
-(defmethod midi-key-message-p ((obj t)) nil)
 (defmethod midi-key-message-p ((evn midi-key-message)) t)
 
 (defmethod transpose ((evn midi-key-message)(n integer))
@@ -168,12 +171,9 @@
    (priority
     :initform 9)))
 
-(defmethod midi-note-off-p ((obj t)) nil)
 (defmethod midi-note-off-p ((evn midi-note-off)) t)
-(defmethod midi-note-on-p ((obj t)) nil)
 (defmethod midi-note-on-p ((evn midi-note-on)) t)
-(defmethod midi-poly-pressure-p ((obj t)) nil)
-(defmethod midi-po(ly-pressure-p (evn midi-poly-pressure)) t)
+(defmethod midi-poly-pressure-p ((evn midi-poly-pressure)) t)
 
 (defun midi-note-off (channel-index keynumber velocity)
   "Creates instance of MIDI-NOTE-OFF."
@@ -227,7 +227,6 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
    (priority
     :initform 9)))
 
-(defmethod midi-channel-pressure-p ((obj t)) nil)
 (defmethod midi-channel-pressure-p ((evn midi-channel-pressure)) t)
 
 (defmethod data-count ((evn midi-channel-pressure)) 1)
@@ -247,7 +246,6 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
    (priority
     :initform 9)))
 
-(defmethod midi-program-change-p ((obj t)) nil)
 (defmethod midi-program-change-p ((evn midi-program-change)) t)
 
 (defmethod data-count ((evn midi-program-change)) 1)
@@ -268,7 +266,6 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
    (priority
     :initform 9)))
 
-(defmethod midi-pitch-bend-p ((obj t)) nil)
 (defmethod midi-pitch-bend-p ((evn midi-pitch-bend)) t)
 
 (defun midi-pitch-bend (channel-index lsb msb)

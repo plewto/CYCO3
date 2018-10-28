@@ -4,7 +4,6 @@
 
 (defclass midi-system-common-message (midi-message) nil)
 
-(defmethod midi-system-common-message-p ((obj t)) nil)
 (defmethod midi-system-common-message-p ((evn midi-system-common-message)) t)
 
 ;;; ---------------------------------------------------------------------- 
@@ -31,7 +30,6 @@ If arg is a integer an empty (all 0) vector of that length is created."
 			    :element-type 'integer :fill-pointer t)))
   (make-instance 'midi-system-exclusive :data (->vector arg)))
 
-(defmethod midi-system-exclusive-p ((obj t)) nil)
 (defmethod midi-system-exclusive-p ((evn midi-system-exclusive)) t)
 
 (defmethod data-count ((evn midi-system-exclusive))
@@ -70,7 +68,6 @@ If arg is a integer an empty (all 0) vector of that length is created."
    (priority
     :initform 6)))
 
-(defmethod midi-end-system-exclusive-p ((obj t)) nil)
 (defmethod midi-end-system-exclusive-p ((evn midi-end-system-exclusive)) t)
 
 (constant-function midi-end-system-exclusive

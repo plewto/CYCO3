@@ -27,7 +27,6 @@
    (priority
     :initform 0)))
 
-(defmethod midi-meta-message-p ((obj t)) nil)
 (defmethod midi-meta-message-p ((evn midi-meta-message)) t)
 
 (defmethod ->string ((obj midi-meta-message))
@@ -71,19 +70,12 @@
   ((meta-type
     :initform +MARKER-TEXT+)))
 
-(defmethod midi-meta-text-p ((obj t)) nil)
 (defmethod midi-meta-text-p ((obj midi-meta-text)) t)
-(defmethod midi-meta-copyright-p ((obj t)) nil)
 (defmethod midi-meta-copyright-p ((obj midi-meta-copyright)) t)
-(defmethod midi-meta-track-name-p ((obj t)) nil)
 (defmethod midi-meta-track-name-p ((obj midi-meta-track-name)) t)
-(defmethod midi-meta-instrument-name-p ((obj t)) nil)
 (defmethod midi-meta-instrument-name-p ((obj midi-meta-instrument-name)) t)
-(defmethod midi-meta-lyric-p ((obj t)) nil)
 (defmethod midi-meta-lyric-p ((obj midi-meta-lyric)) t)
-(defmethod midi-meta-cue-p ((obj t)) nil)
 (defmethod midi-meta-cue-p ((obj midi-meta-cue)) t)
-(defmethod midi-meta-marker-p ((obj t)) nil)
 (defmethod midi-meta-marker-p ((obj midi-meta-marker)) t)
 
 (defun midi-meta-copyright (s)
@@ -135,7 +127,6 @@
    (priority
     :initform 99)))
 
-(defmethod midi-end-of-track-p ((obj t)) nil)
 (defmethod midi-end-of-track-p ((obj %midi-end-of-track%)) t)
 
 (defmethod render-midi-message ((evn %midi-end-of-track%))
@@ -158,7 +149,6 @@
     :initform 120.0
     :initarg :bpm)))
 
-(defmethod midi-tempo-message-p ((obj t)) nil)
 (defmethod midi-tempo-message-p ((obj midi-tempo-message)) t)
 
 (defun midi-tempo-message (bpm)
@@ -203,7 +193,6 @@
     :type integer
     :initform 8)))
 
-(defmethod midi-time-signature-p ((obj t)) nil)
 (defmethod midi-time-signature-p ((obj midi-time-signature)) t)
 
 (defun .map-midi-timesig-unit. (sym)
@@ -256,7 +245,6 @@
     :initform 0
     :initarg :min)))
 
-(defmethod midi-key-signature-p ((obj t)) nil)
 (defmethod midi-key-signature-p ((obj midi-key-signature)) nil)
 
 (defun midi-key-signature (sf &optional (minor nil))

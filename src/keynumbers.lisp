@@ -41,8 +41,6 @@ sym - symbol
 value - an integer -1 or in (0..127)"
   (setf (gethash sym *keynumbers*) value))
   
-(defmethod keynumber-p ((obj t)) nil)
-
 (defmethod keynumber-p ((n integer)) t)
 
 (defmethod keynumber-p ((s symbol))

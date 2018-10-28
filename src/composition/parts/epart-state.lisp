@@ -35,10 +35,6 @@
   (program-number nil)	             ; nil | keyword | int
   (program-bank nil))                ; nil | keyword | int
 
-(defgeneric soft-reset (obj))
-
-(defmethod soft-reset ((obj t)) obj)
-
 (defmethod soft-reset ((state epart-state))
   (setf (epart-state-key state) nil)
   (setf (epart-state-touch state) nil)

@@ -48,7 +48,7 @@
        ;; Include keyword :stop to prevent remaining files being loaded.
        (manifest '("src/constants"
 		   "src/globals"
-		   ;; "src/generics"
+		   ;; "src/generics"  ;; DEPRECIATED
 		   "src/api"
 		   "src/util/string-utilities"
 		   "src/util/banner"

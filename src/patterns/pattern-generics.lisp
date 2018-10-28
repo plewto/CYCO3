@@ -3,12 +3,12 @@
 ;;;;            *** DEPRECIATED ***
 ;;;;
 
+#| **********************************************************
 (defgeneric pattern-p (obj)(:documentation "Predicate"))
 (defgeneric line-p (obj)(:documentation "Predicate"))
 (defgeneric cycle-p (obj)(:documentation "Predicate"))
 (defgeneric bag-p (obj)(:documentation "Predicate"))
 (defgeneric dice-p (obj)(:documentation "Predicate"))
-
 
 (defgeneric ->cycle (obj)
   (:documentation
@@ -50,5 +50,4 @@ n - nil   -> call NEXT-1 on pattern.
 n = int   -> return next n elements as list.
 n = :REST -> return remaining elements as a list.  
 n = :ALL  -> return list of all pattern elements."))
-
-
+*************************************************************** |#

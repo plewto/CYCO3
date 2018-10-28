@@ -1,2 +1,2 @@
-;;;; CYCO3 src/midi/midi    **DEPRECIARTED**
+;;;; CYCO3 src/midi/midi   **DEPRECIARTED**
 ;;;;

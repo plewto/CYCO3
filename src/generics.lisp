@@ -1,14 +1,11 @@
-;;;; PigIron cyco/generics
+;;;; PigIron cyco/generics  ***DEPRECIATED**
 ;;;;
 
 
-
+#| ***************************************
 (defgeneric project-p (obj))
 (defmethod project-p ((obj t)) nil)
 (defmethod project-p ((obj null)) nil)
-
-
-
 (defgeneric section-p (obj))
 (defgeneric part-p (obj))
 (defgeneric group-p (obj))
@@ -372,3 +369,4 @@ It is an error if expression is invalid."))
 ;; pad-end in seconds
 (defgeneric ->smf (obj &key filename offset repeat pad))
   
+*********************************** #|

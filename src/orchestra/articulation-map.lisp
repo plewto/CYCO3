@@ -1,11 +1,11 @@
 ;;;; CYCO3 src/orchestra/articulation-map
 ;;;;
-;;;; An articulation map is a function of form  (lmabda (dy &key time-scale))
+;;;; An articulation map is a function of form  (lambda (dy &key time-scale))
 ;;;; which returns float for key-down duration.
 ;;;; A negative result indicates a rest
 ;;;;
 ;;;; If dy argument has the value :doc the function prints
-;;;; documentation and restunrs +rest+
+;;;; documentation and returns +rest+
 ;;;; 
 
 

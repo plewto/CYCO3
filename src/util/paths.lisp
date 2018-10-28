@@ -1,6 +1,7 @@
 ;;;; CYCO3 src/paths
 ;;;;
-
+;;;; ISSUE: This file flaunts the idiomatic Lisp approach to pathnames.
+;;;;
 
 ;; Set path parameters for current platform.
 ;;
@@ -14,11 +15,12 @@
 		 (msg2 "Using default (Linux) path parameters."))
 	     (cyco-warning msg1 msg2)))))
 
-(defun cwd ()
-  *default-pathname-defaults*)
+;; (defun cwd ()
+;;   *default-pathname-defaults*)
 
-(defun absolute-path-p (name)
-  (starts-with-p (->string name) *os-path-root*))
+(defun absolute-path-p (namestring)
+  "Predicate, true if namestring indicates an absolute file name."
+  (starts-with-p (->string namestring) *os-path-root*))
 
 (defun user-home ()
   "Returns path to user's home directory."

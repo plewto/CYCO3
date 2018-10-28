@@ -4,10 +4,11 @@
 ;;;;
 ;;;;   1) A MIDI 'message' is a class or instance or byte array representing a
 ;;;;      single MIDI command without reference to time.
+;;;;
 ;;;;   2) A MIDI 'event' is a cons of event-time and MIDI message:
 ;;;;      (time . message)
 ;;;;
-;;;; Defines hierarchy of MIDI message classes.
+;;;; Hierarchy of MIDI message classes.
 ;;;;
 ;;;; MIDI-MESSAGE
 ;;;;  |
@@ -55,7 +56,7 @@
     ci))
 
 (defun assert-midi-data-value (n)
-  "Throws error if value out of range for MIDI datya byte (0..127)."
+  "Throws error if value out of range for MIDI data byte (0..127)."
   (if (or (minusp n)(> n 127))
       (progn 
 	(cyco-value-error 'assert-midi-data-value n)
@@ -76,12 +77,12 @@
     :initform 0				; before higher values.
     :initarg :priority)))
 
-  (defmethod mnemonic ((evn midi-message))
-    (gethash (command evn) +MNEMONICS+))
+(defmethod mnemonic ((evn midi-message))
+  (gethash (command evn) +MNEMONICS+))
 
-  (defmethod ->string ((evn midi-message))
-    (sformat "~A " (mnemonic evn)))
-  
+(defmethod ->string ((evn midi-message))
+  (sformat "~A " (mnemonic evn)))
+
 (defmethod midi-message-p ((me midi-message)) t)
 
 (defmethod clone ((evn midi-message) &key new-name new-parent)
@@ -98,11 +99,11 @@
 
 (defclass midi-channel-message (midi-message)
   ((channel-index			; MIDI channel index
-    :type integer			; between 0..15 inclusive.
+    :type integer			; 0..15 inclusive.
     :accessor channel-index
     :initform 0
     :initarg :channel-index)
-   (data				; MIDI data
+   (data
     :type vector
     :initform #(0 0)
     :accessor data-array
@@ -176,7 +177,8 @@
 (defmethod midi-poly-pressure-p ((evn midi-poly-pressure)) t)
 
 (defun midi-note-off (channel-index keynumber velocity)
-  "Creates instance of MIDI-NOTE-OFF."
+  "Creates instance of MIDI-NOTE-OFF.
+NOTE: Note off velocity is defined for completeness but is not otherwise supported."
   (make-instance 'midi-note-off
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value keynumber)
@@ -193,7 +195,8 @@ If velocity is 0, returns MIDI-NOTE-OFF instead."
 				 (assert-midi-data-value velocity)))))
 
 (defun midi-poly-pressure (channel-index keynumber pressure)
-  "Creates instance of MIDI-POLY-PRESSURE."
+  "Creates instance of MIDI-POLY-PRESSURE.
+NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
   (make-instance 'midi-poly-pressure
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value keynumber)

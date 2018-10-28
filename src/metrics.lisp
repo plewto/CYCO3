@@ -114,7 +114,6 @@
 		 (values (read-from-string (car tokens))
 			 (second tokens)))
 		(t nil))))
-
        (tokenize
 	(str)
 	(let ((tokens '()))
@@ -152,8 +151,8 @@
   (if (minusp n) +rest+ n))
 
 ;; Returns value of expression
-;; If expression is invalid, generate cyco-metric-expression-error
-;; and return nil.
+;; If expression is invalid, generate cyco-composition-error and
+;; returns nil.
 (defmethod metric-expression ((exp symbol))
   (let ((value (metric-expression-p exp)))
     (or value

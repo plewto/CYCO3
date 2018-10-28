@@ -20,11 +20,25 @@
 
 
 (defun null-program-map (time &key bank program)
+  "A Dummy program-map used as a place-holder. 
+It does not generate any events."
   (dismiss time bank)
-  (if (eq program :doc) (format t "NULL-PROGRAM-MAP ~~ Does not create MIDI events.~%"))
+  (if (eq program :doc)
+      (format t "NULL-PROGRAM-MAP ~~ Does not create MIDI events.~%"))
   nil)
 
 (defun set-basic-program-map (instrument &key (offset 0)(min 0)(max 127))
+  "Sets a basic program-map for instrument.
+The program map has a range of program to which it responds. Program numbers
+outside of this range are ignored. 
+The offset argument is typically 0 or 1 to match the lowest displayed program 
+number of the instrument.  IE the lowest program number on a Yamaha DX7 is 1 
+which corresponds to an actual MIDI value of 0.  On the other hand then lowest 
+program for an Oberheim Matrix 1000 is 0.
+
+If the program-map sees a program number of :default it uses the program-number
+property of the instrument."
+
   (flet ((docfn ()
 		(format t "Instrument ~A Basic Program Map~%" (name instrument))
 		(format t "    offset: ~A   min: ~A   :max: ~A" offset min max)
@@ -53,11 +67,16 @@
       (program-map! instrument fn)
       fn)))
 
-
-;; map entry format:
-;;    (cons  name . (program-number name [remarks]))
-;;
 (defun set-symbolic-program-map (instrument htab &key (offset 0))
+  "Sets symbolic program-map for instrument.
+A symbolic program-map converts symbols to program numbers.
+Whenever the program-map sees the program number :default, it uses the 
+program-number property of the instrument.
+
+Map entry format has the form 
+    ((cons name-1 program-number-1 name [optional-remarks])
+     (cons name-2 program-number-2 name [optional-remarks])
+      ....)"
   (if (alist-p htab)(setf htab (alist->hash-table htab (length htab))))
   (flet ((docfn ()
 		(format t "Instrument ~A Symbolic Program Map~%" (name instrument))

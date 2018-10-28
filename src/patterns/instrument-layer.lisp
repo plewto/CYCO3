@@ -1,15 +1,17 @@
 ;;;; CYCO3 src/patterns/instrument-layer
 ;;;;
-;;;; A Instrument-Layer is a highly specilized Pattern which always returns
-;;;; a list of all of it's elements.
-;;;;
-;;;; Use Case:
-;;;;    Instrument-Layer is only used in conjunction with Parts to provide
-;;;;    a layering rendering mode.   All instruments in an instrument-layer
-;;;;    respond to the same events in parallel.
 
-(defclass instrument-layer (pattern) nil)
 
+(defclass instrument-layer (pattern) nil
+  (:documentation 
+"A Instrument-Layer is a highly specialized Pattern which always returns
+a list of all of it's elements.
+
+Use Case:
+   Instrument-Layer is only used in conjunction with Parts to provide
+   a layering rendering mode.   All instruments in an instrument-layer
+   respond to the same events in parallel."))
+   
 (defun instrument-layer (&key (of '()))
   (make-instance 'instrument-layer :of (->list of)))
 

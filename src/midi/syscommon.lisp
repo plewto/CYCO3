@@ -22,9 +22,9 @@
 
 (defun midi-system-exclusive (arg)
   "Creates instance of MIDI-SYSTEM-EXCLUSIVE message.
-arg may either be a integer, list or vector.
+arg may either be an integer, list or vector.
 If arg is a list or vector it should contain the sysex data bytes.
-If arg is a integer an empty (all 0) vector of that length is created."
+If arg is an integer an empty (all 0) vector of that length is created."
   (if (numberp arg)
       (setf arg (make-array (truncate arg) 
 			    :element-type 'integer :fill-pointer t)))

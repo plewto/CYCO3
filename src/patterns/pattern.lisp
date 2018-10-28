@@ -1,13 +1,41 @@
 ;;;; CYCO3 src/patterns/pattern
 ;;;;
+;;;; A Pattern is an object which generates a sequence of values in some
+;;;; prescribed manner.  Patterns may be nested to any level.  Two of the
+;;;; common pattern types are LINE and CYCLE.
+;;;;
+;;;; A Line returns it's elements in sequence until the final element is
+;;;; reached. Thereafter the line continues to return the final element.
+;;;;
+;;;; (line :of '(A B C)) --> A B C C C C ...
+;;;;
+;;;; A Cycle also returns elements in sequence.  Unlike a line, once the
+;;;; final cycle element is reached, the cycle begins again from the
+;;;; beginning.
+;;;;
+;;;; (cycle :of '(A B C)) --> A B C A B C A B ...
+;;;;
+;;;; Cycles and lines (and most all of the other pattern types) may be embedded
+;;;; into each other.
+;;;;
+;;;; (cycle :of (list (cycle :of '(1 2))(cycle :of '(A B C))))
+;;;; --> 1 A 2 B 1 C 2 A 1 B 2 C ...
+;;;;
+;;;; (cycle :of (list (line :of '(1 2 3)) (cycle :of '(A B C))))
+;;;; --> 1 A 2 B 3 C 3 A 3 B 3 C 3 A ...
+;;;;
+;;;; (line :of (list 1 2 3 (cycle :of '(A B C))))
+;;;; --> 1 2 3 A B C A B C A B C ...
+;;;;
+;;;;
 ;;;; PATTERN
 ;;;;  |
 ;;;;  +-- LINE
 ;;;;  +-- CYCLE
-;;;;  +-- BAG
-;;;;  +-- DICE
-;;;;  +-- COIN
-;;;;  +-- INSTRUMENT-LAYER
+;;;;  +-- BAG    - random without replacement
+;;;;  +-- DICE   - random with replacement
+;;;;  +-- COIN   - random binary choice, unlike dice, coin may call functions
+;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments.
 ;;;;
 
 (defclass pattern nil
@@ -25,7 +53,7 @@
     :accessor pointer
     :initform 0))
   (:documentation
-   "PATTERN is the super class for all other pattern types."))
+   "PATTERN is the base class for all other pattern types."))
 
 (defmethod pattern-p ((obj pattern)) obj)
 

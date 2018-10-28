@@ -87,6 +87,7 @@
 		   "src/chords/default-chords"
 		   "src/composition/time-signature"
 		   "src/composition/cueing-functions"
+
 		   "src/composition/project"
 		   "src/composition/group"
 		   "src/composition/section"

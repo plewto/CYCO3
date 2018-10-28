@@ -195,6 +195,7 @@
 
 (defmethod midi-time-signature-p ((obj midi-time-signature)) t)
 
+;; ISSUE: Use flet to hide .MAP-MIDI-TIMESIG-UNIT.
 (defun .map-midi-timesig-unit. (sym)
   (cond ((eq sym 'q) 2)
 	((eq sym 'w) 0)

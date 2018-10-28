@@ -1,7 +1,13 @@
 ;;;; CYCO3 src/composition/time-signature
 ;;;;
 
-(defclass time-signature (cyco-node) ())
+(defclass time-signature (cyco-node) ()
+  (:documentation
+   "TIME-SIGNATURE is a type of node which defines a nested timing 
+structure.  The CYCO notion of a time signature is a generalization 
+of the typical view.  In addition to the standard 'beats-per-measure' 
+and basic beat unit,  time-signature defines tempo in BPM, 
+number of bars in a phrase and the number of sub-beats to a beat."))
 
 (constant +time-signature-properties+ '(:tempo :unit :bars :beats :subbeats
 					:phrase-duration :bar-duration :beat-duration

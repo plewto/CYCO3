@@ -1,4 +1,5 @@
 ;;;; CYCO3 src/midi/smf
+;;;; smf ~ Standard Midi File
 ;;;;
 
 (defclass smf nil

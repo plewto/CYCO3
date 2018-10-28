@@ -4,12 +4,16 @@
 (global *chord-table* (make-instance 'chord-table
 				     :name 'default-chord-table
 				     :templates (make-hash-table :size 144)
-				     :descriptions (make-hash-table :size 144)))
+				     :descriptions (make-hash-table :size 144))
+	"Default chord-model")
 
 (defun defchord (name template &optional description)
+  "Defines new chord for default *chord-table*"
   (define-chord *chord-table* name template description))
 
 (defun ?chords (&optional (obj *chord-table*))
+  "Displays list of defined chords in chord-model,
+By default *chord-table*"
   (if (or (project-p obj)(section-p obj)(part-p obj))
       (dump-chords (property obj :chord-model))
     (dump-chords obj)))

@@ -1,5 +1,5 @@
 ;;;; CYCO3 src/midi/smf-header
-;;;;
+;;;; 
 
 (defclass smf-header nil
   ((format

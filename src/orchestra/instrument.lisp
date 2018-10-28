@@ -1,6 +1,6 @@
 ;;;; CYCO3 src/orchestra/instrument
 ;;;;
-;;;; NOTE: Child node of an Insrtument must also be an Instrument.
+;;;; NOTE: Child node of an Instrument must also be an Instrument.
 
 
 
@@ -9,7 +9,28 @@
 			 :keynumber-map :dynamic-map :articulation-map
 			 :channel :channel-index))
 
-(defclass instrument (cyco-node) nil)
+(defclass instrument (cyco-node) nil
+  (:documentation
+   "An INSTRUMENT is a type of NODE used to represent an external MIDI 
+device.  They are essentially proxies for real-world synthesizers.
+
+Instruments may have child instruments which inherit most of the 
+parent instruments properties.   A very common usage is to define 
+specific percussion instruments as children of a drum machine 
+or synthesizer. 
+
+The Node transient property was implemented specifically for use with 
+instruments.   Typically instruments are defined in two stages:
+
+1) Permanent instruments defined by the configuration process.
+2) Temporary instruments defined as the 'orchestra' of specific projects.
+
+The type-1 instruments should be non-transient while the type-2 instruments
+are transient.
+
+
+The constant +ROOT-INSTRUMENT+ serves as the common root node for all 
+other instruments."))
 
 (defmethod instrument-p ((inst instrument)) t)
 
@@ -89,7 +110,6 @@
 	    (articulation-map! root +default-articulation-map+)
 	    (channel! root 1)
 	    root))
-	    
 		
 (defun make-instrument (name &key
 			     (parent +root-instrument+)
@@ -101,6 +121,23 @@
 			     dynamic-map
 			     articulation-map
 			     remarks)
+  "Creates a new instance of INSTRUMENT.
+name - Symbol
+:parent     - Parent instrument, defaults to +ROOT-INSTRUMENT+
+:transient  - bool, If this instrument is being created as part of a 
+              project's orchestra, transient should be t.
+              If the instrument is created by the configuration process
+              transient should be nil.  Default t.
+:channel    - MIDI channel may be a numeric channel number between 1 and 16
+              inclusive or a meta-channel name.   If channel is not specified
+              it is inherited from the parent instrument.
+:program    - Default program number.  The program-number format is dependent
+              on the instruments program-map.
+:bank       - Default program bank, format is dependent on program-map.
+:remarks    - Optional remarks text.
+:keynumber-map    - Sets keynumber-map, if nil inherits from parent.
+:dynamic-map      - Sets dynamic-map, if nil inherits from parent.
+:articulation-map - Sets articulation-map, if nil inherits from parent."
   (let ((inst (make-instance 'instrument
 			     :name name
 			     :properties +instrument-properties+
@@ -126,6 +163,7 @@
 			   dynamic-map
 			   articulation-map
 			   remarks)
+  "Same as make-instrument except binds the instrument to a symbol named name."
   `(let ((inst (make-instrument ',name
 				:parent ,parent
 				:transient ,transient
@@ -157,6 +195,12 @@
 
 
 (defun prune-orchestra (&key (force nil)(root +root-instrument+))
+  "Removes all transient instruments from the orchestra (tree rooted at root).
+While composing a piece it is usual to reload the project repeatedly.   
+Projects typically define several instruments as their 'orchestra'.  
+If the orchestra is not pruned then each time the project is loaded it 
+creates useless duplicate instruments.   Non-transient instruments are
+not effect by prune-orchestra unless the :force argument is true."
   (prune root force)
   (if force
       (progn 
@@ -186,6 +230,8 @@
   src)
 
 (defmethod connect ((src instrument)(child cyco-node))
+  "Connect child instrument to this instrument.
+Child nodes of an instrument must also be instruments."
   (if (not (instrument-p child))
       (cyco-type-error
        'instrument.connect 'instrument child
@@ -229,8 +275,7 @@
 	  ((string= option "K")
 	   (funcall (keynumber-map n) :doc))
 	  ((string= option "P")
-	   (funcall (program-map n) 0.0 :program :doc))
-	  )))
+	   (funcall (program-map n) 0.0 :program :doc)))))
   
 	  
   

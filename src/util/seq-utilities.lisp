@@ -138,7 +138,6 @@ each resulting item is a unique object."
       (cons (if clones (clone item) item)
 	    (copies (1- n) item clones))))
 
-
 (defmethod pick ((v vector))
   (aref v (pick (length v))))
 
@@ -172,27 +171,34 @@ each resulting item is a unique object."
 		   (push value acc)
 		   (setf value (+ value delta)))
 		 (reverse acc))) )
+  
   (defun range (start end &key (by 1))
+    "Creates list of numbers between star (inclusive) and end (exclusive)
+:by argument sets increment size."
     (if (> start end)
 	(-range start end (- (abs by)))
       (+range start end (abs by)))))
 
-(defun fill-list (lst template)
-  (cons (or (car lst)(car template))
-	(if (or lst template)
-	    (fill-list (cdr lst)(cdr template)))))
+(defun fill-list (srclist template)
+  "Creates new list by merging srclist and template list.
+The resulting list contains the non-null elements of srclist.
+All nil and missing elements of srclist are replaced by corresponding 
+values from template list."
+  (cons (or (car srclist)(car template))
+	(if (or srclist template)
+	    (fill-list (cdr srclist)(cdr template)))))
 
 
   
-;; Split list into head and tail sections at first position after start
-;; that that predicate is true.
-;; By default splits list on presence of keywords
-;;
-;; (split-list '(:ape 1 2 :bat 3 4 :cat 5 6)) --> (:ape 1 2) (:bat 3 4 :cat 5 6)
-;; (split-list '(:ape 1 2 3 4))               --> (:ape 1 2 3 4) nil
-;; (split-list '(1 2 3 4)                     --> (1 2 3 4) nil
-;;
+
 (defun split-list (lst &key (test #'keywordp)(start 1))
+  "Split list into head and tail sections at first position after start
+that that predicate is true.
+By default splits list on presence of keywords
+
+(split-list '(:ape 1 2 :bat 3 4 :cat 5 6)) --> (:ape 1 2) (:bat 3 4 :cat 5 6)
+(split-list '(:ape 1 2 3 4))               --> (:ape 1 2 3 4) nil
+(split-list '(1 2 3 4)                     --> (1 2 3 4) nil"
   (let ((pos (position nil (nthcdr start lst)
 		       :test #'(lambda (a b)
 				 (dismiss a)
@@ -204,14 +210,13 @@ each resulting item is a unique object."
 	  (values head tail))
       (values lst nil))))
 
-;; Partition list by elements matching test predicate.
-;; Default is to split list at keyword boundaries.
-;;
-;; (partition-list '(:ape 1 2 :bat 3 4 :cat 5 6)) --> ((:ape 1 2)(:bat 3 4)(:cat 5 6))
-;; (partition-list '(:ape 1 2)                    --> ((:ape 1 2))
-;; (partition-list nil                            --> (nil)
-;;
 (defun partition-list (lst &key (test #'keywordp))
+  "Partition list by elements matching test predicate.
+Default is to split list at keyword boundaries.
+
+(partition-list '(:ape 1 2 :bat 3 4 :cat 5 6)) --> ((:ape 1 2)(:bat 3 4)(:cat 5 6))
+(partition-list '(:ape 1 2)                    --> ((:ape 1 2))
+(partition-list nil                            --> (nil)"
   (multiple-value-bind (head tail)(split-list lst :test test)
     (cons head
 	  (if tail
@@ -219,6 +224,7 @@ each resulting item is a unique object."
 	    nil))))
   
 (defun sort-midi-events (events)
+  "Sorts MIDI event list first by event-time and then by message priority."
   (sort (clone events)
 	#'(lambda (a b)
 	    (let ((time-a (car a))
@@ -228,7 +234,3 @@ each resulting item is a unique object."
 			 (pri-b (priority (cdr b))))
 		    (> pri-b pri-a))
 		(< time-a time-b))))))
-	      
-	    
-
-

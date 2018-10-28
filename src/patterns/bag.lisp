@@ -15,7 +15,7 @@
   (:documentation
    "A BAG is a PATTERN which returns elements at random without
   replacement.  Once all elements have been retrieved, bag returns a
-  final value indefinitely.  The final value may be a pattern."))
+  final value indefinitely.  The final value may also be a pattern."))
 
 (defmethod bag-p ((obj bag)) obj)
 

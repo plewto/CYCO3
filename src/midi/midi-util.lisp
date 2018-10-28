@@ -1,6 +1,7 @@
 ;;;; CYCO3 src/midi/midi-util
 ;;;;
-
+;;;; Low level MIDI functions.
+;;;;
 
 ;;; ************************************************************************
 ;;;                     MIDI variable length values (vlv)
@@ -9,7 +10,7 @@
 ;;; represent the value or part of the value. The high order bit is an
 ;;; "escape" or "continuation" bit. All but the last byte of a variable
 ;;; length value have the high order bit set. The last byte has the high
-;;; order bit cleared. The bytes always appear most significant byte first.
+;;; order bit cleared. The bytes appear most significant byte first.
 ;;; 
 
 (defun int->midi-vlv (value)
@@ -87,8 +88,8 @@ Returns vector #(lsb msb)"
 ary - array
 offset - location in array
 Returns cons (value . new-offset)
-    where value is float, a normalized bend (-1..+1)
-          new-offset - location in array after bend data."
+where value is float, a normalized bend (-1..+1)
+and new-offset is location in array after bend data."
   (let* ((lsb (aref ary offset))
 	 (msb (aref ary (1+ offset)))
 	 (bend (midi-data->bend lsb msb)))
@@ -118,8 +119,8 @@ Returns float (0..1)"
 ary - array
 offset - location in array to read.
 Returns cons (n . new-offset)
-    where n is float (0..1)
-          mew-offset is location in array after data."
+where n is float (0..1)
+and new-offset is location in array after data."
   (let ((byte (aref ary offset))
 	(scale 10000.0))
     (cons (/ (round (* (/ byte 127.0) scale)) scale)
@@ -138,8 +139,8 @@ f(+1) --> 127"
 ary - array.
 offset - location in array.
 Returns cons (n . new-offset)
-   where n is signed normalized float (-1..+1)
-         new-offset is location in array after data byte."
+where n is signed normalized float (-1..+1)
+and new-offset is location in array after data byte."
   (let ((byte (aref ary offset))
 	(scale 10000.0))
     (cons (/ (round (* (- (* 2/127 byte) 1.0) scale)) scale)
@@ -153,7 +154,6 @@ Returns number."
 
 ;; (defmethod bpm->microseconds ((bpm number))
 ;;   (truncate (* 1e6 (bpm->beat-period bpm))))
-
 
 (defun bpm->microseconds (bpm)
   (truncate (* 1e6 (bpm->beat-period bpm))))

@@ -350,7 +350,10 @@ All negative values have an inversion of +REST+ = -1.
 
 (defgeneric keyname (obj)
   (:documentation
-   "Returns symbolic name for key-number."))
+   "Returns symbolic name for key-number.
+For equivalent enharmonic notes, the sharp value is always used.
+Keyname will not return names for user defined keynumbers."))
+
 
 (defgeneric keynumber (obj)
   (:documentation

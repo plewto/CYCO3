@@ -1,8 +1,8 @@
 ;;;; CYCO3 src/orchestra/channel-assignments
-;;;; Defines nested symbolic MIDI channel name assignments.
+;;;; Defines nested symbolic MIDI channel names.
 ;;;;
-;;;; (meta-channel nil)    --> nil
-;;;; (meta-channel nil resolve) --> 0
+;;;; (meta-channel nil) --> nil
+;;;; (meta-channel nil resolve) --> 1
 
 (defstruct meta-channel
   name
@@ -13,6 +13,7 @@
       (reverse-assignments (->vector (range 1 17))))
 
   (defun reset-channel-assignments ()
+    "Clear all meta channel assignments."
     (setf assignments '())
     (setf reverse-assignments (->vector (range 1 17)))
     (dotimes (i 16)
@@ -25,6 +26,12 @@
   (reset-channel-assignments)
   
   (defun meta-channel! (name value &optional (remarks ""))
+    "Define new meta MIDI channel.
+name  - Symbol 
+value - The channel's value may either be an absolute MIDI channel 
+        as an integer between 1 and 16 inclusive, or it may refer to 
+        a previously defined channel.
+remarks - optional explanation."
     (let ((mchan (make-meta-channel
 		  :name name
 		  :value value
@@ -43,6 +50,8 @@
   (defmethod meta-channel ((chan null) &optional resolve)
     (if resolve 0 nil))
 
+  ;; ISSUE: Use flet or labels to hide .META-CHANNEL. and .META-CHANNEL-1.
+  
   (defun .meta-channel. (target-name name depth)
     (if (zerop depth)
 	(cyco-error 'meta-channel! name "Circular channel assignment")
@@ -51,7 +60,6 @@
       (if (and (integerp chan)(plusp chan)(<= chan 16))
   	  chan
   	(.meta-channel. target-name chan (1- depth))))))
-
   
   (defun .meta-channel-1. (name)
     (let ((p (cdr (assoc name assignments))))
@@ -64,6 +72,7 @@
       (.meta-channel-1. name)))
 
   (defun channel-name (c)
+    "Returns primary symbolic name for MIDI channel c."
     (let ((ci (1- c)))
       (if (and (>= ci 0)(<= ci 15))
 	  (let ((mc (aref reverse-assignments ci)))
@@ -71,6 +80,7 @@
 	nil)))
 
   (defun ?meta-channels ()
+    "print list of defined meta channels."
     (let ((acc '()))
       (dolist (p assignments)
 	(push (cons (->string (car p))
@@ -84,6 +94,8 @@
 	  (format t "[~02D] --> ~A~%" chan primary)))))
 
   (defun meta-channel-assignment-p (obj)
+    "Predicate, true if obj is either a numeric MIDI channel 
+or a defined symbolic meta channel."
     (or (and (integerp obj)(plusp obj)(<= obj 16))
 	(assoc obj assignments))) )
 

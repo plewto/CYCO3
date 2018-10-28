@@ -55,7 +55,31 @@
    (property-table
     :type hashtable
     :accessor property-table
-    :initform (make-hash-table))))
+    :initform (make-hash-table)))
+  (:documentation
+   "CYCO-NODE provides a hierarchal linking of objects into trees.
+Each node has at most one parent and any number of child nodes.
+Each node type defines a prescribed set of properties in the form of
+key/value pairs.  Nodes inherit property values from their parent but may 
+define values for themselves, this shadowing the parent'a value.
+
+It is an error to assign a value to a non-prescribed property.
+
+The put and property methods assigns and retrieve property values 
+respectively.
+
+(put node key value) --> Assigns value to property key.
+(property node key)  --> Returns value of property key.
+
+The properties method returns a list of all prescribed property keys.
+
+Nodes are marked as 'transient' or 'non-transient'.  Transient nodes
+are removed from a tree by the prune method while non-transient nodes are
+not."))
+   
+
+
+
     
 (defmethod name! ((node cyco-node)(new-name symbol))
   (setf (name node) new-name))

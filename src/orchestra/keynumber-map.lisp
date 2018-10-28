@@ -28,6 +28,9 @@
 ;;;;
 
 (defun basic-keynumber-map (&key (min 0)(max 127)(transpose 0)(instrument-name nil))
+  "Creates a basic keynumber-map
+Keynumbers out side the range (min max) are ignored.  
+The transpose amount is applied after the key range test."
   (dismiss instrument-name)
   (flet ((docfn ()
 		(format t "Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
@@ -56,6 +59,8 @@
 
 
 (defun circular-keynumber-map (start end &key instrument-name)
+  "Creates a circular keynumber map.
+Keynumbers out side the range (start end) are reflected back into the range."
   (flet ((docfn ()
 		(format t "Circular keynumber map ~A range (~A ~A)~%"
 			(if instrument-name instrument-name "")
@@ -74,10 +79,12 @@
 			      (+ offset (rem k delta))))))))
       fn)))
 
-
-;; assignments an alist ((sym . keynum) ...)
-;;
 (defun symbolic-keynumber-map (assignments &key instrument-name)
+  "Creates a symbolic keynumber-map.
+Symbolic maps are most useful with percussion instruments.
+The assignments list has the form  ((sym1 . keynumber1)
+                                    (sym2 . keynumber2)
+                                     ..................)"
   (flet ((docfn ()
 		(format t "Symbolic keynumber map~%")
 		(dolist (p assignments)
@@ -102,6 +109,11 @@
 
 
 (defun metronome-keynumber-map (&key (phrase 72)(bar 67)(beat 60))
+  "Creates specialized symbolic keynumber-map for metronomes.
+The map defines three event types:
+phrase  - A strong accent on the first beat of the phrase.
+bar  - A strong accent on the first beat of each bar, except the first.
+beat - all other beats."
   (let ((ktab (make-hash-table :size 3)))
     (setf (gethash 'phrase ktab)(keynumber phrase))
     (setf (gethash 'bar ktab)(keynumber bar))

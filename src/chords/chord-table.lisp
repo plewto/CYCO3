@@ -1,5 +1,5 @@
 ;;;; CYCO3 src/chords/chord-table
-;;;;
+;;;; 
 
 (defclass chord-table (chord-model)
   ((name
@@ -16,7 +16,10 @@
     :type hash-table
     :reader chord-table-descriptions
     :initform (make-hash-table :size 36)
-    :initarg :descriptions)))
+    :initarg :descriptions))
+  (:documentation
+   "Default implementation of CHORD-MODEL"))
+   
 
 (defmethod define-chord ((model chord-table)
 			 (name symbol)

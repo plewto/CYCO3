@@ -23,33 +23,38 @@
 (defmethod push-event ((time number)(msg midi-message)(trk smf-track))
   (push (cons (float time) msg)(slot-value trk 'events)))
 
-(flet ((track-name-test (trk)
-			(if (not (some #'(lambda (q)
-					   (midi-meta-track-name-p (cdr q)))
-				       (slot-value trk 'events)))
-			    (push-event 0 (midi-meta-track-name (name trk)) trk))
-			nil)
+(flet ((track-name-test
+	(trk)
+	(if (not (some #'(lambda (q)
+			   (midi-meta-track-name-p (cdr q)))
+		       (slot-value trk 'events)))
+	    (push-event 0 (midi-meta-track-name (name trk)) trk))
+	nil)
        
-       (track-tempo-test (trk)
-			 (if (not (some #'(lambda (q)
-					    (midi-tempo-message-p (cdr q)))
-					(slot-value trk 'events)))
-			     (push-event 0 (midi-tempo-message 60.0) trk))
-			 nil)
+       (track-tempo-test
+	(trk)
+	(if (not (some #'(lambda (q)
+			   (midi-tempo-message-p (cdr q)))
+		       (slot-value trk 'events)))
+	    (push-event 0 (midi-tempo-message 60.0) trk))
+	nil)
        
-       (track-timesig-test (trk)
-			   (if (not (some #'(lambda (q)
-					      (midi-time-signature-p (cdr q)))
-					  (slot-value trk 'events)))
-			       (push-event 0 (midi-time-signature 4 'q) trk))
-			   nil)
+       (track-timesig-test
+	(trk)
+	(if (not (some #'(lambda (q)
+			   (midi-time-signature-p (cdr q)))
+		       (slot-value trk 'events)))
+	    (push-event 0 (midi-time-signature 4 'q) trk))
+	nil)
        
-       (track-keysig-test (trk)
-			  (if (not (some #'(lambda (q)
-					     (midi-key-signature-p (cdr q)))
-					 (slot-value trk 'events)))
-			      (push-event 0 (midi-key-signature 0 nil) trk))
-			  nil))
+       (track-keysig-test
+	(trk)
+	(if (not (some #'(lambda (q)
+			   (midi-key-signature-p (cdr q)))
+		       (slot-value trk 'events)))
+	    (push-event 0 (midi-key-signature 0 nil) trk))
+	nil))
+  
   (defmethod events ((trk smf-track) &key range (filter #'false))
     (track-name-test trk)	        ; gurentee events list contains at 
     (track-tempo-test trk)		; least one each track-name, tempo,
@@ -96,7 +101,7 @@
 		      (numberp (car q))
 		      (midi-message-p (cdr q))))
 	     lst)
-      (let ((acc (sort lst #'(lambda (a b)
+      (let ((acc (sort lst #'(lambda (a b) ;; ISSUE: factor out, use sort-midi-events 
 			       (let ((ta (car a))
 				     (tb (car b)))
 				 (if (= ta tb)
@@ -122,34 +127,35 @@
 	(length lst))
     (cyco-error "Invalid MIDI track")))
 
-(flet ((render-events (trk pad)
-		      (let* ((events (events trk))
-			     (end-time (+ (car (car (reverse events))) 
-					  (float pad)))
-			     (beat-unit 'q)
-			     (tickdur (tick-duration 60 
-						     :unit beat-unit))
-			     (previous-time 0.0)
-			     (acc '()))
-			(dolist (p (append events
-					   (list (cons end-time 
-						       (midi-end-of-track)))))
-			  (let* ((event-time (car p))
-				 (event (cdr p))
-				 (delta (prog1
-					    (- event-time previous-time)
-					  (setf previous-time event-time)))
-				 (ticks (truncate (/ delta tickdur))))
-			    (cond ((midi-time-signature-p event)
-				   (setf beat-unit (timesig-unit event)))
-				  ((midi-tempo-message-p event)
-				   (setf tickdur (tick-duration 
-						  (slot-value event 'tempo) 
-						  :unit beat-unit)))
-				  (t nil))
-			    (push (int->midi-vlv ticks) acc)
-			    (push (render-midi-message event) acc)))
-			(flatten (reverse acc)))))
+(flet ((render-events
+	(trk pad)
+	(let* ((events (events trk))
+	       (end-time (+ (car (car (reverse events))) 
+			    (float pad)))
+	       (beat-unit 'q)
+	       (tickdur (tick-duration 60 
+				       :unit beat-unit))
+	       (previous-time 0.0)
+	       (acc '()))
+	  (dolist (p (append events
+			     (list (cons end-time 
+					 (midi-end-of-track)))))
+	    (let* ((event-time (car p))
+		   (event (cdr p))
+		   (delta (prog1
+			      (- event-time previous-time)
+			    (setf previous-time event-time)))
+		   (ticks (truncate (/ delta tickdur))))
+	      (cond ((midi-time-signature-p event)
+		     (setf beat-unit (timesig-unit event)))
+		    ((midi-tempo-message-p event)
+		     (setf tickdur (tick-duration 
+				    (slot-value event 'tempo) 
+				    :unit beat-unit)))
+		    (t nil))
+	      (push (int->midi-vlv ticks) acc)
+	      (push (render-midi-message event) acc)))
+	  (flatten (reverse acc)))))
   
   ;; Renders track chunk, including ID, data-count and data.
   (defmethod render-smf-track ((trk smf-track)(pad number))

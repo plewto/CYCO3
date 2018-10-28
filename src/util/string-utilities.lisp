@@ -108,10 +108,15 @@ Convenience function, same as calling (format nil frmt args...)"
       (setf acc (str+ acc (->string c))))
     acc))
     
-(defun center-string (str width &optional (shift 0))
-  (let* ((lens (length str))
+(defun center-string (text width &optional (shift 0))
+  "Returns new string of length width with argument text
+centered.
+str - String
+width - positive integer
+shift - optional number of spaces to shift text right."
+  (let* ((lens (length text))
 	 (diff (- width lens)))
     (if (minusp diff)
-	str
-      (str+ (scopies (+ (/ diff 2) shift) #\space) str))))
+	text
+      (str+ (scopies (+ (/ diff 2) shift) #\space) text))))
 

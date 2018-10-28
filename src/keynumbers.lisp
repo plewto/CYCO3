@@ -38,7 +38,7 @@
 (defun defkeynumber (sym value)
   "Define new symbolic keynumber.
 sym - symbol
-value - an integer -1 or in (0..127)"
+value - an integer in interval (-1..127) inclusive."
   (setf (gethash sym *keynumbers*) value))
   
 (defmethod keynumber-p ((n integer)) t)

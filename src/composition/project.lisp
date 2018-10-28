@@ -1,5 +1,5 @@
 ;;;; CYCO3 src/composition/project
-;;;;
+;;;; 
 
 (global *default-project-main-file* "main")
 
@@ -15,12 +15,13 @@
 			   :current-section)))
 
 ;; ISSUE: Include retrograde?
+;; ISSUE: Include shift?
 (defstruct seq-mode
   section-name
   count ;; <= 0 --> skip
   transpose
   invert)
-
+  
 (defmethod clone ((src seq-mode) &key new-name new-parent)
   (dismiss new-name new-parent)
   (make-seq-mode
@@ -30,14 +31,30 @@
    :invert (seq-mode-invert src)))
    
 
-(defclass project (time-signature) ())
+(defclass project (time-signature) ()
+  (:documentation
+   "A Project is the top-level composition object and corresponds to a 
+single piece or song.  Projects define the default time-signature, 
+cueing-function, and chord-model and maintain a list of Sections.
+Sections are equivalent to major divisions of the composition,such as 
+a movement, verse, chorus etc.  Projects also maintain pointers to 
+to a project directory.  All files for a specific project are stored 
+in a single directory. 
+
+When a project is created it is automatically bound to the global symbol 
+*project*, which serve as the default for most composition functions.
+
+It is possible to have more then one active project in memory at a time
+but only one will be bound to *project* as the default."))
 
 (defmethod project-p ((p project)) t)
-
 
 (global *persistent--project-name-namestring* "current-project-name")
 
 (defun save-persistent-project-name (name)
+  "Saves the current project name to a file in the config folder.
+This file may be used to reload the the project the next time CYCO is
+used."
   (let* ((filename (join-path *cyco-config-directory*
 			      *persistent--project-name-namestring*
 			      :as-file))
@@ -50,6 +67,9 @@
 
 
 (defun read-persistent-project-name ()
+"Returns the project name, if any, saved by 
+save-persistent-project-name.  Returns nil if there is 
+no saved project."
   (let* ((filename (join-path *cyco-config-directory*
 			      *persistent--project-name-namestring*
 			      :as-file))
@@ -76,6 +96,59 @@
 			  (subbeats 4)
 			  (remarks "")
 			  (make-current t))
+  "Creates new instance of Project.
+name  - Symbol, the project's name.
+        A lowercase version of the name is used to locate the
+        project's directories relative to project-directory.
+:title - Composition title, defaults to name.
+:cuefn - Default cueing function, default #'bar
+:tempo - Default tempo in BPM, default 60.
+:unit  - Default time-signature unit, default 'Q
+:bars  - Default number of bars per phrase, default 4.
+:beats - Default number of beats per bar, default 4.
+:subbeats - Default number of sub-beats per beat, default 16
+:remarks  - Optional remarks text.
+:catalog-number - Optional catalog number.
+:make-current   - boolean, if true the new project is made the default 
+           project by binding it to *project*.
+:project-directory - Sets the top level project directory where this 
+           projects files are stored.  Defaults to *default-project-directory* 
+:main-file -  Sets the lisp file name for the main project file.
+           This file is responsible for loading all other project files.
+           Defaults to *default-project-main-file*
+:output-directory - Output directory where rendered MIDI files are saved.
+           Defaults to *default-project-output-directory*
+
+The location of the project's files is determined by a combination 
+of it's name and the values of project-directory, main-file and 
+output-directory.
+
+Using the defaults of 
+    *default-project-directory*  --> <user-home>/cyco-projects
+    *default-project-name*       --> main.lisp
+    *default-project-output-directory* --> MIDI
+
+The files for a project named 'foo are located at
+    <user-home/cyco-projects/foo/
+
+Note it is not possible to include spaces in a project's name,
+and the project's folder name is always lowercase.
+
+The main project file will be
+    <user-home>/cyco-projects/foo/main.lisp
+
+And MIDI files will be placed in folder
+    <user-home>/cyco-projects/foo/MIDI/
+
+All other project related files should be placed in 
+the cyco-projects/foo/ directory.  
+
+
+There is no prescribed standard for naming other project files 
+but having a dedicated file for each section makes sense.
+
+See the functions load-project, load-project-file and their 
+abbreviations lp and lpf."
   (banner1 (sformat "Project ~A" name))
   (save-persistent-project-name name)
   (let ((proj (make-instance 'project
@@ -116,6 +189,8 @@
 			  (beats 4)
 			  (subbeats 4)
 			  (remarks ""))
+  "Identical to make-project except that the new project is bound to 
+a symbol named name."
   `(if (not (symbolp ',name))
        (cyco-type-error 'project 'symbol ',name
 			"Do not quote project name.")
@@ -163,16 +238,35 @@
 				  :invert nil)))
 	(seq-order smode :project *project*))
     (cyco-composition-error 'seq-order
-			    (sformat "Sectioon ~A does not exists" section-name))))
+			    (sformat "Section ~A does not exists" section-name))))
 
 (flet ((type-error (spec expected offending)
 		   (cyco-type-error 'project.seq-order expected offending
 				    (sformat "Invalid seq-order specification: ~A" spec))))
+
   ;; Takes list of section sequence order.
   ;; Section specification may be single symbol for section-name
   ;; or list (section-name :x 4 :transpose 0 :invert kn)
   ;;     
   (defmethod seq-order ((seqlist list) &key (project *project*))
+    "Establish Section order.
+seqlist is a nested list of form 
+
+     ((section-name :x n  :transpose tx :invert kn)
+       ..........................................)
+
+All elements are optional with the exception of the section-name.   If there 
+are no modifier terms then the section name may be used by itself without 
+placing it in a list.
+
+The modifiers:
+  :x n - repeat section n time.
+  :transpose tx - transpose by tx half-steps
+  :invert kn - invert keys around pivot keynumber kn.
+
+Additional modifiers may be added later."
+
+
     (dolist (q seqlist)
       (let* ((spec (->list q))
 	     (section-name (car spec))
@@ -191,6 +285,7 @@
 	
 
 (defun clear-seq-order (&optional (project *project*))
+  "Removes all section-order information established by seq-order."
   (put project :section-order '()))
 
 
@@ -207,6 +302,15 @@
   (defun load-project (name &key
 			    (project-directory *default-project-directory*)
 			    (main-file *default-project-main-file*))
+    "Loads the main project file, which should then load the remaining files.
+
+name should be a symbol matching the project's directory.
+
+The optional project-directory and main-file arguments may be used to 
+specify a non-standard location.
+
+See LP as a more convenient method of loading a project."
+
     (let ((pname (default-project-name name)))
       (if pname
 	  (let ((fqn (join-path project-directory pname main-file :as-file)))
@@ -218,21 +322,21 @@
 	 "Either there is no default project name,"
 	 (sformat "or name argument is invalid: ~A ~A" (type-of name) name)))))
 
-  ;; (defun lp (&optional name)
-  ;;   (if name
-  ;; 	(load-project name)
-  ;;     (if current-project-main-file
-  ;; 	  (progn 
-  ;; 	    (format t frmt current-project-main-file)
-  ;; 	    (load current-project-main-file))
-  ;; 	(cyco-composition-error 'lp
-  ;; 				"No default project"
-  ;; 				"Try loading or creating project first."))))
-
   (defun lp (&optional name)
+    "LP is a short-cut for load-project with useful defaults.
+The first time it is used the optional name argument should be specified as in 
+load-project.  Thereafter subsequent calls to LP will default to reloading the 
+current project.  
+
+Whenever a new project is loaded it's name is saved to a file in the config 
+folder.  The next time CYCO is started the previous project may be reloaded simply 
+by calling LP without an argument."
     (load-project name))
   
   (defun load-project-file (name)
+    "load-project-file loads a lisp file relative to the project's directory.
+The name argument is a symbol which is converted to a lowercase string.
+See LPF for a convenient shortcut."
     (let ((sname (cond ((symbolp name)
 			(string-downcase (->string name)))
 		       ((stringp name)
@@ -246,6 +350,9 @@
 	    (load fqn)))))
   
   (defun lpf (&optional name)
+    "LPF is a short-cut for load-project-file.  When used without an argument
+it reloads the most recent project-file.  It is useful for interactively 
+reloading a file while it is under development."
     (if name
 	(load-project-file name)
       (if current-filename
@@ -284,6 +391,7 @@
     dst))
 
 (defun render-project (&optional (project *project*))
+  "Converts project to a MIDI event list."
   (banner1 (sformat "Rendering Project: ~A" (name project)))
   (let ((acc '())
 	(time 0.0))
@@ -306,6 +414,9 @@
 
 (defun project->smf (&key (project *project*)
 			  (filename nil))
+  "Saves project to a midi file in the projects output directory.
+The filename defaults to the projects name.  For project foo the default
+file is  <user-home>/cyco-projects/foo/MIDI/foo.mid"
   (let* ((track (make-instance 'smf-track :events (render-project project)))
 	 (smf (let ((mf (smf :format 1 :track-count 1)))
 		(setf (aref (smf-tracks mf) 0) track)
@@ -321,6 +432,3 @@
 		 ".mid")))
     (write-smf smf fname)
     smf))
-		
-		 
-

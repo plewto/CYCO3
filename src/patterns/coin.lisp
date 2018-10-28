@@ -1,16 +1,5 @@
 ;;;; CYCO3 src/patterns/coin
 ;;;;
-;;;; A COIN is a PATTERN with binary choice: head or tail.
-;;;; The head and tail values my individually be:
-;;;;   1) literal value -> return value
-;;;;   2) Pattern -> execute next-1 and return result
-;;;;   3) Function -> call function with internal counter as argument
-;;;;
-;;;; Internal counter is reset after period calls.
-;;;; The head object is returned with probability p
-;;;;
-;;;; Note: (retrograde coin) flips head/tail probability.
-
 
 (defclass coin (pattern)
   ((probability
@@ -21,8 +10,20 @@
    (period
     :type integer
     :initform 0
-    :initarg :period)))
+    :initarg :period))
+  (:documentation 
+"A COIN is a PATTERN with binary choice: head or tail.
+The head and tail values my individually be:
+  1) literal value -> return value
+  2) Pattern -> execute next-1 and return result
+  3) Function -> call function with internal counter as argument
 
+Internal counter is reset after period calls.
+The head object is returned with probability p
+
+Note: (retrograde coin) flips head/tail probability."))
+
+   
 (defmethod coin-p ((obj t)) nil)
 (defmethod coin-p ((c coin)) t)
 

@@ -1,7 +1,7 @@
 ;;;; CYCO3 src/composition/project
 ;;;; 
 
-(global *default-project-main-file* "main")
+
 
 (constant +project-properties+
 	  (append +time-signature-properties+
@@ -432,3 +432,38 @@ file is  <user-home>/cyco-projects/foo/MIDI/foo.mid"
 		 ".mid")))
     (write-smf smf fname)
     smf))
+
+
+(flet ((format-name (sym)
+		    (string-downcase (->string sym))))
+
+  (defun create-project-framework (project-name &rest extras)
+    "Creates project directories and specified (empty) files.
+project-name - quoted symbol
+
+Each additional argument must be a quoted symbol and is used to create
+a matching project-file with the same name.   The main project file
+is automatically created.   Any existing files are not overwritten."
+    (let* ((pname (format-name project-name))
+	   (pdir (join-path *default-project-directory* pname))
+	   (outdir (join-path pdir *default-project-output-directory*)))
+      (format t "Creating project ~A directory framework~%" project-name)
+      (dolist (d (list pdir outdir))
+	(format t "Ensuring directory exist: ~A~%" d)
+	(ensure-directories-exist d))
+      (dolist (fn (cons *default-project-main-file* extras))
+	(let ((fqn (append-filename-extension
+		    (join-path pdir (format-name fn) :as-file)
+		    ".lisp")))
+	  (if (not (probe-file fqn))
+	      (progn
+		(format t "Creating project file: ~A~%" fqn)
+		(let ((stream (open fqn
+				    :direction :output
+				    :if-does-not-exist :create)))
+		  (format stream ";;;; CYCO Project ~A  File ~A.lisp~%" pname (format-name fn))
+		  (format stream ";;;;~%~%")
+		  (close stream)))
+  	    (format t "Project file already exists: ~A~%" fqn)))))))
+
+

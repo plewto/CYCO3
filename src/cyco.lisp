@@ -133,9 +133,7 @@
    ((equalp lit "SBCL")
     (ld "src/sbcl"))
    (t
-    (format t "WARNING: ~A is an unsupoted Lisp.  Using SBCL instead.~%" lit)
-    (ld "src/sbcl"))))
-
+    (format t "WARNING: Using non-tested Lisp: ~A ~%" lit))))
 
 (in-package :common-lisp-user)
 

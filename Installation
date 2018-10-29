@@ -1,0 +1,111 @@
+CYCO3 Installation.
+
+CYCO is implemented in 100% Common Lisp and has relatively few
+requirements. 
+
+
+1) Select a Lisp.
+   CYCO has been extensively tested with SBCL and to a lesser extent with
+   ABCl.  Of the two SBCL is faster and has far better compile time checks.
+   Another advantage of SB is that it allows saving snapshots of CYCO's
+   state as executable.
+
+   Other ANSI Lisp should work but have not been tested.
+
+   http://www.sbcl.org/
+   https://common-lisp.net/project/armedbear/
+
+2) Place the top-level CYCO3 directory in a convenient location.
+
+3) Configuration
+
+   The default configuration file is ~/.config/cyco3/cyco-config.lisp
+   and other configuration files should be placed in this same directory.
+
+   Configuration is not mandatory but is quite useful for defining MIDI
+   instrument proxies to use within CYCO.   The folder CYCO3/config/
+   contains two example configurations.  One is a simple scheme using
+   general-midi instruments.  The other is a more complex and is used as my 
+   personal configuration.  Both are annotated.
+
+   Initially you can just create a hard link to the config directory
+
+   $ cd .config
+   $ ln -s <location-of-CYCO3>/config cyco3
+
+4) Create a projects folder.
+
+   Each CYCO project has an associated folder where all of it's files should
+   be located.   By default these project folders are located at
+
+   ~/cyco-projects/
+
+   The CYCO3/examples folder contains several tutorials.  If you which to
+   execute the tutorials you may want to copy them to ~/cyco-projects/
+
+---------------------------------------------------------------------------
+		            Running CYCO
+
+Once cyco has been installed use the following instruments to start it.
+
+1) Navigate to the CYCO3 folder.
+
+   $ cd CYCO3
+
+2) Start lisp, here using Steel Banks
+   
+   $ sbcl
+
+3) At the Lisp REPL prompt enter
+
+   * (load "src/cyco")
+
+
+4) Once the Lisp prompt returns enter: 
+
+  * (cyco)
+  ___  _  _  ___  _____ 
+ / __)( \/ )/ __)(  _  )
+( (__  \  /( (__  )(_)( 
+ \___) (__) \___)(_____)
+
+The lisp prompt should change to
+
+  CYCO:
+
+
+
+When starting CYCO this way the configuration files are not automatically
+loaded.  This allows different configurations to be created to meet
+specific needs.  To load the default (general MIDI) configuration use:
+
+
+  CYCO: (load-config)
+
+  Check the file ~/.config/cyco-config.lisp to make sure it loads the
+  desired configuration.
+
+
+Once a configuration has been loaded you may wish to create an executable.
+THIS ONLY WORKS WITH SBCL.
+
+   CYCO: (save-snapshot "name-of-snapshot")
+
+After creating the snapshot CYCO will terminate.
+
+
+Starting CYCO from a snapshot is much quicker and there is no need to load
+the cyco source files or configurations.  However you do still need to call
+the (cyco) function to enter the CYCO name-space:
+
+
+$ name-of-snapshot
+* (cyco)
+
+  ___  _  _  ___  _____ 
+ / __)( \/ )/ __)(  _  )
+( (__  \  /( (__  )(_)( 
+ \___) (__) \___)(_____)
+
+CYCO:
+   

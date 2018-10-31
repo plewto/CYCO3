@@ -1,91 +1,95 @@
 ;;;; CYCO3 src/composition/cueing-functions
-;;;; Cueing functions are closely aligned with time-signatures.
-;;;; The convert a user specified time-point to actual time
-;;;; using the current time-signature.  Usually the time point
-;;;; is some offset from the start of a Section or Part.
+;;;;
+;;;; Cueing functions convert a user specified time-point to actual time
+;;;; using the current time-signature.  Usually the time point is some
+;;;; offset from the start of a Section or Part.
 ;;;;
 
 
-(flet ((expect-int (cue-fn value max args)
-		   (or (and (integerp value)
-			    (plusp value)
-			    (<= value max))
-		       (progn
-			 (cyco-cue-warning cue-fn args)
-			 nil)))
-       (expect-tick (cue-fn value args)
-		    (or (integerp value)
-			(cyco-cue-warning cue-fn args)))
-       (expect-rational (cue-fn value args)
-			(or (and (<= 0 value)(< value 1))
-			    (cyco-cue-warning cue-fn args)))
-       (expect-float (cue-fn value args)
-		     (or (and (<= 0 value)(< value 1))
-			 (cyco-cue-warning cue-fn args))) )
+;; The Default cueing function BAR
+;;
+(labels ((warnfn
+	  (args)
+	  (cyco-cue-warning 'BAR args)
+	  0.0)
 
-  (defun bar (time-signature args)
-    "Bar is the default cueing function, it takes a time-signature and a 
-list of timing values.   The argument format is 
+	 (bar-value
+	  (tsig args token)
+	  (or (and (integerp token)(plusp token)(<= token (bars tsig))
+	  	   (* (bar-duration tsig)(1- token)))
+	      (warnfn args)))
 
-       (bar beat sub-beat ticks)
+	 (is-triplet-p
+	  (stoken)  ;; stoken <-- string
+	  (char= #\T (char stoken 0)))
 
-All values are optional, and with exception of ticks, default to 1.
+	 (beat-t-value
+	  (tsig args stoken)
+	  (let ((n (parse-integer (subseq stoken 1))))
+	    (or (and (plusp n)(<= n (tbeats tsig))
+		     (* (tbeat-duration tsig)(1- n)))
+		(warnfn args))))
 
-As example to specify the first beat of bar 1 any of the following args
-list may be used:   () (1) (1 1) (1 1 1) (1 1 1 0)
+	 (beat-normal-value
+	  (tsig args token)
+	  (or (and (integerp token)(plusp token)(<= token (beats tsig))
+		   (* (beat-duration tsig)(1- token)))
+	      (warnfn args)))
 
-The accepted range of values is dependent on the the time-signature
-For a common case of an 8-bar phrase of 4/4 time with 4 16th notes per 
-quarter note, the bars slot has a range of 1..8, the beats and subbeats 
-slot have ranger 1..4 and the ticks slot has a range 0..+TICKS-PER-BEAT+
+	 (beat-value
+	  (tsig args token)
+	  (let ((stoken (string-upcase (->string token))))
+	    (if (is-triplet-p stoken)
+		(beat-t-value tsig args stoken)
+	      (beat-normal-value tsig args token))))
 
-The user is free to define custom cueing functions to meet their 
-specific needs."
+	 (subbeat-t-value
+	  (tsig args stoken)
+	  (let ((n (parse-integer (subseq stoken 1))))
+	    (or (and (plusp n)(<= n (tsubbeats tsig))
+		     (* (tsubbeat-duration tsig)(1- n)))
+		(warnfn args))))
 
-    (let* ((v (->vector (fill-list (->list args) '(1 1 1 0))))
-	   (bar (aref v 0))
-	   (beat (aref v 1))
-	   (sub (aref v 2))
-	   (tk (aref v 3)))
-      (expect-int 'bar bar (bars time-signature) args)
-      (expect-int 'bar beat (beats time-signature) args)
-      (expect-int 'bar sub (subbeats time-signature) args)
-      (expect-tick 'bar tk args)
-      (+ (* (1- bar)(bar-duration time-signature))
-	 (* (1- beat)(beat-duration time-signature))
-	 (* (1- sub)(subbeat-duration time-signature))
-	 (* tk (tick-duration time-signature)))))
+	 (subbeat-normal-value
+	  (tsig args token)
+	  (or (and (integerp token)(plusp token)(<= token (subbeats tsig))
+		   (* (subbeat-duration tsig)(1- token)))
+	      (warnfn args)))
 
+	 (subbeat-value
+	  (tsig args token)
+	  (let ((stoken (string-upcase (->string token))))
+	    (if (is-triplet-p stoken)
+		(subbeat-t-value tsig args stoken)
+	      (subbeat-normal-value tsig args token))))
 
-  ;; More relaxed, requires int for bar and beat
-  ;; allows int, float or rational for sub
-  ;; (defun rbar (time-signature &optional (bar 1)(beat 1)(sub 1)(tick 0))
-  ;;   (let* ((args (list bar beat sub tick))
-  ;; 	   (subpos (cond ((integerp sub)
-  ;; 			  (expect-int 'rbar sub (subbeats time-signature) args)
-  ;; 			  (1- sub))
-  ;; 			 ((rationalp sub)
-  ;; 			  (expect-rational 'rbar sub args)
-  ;; 			  sub)
-  ;; 			 ((floatp sub)
-  ;; 			  (expect-float 'rbar sub args)
-  ;; 			  sub)
-  ;; 			 (t
-  ;; 			  (cyco-cue-warning 'rbar args)
-  ;; 			  0))))
-  ;;     (expect-int 'bar bar (bars time-signature) args)
-  ;;     (expect-int 'bar beat (beats time-signature) args)
-  ;;     (expect-tick 'bar tick args)
-  ;;     (+ (* (1- bar)(bar-duration time-signature))
-  ;; 	 (* (1- beat)(beat-duration time-signature))
-  ;; 	 (* subpos (subbeat-duration time-signature))
-  ;; 	 (* tick (tick-duration time-signature)))))
+	 (tick-value
+	  (tsig args token)
+	  (or (and (not token) 0)
+	      (and (integerp token)
+		   (* (tick-duration tsig) token))
+	      (warnfn args))) )
 
-  ) 
-			  
+  (defun bar (time-signature tspec)
+    "BAR is the default cueing function.
+tspec is a time specification in the context of the time-signature.
+The specification has the form (BR BT SB TK) where all elements are optional. 
 
-		 
-    
+BR - Bar number, integer 1,2,3,... <= (bars time-signature), default 1
 
+BT - Beat number, integer 1,2,3,... <= (beats time-signature), default 1
+     Use a 'T' prefix for triplet version of the beat unit.
+     T1,T2,T3,... <= (tbeats time-signature)
 
+SB - Sub beat within beat, 1,2,3,... <= (subbeats time-signature), default 1
+     Use 'T' prefix for triplet version of sub-bet
+     T1,T2,T3,... <= (tsubbeats time-signature)
+
+TK - Tick offset, may be positive or negative integer, default 0."
+    (let* ((v (->vector (fill-list (->list tspec) '(1 1 1 0))))
+  	   (br (bar-value time-signature tspec (aref v 0)))
+  	   (bt (beat-value time-signature tspec (aref v 1)))
+  	   (sb (subbeat-value time-signature tspec (aref v 2)))
+  	   (tk (tick-value time-signature tspec (aref v 3))) )
+      (float (+ br bt sb tk)))) )
 

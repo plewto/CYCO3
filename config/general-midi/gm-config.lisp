@@ -84,7 +84,7 @@ name  - Symbol
 (defmacro general-midi-instrument (name &key
 					program 
 					(parent +root-instrument+)
-					transient
+					(transient t)
 					channel
 					keynumber-map
 					dynamic-map

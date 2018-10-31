@@ -814,6 +814,14 @@ specific object type."))
   (:documentation
    "Sets time-signature sub-beat count."))
 
+(defgeneric tbeats (obj)
+  (:documentation
+   "Returns time-signature triplet-beat count"))
+
+(defgeneric tbeat-duration (obj)
+  (:documentation
+   "Returns time-signature triplet-beat duration."))
+
 (defgeneric tempo (obj)
   (:documentation
    "Returns time-signature tempo in BPM."))
@@ -829,6 +837,14 @@ specific object type."))
 (defgeneric ticks-per-beat (obj)
   (:documentation
    "Returns the time-signature ticks per beat count."))
+
+(defgeneric tsubbeats (obj)
+  (:documentation
+   "Returns time-signature subbeat triplet count."))
+
+(defgeneric tsubbeat-duration (obj)
+  (:documentation
+   "Returns time-signature subbeat triplet duration."))
 
 (defgeneric transpose (obj x)
   (:documentation

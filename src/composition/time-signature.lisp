@@ -7,11 +7,14 @@
 structure.  The CYCO notion of a time signature is a generalization 
 of the typical view.  In addition to the standard 'beats-per-measure' 
 and basic beat unit,  time-signature defines tempo in BPM, 
-number of bars in a phrase and the number of sub-beats to a beat."))
+number of bars in a phrase and the number of sub-beats to a beat.
+The properties tbeats and tsubbeats are tripplet version of beats and 
+subbeats"))
 
-(constant +time-signature-properties+ '(:tempo :unit :bars :beats :subbeats
-					:phrase-duration :bar-duration :beat-duration
-					:subbeat-duration :tick-duration))
+(constant +time-signature-properties+
+	  '(:tempo :unit :bars :beats :tbeats :subbeats :tsubbeats
+		   :phrase-duration :bar-duration :beat-duration :tbeat-duration
+		   :subbeat-duration :tsubbeat-duration :tick-duration))
 
 (defmethod init-time-signature ((node cyco-node))
   (dolist (c (children node))(init-time-signature c)))
@@ -29,6 +32,10 @@ number of bars in a phrase and the number of sub-beats to a beat."))
     (put tsig :beat-duration beat-duration)
     (put tsig :bar-duration bar-duration)
     (put tsig :phrase-duration phrase-duration)
+    (put tsig :tbeats (truncate (* 3/2 (property tsig :beats))))
+    (put tsig :tbeat-duration (float (* 2/3 beat-duration)))
+    (put tsig :tsubbeats (* 3/2 (property tsig :subbeats)))
+    (put tsig :tsubbeat-duration (float (* 2/3 subbeat-duration)))
     (dolist (c (children tsig))(init-time-signature c))
     tsig))
 
@@ -78,8 +85,14 @@ number of bars in a phrase and the number of sub-beats to a beat."))
 (defmethod beats ((tsig time-signature))
   (property tsig :beats))
 
+(defmethod tbeats ((tsig time-signature))
+  (property tsig :tbeats))
+
 (defmethod subbeats ((tsig time-signature))
   (property tsig :subbeats))
+
+(defmethod tsubbeats ((tsig time-signature))
+  (property tsig :tsubbeats))
 
 (defmethod phrase-duration ((tsig time-signature))
   (property tsig :phrase-duration)) 
@@ -88,10 +101,16 @@ number of bars in a phrase and the number of sub-beats to a beat."))
   (property tsig :bar-duration)) 
 
 (defmethod beat-duration ((tsig time-signature))
-  (property tsig :beat-duration)) 
+  (property tsig :beat-duration))
+
+(defmethod tbeat-duration ((tsig time-signature))
+  (property tsig :tbeat-duration)) 
 
 (defmethod subbeat-duration ((tsig time-signature))
-  (property tsig :subbeat-duration)) 
+  (property tsig :subbeat-duration))
+
+(defmethod tsubbeat-duration ((tsig time-signature))
+  (property tsig :tsubbeat-duration)) 
 
 (defmethod tick-duration ((tsig time-signature) &key unit)
   (dismiss unit)

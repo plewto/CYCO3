@@ -5,9 +5,9 @@
   "A shortcut abbreviation for describe"
   (describe sym))
   
-(defun ?a (sym)
+(defun ?a (sym &optional (package :CYCO))
   "A shortcut abbreviation for apropos"
-  (apropos sym))
+  (apropos sym package))
 
 (defmethod ? ((n integer))
   (format t "INTEGER~%"))

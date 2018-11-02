@@ -72,9 +72,17 @@
 
 
 (let* ((current "")
+       (verbose-flag t)
+       (print-flag nil)
        ;; List of CYCO source files
-       ;; Include keyword :stop to prevent remaining files being loaded.
-       (manifest '("src/constants"
+       ;;     :break - Do not load remeining files in manifest
+       ;;     :quit  - Exit lisp
+       ;;     :print-on  - print load on
+       ;;     :print-off - print load off
+       ;;     :verbose - Display file names as loaded
+       ;;     :quite   - Oposite of :verbose
+       (manifest '(:QUITE
+		   "src/constants"
 		   "src/globals"
 		   "src/api"
 		   "src/util/string-utilities"
@@ -119,7 +127,7 @@
 		   "src/composition/parts/raw-part"
 		   "src/composition/parts/epart-docs"
 		   "src/composition/parts/epart-state"
-		   "src/composition/parts/epart"
+         	   "src/composition/parts/epart"
 		   "src/composition/parts/epart-render"
 		   "src/composition/parts/cpart"
 		   "src/composition/parts/cpart-render"
@@ -136,9 +144,9 @@
     "Loads CYCO source file."
     (let ((temp *load-print*))
       (setf current filename)
-      (if verbose
+      (if (or verbose-flag verbose)
 	  (format t "~A~%" filename))
-      (setf *load-print* print)
+      (setf *load-print* (or print-flag print))
       (load filename)
       (setf *load-print* temp)
       current))
@@ -147,18 +155,25 @@
     "Reloads most-recently loaded CYCO source file."
     (ld current))
 
-  (defun build-cyco (&key (verbose t)(print nil))
+  (defun build-cyco (&key verbose print)
     "Reloads all CYCO source files."
+    (format t "Building CYCO...~%")
     (dolist (file manifest)
-      (cond ((eq file :stop)
-	     (format t "BUILD-CYCO exited with :STOP command~%")
+      (cond ((eq file :break)
+	     (format t "BUILD-CYCO exited with :BREAK command~%")
 	     (return-from build-cyco))
-	    ;; ((eq file :exit)
-	    ;;  (format t "BUILD-CYCO exited with :EXIT command~%")
-	    ;;  (sb::exit))
-	    )
-	    
-      (ld file :verbose verbose :print print))) )
+	    ((eq file :quit)
+	     (format t "BUILD-CYCO exited with :QUIT command~%")
+	     (quit))
+	    ((eq file :verbose)
+	     (setf verbose-flag t))
+	    ((eq file :quite)
+	     (setf verbose-flag nil))
+	    ((eq file :print-on)
+	     (setf print-flag t))
+	    ((eq file :print-off)
+	     (setf print-flag nil))
+	    (t (ld file :verbose verbose :print print))))) )
   
 (build-cyco)
 

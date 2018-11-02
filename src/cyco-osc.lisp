@@ -3,6 +3,8 @@
 ;;;; Load CYCO with OSC support
 ;;;;
 
+(format t "Loading external packages:  OSC USOCKET~%")
+
 (load "~/quicklisp/setup")
 
 (eval-when (:execute)

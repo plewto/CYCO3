@@ -19,6 +19,6 @@
     (setf sb-int:*REPL-PROMPT-FUN* #'(lambda (s)(format s "~%* ")))
     (sb-ext::save-lisp-and-die fname :executable t)))
 
-(defun exit ()
-  (sb-ext:exit))
+;; (defun exit ()
+;;   (sb-ext:exit))
 

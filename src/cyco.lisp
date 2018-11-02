@@ -101,7 +101,8 @@
 		   "src/composition/countin"
 		   "src/composition/endpad"
 		   "src/util/inspection"
-		   "src/local-config" )))
+		   "src/local-config"
+		   )))
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."
@@ -145,6 +146,7 @@
   nil)
 
 (in-package :cyco)
+
 
 (defun cyco ()
   (cyco-banner))

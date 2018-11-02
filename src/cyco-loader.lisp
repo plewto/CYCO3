@@ -1,10 +1,12 @@
-;;;; CYCO
+;;;; CYCO cyco-loaders
 ;;;;
 
-(defpackage :cyco
-  (:use common-lisp))
 
-(in-package :cyco)
+;; (defpackage :cyco
+;;   (:use :cl ))
+
+;; (in-package :cyco)
+
 
 (defun dismiss (&rest args)
   "Informs SBCL compiler that arguments may be ignored."
@@ -42,6 +44,32 @@
 
 (constant-function true t)
 (constant-function false nil)
+
+;; Taken from Rob Warnock's post "How to programmatically exit?"
+;; https://groups.google.com/forum/#!msg/comp.lang.lisp/kpTqyLQ-HaU/ms2NYHmlyZQJ
+;;
+(defun quit (&optional code)
+      ;; This group from "clocc-port/ext.lisp"
+      #+allegro (excl:exit code)
+      #+clisp (#+lisp=cl ext:quit #-lisp=cl lisp:quit code)
+      #+cmu (ext:quit code)
+      #+cormanlisp (win32:exitprocess code)
+      #+gcl (lisp:bye code)                     ; XXX Or is it LISP::QUIT?
+      #+lispworks (lw:quit :status code)
+      #+lucid (lcl:quit code)
+      #+sbcl (sb-ext:exit :code code)
+      ;; This group from Maxima
+      #+kcl (lisp::bye)                         ; XXX Does this take an arg?
+      #+scl (ext:quit code)                     ; XXX Pretty sure this *does*.
+      #+(or openmcl mcl) (ccl::quit)
+      #+abcl (cl-user::quit)
+      #+ecl (si:quit)
+      ;; This group from <hebi...@math.uni.wroc.pl>
+      #+poplog (poplog::bye)                    ; XXX Does this take an arg?
+      #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl
+            kcl scl openmcl mcl abcl ecl)
+      (error 'not-implemented :proc (list 'quit code))) 
+
 
 (let* ((current "")
        ;; List of CYCO source files
@@ -122,8 +150,14 @@
   (defun build-cyco (&key (verbose t)(print nil))
     "Reloads all CYCO source files."
     (dolist (file manifest)
-      (if (eq file :stop)
-	  (return-from build-cyco))
+      (cond ((eq file :stop)
+	     (format t "BUILD-CYCO exited with :STOP command~%")
+	     (return-from build-cyco))
+	    ;; ((eq file :exit)
+	    ;;  (format t "BUILD-CYCO exited with :EXIT command~%")
+	    ;;  (sb::exit))
+	    )
+	    
       (ld file :verbose verbose :print print))) )
   
 (build-cyco)

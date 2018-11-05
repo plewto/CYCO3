@@ -12,7 +12,7 @@
 		(a4 (format nil "~%")))
 	    (concatenate 'string a0 a1 a2 a3 a4)))
 
-;;(constant +TICKS-PER-QUARTER-NOTE+ 96)
+
 (constant +TICKS-PER-BEAT+ 96)
 
 ;;; MIDI command bytes

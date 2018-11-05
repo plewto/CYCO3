@@ -2,10 +2,15 @@
 ;;;;
 
 
-;; (defpackage :cyco
-;;   (:use :cl ))
+(load "~/quicklisp/setup")
+(eval-when (:execute)
+  (ql:quickload :osc)
+  (ql:quickload :usocket))
 
-;; (in-package :cyco)
+(defpackage :cyco
+  (:use :cl :osc :usocket))
+
+(in-package :cyco)
 
 
 (defun dismiss (&rest args)
@@ -48,7 +53,7 @@
 ;; Taken from Rob Warnock's post "How to programmatically exit?"
 ;; https://groups.google.com/forum/#!msg/comp.lang.lisp/kpTqyLQ-HaU/ms2NYHmlyZQJ
 ;;
-(defun quit (&optional code)
+(defun exit (&optional code)
       ;; This group from "clocc-port/ext.lisp"
       #+allegro (excl:exit code)
       #+clisp (#+lisp=cl ext:quit #-lisp=cl lisp:quit code)
@@ -68,18 +73,18 @@
       #+poplog (poplog::bye)                    ; XXX Does this take an arg?
       #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl
             kcl scl openmcl mcl abcl ecl)
-      (error 'not-implemented :proc (list 'quit code))) 
-
+      (error 'not-implemented :proc (list 'exit code))) 
 
 (let* ((current "")
        (verbose-flag t)
        (print-flag nil)
        ;; List of CYCO source files
-       ;;     :break - Do not load remeining files in manifest
-       ;;     :quit  - Exit lisp
-       ;;     :print-on  - print load on
-       ;;     :print-off - print load off
-       ;;     :verbose - Display file names as loaded
+       ;; For testing manifet may include following keywords
+       ;;     :break - Do not load remeining files in manifest.
+       ;;     :exit  - Exit lisp.
+       ;;     :print-on  - print load on.
+       ;;     :print-off - print load off.
+       ;;     :verbose - Display file names as loaded.
        ;;     :quite   - Oposite of :verbose
        (manifest '(:QUITE
 		   "src/constants"
@@ -137,8 +142,7 @@
 		   "src/composition/countin"
 		   "src/composition/endpad"
 		   "src/util/inspection"
-		   "src/local-config"
-		   )))
+		   "src/local-config" )))
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."
@@ -162,9 +166,9 @@
       (cond ((eq file :break)
 	     (format t "BUILD-CYCO exited with :BREAK command~%")
 	     (return-from build-cyco))
-	    ((eq file :quit)
-	     (format t "BUILD-CYCO exited with :QUIT command~%")
-	     (quit))
+	    ((eq file :exit)
+	     (format t "BUILD-CYCO exited with :EXIT command~%")
+	     (exit))
 	    ((eq file :verbose)
 	     (setf verbose-flag t))
 	    ((eq file :quite)
@@ -196,6 +200,6 @@
 
 (in-package :cyco)
 
-
 (defun cyco ()
   (cyco-banner))
+

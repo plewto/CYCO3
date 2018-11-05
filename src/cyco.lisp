@@ -1,9 +1,8 @@
 ;;;; CYCO cyco-loaders
 ;;;;
 
-
 (load "~/quicklisp/setup")
-(eval-when (:execute)
+(eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :osc)
   (ql:quickload :usocket))
 
@@ -79,14 +78,14 @@
        (verbose-flag t)
        (print-flag nil)
        ;; List of CYCO source files
-       ;; For testing manifet may include following keywords
-       ;;     :break - Do not load remeining files in manifest.
+       ;; For testing manifest may include following keywords
+       ;;     :break - Do not load remaining files in manifest.
        ;;     :exit  - Exit lisp.
        ;;     :print-on  - print load on.
        ;;     :print-off - print load off.
-       ;;     :verbose - Display file names as loaded.
-       ;;     :quite   - Oposite of :verbose
-       (manifest '(:QUITE
+       ;;     :verbose - Display file names as they are loaded.
+       ;;     :quite   - Opposite of :verbose
+       (manifest '(:verbose
 		   "src/constants"
 		   "src/globals"
 		   "src/api"
@@ -96,6 +95,8 @@
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
 		   "src/util/paths"
+		   "src/osc/osc-send"
+		   "src/osc/osc-receive"
 		   "src/keynumbers"
 		   "src/dynamics"
 		   "src/metrics"

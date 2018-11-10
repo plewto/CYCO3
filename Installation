@@ -1,7 +1,0 @@
-CYCO3 Installation.
-
-Requirements:
-   Lisp disribution   
-   quicklisp   https://github.com/quicklisp/
-   osc         https://github.com/zzkt/osc'
-   socket

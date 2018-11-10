@@ -18,7 +18,7 @@ files:
     *CYCO-CONFIG-DIRECTORY*
 
       Location of the configuration directory.
-      defaults to   "~/.config/cyco3/
+      defaults to   "~/.config/cyco/
 
 
     *CYCO-CONFIG-FILE*

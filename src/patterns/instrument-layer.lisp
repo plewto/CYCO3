@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/instrument-layer
+;;;; CYCO
 ;;;;
 
 
@@ -30,4 +30,6 @@ Use Case:
 
 (defmethod remaining ((obj instrument-layer))
   (length (elements obj)))
+
+
 

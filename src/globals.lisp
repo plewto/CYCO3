@@ -1,4 +1,4 @@
-;;;; CYCO3 src/globals
+;;;; CYCO
 ;;;;
 
 (global *os-path-root* "/")
@@ -32,3 +32,5 @@
 (global *osc-receive-buffer-length* 1024)
 
 (global *osc-send-verbose* t)
+
+

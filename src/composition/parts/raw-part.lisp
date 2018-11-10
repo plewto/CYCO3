@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/raw-part
+;;;; CYCO
 ;;;;
 ;;; raw-part is always a leaf node.
 
@@ -166,3 +166,5 @@ subject to the Section cueing function."
    child
    (sformat "Attempt to connect NODE ~A to leaf node ~A"
 	    (name child)(name parent))))
+
+

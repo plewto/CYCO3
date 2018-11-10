@@ -1,4 +1,4 @@
-;;;; CYCO3 src/orchestra/instrument
+;;;; CYCO
 ;;;;
 ;;;; NOTE: Child node of an Instrument must also be an Instrument.
 
@@ -279,4 +279,6 @@ Child nodes of an instrument must also be instruments."
   
 	  
   
+
+
 

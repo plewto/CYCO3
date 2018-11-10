@@ -1,4 +1,4 @@
-;;;; CYCO3 src/seq-utilities
+;;;; CYCO
 ;;;;
 
 (defmethod ->list ((obj t)) (list obj))
@@ -234,3 +234,5 @@ Default is to split list at keyword boundaries.
 			 (pri-b (priority (cdr b))))
 		    (> pri-b pri-a))
 		(< time-a time-b))))))
+
+

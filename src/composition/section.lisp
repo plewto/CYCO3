@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/section
+;;;; CYCO
 ;;;;
 
 (constant +section-properties+
@@ -285,3 +285,5 @@ is appended to the name if needed."
     (setf (aref (smf-tracks smf) 0) track)
     (write-smf smf fname :pad pad)
     smf))
+
+

@@ -1,4 +1,4 @@
-;;;; CYCO3 src/orchestra/channel-assignments
+;;;; CYCO
 ;;;; Defines nested symbolic MIDI channel names.
 ;;;;
 ;;;; (meta-channel nil) --> nil
@@ -98,4 +98,6 @@ remarks - optional explanation."
 or a defined symbolic meta channel."
     (or (and (integerp obj)(plusp obj)(<= obj 16))
 	(assoc obj assignments))) )
+
+
 

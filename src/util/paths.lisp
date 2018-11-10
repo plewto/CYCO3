@@ -1,4 +1,4 @@
-;;;; CYCO3 src/paths
+;;;; CYCO
 ;;;;
 ;;;; ISSUE: This file flaunts the idiomatic Lisp approach to pathnames.
 ;;;;
@@ -99,4 +99,6 @@ Do not append if filename already ends with extension.
     (if (not (string= tail extension))
 	(str+ fname extension)
       fname)))
+
+
 

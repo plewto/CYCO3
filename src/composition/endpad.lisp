@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/endpad
+;;;; CYCO
 ;;;;
 ;;;; ENDPAD provides a final section to pad-out the end of a MIDI track
 ;;;; to allow for final note decays..
@@ -58,3 +58,5 @@ project."))
 
 (defmethod render-n ((epad endpad)(n integer) &key (offset))
   (render-once epad :offset offset))
+
+

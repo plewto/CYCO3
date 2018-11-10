@@ -1,4 +1,4 @@
-;;;; CYCO3 src/midi/syscommon
+;;;; CYCO
 ;;;;
 
 
@@ -81,4 +81,6 @@ If arg is an integer an empty (all 0) vector of that length is created."
 (defmethod render-midi-message ((evn midi-end-system-exclusive))
   (list +END-EXCLUSIVE+))
   
+
+
 

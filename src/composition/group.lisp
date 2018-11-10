@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/group
+;;;; CYCO
 ;;;;
 ;;;; syntax within section context
 ;;;;
@@ -118,4 +118,6 @@ within in the section.
 ;; (defmethod clone ((grp group) &key new-name new-parent)
 ;;   (dismiss grp new-name new-parent)
 ;;   grp)
+
+
 

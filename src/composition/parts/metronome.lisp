@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/metronome
+;;;; CYCO
 ;;;;
 
 
@@ -94,4 +94,6 @@ symbol name."
 		:instrument ,instrument)))
      (defparameter ,name met)
      met))
+
+
 

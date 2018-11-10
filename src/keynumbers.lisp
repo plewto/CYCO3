@@ -1,5 +1,5 @@
-;;;; CYCO3 src/keynumbers
-;;;; CYCO representation of MIDI key numbers.
+;;;; CYCO
+;;;; Symbolic representation of MIDI key numbers.
 ;;;;
 
 (constant +PITCH-CLASSES+ #(C CS D DS E F FS G GS A AS B))
@@ -146,4 +146,6 @@ value - an integer in interval (-1..127) inclusive."
 
 (defmethod invert ((lst list)(pivot t))
   (mapcar #'(lambda (q)(invert q pivot)) lst))
+
+
 

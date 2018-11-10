@@ -1,4 +1,4 @@
-;;;; CYCO3 api
+;;;; CYCO
 ;;;;
 ;;;; Defines all generic CYCO functions.
 ;;;; In a few cases implements simpler methods.
@@ -875,3 +875,5 @@ x - integer, transposition amount."))
 (defgeneric write-smf (obj filename &key pad no-overwrite)
   (:documentation
    "Write MIDI file object to disc."))
+
+

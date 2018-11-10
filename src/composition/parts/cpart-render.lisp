@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/cpart-render
+;;;; CYCO
 ;;;;
           ;; Generates single bend event for each channel-index.
 (labels ((create-bend-point
@@ -293,4 +293,6 @@
 	      (msg (cdr evn)))
 	  (push (cons (+ offset (* i period) reltime) msg) acc))))
     (sort-midi-events acc)))
+
+
 

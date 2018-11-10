@@ -1,4 +1,4 @@
-;;;; CYCO3 src/midi/smf
+;;;; CYCO
 ;;;; smf ~ Standard Midi File
 ;;;;
 
@@ -84,6 +84,8 @@ division - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
       (format t "TRACK: ~s~%" (name trk))
       (dump-events trk :range range :filter filter :render render)))
   (smf-track-count obj))
+
+
 
 
 

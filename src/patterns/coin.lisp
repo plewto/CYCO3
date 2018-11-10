@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/coin
+;;;; CYCO
 ;;;;
 
 (defclass coin (pattern)
@@ -54,4 +54,6 @@ Note: (retrograde coin) flips head/tail probability."))
     (setf (pointer c)
 	  (rem (1+ (pointer c))(cardinality c)))
     (value c)))
+
+
 

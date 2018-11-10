@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/pattern
+;;;; CYCO
 ;;;;
 ;;;; A Pattern is an object which generates a sequence of values in some
 ;;;; prescribed manner.  Patterns may be nested to any level.  Two of the
@@ -134,4 +134,6 @@
 (defmethod retrograde ((p pattern))
   (setf (elements p)(retrograde (elements p)))
   p)
+
+
 

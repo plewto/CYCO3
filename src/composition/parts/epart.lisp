@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/epart
+;;;; CYCO
 ;;;;
 ;;;; EPART is a Part with explicit event specifications.
 ;;;; 
@@ -852,4 +852,6 @@
       (format t "[~3D] -----------------------------------~%" index)
       (format t "~A~%" s)
       (setf index (1+ index)))))
+
+
 

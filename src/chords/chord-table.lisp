@@ -1,4 +1,4 @@
-;;;; CYCO3 src/chords/chord-table
+;;;; CYCO
 ;;;; 
 
 (defclass chord-table (chord-model)
@@ -61,3 +61,5 @@
 	  "Using default (0)")
 	 '(0)))))
 		     
+
+

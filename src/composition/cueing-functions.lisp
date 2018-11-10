@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/cueing-functions
+;;;; CYCO
 ;;;;
 ;;;; Cueing functions convert a user specified time-point to actual time
 ;;;; using the current time-signature.  Usually the time point is some
@@ -92,4 +92,6 @@ TK - Tick offset, may be positive or negative integer, default 0."
   	   (sb (subbeat-value time-signature tspec (aref v 2)))
   	   (tk (tick-value time-signature tspec (aref v 3))) )
       (float (+ br bt sb tk)))) )
+
+
 

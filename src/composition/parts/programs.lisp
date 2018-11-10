@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/programs
+;;;; CYCO
 ;;;; Programs is a type of Part for generating MIDI program change events.
 ;;;;
 ;;;; Programs are always leaf nodes
@@ -132,3 +132,5 @@ Programs are always a leaf node."
    child
    (sformat "Attempt to connect NODE ~A to leaf node ~A"
 	    (name child)(name parent)))) 
+
+

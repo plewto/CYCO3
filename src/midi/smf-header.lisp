@@ -1,4 +1,4 @@
-;;;; CYCO3 src/midi/smf-header
+;;;; CYCO
 ;;;; 
 
 (defclass smf-header nil
@@ -24,4 +24,6 @@
 	  (lsb track-count)
 	  (msb (smf-division header))
 	  (lsb (smf-division header)))))
+
+
 

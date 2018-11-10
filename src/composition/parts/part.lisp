@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/part
+;;;; CYCO
 ;;;;
 
 (constant +part-properties+
@@ -94,4 +94,6 @@ used directly."))
 			(filter #'false)
 			(render nil))
   (dump-events (render-once prt) :range range :filter filter :render render))
+
+
 

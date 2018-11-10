@@ -1,4 +1,4 @@
-;;;; CYCO3 src/orchestra/articulation-map
+;;;; CYCO
 ;;;;
 ;;;; An articulation map is a function of form  (lambda (dy &key time-scale))
 ;;;; which returns float for key-down duration.
@@ -60,4 +60,6 @@
 		((eq m 'beat)
 		 dbeat)
 		(t dbeat))))))
+
+
 

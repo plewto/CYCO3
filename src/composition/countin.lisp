@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/countin
+;;;; CYCO
 ;;;;
 ;;;; Coutin is a specialized Section for MIDI initialization and
 ;;;; metronome count-in.
@@ -82,3 +82,5 @@ name - Symbol, defaults to 'countin
 			    :subbeats (property src :subbeats)
 			    :instruments (property src :instruments))))
     dst))
+
+

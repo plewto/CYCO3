@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/time-signature
+;;;; CYCO
 ;;;;
 
 (defclass time-signature (cyco-node) ()
@@ -176,4 +176,6 @@ subbeats"))
   (dolist (key +time-signature-properties+)
     (put dst key (property src key)))
   dst)
+
+
 

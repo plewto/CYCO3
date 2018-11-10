@@ -1,4 +1,4 @@
-;;;; CYCO3 src/inspection
+;;;; CYCO
 ;;;;
 
 (defun ?d (sym)
@@ -43,3 +43,5 @@ Optional what argument indicates which tree to display
 	      (ilst (aref ary i)))
 	  (dolist (iname ilst)
 	    (format t "[~2D] ~A~%" chan iname)))))))
+
+

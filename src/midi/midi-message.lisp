@@ -1,4 +1,4 @@
-;;;; CYCO3 src/midi/midi-message
+;;;; CYCO
 ;;;;
 ;;;; Terminology:  
 ;;;;
@@ -277,4 +277,6 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value lsb)
 			       (assert-midi-data-value msb))))
+
+
 

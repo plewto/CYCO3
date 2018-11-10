@@ -1,4 +1,4 @@
-;;;; CYCO3 src/math-utilities
+;;;; CYCO
 ;;;;
 
 (defun 2+ (n)(+ 2 n))
@@ -29,6 +29,8 @@ value  - number,
 		  (+ value delta))))
 	    min max)))
 		
+
+
 
 
 

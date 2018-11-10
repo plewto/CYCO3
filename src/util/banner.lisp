@@ -1,4 +1,4 @@
-;;;; CYCO3 src/banner
+;;;; CYCO
 ;;;;
 ;;;; Defines several text banners.
 
@@ -47,4 +47,6 @@ BANNER3 is less bold then BANNER2."
     (dolist (q more)
       (format t "~A   ~A~%" +banner-header2+ q))
     (format t "~%")))
+
+
 

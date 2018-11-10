@@ -1,4 +1,4 @@
-;;;; CYCO3 src/midi/meta
+;;;; CYCO
 ;;;;
 ;;;; Not all meta messages are defined.
 ;;;; Implemented:
@@ -264,4 +264,6 @@
 
 (defmethod render-midi-message ((evn midi-key-signature))
   (list +META+ +KEY-SIGNATURE+ 2 (slot-value evn 'sf)(slot-value evn 'mi))) 
+
+
 

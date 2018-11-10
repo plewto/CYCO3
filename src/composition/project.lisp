@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/project
+;;;; CYCO
 ;;;; 
 
 
@@ -465,5 +465,7 @@ is automatically created.   Any existing files are not overwritten."
 		  (format stream ";;;;~%~%")
 		  (close stream)))
   	    (format t "Project file already exists: ~A~%" fqn)))))))
+
+
 
 

@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/cycle
+;;;; CYCO
 ;;;;
 
 (defclass cycle (pattern) nil
@@ -32,4 +32,6 @@ cycle repeats."))
 
 (defmethod ->cycle ((obj t))
   (cycle :of (->list obj)))
+
+
 

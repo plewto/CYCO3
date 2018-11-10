@@ -1,4 +1,4 @@
-;;;; CYCO3 src/local-config
+;;;; CYCO
 ;;;;
 ;;;; CYCO configuration is used customize it's environment to the user's
 ;;;; requirements.  The major motivation for configuration is to describe
@@ -12,9 +12,9 @@
 ;;;;
 ;;;; By default the primary configuration file is
 ;;;;
-;;;;     <user-home>/.config/cyco3/cyco-config.lisp
+;;;;     <user-home>/.config/cyco/cyco-config.lisp
 ;;;;
-;;;; The folder CYCO3/config contains 2 example configuration schemes.
+;;;; The folder CYCO/config contains 2 example configuration schemes.
 ;;;; The first is a simple scheme based on general MIDI instruments.
 ;;;; The second, called sj, is more involved and is personal configuration.
 ;;;;
@@ -24,7 +24,7 @@
 ;;;; different configuration.
 ;;;;
 
-(setf *cyco-config-directory* (join-path (user-home) ".config/cyco3" :as-file))
+(setf *cyco-config-directory* (join-path (user-home) ".config/cyco" :as-file))
 (setf *cyco-config-file* "cyco-config.lisp")
 
 (defun load-config-file (filename)
@@ -41,4 +41,10 @@
 (defun load-config ()
   "Loads the primary configuration file."
   (load-config-file *cyco-config-file*))
+
+
+
+
+
+
 

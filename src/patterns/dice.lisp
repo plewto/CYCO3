@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/dice
+;;;; CYCO
 ;;;;
 
 (defclass dice (pattern) nil
@@ -15,4 +15,6 @@ replacement."))
   (setf (pointer q)
 	(rem (1+ (pointer q))(cardinality q)))
   (setf (value q)(next-1 (pick (elements q)))))
+
+
 

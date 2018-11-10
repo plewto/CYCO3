@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/epart-render
+;;;; CYCO
 ;;;;
 
 (labels ((generate-touch-events
@@ -231,4 +231,6 @@
 	      (msg (cdr evn)))
 	  (push (cons (+ offset (* i period) reltime) msg) acc))))
     (sort-midi-events acc)))
+
+
 

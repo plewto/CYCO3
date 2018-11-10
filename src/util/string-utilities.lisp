@@ -1,4 +1,4 @@
-;;;; CYCO3 src/string-utilities
+;;;; CYCO
 ;;;;
 
 (defmethod clone ((str string) &key new-name new-parent)
@@ -119,4 +119,6 @@ shift - optional number of spaces to shift text right."
     (if (minusp diff)
 	text
       (str+ (scopies (+ (/ diff 2) shift) #\space) text))))
+
+
 

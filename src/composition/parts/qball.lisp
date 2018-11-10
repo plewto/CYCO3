@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/qball
+;;;; CYCO
 ;;;;
 ;;;; A QBall is a recombinative note generator.
 ;;;; The user specifies instrument, time, key-number, duration and
@@ -285,4 +285,6 @@ named name."
     (dolist (c (children src))
       (clone c :new-name frmt :new-parent prt))
     prt))
+
+
 

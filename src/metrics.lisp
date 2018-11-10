@@ -1,4 +1,4 @@
-;;;; CYCO3 src/metrics
+;;;; CYCO
 ;;;;
 ;;;; Metric values specify relative times. The basic metric values are:
 ;;;;
@@ -165,4 +165,6 @@
 
 (defmethod metric-expression ((lst list))
   (mapcar #'metric-expression lst))
+
+
 

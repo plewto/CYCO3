@@ -1,4 +1,4 @@
-;;;; CYCO3 src/composition/parts/cpart
+;;;; CYCO
 
 (constant +cpart-documentation+
 " Creates new CPART instance.
@@ -390,3 +390,5 @@
       (push (clone q) acc))
     (setf (cpart-events prt)(reverse acc))
     prt))
+
+

@@ -1,4 +1,4 @@
-;;;; CYCO3 src/node
+;;;; CYCO
 ;;;;
 ;;;;  cyco-node
 ;;;;    |
@@ -207,4 +207,6 @@ not."))
   (dolist (k (property-keys n))
     (format t "      [~24A] --> ~A~%" k (property n k))))
   
+
+
 

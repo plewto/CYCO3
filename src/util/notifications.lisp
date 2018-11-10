@@ -1,4 +1,4 @@
-;;;; CYCO3 util/notifications
+;;;; CYCO
 ;;;;
 ;;;; Defines CYCO warnings and errors.
 ;;;; 
@@ -74,3 +74,5 @@ a warning and CYCO does not terminate."
 	   (append (list 'composition-error
 			 (sformat "Function name : ~A" function-name))
 		   msg))) )
+
+

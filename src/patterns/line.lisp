@@ -1,4 +1,4 @@
-;;;; CYCO3 src/patterns/line
+;;;; CYCO
 ;;;;
 
 (defclass line (pattern) nil
@@ -20,5 +20,7 @@ once all previous values have been returned."))
 	  (min (1+ ptr)(1- (cardinality q))))
     (setf (slot-value q 'value) val)
     val))
+
+
 
 

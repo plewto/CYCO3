@@ -1,4 +1,4 @@
-;;;; CYCO3 src/chords/chord-model
+;;;; CYCO
 ;;;;
 
 
@@ -65,3 +65,5 @@ one octave higher at the end the template list.
 	  (if (and (not (rest-p head))(< head 116))
 	      (setf template (append template (list (+ (* 12 add-octave) head)))))))
     template))
+
+

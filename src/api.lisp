@@ -170,11 +170,13 @@ of the channel index."))
 (def-type-predicate chord-model-p
    "Predicate, true if object is an instance of chord-model.")
 
-(defgeneric chord-template (model name)
+(defgeneric chord-template (model name &optional variation)
   (:documentation
    "Returns list of key-number offsets for named chord in model.
 A chord template is defined as a list. For example a major triad has the 
-template (0 4 7)."))
+template (0 4 7).
+
+Optional variation argument not supported by all methods."))
 
 (defgeneric chord-types (model)
   (:documentation

@@ -121,15 +121,9 @@
 		   "src/orchestra/dynamic-map"
 		   "src/orchestra/articulation-map"
 		   "src/orchestra/instrument"
-
 		   "src/chords/chord-model"
 		   "src/chords/chord-table"
 		   "src/chords/default-chords"
-		   "src/chords/fretworks/chord-family"
-		   "src/chords/fretworks/monochord"
-		   "src/chords/fretworks/fretworks"
-		   "src/chords/fretworks/guitar"
-		   
 		   "src/composition/time-signature"
 		   "src/composition/cueing-functions"
 		   "src/composition/project"

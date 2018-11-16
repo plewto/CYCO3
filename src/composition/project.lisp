@@ -1,8 +1,6 @@
 ;;;; CYCO
 ;;;; 
 
-
-
 (constant +project-properties+
 	  (append +time-signature-properties+
 		  '(:title :catalog-number
@@ -14,19 +12,21 @@
 			   :section-order
 			   :current-section)))
 
-;; ISSUE: Include retrograde?
-;; ISSUE: Include shift?
 (defstruct seq-mode
   section-name
+  shift ;; initiasl time offset what units?
   count ;; <= 0 --> skip
   transpose
-  invert)
+  invert
+  retrograde)
   
 (defmethod clone ((src seq-mode) &key new-name new-parent)
   (dismiss new-name new-parent)
   (make-seq-mode
    :section-name (seq-mode-section-name src)
+   :shift (seq-mode-shift src)
    :count (seq-mode-count src)
+   :retrograde (seq-mode-retrograde src)
    :transpose (seq-mode-transpose src)
    :invert (seq-mode-invert src)))
    
@@ -220,6 +220,14 @@ a symbol named name."
       (init-time-signature section)
       (put project :current-section section))))
 
+(defun seq-mode (name &key (shift 0.0)(x 1)(trans 0)(invert nil)(retro nil))
+  (make-seq-mode :section-name name
+		 :shift (float shift)
+		 :count x
+		 :transpose trans
+		 :invert invert
+		 :retrograde retro))
+
 
 ;; ISSUE: Include specific seq-order method documentation.
 (defmethod seq-order ((s seq-mode) &key (project *project*))
@@ -246,13 +254,13 @@ a symbol named name."
 
   ;; Takes list of section sequence order.
   ;; Section specification may be single symbol for section-name
-  ;; or list (section-name :x 4 :transpose 0 :invert kn)
-  ;;     
+  ;; or list (section-name :x 4 :trans 0 :invert kn :shift time :retro bool)
+  ;; **BUGGY** causes project-reder to fail???    
   (defmethod seq-order ((seqlist list) &key (project *project*))
     "Establish Section order.
 seqlist is a nested list of form 
 
-     ((section-name :x n  :transpose tx :invert kn)
+     ((section-name :x n  :trans tx :invert kn :retro b :shift time)
        ..........................................)
 
 All elements are optional with the exception of the section-name.   If there 
@@ -261,8 +269,10 @@ placing it in a list.
 
 The modifiers:
   :x n - repeat section n time.
-  :transpose tx - transpose by tx half-steps
+  :trans tx - trans by tx half-steps
   :invert kn - invert keys around pivot keynumber kn.
+  :retrograde flag - if true reverse section.
+  :shift time - move start of section by time seconds.
 
 Additional modifiers may be added later."
 
@@ -271,7 +281,9 @@ Additional modifiers may be added later."
       (let* ((spec (->list q))
 	     (section-name (car spec))
 	     (count (or (second (member :x spec)) 1))
-	     (transpose (or (second (member :transpose spec)) 0))
+	     (shift (or (second (member :shift spec)) 0.0))
+	     (retro (or (second (member :retro spec)) nil))
+	     (transpose (or (second (member :trans spec)) 0))
 	     (invert (second (member :invert spec))))
 	(if (not (symbolp section-name))(type-error q 'symbol section-name))
 	(if (not (integerp count))(type-error q 'integer count))
@@ -279,6 +291,8 @@ Additional modifiers may be added later."
 	(if (not (or (null invert)(keynumber-p invert)))(type-error q 'keynumber invert))
 	(seq-order (make-seq-mode :section-name section-name
 				  :count count
+				  :retrograde retro
+				  :shift (float shift)
 				  :transpose transpose
 				  :invert (if invert (keynumber invert) nil))
 		   :project project)))))
@@ -399,13 +413,16 @@ reloading a file while it is under development."
       (let* ((section-name (seq-mode-section-name smode))
 	     (count (seq-mode-count smode))
 	     (xpose (seq-mode-transpose smode))
+	     (shift (seq-mode-shift smode))
+	     (retro (seq-mode-retrograde smode))
 	     (invert-pivot (seq-mode-invert smode))
 	     (section (clone (find-child project section-name))))
 	(if (section-p section)
 	    (let ((period (phrase-duration section)))
 	      (if (not (zerop xpose))(transpose section xpose))
 	      (if invert-pivot (invert section invert-pivot))
-	      (setf acc (append acc (render-n section count :offset time)))
+	      (if retro (retrograde section))
+	      (setf acc (append acc (render-n section count :offset (+ shift time))))
 	      (setf time (+ time (* count period)))
 	      (disconnect section))
 	  (cyco-warning

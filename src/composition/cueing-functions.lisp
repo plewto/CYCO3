@@ -91,7 +91,17 @@ TK - Tick offset, may be positive or negative integer, default 0."
   	   (bt (beat-value time-signature tspec (aref v 1)))
   	   (sb (subbeat-value time-signature tspec (aref v 2)))
   	   (tk (tick-value time-signature tspec (aref v 3))) )
-      (float (+ br bt sb tk)))) )
+      (float (+ br bt sb tk))))
+
+  (defun float-bar (time-signature tspec)
+    "FLOAT-BAR is an alternate cuing function which allows fractional 
+beat parameters  (BR BT)
+BR - Bar number, integer >= 1
+BT - Beat number, float/rational >= 1"
+    (let* ((v (->vector (fill-list (->list tspec) '(1 1))))
+	   (br (bar-value time-signature tspec (aref v 0)))
+	   (bt (* (beat-duration time-signature)(1- (aref v 1)))))
+      (float (+ br bt)))) ) 
 
 
 

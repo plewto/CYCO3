@@ -7,6 +7,11 @@
 ;;;; If dy argument has the value :doc the function prints
 ;;;; documentation and returns +rest+
 ;;;; 
+;;;; ISSUE: Results on unrecognized values are poorly defined.
+;;;;   There are at least 3 possible outcomes:
+;;;;      1) Produce an error
+;;;;      2) generate warning and return rest.
+;;;;      3) ignore and return rest.
 
 
 (defun basic-articulation-map (&key (scale 1.0)(min 0)(max 1e6))

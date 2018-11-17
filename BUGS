@@ -1,0 +1,10 @@
+CYCO Bugs
+
+--------------------------------------------------------------------
+BUG 0001 2018.11.17 Status Indeterminate.
+    QBAll may not be processing articulation +REST+ events properly.
+    Brief observations show QBALL may be producing note-on events when
+    the articulation is supposed to be a rest.  Worse the corresponding
+    note-off event may not be generated causing a stuck note on what
+    should be a rest.
+    

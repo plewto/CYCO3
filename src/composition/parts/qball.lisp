@@ -77,8 +77,7 @@ instruments - Pattern of instruments. A single instrument or list
               of instruments is converted to a Cycle pattern.
 :section  - Parent section, defaults to current-section of *project*
 :cuefn    - Cueing function
-:shift    - Fixed offset added to initial time when rendering.
-            The shift format is as required by cuefn.
+:shift    - Fixed offset in seconds added to initial time.
 :tempo    - Tempo, beats per minute, defaults to parent tempo
 :unit     - Time signature beat unit
 :bars     - Number of bars
@@ -136,10 +135,7 @@ used."
 	(reset qball)
     	(put qball :reset-on-repeat reset-on-repeat)
     	(connect parent qball)
-    	(put qball :shift
-    	     (if shift
-		 (funcall (property qball :cue-function) qball shift)
-	       0.0))
+    	(put qball :shift (if shift (float shift) 0.0))
     	(set-cyco-prompt)
     	qball))))
 

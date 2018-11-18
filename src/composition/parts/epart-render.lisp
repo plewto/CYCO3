@@ -46,7 +46,6 @@
 
 	 (generate-grace-notes
 	  (time key amp dur instruments)
-	  (format t "DEBUG GENERATE-GRACE-NOTES is executing~%")
 	  (let ((bcc '()))
 	    (dolist (instrument (->list instruments))
 	      (let (kn d a)
@@ -117,7 +116,7 @@
 	   (instrument-list (->list (next instrument-pattern :all)))
 	   (cindex-list (mapcar #'channel-index instrument-list)))
       (dolist (state (epart-events epart))
-	(let ((time (+ offset (epart-state-time state))))
+	(let ((time (+ offset (or (epart-state-time state) 0))))
 	  (let ((touch (epart-state-touch state)))
 	    (if touch
 		(setf acc (append acc (generate-touch-events time

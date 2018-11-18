@@ -46,6 +46,7 @@
 
 	 (generate-grace-notes
 	  (time key amp dur instruments)
+	  (format t "DEBUG GENERATE-GRACE-NOTES is executing~%")
 	  (let ((bcc '()))
 	    (dolist (instrument (->list instruments))
 	      (let (kn d a)
@@ -140,17 +141,16 @@
 		(setf acc (append acc (generate-program-change-events time
 								      bank
 								      program
-								      instrument-list)))))
+	  							      instrument-list)))))
 	  (let ((grace-key (epart-state-grace-key state)))
 	    (if grace-key
-		(let ((delay (metric-expression (or (epart-state-grace-delay state) 0.05)))
-		      (amp (* (or (epart-state-grace-amp-scale state) 0.5)
-			      (value (epart-state-dynamic state))))
-		      (dur (or (epart-state-grace-articulation state) 0.1)))
-		  (setf acc (append acc (generate-grace-notes (+ time delay)
-		  					      grace-key amp dur
-		  					      instrument-list)))
-		  )))
+	  	(let ((delay (metric-expression (or (epart-state-grace-delay state) 0.05)))
+	  	      (amp (* (or (epart-state-grace-amp-scale state) 0.5)
+	  		      (or (value (epart-state-dynamic state)) 0.5)))
+	  	      (dur (or (epart-state-grace-articulation state) 0.1)))
+	  	  (setf acc (append acc (generate-grace-notes (+ time delay)
+	  	  					      grace-key amp dur
+	  	  					      instrument-list))) )))
 	  
 	  ;; Process key/chord events
 	  (block keyblock

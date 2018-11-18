@@ -182,12 +182,13 @@
 						      base-dur)
 						     (t
 						      (* (metric-expression base-dur)
-							   (beat-duration epart)))))
-					   (d2 (funcall (dynamic-map instrument) d1)))
+							 (beat-duration epart)))))
+					   (dmap (articulation-map instrument))
+					   (d2 (funcall dmap d1)))
 				      (if (rest-p d2)
 					  (return-from instrument-block))
 				      d2))
-					
+
 			       
 			       (amp (let ((a (funcall (dynamic-map instrument)
 						      base-amp)))

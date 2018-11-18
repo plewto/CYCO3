@@ -429,10 +429,21 @@
 	    (setf (epart-state-chord-octave state) degree)
 	    state))
 
+	 ;; (process-strum-delay	        ; :strum metric-expression
+	 ;;  (part event clause state)
+	 ;;  (let ((mexp (expect-metric-expression part event clause 1 0.0)))
+	 ;;    (setf (epart-state-strum-delay state) (metric-expression mexp))
+	 ;;    state))
+
+
 	 (process-strum-delay	        ; :strum metric-expression
 	  (part event clause state)
-	  (let ((mexp (expect-metric-expression part event clause 1 0.0)))
-	    (setf (epart-state-strum-delay state) (metric-expression mexp))
+	  (let* ((mexp (expect-metric-expression part event clause 1 0.0))
+		 (delay (if (numberp mexp)
+			    (abs (float mexp))
+			  (* (metric-expression mexp)
+			     (/ 60.0 (tempo part))))))
+	    (setf (epart-state-strum-delay state) delay)
 	    state))
 		       
 	 (process-strum-acceleration 	; :strum* 0<float

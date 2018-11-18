@@ -493,14 +493,27 @@
 			    'no)))))
 	  state)
 
+	 (process-grace-delay ;; expect numeric or metric-expression for arg
+	  (part event arg)
+	  (if (numberp arg)
+	      (abs (float arg))
+	    (let ((delay (metric-expression-p arg)))
+	      (or (and delay (* delay (/ 60.0 (tempo part))))
+		  (progn
+		    (cyco-warning (sformat "Invalid grace-note delay ~A" arg)
+				  (sformat "EPART ~A" (name part))
+				  (sformat "Event ~A" event)
+				  (sformat "Using default 0.1"))
+		    0.1)))))
+
 	 (process-grace 		; :grace key delay
 	  (part event clause state)
-	  (if (and (expect-n-arguments part event clause 2)
-		   (expect-metric-expression part event clause 2 0.001))
+	  (if (expect-n-arguments part event clause 2)
 	      (let ((key (second clause))
-		    (delay (metric-expression (third clause))))
-		(setf (epart-state-grace-key state) key)
-		(setf (epart-state-grace-delay state) delay)))
+	 	    (delay (third clause)))
+	 	(setf (epart-state-grace-key state) key)
+	 	(setf (epart-state-grace-delay state)
+		      (process-grace-delay part event delay))))
 	  state)
 		    
 	 (process-grace-amp-scale	; :grace-amp* n
@@ -509,12 +522,14 @@
 	    (setf (epart-state-grace-amp-scale state) ascale))
 	  state)
 
-	 (process-grace-articulation	; :grace-dur ex
+	 (process-grace-articulation ; :grace-dur n
 	  (part event clause state)
-	  (let ((dur (expect-metric-expression part event clause 1 0.01)))
-	    (setf (epart-state-grace-articulation state) dur))
+	  (if (expect-n-arguments part event clause 1)
+	      (let ((arg (second clause)))
+		(setf (epart-state-grace-articulation state)
+		      (process-grace-delay part event arg))))
 	  state)
-	 
+		       
 	 (process-simple-dynamic	; :amp m
 	  (part event clause state)	; :amp list --> cycle
 	  (flet ((award ()

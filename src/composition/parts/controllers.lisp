@@ -350,7 +350,6 @@
 	    acc)))
 
   (defun make-controllers (name parent &key
-			  render-once
 			  remarks
 			  events)
  
@@ -358,7 +357,6 @@
 				 :name name
 				 :remarks (->string (or remarks ""))
 				 :properties +controllers-properties+)))
-      (put controllers :render-once render-once)
       (put controllers :transposable nil)
       (put controllers :reversible nil)
       (put controllers :muted nil)
@@ -370,12 +368,11 @@
 
 (setf (documentation 'make-controllers 'function) +controllers-documentation+)
 
-(defmacro controllers (name parent &key render-once remarks events)
+(defmacro controllers (name parent &key remarks events)
   "Identical to make-controllers but binds part object to symbol name."
   `(progn
      (part-banner (name ,parent) ',name)
-     (let ((prt (make-controllers ',name ,parent :render-once ,render-once
-			    :remarks ,remarks :events ,events)))
+     (let ((prt (make-controllers ',name ,parent :remarks ,remarks :events ,events)))
        (defparameter ,name prt)
        prt)))
 

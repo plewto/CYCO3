@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Controllers</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="epart.html">Epart</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="contents.html">Contents</a>
+
+<h2 class="section-head">Controllers</h2>
+<hr/>
+<p class="body">
+    <i>Controllers</i>&nbsp; is a type of&nbsp;<a href="parts.html">Part</a>    &nbsp;for creating MIDI controller, channel-pressure and bend events.&nbsp;Unlike other part types, controllers are always a <i>sub-part</i> of another part object,    possibly another controllers object.&nbsp; The parent part provides Controllers with a time-signature context and an instrument list.</p>
+<b class="definition">(MAKE-CONTROLLERS name parent &key events remarks)</b><br>
+<b class="definition">(CONTROLLERS name parent &key events remarks)</b><br>
+<p class="synopsis">Creates new Controllers part as a sub-part of parent. MAKE-CONTROLLERS and CONTROLLERS
+are nearly identical.&nbsp; The only difference is that CONTROLLERS binds the new part to
+a symbol with the same name while MAKE-CONTROLLERS does not.&nbsp; The following two lines
+are equivalent.</p>
+<pre class="code">
+(param foo (make-controller 'foo parent ...))  ;; name must be a quoted symbol
+(controllers foo parent ...)	               ;; name must -not- be quoted
+</pre>
+<p class="body">
+    Controllers inherits the :RENDER-ONCE and :SHIFT properties of the     parent Part.</p>
+<p class="body">
+    The events list is a nested list similar to that of an EPart where&nbsp;    Sub-list contains command/value pairs.</p>
+<p class="body">
+    All events are produced by all instruments of the parent, regardless of the     parent's instrument pattern.</p>
+<pre class="code">
+(controllers foo parent
+    :events '((event-list-1 ...)
+              (event-list-2 ...)
+               .................))
+</pre>
+<h4 class="section-head">Event commands</h4>
+<ul>
+    <li><a href='#time'>:TIME</a>  - set event time range</li>
+    <li><a href='#to'>:TO</a> - advance time range to tnew</li>
+    <li><a href='#steps'>:STEPS</a> - set event count</li>
+    <li><a href='#value'>:VALUE</a> - set value range</li>
+    <li><a href='#type'>:TYPE</a> - set event type</li>
+    <li><a href='#curve'>:CURVE</a> - set curve type</li>
+    <li><a href='#blur'>:BLUR</a> - set blurring level</li>
+    <li><a href='#trace'>:TRACE</a> - enable trace mode</li>
+</ul>
+<a id="time"></a>
+<hr/>
+<h4 class="section-head">:TIME t1 t2</h4>
+<p class="synopsis">Sets time range of events.&nbsp; Values must be in form accepted by the&nbsp;<a href="event-timing.html#cue-functions">cue-function.</a>
+&nbsp; Either t1 or t2 may be the special value '=' to indicate the current value.</p>
+<pre class="code">
+Example (assume cue-function is the default BAR function)
+
+(... :TIME (1 1 1)(2 1 1) ...)  ;; Create events between bars 1 and 2.
+(... :TIME = (3 1 1) ...)       ;; The previous value for t1 is reused.
+</pre>
+<a id="to"></a>
+<hr/>
+<h4 class="section-head">:TO tnew</h4>
+<p class="synopsis">Sets time range to continue from previous end-point.</p>
+<pre class="code">
+Example
+
+(... :TO (3 1 1) ...)   ;; Sets new time-range end-point to (3 1 1)
+
+This is equivalent to the following two lines:
+(... :TIME t1 t2 ...)
+(... :TIME t2 tnew ...)
+</pre>
+<a id="steps"></a>
+<hr/>
+<h4 class="section-head">:STEPS n</h4>
+<p class="synopsis">Sets number of events to create over time range</p>
+<pre class="code">
+Example
+
+(... :STEPS 8 ...)
+</pre>
+<a id="value"></a>
+<hr/>
+<h4 class="section-head">:VALUE v1 v2</h4>
+<p class="synopsis">Sets controller values over time current time-range.&nbsp;All values are <i>normalized</i></p>
+<ul>
+    <li>Controller and channel-pressure values:&nbsp;&nbsp;  0.0 &le; value &le; 1.0</li>
+    <li>Bend values are signed:&nbsp;&nbsp; -1.0 &le; value &le; +1.0</li>
+</ul>
+<p class="body">
+    Either v1 or v2 may be the special value '=' to indicate the current value.</p>
+<pre class="code">
+Example
+
+(... :VALUE 0.0 0.5 ...)  ;; Sets value range between 0.0 and 0.5
+(... :VALUE = 0.75 ...)   ;; The previous value for v1 is reused.
+
+If v1 &gt; v2 the generated curve is inverted.
+</pre>
+<a id="type"></a>
+<hr/>
+<h4 class="section-head">:TYPE mode</h4>
+<p class="synopsis">Sets the type of event, options are:</p>
+<ul>
+    <li>Integer between 0 and 127 inclusive - MIDI controller event</li>
+    <li>TOUCH - channel-pressure</li>
+    <li>BEND - pitch bend</li>
+</ul>
+<p class="footnote">Symbolic controller names, such as 'mod' for controller number 1, are not currently supported
+but may be added later.</p>
+<pre class="code">
+Example
+
+(... :TYPE 1 ...)       ;; mod wheel controller
+(... :TYPE touch ...)   ;; channel-pressure (after-touch) events
+(... :TYPE bend ...)    ;; pitch bend events
+</pre>
+<a id="curve"></a>
+<hr/>
+<h4 class="section-head">:CURVE mode [param]</h4>
+<p class="synopsis">Selects type of curve.&nbsp The param argument is 
+optional and it's meaning is dependent on the curve type.<br><br>Available curves:</p>
+<ul>
+    <li>POINT - a single event at time t2 and value v1, param is ignored.</li>
+    <li>LINE - generates line between (t1,v1) and (t2,v2).  Optional param argument
+is exponential degree, 0&lt;param.</li>
+    <li>SAW - generates sawtooth.  Slope is inverted if v2&ltv1.  Param argument 
+sets number of cycles.</li>
+    <li>TRI - generates triangle. Param argument sets number of cycles.</li>
+    <li>SIN - generates sine wave. Param argument sets number of cycles.</li>
+    <li>COS - generates cosine wave. Param argument sets number of cycles.</li>
+    <li>SIN2 - Creates sine wave with 2nd harmonic component.</li>
+    <li>COS2 - Creates cosine wave with 2nd harmonic component.</li>
+    <li>LIN+COS - Creates curve that is sum of line and cosine.  The 
+cosine amplitude is fixed.  Param argument sets number of cosine cycles.</li>
+    <li>RANDOM - Generates random values between v1 and v2 over times t1 and t2. 
+The param argument is not used.</li>
+</ul>
+<pre class="code">
+Example
+
+(... :CURVE lin+cos 3 ...)
+</pre>
+<a id="blur"></a>
+<hr/>
+<h4 class="section-head">:BLUR depth</h4>
+<p class="synopsis">Applies randomization to generated values.&nbsp;
+0&le;depth&le;1</p>
+<pre class="code">
+Example
+
+(... :BLUR 0.01 ...)  ;; a 1% blur
+</pre>
+<a id="trace"></a>
+<hr/>
+<h4 class="section-head">:TRACE mode</h4>
+<p class="synopsis">Enable diagnostic trace mode<br><br>
+Available modes:</p>
+<ul>
+    <li>off</li>
+    <li>events</li>
+    <li>states</li>
+    <li>all</li>
+</ul>
+<pre class="code">
+Example
+
+(... :TRACE all ...)
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="epart.html">Epart</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="contents.html">Contents</a>
+
+</div>
+</body>
+</html>

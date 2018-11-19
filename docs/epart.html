@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO EPart Pattern</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="qball.html">Qball</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+
+<h2 class="section-head">EPart</h2>
+<hr/>
+<p class="body">
+    An <i>EPART</i>&nbsp; is a PART with extensive event options.</p>
+<b class="definition">(MAKE-EPART name instruments &key ...)</b><br>
+<b class="definition">(EPART name instruments &key ...)</b><br>
+<p class="synopsis">Creates new EPART in current section of *PROJECT*.&nbsp; MAKE-EPART and EPART
+are nearly identical.  The only difference is that EPART binds the new object
+to a symbol with the same name while <nobr>MAKE-EPART</nobr> does not.  The following two
+lines are equivalent:</p>
+<pre class="code">
+(param foo (make-epart 'foo ...))    ;; name must be quoted symbol
+(epart foo)                          ;; name must -not- be quoted.
+</pre>
+<p class="body">
+    The EPart instruments argument has the same usage as with a&nbsp;<a href="qball.html#instrument-pattern">QBall.</a>    </p>
+<pre class="code">
+Keywords
+
+:section      - parent section, defaults to current-section of *project*
+:cuefn        - cue-function, inherited from section.
+:shift        - float, offset in seconds added to all events, default 0.0
+:tempo        - time-signature tempo, inherited from section 
+:unit         - time-signature beat-unit, inherited from section 
+:bars         - time-signature bar-count, inherited from section 
+:beats        - time-signature beats per bar, inherited from section
+:subbeats     - time-signature subbeats per beat, inherited from section
+:transposable - Boolean, if true this part is subject to transpose and
+                key invert transformations.
+:reversible   - Boolean, if true this part is subject to retrograde
+                transformations.
+:chord-model  - defaults to global <a href='chords.html'>*CHORD-TABLE*</a>
+:render-once  - Boolean, if true do not repeat part after first time.
+:shift        - An offset time in seconds added to all events.
+:events       - <a href='#epart-events'>See Below</a>
+:remarks      - Optional remarks text.
+</pre>
+<a id="epart-events"></a>
+<hr/>
+<h4 class="section-head">Epart Events</h4>
+<p class="body">
+    Events are specified as a nested list of event-commands.</p>
+<pre class="code">
+((event-spec-1 ...)
+  (event-spec-2 ...)
+   ...)
+</pre>
+<p class="body">
+    Each event-spec consist of a series of command/value pairs, where each     command is a keyword.  The command types fall  into one of two classes</p>
+<ol>
+    <li>Commands which generate events.</li>
+    <li>Commands which set parameters but do not actually produce events.</li>
+</ol>
+<p class="body">
+    The 2nd type are remembered until they are changed.  I.e. once a    dynamic level is set it is retained until explicitly changed.&nbsp;     Event generating commands must be explicitly stated each time.</p>
+<h4 class="section-head">Event generating commands</h4>
+<ul>
+    <li><a href='#key'>:KEY</a>&nbsp;     - Produce note events</li>
+    <li><a href='#grace'>:GRACE</a>&nbsp;   - Produce grace note</li>
+    <li><a href='#touch'>:TOUCH</a>&nbsp;   - Produce single after-touch event</li>
+    <li><a href='#bend'>:BEND</a>&nbsp;    - Produce single pitch-bend event</li>
+    <li><a href='#cc'>:CC</a>&nbsp;      - Produce single control-change event.</li>
+    <li><a href='#program'>:PROGRAM</a>&nbsp; - Produce program-change</li>
+    <li><a href='#bank'>:BANK</a>&nbsp;    - Produce program-change with bank selection.</li>
+</ul>
+<p class="body">
+    While an EPART may generate simple MIDI after-touch, bend and control changes,    they are really geared towards key-events.  More complex control changes are available    using a <a href='controllers.html'>Controllers</a>&nbsp;part.</p>
+<h4 class="section-head">Event modification commands</h4>
+<ul>
+    <li><a href='#reset'>:RESET</a>&nbsp; - reset all parameters</li>
+    <li><a href='#time'>:TIME</a>&nbsp; - set event time</li>
+    <li><a href='#chord'>:CHORD</a>&nbsp; - set chord name or template</li>
+    <li><a href='#inversion'>:INVERSION</a>&nbsp; - set chord inversion</li>
+    <li><a href='#octave'>:OCTAVE</a>&nbsp; - add octave to chord</li>
+    <li><a href='#strum'>:STRUM</a>&nbsp; - chord strum delay</li>
+    <li><a href='#strum*'>:STRUM*</a>&nbsp; - strum delay acceleration</li>
+    <li><a href='#direction'>:DIRECTION</a>&nbsp; - strum direction pattern.</li>
+    <li><a href='#grace-amp-scale'>:GRACE-AMP-SCALE</a>&nbsp; - grace note dynamic scale factor</li>
+    <li><a href='#grace-dur'>:GRACE-ARTICULATION</a>&nbsp; - grace note hold time.</li>
+    <li><a href='#amp*'>:AMP*</a>&nbsp; - strum dynamic scale factor.</li>
+    <li><a href='#end-together'>:END-TOGETHER</a>&nbsp; - flag, indicates if strummed notes should end at same time.</li>
+    <li><a href='#dur'>:DUR</a>&nbsp; - note duration.</li>
+    <li><a href='#amp'>:AMP</a>&nbsp; - note dynamics.</li>
+    <li><a href='#cres'>:CRES</a>&nbsp; - setup crescendo/decrescendo.</li>
+    <li><a href='#amp-blur'>:AMP-BLUR</a>&nbsp; - randomize dynamic levels.</li>
+    <li><a href='#amp-range'>:AMP-RANGE</a>&nbsp; - set limits on allowed dynamic values.</li>
+    <li><a href='#ctrl'>:CTRL</a>&nbsp; - set MIDI controller number.</li>
+</ul>
+<h4 class="section-head">Miscellaneous commands</h4>
+<ul>
+    <li><a href='#trace'>:TRACE</a>&nbsp; - sets diagnostic mode</li>
+    <li><a href='#break'>:BREAK</a>&nbsp; - do not evaluate remaining events</li>
+    <li><a href='#stop'>:STOP</a>&nbsp; - do not evaluate remaining event-list</li>
+</ul>
+<a id="time"></a>
+<hr/>
+<h4 class="section-head">:TIME tspec</h4>
+<p class="body">
+    Set event <a href='event-timing.html'>time</a>&nbsp in terms of&nbsp;<a href="time-signature.html">time-signature</a>    &nbsp;and&nbsp;<a href="event-timing.html#cue-functions">cue-function.</a>    </p>
+<p class="body">
+    Event time is retained until explicitly changed.</p>
+<pre class="code">
+Example 
+(... :time (1 1 1)  ...)
+</pre>
+<a id="key"></a>
+<hr/>
+<h4 class="section-head">:KEY keynumber</h4>
+<p class="body">
+    Create note event(s) where&nbsp; <a href="keynumbers.html">key-number</a>    &nbsp; is the root of the current chord.&nbsp;    Symbols recognized by the instrument's&nbsp;<a href="keynumber-maps.html">keynumber-map</a>    &nbsp;may also be used.  Unrecognized keynumbers are treated     as a rest but may elicit a warning.</p>
+<pre class="code">
+Example play C5
+(... :key c5 ...)
+</pre>
+<a id="chord"></a>
+<hr/>
+<h4 class="section-head">:CHORD template</h4>
+<p class="body">
+    Set chord template.  There are two options:</p>
+<ol>
+    <li>A list of keynumber-offsets, i.e. a major chord is specified as (0 4 7).</li>
+    <li>A chord name using the EPart's <a href='chords.html'>chord-model</a>&nbsp;&nbsp;Use (?CHORDS) to see list of chord names.</li>
+</ol>
+<p class="body">
+    The chord stay in effect until changed. For single notes use UNISON or (0)</p>
+<pre class="code">
+Examples
+
+(... :chord [11] ...)        ;; a named major 11th chord
+(... :chord (0 4 7 10) ...)  ;; a major-7th chord
+</pre>
+<a id="inversion"></a>
+<hr/>
+<h4 class="section-head">:INVERSION degree</h4>
+<p class="body">
+    Sets chord&nbsp;<a href="chords.html#inversions">inversion.</a>    &nbsp;Inversion stays in effect until changed.</p>
+<pre class="code">
+Example
+
+(... :INVERSION 1 ...)
+</pre>
+<p class="body">
+    A value of 0 disables inversion.</p>
+<a id="octave"></a>
+<hr/>
+<h4 class="section-head">:OCTAVE n</h4>
+<p class="body">
+    Add&nbsp; <a href="chords.html#octave">octave</a>    &nbsp;repetition of initial chord note.&nbsp;    octave value stays in effect until changed.</p>
+<pre class="code">
+Example	 
+
+(... :OCTAVE 1 ...)
+</pre>
+<p class="body">
+    A value of 0 disables octave.</p>
+<a id="strum"></a>
+<hr/>
+<h4 class="section-head">:STRUM delay</h4>
+<p class="body">
+    Sets delay between successive chord notes to simulate strumming.&nbsp;Delay times may be absolute in seconds which are not effected by the tempo.&nbsp;If the delay time is expressed by a&nbsp;<a href="metrics.html">metric expressions</a>    &nbsp;it is relative and scaled by the current tempo.&nbspRelatively long delays may be used to produce arpeggios.</p>
+<pre class="code">
+Examples
+(... :STRUM s ...)      ;; delay time 1/16th note, scaled by tempo.
+(... :STRUM 0.01 ...)	;; delay time fixed at 1/100 second.:
+</pre>
+<a id="strum*"></a>
+<hr/>
+<h4 class="section-head">:STRUM* acceleration</h4>
+<p class="body">
+    Sets strum acceleration factor.&nbsp; For an acceleration of 1.0 the delay time    between successive notes is constant.&nbsp; For values greater then 1.0 the delay     between each note gets progressively shorter.</p>
+<pre class="code">
+Examples
+(... :STRUM* 1.00 ...)   ;; constant delay time.
+(... :STRUM* 1.01 ...)   ;; decrease delay by 1% after each note.
+(... :STRUM* 0.99 ...)   ;; increase delay by 1% after each note.
+</pre>
+<a id="amp*"></a>
+<hr/>
+<h4 class="section-head">:AMP* scale</h4>
+<p class="body">
+    Scale amplitude of chord notes.&nbsp; The first note has the    nominal amplitude level.&nbsp;Amplitudes for successive notes are scaled     by the scaling factor.&nbsp;    The allowed amplitudes are limited by the :AMP-RANGE parameters.&nbsp;    AMP* only applies to note within a chord.</p>
+<pre class="code">
+Examples	 
+
+(... :AMP* 1.00 ...) ;; constant amplitude.
+(... :AMP* 1.01 ...) ;; increase successive amplitudes by 10%
+(... :AMP* 0.99 ...) ;; decrease successive amplitudes by 10%
+</pre>
+<a id="direction"></a>
+<hr/>
+<h4 class="section-head">:DIRECTION list</h4>
+<p class="body">
+    Sets strum direction pattern.&nbsp;Valid directions are :DOWN :UP :DICE and :RANDOM</p>
+<ul>
+    <li>:DOWN - play chord forward</li>
+    <li>:UP - reverse chord notes</li>
+    <li>:DICE - randomly select between :UP and :DOWN</li>
+    <li>:RANDOM - select chord notes at random.</li>
+</ul>
+<p class="body">
+    The argument to direction may be one of the symbols above or a list     of symbols.&nbsp;If a list is specified, it is converted to a&nbsp;<a href="patterns.html#cycle">cycle</a>    &nbsp;pattern and applied to successive strummed chords.</p>
+<pre class="code">
+Examples
+
+(... :DIRECTION :DOWN ...)              ;; play all chords normally.
+(... :DIRECTION (:UP :DOWN :DICE) ...)	;; cycle between up, down and dice.
+</pre>
+<a id="end-together"></a>
+<hr/>
+<h4 class="section-head">:END-TOGETHER flag</h4>
+<p class="body">
+    Determines how strummed notes are terminated.&nbsp;If END-TOGETHER is true all notes end at the same time.&nbsp;Otherwise the note off times are staggered in the same order as the corresponding     note on events.</p>
+<pre class="code">
+Example
+
+(... :END-TOGETHER t ...)
+(... :END-TOGETHER nil ...)
+</pre>
+<a id="grace"></a>
+<hr/>
+<h4 class="section-head">:GRACE key delay</h4>
+<p class="body">
+    :GRACE keynumber delay<br><br>Produce a grace note.&nbsp; Grace events are always single notes, chord and strum     parameters are ignored.  The :GRACE command triggers a note with the indicated    keynumber and delay time <i>after</i>&nbsp; the current time.&nbsp;    :GRACE-AMP-SCALE and :GRACE-DUR commands alter how loud and for how long    grace notes are played.</p>
+<p class="body">
+    The delay time may be an absolute time in seconds or a metric-expression.&nbsp;    Metric-expressions are scaled by the current tempo.</p>
+<pre class="code">
+Example
+
+(... :GRACE C4 s ...)    ; produce grace note one sixteenth note after current time.
+(... :GRACE C4 0.01 ...) ; produce grace note 1/100 second after current time.
+</pre>
+<a id="grace-amp-scale"></a>
+<hr/>
+<h4 class="section-head">:GRACE-AMP-SCALE scale</h4>
+<p class="body">
+    Set grace note amplitude</p>
+<pre class="code">
+Example
+
+(... :GRACE-AMP pp ...)
+</pre>
+<a id="grace-articulation"></a>
+<hr/>
+<h4 class="section-head">:GRACE-DUR metric</h4>
+<p class="body">
+    Set grace note duration either as an absolute time in seconds,    or as a relative time using a metric-expression.&nbsp;     metric-expressions are scaled by the current tempo.</p>
+<pre class="code">
+Examples
+
+(... :GRACE-DUR s ...)   ; hold grace notes for 1 sixteenth note.
+(... :GRACE-DUR 0.1 ...) ; hold grace notes for 1/10 second.
+</pre>
+<a id="dur"></a>
+<hr/>
+<h4 class="section-head">:DUR metric</h4>
+<p class="body">
+    Sets note duration using either absolute value in seconds or metric-expression</p>
+<pre class="code">
+Example
+
+(... :DUR q ...)   ; metric-expression scaled by tempo.
+(... :DUR 1.2 ...) ; numeric value is not scaled.
+</pre>
+<a id="amp"></a>
+<hr/>
+<h4 class="section-head">:AMP a</h4>
+<p class="body">
+    Sets base-line&nbsp;<a href="dynamics.html">amplitude.</a>    &nbsp;For chords the base-line amplitude applies to the first note,     successive notes are scaled by :AMP* factor.&nbsp; :AMP has an additional     trick, if a list of amplitudes are supplied they are used as a&nbsp;<a href="patterns.html#cycle">cycle.</a>    &nbsp; The next key event gets the first amplitude, the second event gets the     second amplitude, etc..</p>
+<pre class="code">
+Examples
+
+(... :AMP mf ...)           ; sets fixed amplitude.
+(... :AMP (mf mf fff) ...)  ; every third event is accented.
+</pre>
+<a id="cres"></a>
+<hr/>
+<h4 class="section-head">:CRES start stop steps</h4>
+<p class="body">
+    Sets up crescendo/decrescendo<br><br>    :CRES start end count<br><br>    Where start and end are&nbsp <a href="amplitudes.html">amplitude</a>    &nbsp; values and count is the number of events.<br><br>The amplitudes of the next n key-events will change between    start and end.&nbsp; thereafter the amplitude stays at the end    value until it is changed.</p>
+<pre class="code">
+Examples
+
+(... :CRES pp ff 8 ...) ; crescendo over the next 8 events.
+</pre>
+<a id="amp-blur"></a>
+<hr/>
+<h4 class="section-head">:AMP-BLUR depth</h4>
+<p class="body">
+    Randomize amplitudes.</p>
+<pre class="code">
+Examples
+
+(... :AMP-BLUR 0.0 ...) ; disable blurring. 
+(... :AMP-BLUR 0.1 ...) ; randomize by up to 10%.
+(... :AMP-BLUR 1.0 ...) ; compleat randomization.
+</pre>
+<a id="amp-range"></a>
+<hr/>
+<h4 class="section-head">:AMP-RANGE min max</h4>
+<p class="body">
+    Sets limits on the allowed amplitudes.&nbsp;The limits are imposed after all amplitude modifications have been applied.</p>
+<pre class="code">
+Example
+
+(... :AMP-RANGE pp ff ...)
+</pre>
+<a id="ctrl"></a>
+<hr/>
+<h4 class="section-head">:CTRL n</h4>
+<p class="body">
+    Selects MIDI controller number for use with :CC.<br><br>    0 &le; CTRL &le; 127</p>
+<pre class="code">
+Example
+
+(... :CTRL n ...)
+</pre>
+<a id="cc"></a>
+<hr/>
+<h4 class="section-head">:CC n</h4>
+<p class="body">
+    Generate single MIDI controller event using controller number     established by :CTRL.&nbsp; Controller values are normalized to&nbsp;    <nobr>0.0 &le; n &le; 1.0</nobr></p>
+<pre class="code">
+Example
+
+(... :CC 0.5 ...)
+</pre>
+<a id="touch"></a>
+<hr/>
+<h4 class="section-head">:TOUCH n</h4>
+<p class="body">
+    Generate single MIDI channel-pressure (after-touch) event.&nbsp;    Pressure values are normalized to <nobr>0.0 &le; pressure &le; 1.0</nobr></p>
+<pre class="code">
+Example
+
+(... :TOUCH 0.5 ...)
+</pre>
+<a id="bend"></a>
+<hr/>
+<h4 class="section-head">:BEND n</h4>
+<p class="body">
+    Generate single MIDI pitch bend event.&nbsp; Bend amount is     normalized to <nobr>-1.0 &le; bend &le; +1.0</nobr></p>
+<pre class="code">
+Example
+
+(... :BEND -0.6 ...)
+</pre>
+<a id="program"></a>
+<hr/>
+<h4 class="section-head">:PROGRAM p</h4>
+<p class="body">
+    Generate simple program-change for each instrument.&nbsp; The argument    format is dependent on the instrument's program-number-map.&nbsp;    A value of DEFAULT uses the default program-number.</p>
+<pre class="code">
+Example
+
+(... :PROGRAM default ...)
+</pre>
+<p class="footnote">The :PROGRAM command is useful when an instrument needs to change it's program
+part way through an EPART.&nbsp; There is a type of part called&nbsp;<a href="programs.html">Programs</a>
+&nbsp;which is in general a better choice for changing program-numbers.</p>
+<a id="bank"></a>
+<hr/>
+<h4 class="section-head">:BANK</h4>
+<a id="reset"></a>
+<hr/>
+<h4 class="section-head">:RESET</h4>
+<p class="body">
+    Resets all non-event commands to their default values.</p>
+<ul>
+    <li>:TIME - 0.0</li>
+    <li>:CHORD - unison</li>
+    <li>:INVERSION - 0</li>
+    <li>:OCTAVE - 0</li>
+    <li>:STRUM - 0.0</li>
+    <li>:STRUM* - 1.0</li>
+    <li>:DIRECTION - down</li>
+    <li>:GRACE-AMP-SCALE - 1.0</li>
+    <li>:GRACE-AMP-DUR - 1.0</li>
+    <li>:AMP* - 1.0</li>
+    <li>:END-TOGETHER - t</li>
+    <li>:AMP-BLUR - 0.0</li>
+    <li>:AMP-RANGE - (0.0, 1.0)</li>
+    <li>:CTRL - nil</li>
+</ul>
+<a id="trace"></a>
+<hr/>
+<h4 class="section-head">:TRACE mode</h4>
+<p class="body">
+    Enables diagnostic tracing of events.&nbsp; Possible values are</p>
+<ul>
+    <li>OFF - turns all tracing off</li>
+    <li>EVENTS - prints events list as it is parsed.</li>
+    <li>STATES - displays epart-state after each event sublist has been parsed.</li>
+    <li>ALL - same as enabling EVENTS and STATES.</li>
+</ul>
+<pre class="code">
+Example
+
+(... :TRACE all ...)
+</pre>
+<a id="stop"></a>
+<hr/>
+<h4 class="section-head">:STOP</h4>
+<p class="body">
+    Ignore remaining commands in  the current event sublist</p>
+<pre class="code">
+Example 
+
+:events '((...)
+          (... :STOP remainder-of-this-sublist-ignored)
+          (... this-event-processed-normally)
+          (...))
+</pre>
+<a id="break"></a>
+<hr/>
+<h4 class="section-head">:BREAK</h4>
+<p class="body">
+    Ignore all remaining events</p>
+<pre class="code">
+Example 
+:events '((...)
+          (... :BREAK all-remaining-events-ignored)
+          (ignored))
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="qball.html">Qball</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+
+</div>
+</body>
+</html>

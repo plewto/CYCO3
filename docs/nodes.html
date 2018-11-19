@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Nodes</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="midi-events.html">Midi-Events</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="meta-channels.html">Meta-Channels</a>
+
+<h2 class="section-head">Nodes</h2>
+<hr/>
+<p class="body">
+    A CYCO-NODE is a low-level object used to build structures     behind the scenes.  A node has at most one parent, and any number of child nodes.<br><br>    Each Node type define a pre-established set of properties and a node may either directly set    a property value or inherit the value from it's parent.</p>
+<p class="body">
+    CYCO-NODES are used to construct two major types of tree.</p>
+<ol>
+    <li>Orchestra - rooted at +ROOT-INSTRUMENT+</li>
+    <li>Current project - rooted at *PROJECT*</li>
+</ol>
+<p>See <a href="instruments.html">Instruments</a>
+&nbsp;and&nbsp;<a href="projects.html">Projects</a>
+<p><p class="body">
+    While Nodes where not explicitly designed for the use by the user,      they could conceivably have applications for algorithmic composition.</p>
+<hr/>
+<h4 class="section-head">Node Related Functions</h4>
+<b class="definition">(NAME! node new-name)</b><br>
+<b class="definition">(NAME node)</b><br>
+<p class="synopsis">Sets and returns node's name</p>
+<b class="definition">(REMARKS! node text)</b><br>
+<b class="definition">(REMARKS node)</b><br>
+<p class="synopsis">Sets and returns optional remarks text.</p>
+<b class="definition">(ROOT-P node)</b><br>
+<p class="synopsis">Predicate, true if node is a root node.</p>
+<b class="definition">(FIND-CHILD parent child)</b><br>
+<b class="definition">(FIND-CHILD parent child-name)</b><br>
+<p class="synopsis">Returns child node from parent.  Returns nil if child is not a child of parent.</p>
+<b class="definition">(PATH-TO-ROOT node)</b><br>
+<p class="synopsis">Returns a list of nodes from node back to the root node.</p>
+<b class="definition">(DISCONNECT node)</b><br>
+<p class="synopsis">Sever the connection between node and it's parent.</p>
+<b class="definition">(CONNECT parent child)</b><br>
+<p class="synopsis">Make child a child node of parent.  The connection between child 
+and it's previous parent is severed.</p>
+<b class="definition">(PRUNE node &optional (force nil))</b><br>
+<p class="synopsis">Deconstruct the tree starting with node.
+Node objects have a Boolean <i>TRANSIENT</i> &nbsp; value.&nbsp;&nbsp;
+Prune will only remove nodes whose transient value is true.  If the optional 
+force argument is true, then all nodes are removed regardless of their 
+transient status.</p>
+<b class="definition">(HAS-PROPERTY-P node key)</b><br>
+<p class="synopsis">Predicate, true if node has the given property.</p>
+<b class="definition">(PUT node key value)</b><br>
+<p class="synopsis">Sets node key property to value.  It is an error if node does 
+not define key as a property.   The new value will shadow the parent's value for key.</p>
+<b class="definition">(PROPERTY node key)</b><br>
+<p class="synopsis">Returns node's value for property key.  If node does not define
+a value for key,  retrieve the value from the parent node.  It is an error if
+key is not an established property of node.</p>
+<b class="definition">(PROPERTIES node)</b><br>
+<p class="synopsis">Returns list of all property keys established for node.</p>
+<b class="definition">(LOCAL-PROPERTIES node)</b><br>
+<p class="synopsis">Returns list of property keys explicitly established for 
+node,  parent properties are ignored.</p>
+<b class="definition">(PRINT-TREE node &optional (depth 0))</b><br>
+<p class="synopsis">Prints a representation of the tree structure starting at node.
+The optional depth argument is used internally.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="midi-events.html">Midi-Events</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="meta-channels.html">Meta-Channels</a>
+
+</div>
+</body>
+</html>

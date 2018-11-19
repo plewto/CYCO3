@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Program Maps</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="instruments.html">Instruments</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumber-maps.html">Keynumber-Maps</a>
+
+<h2 class="section-head">Instrument Program Maps</h2>
+<hr/>
+<p class="body">
+    A <i>Program-map</i>&nbsp; is a function which converts it's argument to     a list  of MIDI program-change events.  The most basic program-map converts an integer to a     MIDI program change. Slightly more complex maps convert a symbol to a program-change.      However program changes get complicated.<br><br>        The MIDI spec is simple enough; a program is an integer between 0 and 127. If more then 128     programs are required then cc events are available for bank switching.   The goal of CYCO is     to have programs specifications in a score match the external synths nomenclature.  The first     complication is the with what is considered the lowest program number.   The MIDI spec uses     program numbers between 0 and 127 inclusive.  Some synths however have the first program     numbered as 1.  This means that if you send MIDI program 0,  the instrument will display program '1'.    <br><br>        The next complication comes in the form of exactly what the term 'bank' means.  There are 'true'     banks consisting of groups of programs not directly accessible by simple MIDI program changes.  Then     there are what I'm going to call 'pseudo' banks.  These are just a relabeling of the normal     program numbers.   An example of a pseudo bank is found on the Yamaha SY35, which labels MIDI program    numbers 0 to 63 as 8 'banks' of 8 programs each.  Both the banks and the programs are numbered     1 through 8.   Another example is the Korg R3 which has 16 'banks' labeled 'A' through 'P' of     8 programs each.<br><br>        Then there is 'key switching' found with some sample libraries.   Key switching is where some keys,     usually on the left, do not produce notes but instead change articulation.       In other words the keyboard produces what is basically a program-change.</p>
+<p class="body">
+    Program maps have the form</p>
+<pre class="code">
+(lambda time &key bank program)
+</pre>
+<p class="body">
+    The exact return format is not specified other then it be a     (possibly empty) list of MIDI events.  This allows program maps in general to service     a wide range of scenarios, from a single program-change to complex bank changes and key-switched    instruments.</p>
+<p class="body">
+    Some special cases for the program argument are defined.</p>
+<pre class="code">
+:program = :doc  --> Print documentation and return an empty list.
+:program = :default --> Use the instrument's program-number property.
+</pre>
+<b class="definition">(NULL-PROGRAM-MAP time &key bank program)</b><br>
+<p class="synopsis">The null-program-map is a dummy place-holder, it ignores it's arguments
+and always returns an empty list.</p>
+<b class="definition">(SET-BASIC-PROGRAM-MAP instrument &key offset min max)</b><br>
+<p class="synopsis">Assigns a simple numeric-based program map to the instrument.  The resulting 
+events is a single MIDI program change</p>
+<pre class="code">
+:offset - Sets the lowest program number used by the instrument.
+  In other words what does the instrument display for MIDI program 0?
+:min :max - Program numbers outside the range (min max) do not generate MIDI events.
+</pre>
+<b class="definition">(SET-SYMBOLIC-PROGRAM-MAP instrument htab &key offset)</b><br>
+<p class="synopsis">Assigns a symbolic program-number map to instrument.</p>
+<pre class="code">
+htab - a hash table or association list of assignments.
+The assignments have the form 
+    ((cons name-1 program-number-1 [optional-remarks])
+     (cons name-2 program-number-2 [optional-remarks])
+      ................................................)
+                                
+(instrument foo :program-number organ)
+(set-symbolic-program-map foo 
+    '((piano 0)
+      (organ 1)
+      (bass 2)
+       ......))
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="instruments.html">Instruments</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumber-maps.html">Keynumber-Maps</a>
+
+</div>
+</body>
+</html>

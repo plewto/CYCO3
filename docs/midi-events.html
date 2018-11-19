@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Midi Events</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="metrics.html">Metrics</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="nodes.html">Nodes</a>
+
+<h2 class="section-head">MIDI Events</h2>
+<hr/>
+<p class="body">
+    MIDI events are a low-level structure.  Typically they are    not handled directly while creating a score but they are just below the surface.      A MIDI Event is defined as a list of form    <b>&nbsp;(time&nbsp;midi-message)</b>&nbsp;.<br>        The following low-level functions return midi-messages.</p>
+<pre class="code">
+(MIDI-NOTE-ON  channel keynumber velocity)
+(MIDI-NOTE-ON channel keynumber velocity)
+(MIDI-POLY-PRESSURE channel keynumber value)
+(MIDI-CONTROL-CHANGE channel controller-number value)
+(MIDI-CHANNEL-PRESSURE channel value)
+(MIDI-PROGRAM-CHANGE channel program-number)
+(MIDI-PITCH-BEND channel lsb msb) * see below
+(MIDI-SYSTEM-EXCLUSIVE 	data)
+(MIDI-END-SYSTEM-EXCLUSIVE)
+(MIDI-META-TEXT text)
+(MIDI-META-COPYRIGHT text)
+(MIDI-META-TRACK-NAME text)
+(MIDI-META-INSTRUMENT-NAME text)
+(MIDI-META-LYRIC text)
+(MIDI-META-CUE text)
+(MIDI-META-MARKER text)
+(MIDI-TEMPO-CHANGE bpm)
+(MIDI-TIME-SIGNATURE num unit)
+(MIDI-KEY-SIGNATURE sf &optional (minor nil))
+
+channel is an integer MIDI channel number between 1 and 16 inclusive.
+All MIDI data values are integers between 0 and 127 inclusive.  
+MIDI pitch bend is specified as two 7-bit bytes.  Two functions are available 
+to convert between the lsb and msb bend bytes and a signed-normalized form.
+
+(BEND->MIDI-DATA value)
+     Converts bend amount to vector #(lsb msb)
+     The bend depth is a singed normalized float -1.0 &le; value &le; 1.0
+
+(MIDI-DATA->BEND lsb msb)
+     Convert bend lsb and msb bytes to signed normal form.
+</pre>
+<hr/>
+<h4 class="section-head">Event List</h4>
+<p class="body">
+    An <i>event-list</i> is a sorted list of MIDI events.    Events are sorted by time and then by <i>priority</i>.  Each MIDI message type     has a priority which determins the sort order when they occure at the same time.      The most common example are note-on and note-off events.  If they have the same     time value the note-off event is sorted after the note-on.  This is a low-level     detail usually haandled behind the scenes by the SORT-MIDI-EVENTS function.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="metrics.html">Metrics</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="nodes.html">Nodes</a>
+
+</div>
+</body>
+</html>

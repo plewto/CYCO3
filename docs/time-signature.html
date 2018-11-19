@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO time signatures</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="chords.html">Chords</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="projects.html">Projects</a>
+
+<h2 class="section-head">Time Signatures</h2>
+<hr/>
+<p class="body">
+    A <i>time-signature</i>&nbsp; is a type of <a href="nodes.html">cyco-node</a>    which sets basic timing parameters.  All composition related classes inherit from     time-signature.  This allows the default, project-level, time signature to be     superseded by more specific classes.   Jumping ahead a bit the project class    hierarchy is as follows:</p>
+<pre class="code">
+
+CYCO-NODE
+ |
+ +-- TIME-SIGNATURE
+      |
+      +-- PROJECT
+      |
+      +-- SECTION
+      |
+      +-- PART
+</pre>
+<p class="body">
+    A&nbsp;<a href="projects.html">project</a>    &nbsp;is composed of sequential&nbsp;<a href="sections.html">sections,</a>    &nbsp;which are composed of&nbsp;<a href="parts.html">parts.</a>    &nbsp;Each section automatically inherits time-signature parameters from the project, and    each part in turn inherits from their parent section.  At any level one or more    time-signature parameters may be overridden.</p>
+<h4 class="section-head">Time Signature Parameters</h4>
+<p class="body">
+    The time-signature class extends the normal concept of a     time-signature by including the following parameters.</p>
+<ul>
+    <li>Tempo - in BPM</li>
+    <li>Beat unit - quarter note by default.</li>
+    <li>Bar count - number of bars to a phrase.</li>
+    <li>Beat count - number of beats per bar.</li>
+    <li>Subbeat count - number of 'subbeats' per beat.
+              The default value of 4 sets 4 sixteenth notes per quarter note.</li>
+    <li>Tbeats - number of alternate subbeats per beat.  
+              The default value of 3/2 sets 6 sixteenth note triplets per beat.</li>
+</ul>
+<b class="definition">(TEMPO tsig)</b><br>
+<b class="definition">(UNIT tsig)</b><br>
+<b class="definition">(BARS tsig)</b><br>
+<b class="definition">(BEATS tsig)</b><br>
+<b class="definition">(TBEATS tsig)</b><br>
+<b class="definition">(SUBBEATS tsig)</b><br>
+<b class="definition">(TSUBBEATS tsig)</b><br>
+<b class="definition">(TICKS-PER-BEAT tsig)</b><br>
+<b class="definition">(TICKS-PER-SUBBEAT tsig)</b><br>
+<p class="body">
+    The above 'getter' methods return the indicated time-signature parameter.</p>
+<b class="definition">(TEMPO! tsig value)</b><br>
+<b class="definition">(UNIT! tsig value)</b><br>
+<b class="definition">(BARS! tsig value)</b><br>
+<b class="definition">(BEATS! tsig value)</b><br>
+<b class="definition">(SUBBEATS! tsig value)</b><br>
+<p class="body">
+    The above 'setter' methods updates the indicated parameters.</p>
+<b class="definition">(PHRASE-DURATION tsig)</b><br>
+<b class="definition">(BAR-DURATION tsig)</b><br>
+<b class="definition">(BEAT-DURATION tsig)</b><br>
+<b class="definition">(SUBBEAT-DURATION tsig)</b><br>
+<b class="definition">(TBEAT-DURATION tsig)</b><br>
+<b class="definition">(TSUBBEAT-DURATION tsig)</b><br>
+<b class="definition">(TICK-DURATION tsig)</b><br>
+<p class="body">
+    The above methods returns the duration of the indicated time-signature parameter.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="chords.html">Chords</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="projects.html">Projects</a>
+
+</div>
+</body>
+</html>

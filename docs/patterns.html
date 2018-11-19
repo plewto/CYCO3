@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Patterns</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+<h2 class="section-head">Patterns</h2>
+<hr/>
+<p class="body">
+    A <em>Pattern</em> is an object which returns a sequence of values in    some prescribed manner.  To thicken the plot patterns may be nested    to any depth.  Whenever a pattern is an element of another pattern,  the    nested pattern returns it's values,  which of course could be still more    patterns.</p>
+<h4 class="section-head">Pattern Functions</h4>
+<pre class="code">
+
+(NEXT-1 pattern)
+     Returns next value from pattern.
+
+(NEXT-N pattern n)
+     Returns next n values from pattern as a list.
+
+(NEXT pattern &optional n)
+     Returns next n (default 1) value(s) from pattern.
+     If n is :ALL return list of all values unevaluated.
+     If n is :REST return then remaining values as a list.
+
+(RESET pattern)
+     Restores pattern state to initial condition
+
+(PATTERN-P obj)
+     Predicate, true if object is a Pattern.
+
+(CARDINALITY pattern)
+     Returns number of elements in a pattern.
+     Note: Some pattern types have a natural length while for other types
+           the cardinality is arbitrary.
+
+(REMAINING pattern)
+     Returns number of elements yet to be returned.
+     Note: The comment about pattern cardinality applies here as well.
+</pre>
+<a id="line"></a>
+<hr/>
+<h4 class="section-head">Line Pattern</h4>
+<p class="body">
+    A <em>Line</em> is a simple pattern which returns it's values in    sequence until the final value is reached.  Thereafter a line continues to    return the final value indefinitely.</p>
+<pre class="code">
+
+(param foo (line :of '(A B C)))
+
+(next foo)  --> A
+(next foo)  --> B
+(next foo)  --> C
+(next foo)  --> C
+(next foo)  --> C
+</pre>
+<a id="cycle"></a>
+<hr/>
+<h4 class="section-head">Cycle Pattern</h4>
+<p class="body">
+    A <em>Cycle</em> is a pattern which returns it's elements in a cyclical    manner.</p>
+<pre class="code">
+
+(param cyc (cycle :of '(A B C)))
+
+(next cyc) --> A
+(next cyc) --> B
+(next cyc) --> C
+(next cyc) --> A
+(next-n cyc 2) --> (B C)
+(next-n cyc 2) --> (A B)
+</pre>
+<a id="bag"></a>
+<hr/>
+<h4 class="section-head">Bag Pattern</h4>
+<p class="body">
+    A <em>Bag</em>&nbsp;&nbsp;returns elements randomly without replacement.  Once    all elements have been returned,  future calls to next returns a designated    final element.   The final element may itself be a Pattern.</p>
+<pre class="code">
+
+(param bg (bag :of '(A B C) :final 1234))
+
+(next bg) --> B
+(next bg) --> A
+(next bg) --> C
+(next bg) --> 1234
+(next bg) --> 1234
+
+The final argument may be another pattern.
+
+(setf bg (bag :of '(A B C) :final (line :of '(1 2 3))))
+ 	   
+(next bg) --> B
+(next bg) --> A
+(next bg) --> C
+(next bg) --> 1
+(next bg) --> 2
+(next bg) --> 3
+(next bg) --> 3
+</pre>
+<a id="dice"></a>
+<hr/>
+<h4 class="section-head">Dice Pattern</h4>
+<p class="body">
+    A <em>Dice</em> returns elements at random with replacement.</p>
+<pre class="code">
+
+(param dc (dice :of '(A B C)))
+
+(next dc) --> B
+(next dc) --> A
+(next dc) --> A
+(next dc) --> C
+(next dc) --> B
+</pre>
+<a id="coin"></a>
+<hr/>
+<h4 class="section-head">Coin Pattern</h4>
+<p class="body">
+    A <em>Coin</em> is like a two-sided dice but has the ability to call    functions.</p>
+<pre class="code">
+
+(coin :p n :head value :tail value :period n)
+
+:p n - sets probability of getting a 'head', default 0.5
+:head - the 'heads' value, default #'true
+:tail - the 'tails' value, default #'false
+:period n - sets an arbitrary cardinality.
+
+The head or tail arguments may be any of the following:
+* - a literal value
+* - a pattern
+* - a function to be called when selected
+
+The default behavior is to return nil or t with equal probability.
+
+(next-n (coin) 10) --> (T T NIL T T NIL NIL NIL NIL NIL)
+</pre>
+<hr/>
+<h4 class="section-head">Nested Patterns</h4>
+<p class="body">
+    Patterns may be nested to any depth.</p>
+<pre class="code">
+
+;; Cycle contained in a line.
+(param foo (line :of (list 'A 'B 'C (cycle :of '(1 2 3)))))
+(next-n foo 10) --> (A B C 1 2 3 1 2 3 1)
+
+;; Line contained in cycle.
+(param foo (cycle :of (list 'A (line :of '(1 2 3) 'B))))
+(next-n foo 14) --> (A 1 B A 2 B A 3 B A 3 B A 3)
+	    
+;; A dice of cycle and line
+(param foo (dice :of (list (cycle :of '(A B C)(line :of '(1 2 3))))))
+(next-n foo 16) --> (1 2 A 3 B C 3 A 3 B 3 C 3 A B 3)
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+</div>
+</body>
+</html>

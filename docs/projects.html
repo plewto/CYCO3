@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Projects</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="time-signature.html">Time-Signature</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="sections.html">Sections</a>
+
+<h2 class="section-head">Projects</h2>
+<hr/>
+<p class="body">
+    A <i>Project</i> is the top level composition object and is      composed of one or more sequential <a href="sections.html.">Sections,</a>    &nbsp;where each section is composed of one or more parallel <a href="parts.html">Parts.</a>    </p>
+<ul>
+    <li>Project - Represents the piece as a whole.</li>
+    <li>Section - Major division of the piece, i.e. verse, chorus, etc...</li>
+    <li>Part - Individual instrument part within a section.</li>
+</ul>
+<p class="body">
+    The Project, Section and Part classes are all extensions of <a href="time-signature.html">Time-Signature,</a>    &nbsp;which is itself an extension of&nbsp;<a href="nodes.html">Cyco-Node.</a>    &nbsp;This allows the project to define composition-level defaults for    time-signature, tempo, etc...  Each section inherits the project defaults but     may selectively override them.  Likewise each part may selectively     override defaults inherited from a section.</p>
+<hr/>
+<h4 class="section-head">Project File Structure</h4>
+<p class="body">
+    Each project has it's own directory in <b>~/cyco-projects/</b>.&nbsp;  The project     directory has the same name as the project, but converted to lower-case,  and all     project related files are store there.  The main project file is named 'main.lisp'.      A project named 'Foo' has the following directory structure:</p>
+<pre class="code">
+~/cyco-projects/
+    |
+    +-- foo/
+         |
+         +-- main.lisp
+         +-- additional project files       
+         +--
+         +-- MIDI/
+              |
+              +-- foo.mid
+              +-- additional MIDI files
+              +--
+</pre>
+<p class="body">
+    The following global variables set the location and names of project files:<br>    	   <b>*DEFAULT-PROJECT-DIRECTORY*</b><br>               <b>*DEFAULT-PROJECT-MAIN-FILE*</b><br>               <b>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</b><br></p>
+<hr/>
+<h4 class="section-head">Creating and Loading Project files</h4>
+<b class="definition">(CREATE-PROJECT-FRAMEWORK name)</b><br>
+<p class="synopsis">Creates the required directories for project name.</p>
+<b class="definition">(LOAD-PROJECT name)</b><br>
+<p class="synopsis">Loads the main file of the named project.  When a project is 
+loaded the project object is bound to <b>*PROJECT*</b> and it becomes the
+<i>current project</i>.&nbsp; Most project related functions use 
+*PROJECT* by default.</p>
+<b class="definition">(LP &optional name)</b><br>
+<p class="synopsis">LP is a convenience version of LOAD-PROJECT with a few 
+additional tricks.  Once a project has been loaded with LP it may be reloaded
+without supplying the name.  Further LP remembers the current project
+after CYCO has been stopped and restarted.</p>
+<pre class="code">
+CYCO: (lp 'foo)   - load main project file   ~/cyco-projects/foo/main.lisp
+CYCO(FOO): (lp)   - reloads foo project.
+
+Notice the CYCO prompt changes to reflect the current project name.
+</pre>
+<b class="definition">(LOAD-PROJECT-FILE name)</b><br>
+<p class="synopsis">Loads a lisp file relative to the current project directory.
+All project filenames are converted to lower-case.</p>
+<b class="definition">(LPF &optional name)</b><br>
+<p class="synopsis">LPF is a convenance version of LOAD-PROJECT-FILE.  LPF
+remembers the previous file loaded. This makes it easy to quickly reload
+a single project file while it is under development.</p>
+<pre class="code">
+CYCO(FOO): (lpf 'verse)    - loads file ~/cyco-projects/foo/verse.lisp
+CYCO(FOO): (lpf)           - reloads verse.
+</pre>
+<hr/>
+<h4 class="section-head">Contents of the main project file</h4>
+<p class="body">
+    The primary task of the main file are:</p>
+<ol>
+    <li><a href="#create-project">Create Project Object</a>
+</li>
+    <li><a href="#orchestra">Setting up an Orchestra</a>
+</li>
+    <li><a href="#load-sections">Loading section files</a>
+</li>
+    <li><a href="#section-order">Setting Section play order</a>
+</li>
+    <li><a href="#midi-files">Creating MIDI files</a>
+</li>
+    <li><a href="#summery">Summery</a>
+</li>
+</ol>
+<a id="create-project"></a>
+<hr/>
+<h4 class="section-head">Creating the Project Object</h4>
+<p class="body">
+    The project object is responsible for generally holding everything together and     establishing default values.</p>
+<b class="definition">(MAKE-PROJECT name &key ...)</b><br>
+<b class="definition">(PROJECT name &key ...)</b><br>
+<p class="synopsis">MAKE-PROJECT and PROJECT are nearly identical, the only practical difference 
+is that PROJECT binds the new object to a symbol with the project's name.  With 
+MAKE-PROJECT the name argument should be a quoted symbol.  With PROJECT do not quote 
+the name.  Both take the same set of keyword arguments and the following two lines 
+are equivalent.</p>
+<pre class="code">
+
+(param foo (make-project 'foo))
+(project foo)
+
+Keyword arguments:
+
+:title          - String, optional title, defaults to name.
+:catalog-number - String, optional solely for users use.
+:remarks        - String, optional solely for users use.
+:tempo          - Float, project tempo in BPM, default 60.
+:unit           - Symbol, project time-signature unit, default 'Q
+:bars           - Int, number of bars per phrase, default 4.
+:beats          - Int, number of beats per bar, default 4.
+:subbeats       - Int, number of subbeats per beat, default 4.
+:cuefn          - Function used for time specifications, default #'BAR
+:make-current   - Boolean, if true bind project object to *PROJECT*, default t.
+:project-directory - String, defaults to *DEFAULT-PROJECT-DIRECTORY*
+:main-file         - String, defaults to *DEFAULT-PROJECT-MAIN-FILE*
+:output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
+</pre>
+<p>See <a href="time-signature.html">Time Signatures</a>
+ and <a href="cue-functions.html">Cue Functions</a>
+<a id="orchestra"></a>
+<hr/>
+<h4 class="section-head">Defining an Orchestra</h4>
+<p class="body">
+    CYCO does not have an 'orchestra' class perse, instead the term implies    the instrument tree built on top of +ROOT-INSTRUMENT+.&nbsp;&nbsp;    Instruments fall in two general classes:</p>
+<ol>
+    <li>Permanent (non-transient) instruments defined by the <a href="configuration.html">configuration</a>
+ process.</li>
+    <li>Temporary (transient) <a href="instruments.html">Instruments</a>
+ defined by the project.</li>
+</ol>
+<p class="body">
+    If the orchestra is simple you may define it directly in the main file, otherwise     consider using LPF to load a dedicated 'orchestra' file.</p>
+<p class="body">
+    Regardless of where the orchestra is defined, it is <b>very important to     call (PRUNE-ORCHESTRA)</b> before creating it.</p>
+<p class="body">
+    You can examine the orchestra tree with     <b>(PRINT-TREE +root-instrument+)</b></p>
+<a id="load-section"></a>
+<hr/>
+<h4 class="section-head">Loading Section Files</h4>
+<p class="body">
+    <a href="sections.html">Sections</a>     provide major divisions of a project.&nbsp; In all but the simplest case     sections are defined in their own files and loaded with LPF.</p>
+<p class="body">
+    When a section object is created it is designated as the     <i>current-section</i>&nbsp; of the current project, &nbsp;&nbsp; and the CYCO     prompt is updated to include the section name.&nbsp;&nbsp;Many section     related functions default to the current-section.</p>
+<a id="section-order"></a>
+<hr/>
+<h4 class="section-head">Setting Section Order</h4>
+<p class="body">
+    Prior to creating a MIDI file you must specify a    section order using the <b>SEQ-ORDER</b> function.&nbsp; At its simplest     list the section names in the desired order.</p>
+<pre class="code">
+(seq-order '(verse verse chorus bridge verse))
+</pre>
+<p class="body">
+    To get more creative try including directives with the section names,    this modifies how the section is played.&nbsp; In the above example     the verse is repeated twice at the beginning.   Below the :x directive    indicates how many times to play the verse.</p>
+<pre class="code">
+(seq-order '((verse :x 2) chorus bridge verse))
+</pre>
+<p class="body">
+    Directives exists to transpose, apply key-inversion,     reverse the note order, and shift the section's starting time.</p>
+<pre class="code">
+seq-order directives
+
+:x n          - Repeat n times.
+:trans n      - Transpose by n half-steps.
+:invert pivot - Apply key-inversion around the pivot key.
+:retro flag   - If true reverse note order.
+:shift time   -	Shift starting time by time seconds.
+                time may be positive or negative.
+</pre>
+<p class="body">
+    Transpose, inversion and retrograde are only applied to parts    which enable them.  In many cases you'll want to transpose     instrumental parts while leaving percussion parts alone.  See <a href="parts.html">Parts</a>    </p>
+<a id="midi-files"></a>
+<hr/>
+<h4 class="section-head">Creating MIDI files</h4>
+<p class="body">
+    Finally the project may be <i>rendered</i>&nbsp; to a MIDI file     using the PROJECT->SMF function.</p>
+<b class="definition">(PROJECT->SMF &key (project *project*)(filename nil))</b><br>
+<p class="synopsis">Saves project to a Standard Midi File.</p>
+<pre class="code">
+:project - defaults to *PROJECT*
+:filename - Sets file name relative to the project's output directory.
+            Defaults to the project name.
+
+For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
+</pre>
+<h4 class="section-head">Miscellaneous Comments</h4>
+<p class="body">
+    It is also possible to save individual sections to a MIDI file.  These are    often more useful, for example while 'tracking', then a project level file.</p>
+<p class="body">
+    The project structure may be examined by <b>(PRINT-TREE *project*)</b></p>
+<p class="body">
+    The <b>?</b> function is a great way to see information of just about anything.      Try <b>(? *project*)</b>.</p>
+<a id="summery"></a>
+<hr/>
+<h4 class="section-head">Anatomy of Main Project File Structure</h4>
+<pre class="code">
+
+
+;; ~/cyco-projects/foo/main.lisp
+
+(project foo :tempo 120 :bars 2)  ;; Create project object, bind it to *PROJECT*,
+                                  ;;    sets default tempo and bar count.
+(prune-orchestra)                 ;; Clear orchestra of old instruments.
+(lpf 'orchestra)                  ;; Load project file defining orchestra
+(lpf 'verse)                      ;; Load section files...
+(lpf 'chorus)                    
+(lpf 'bridge)                     
+(seq-order '((verse :x 2) chorus bridge verse))  ;; Establish section sequence.
+(project->smf)                    ;; Create MIDI file
+
+;; MIDI file saved to ~/cyco-projects/foo/MIDI/foo.mid
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="time-signature.html">Time-Signature</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="sections.html">Sections</a>
+
+</div>
+</body>
+</html>

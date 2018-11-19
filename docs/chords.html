@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Chords</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="dynamic-maps.html">Dynamic-Maps</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="time-signature.html">Time-Signature</a>
+
+<h2 class="section-head">Chords</h2>
+<hr/>
+<p class="body">
+    Chords are implemented as a list of key-number offsets, i.e. the list     (0&nbsp;4&nbsp;7) is a major triad.&nbsp; As this is less then     mnemonic the global variable <b>*CHORD-TABLE*</b> contains around 100     predefined chord types.</p>
+<b class="definition">(DEFCHORD name template &optional description)</b><br>
+<p class="synopsis">Defines a new chord for default *CHORD-TABLE*.</p>
+<pre class="code">
+name - symbol chord name,  an unofficial style is to name chords inside
+square brackets as in [maj].
+
+template - list of keynumber offsets
+</pre>
+<b class="definition">(?CHORDS &optional (model *chord-table*))</b><br>
+<p class="synopsis">Display chords defined by model.</p>
+<a id="octave"></a>
+<a id="inversions"></a>
+<b class="definition">(CHORD-INVERSION template degree &key add-octave)</b><br>
+<p class="synopsis">Returns inverted form of chord template.</p>
+<pre class="code">
+template - list of key offsets.
+degree - Sets number and direction of rotations applied to template.
+         For positive values the template is rotated to the right degree times, with 
+         the left most value transposed up an octave.  Negative values rotate to the
+         left.
+         
+          template '(0 4 7)
+          degree --> result
+         -2 --> (-8 -5 0)
+         -1 --> (-5 0 4)
+          0 --> (0 4 7)    no rotation, root position
+          1 --> (4 7 12)   1st inversion
+          2 --> (7 12 16)  2nd inversion
+          3 --> (12 16 19) 
+   
+:add-octave - Boolean, if true the first note <i>after rotation</i> is repeated 
+              at end of template shifted up an octave.  For the above examples 
+              with add-octave t
+
+         0 --> (0 4 7 12)
+         1 --> (4 7 12 16)
+         2 --> (7 12 16 19)
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="dynamic-maps.html">Dynamic-Maps</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="time-signature.html">Time-Signature</a>
+
+</div>
+</body>
+</html>

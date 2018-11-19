@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>Starting-CYCO</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+
+<h2 class="section-head">Starting CYCO</h2>
+<hr/>
+<p class="body">
+    These symbols are used in the following examples.</p>
+<pre class="code">
+
+ $     - Command line prompt.
+ *     - Lisp REPL prompt.
+ CYCO: - Lisp REPL prompt while using CYCO.
+</pre>
+<p class="body">
+    The first time CYCO is started, or anytime you wish to change     the configuration, do the following.</p>
+<pre class="code">
+Change directory to wherever the CYCO distribution folder is located.
+
+$ cd ~/CYCO
+
+Start your preferred Lisp,  here SBCl is assumed.
+
+$ sbcl
+
+At the lisp prompt load the cyco source files
+
+* (load "src/cyco")
+After the source files load, switch to the CYCO package.
+
+* (CYCO)
+
+While using CYCO the Lisp prompt changes to :CYCO.  The exact prompt text
+changes to reflect the current project name.
+</pre>
+<h4 class="section-head">Optional Configuration</h4>
+<p class="body">
+    Configuration is optional but highly suggested.      See examples directory for details.<br>      Use the (load-config) function to load the configuration files.</p>
+<pre class="code">
+CYCO: (load-config)
+</pre>
+<h4 class="section-head">Snapshots</h4>
+<p class="body">
+    Once CYCO is configured you may wish to create an    executable snapshot.</p>
+<pre class="code">
+CYCO: (save-snapshot "name-of-snapshot")
+</pre>
+<p class="body">
+    After creating the snapshot CYCO with terminate.  This is normal.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+
+</div>
+</body>
+</html>

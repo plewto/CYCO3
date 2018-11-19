@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Metric values</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="dynamics.html">Dynamics</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="midi-events.html">Midi-Events</a>
+
+<h2 class="section-head">Metrics</h2>
+<hr/>
+<p class="body">
+    Metrics are relative values used for note durations.  The basic metric values are</p>
+<pre class="code">
+W     4    - Whole note
+H     2    - Half
+Q     1    - Quarter
+E     1/2  - Eighth
+S     1/4  - Sixteenth
+T     1/8  - Thirty-second
+X     1/16 - Sixty-fourth
+R     -1   - A rest, has no intrinsic duration.
+</pre>
+<p class="body">
+    Dotted notes are formed by appending any number of dots '.' to basic symbol    Each dot scales the value by 3/2.</p>
+<pre class="code">
+Q.     9/4  - dotted quarter note
+Q..    27/8 - double dotted quarter note.
+Q...   81/16
+</pre>
+<p class="body">
+    Triplets are formed by appending 't'. &nbsp;&nbsp;Each t scales the value by 2/3.</p>
+<pre class="code">
+QT    2/3 - quarter note triplet
+QTT   4/9 
+QTTT  8/27
+</pre>
+<p class="body">
+    Combining dot and t modifications is legal but pointless.</p>
+<pre class="code">
+QT.  - 1  The t and . cancel each other out.
+</pre>
+<p class="body">
+    It is also legal to use either dot or t with the rest symbol R. &nbsp;&nbsp;A rest     however has no intrinsic duration and the modifications have no effect.</p>
+<hr/>
+<h4 class="section-head">Metric Functions</h4>
+<b class="definition">(METRIC-p obj)</b><br>
+<p class="synopsis">Predicate, true if obj is valid metric value.</p>
+<b class="definition">(METRIC obj)</b><br>
+<p class="synopsis">Returns metric value of argument,  may take either a single argument
+or list of arguments.</p>
+<pre class="code">
+(metric 3.4)  --> 3.4
+(metric -123) --> -1  All negative values treated as rest=-1.
+(metric 'Q)   --> 1.0 quarter note
+(metric 'E.)  --> 0.75 dotted eighth note
+(metric 'ST)  --> ~0.1667 sixteenth note triplet.
+</pre>
+<hr/>
+<h4 class="section-head">Metric Expressions</h4>
+<p class="body">
+    A <i>Metric-Expression</i>&nbsp;&nbsp;allows for complex durations by combining the basic     metric values above.&nbsp;&nbsp;The basic form is:</p>
+<pre class="code">
+[s*]a[-+b][-+c]...
+
+Where s is optional numeric scale factor and 
+a,b,c are basic simple metric values as above.
+</pre>
+<h4 class="section-head">Some Examples</h4>
+<pre class="code">
+W+Q    - add quarter and whole notes.
+W-S.   - subtract dotted sixteenth from whole note.
+W+Q+S  - Add whole, quarter and sixteenth notes.	   
+
+</pre>
+<p class="body">
+    The scaling factor is applied <i>after</i> all additions and     subtractions.</p>
+<pre class="code">
+3*W+S  - Add sixteenth note to whole note and -then- scale by 3.
+</pre>
+<b class="definition">(METRIC-EXPRESSION-P obj)</b><br>
+<p class="synopsis">Predicate, true if argument is valid metric expression.</p>
+<b class="definition">(METRIC-EXPRESSION obj)</b><br>
+<p class="synopsis">Evaluate object, or list of objects, as metric expression.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="dynamics.html">Dynamics</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="midi-events.html">Midi-Events</a>
+
+</div>
+</body>
+</html>

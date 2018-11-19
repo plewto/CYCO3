@@ -49,7 +49,7 @@ are equivalent.</p>
 <h4 class="section-head">Event commands</h4>
 <ul>
     <li><a href='#time'>:TIME</a>  - set event time range</li>
-    <li><a href='#to'>:TO</a> - advance time range to tnew</li>
+    <li><a href='#to'>:TO</a> - advance current time range</li>
     <li><a href='#steps'>:STEPS</a> - set event count</li>
     <li><a href='#value'>:VALUE</a> - set value range</li>
     <li><a href='#type'>:TYPE</a> - set event type</li>
@@ -93,7 +93,7 @@ Example
 <a id="value"></a>
 <hr/>
 <h4 class="section-head">:VALUE v1 v2</h4>
-<p class="synopsis">Sets controller values over time current time-range.&nbsp;All values are <i>normalized</i></p>
+<p class="synopsis">Sets controller values over current time-range.&nbsp;All values are <i>normalized</i></p>
 <ul>
     <li>Controller and channel-pressure values:&nbsp;&nbsp;  0.0 &le; value &le; 1.0</li>
     <li>Bend values are signed:&nbsp;&nbsp; -1.0 &le; value &le; +1.0</li>
@@ -129,13 +129,13 @@ Example
 <a id="curve"></a>
 <hr/>
 <h4 class="section-head">:CURVE mode [param]</h4>
-<p class="synopsis">Selects type of curve.&nbsp The param argument is 
+<p class="synopsis">Selects type of curve.&nbsp; The param argument is 
 optional and it's meaning is dependent on the curve type.<br><br>Available curves:</p>
 <ul>
     <li>POINT - a single event at time t2 and value v1, param is ignored.</li>
     <li>LINE - generates line between (t1,v1) and (t2,v2).  Optional param argument
 is exponential degree, 0&lt;param.</li>
-    <li>SAW - generates sawtooth.  Slope is inverted if v2&ltv1.  Param argument 
+    <li>SAW - generates sawtooth.  Slope is inverted if v2&lt;v1.  Param argument 
 sets number of cycles.</li>
     <li>TRI - generates triangle. Param argument sets number of cycles.</li>
     <li>SIN - generates sine wave. Param argument sets number of cycles.</li>

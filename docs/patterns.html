@@ -24,6 +24,19 @@
 <hr/>
 <p class="body">
     A <em>Pattern</em> is an object which returns a sequence of values in    some prescribed manner.  To thicken the plot patterns may be nested    to any depth.  Whenever a pattern is an element of another pattern,  the    nested pattern returns it's values,  which of course could be still more    patterns.</p>
+<p class="body">
+    Quick Links:</p>
+<ul>
+    <li><a href='#pattern-functions'>Functions on patterns</a></li>
+    <li><a href='#line'>Line pattern</a></li>
+    <li><a href='#cycle'>Cycle pattern</a></li>
+    <li><a href='#bag'>Bag pattern</a></li>
+    <li><a href='#dice'>Dice pattern</a></li>
+    <li><a href='#coin'>Coin pattern</a></li>
+    <li><a href='#nested'>Nested patterns</a></li>
+</ul>
+<a id="pattern-functions"></a>
+<hr/>
 <h4 class="section-head">Pattern Functions</h4>
 <pre class="code">
 
@@ -45,7 +58,7 @@
      Predicate, true if object is a Pattern.
 
 (CARDINALITY pattern)
-     Returns number of elements in a pattern.
+     Returns number of elements in pattern.
      Note: Some pattern types have a natural length while for other types
            the cardinality is arbitrary.
 
@@ -139,16 +152,20 @@ The final argument may be another pattern.
 :head - the 'heads' value, default #'true
 :tail - the 'tails' value, default #'false
 :period n - sets an arbitrary cardinality.
-
-The head or tail arguments may be any of the following:
-* - a literal value
-* - a pattern
-* - a function to be called when selected
-
-The default behavior is to return nil or t with equal probability.
-
+</pre>
+<p class="body">
+    The head and tail arguments may be any of the following:</p>
+<ul>
+    <li>literal value</li>
+    <li>pattern</li>
+    <li>function to be called when selected</li>
+</ul>
+<p class="body">
+    The default behavior is to return nil or t with equal probability.</p>
+<pre class="code">
 (next-n (coin) 10) --> (T T NIL T T NIL NIL NIL NIL NIL)
 </pre>
+<a id="nested"></a>
 <hr/>
 <h4 class="section-head">Nested Patterns</h4>
 <p class="body">
@@ -156,14 +173,18 @@ The default behavior is to return nil or t with equal probability.
 <pre class="code">
 
 ;; Cycle contained in a line.
+;;
 (param foo (line :of (list 'A 'B 'C (cycle :of '(1 2 3)))))
 (next-n foo 10) --> (A B C 1 2 3 1 2 3 1)
 
 ;; Line contained in cycle.
-(param foo (cycle :of (list 'A (line :of '(1 2 3) 'B))))
-(next-n foo 14) --> (A 1 B A 2 B A 3 B A 3 B A 3)
+;;
+(param foo (cycle :of (list 'A 'B (line :of '(1 2 3)))))
+(next-n foo 15) --> (A B 1 A B 2 A B 3 A B 3 A B 3)
+
 	    
 ;; A dice of cycle and line
+;;
 (param foo (dice :of (list (cycle :of '(A B C)(line :of '(1 2 3))))))
 (next-n foo 16) --> (1 2 A 3 B C 3 A 3 B 3 C 3 A B 3)
 </pre>

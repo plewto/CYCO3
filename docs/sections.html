@@ -27,7 +27,7 @@
 <p class="body">
     Sections are the middle layer,  they are always a child of a&nbsp;<a href="projects.html">Project</a>    &nbsp;and only have&nbsp;<a href="parts.html">Parts</a>    &nbsp;as child nodes.</p>
 <p class="body">
-    The primary job of a section is to be a container for it's parts.      Sections often override project time-signature values and they may     mute or solo individual parts or&nbsp;<a href="groups.html">groups</a>    &nbsp;of parts.</p>
+    The primary job of a section is to be a container for it's parts.      Sections often override project time-signature values and they may     mute or solo individual parts or&nbsp;<a href="#groups">groups</a>    &nbsp;of parts.</p>
 <p class="body">
     Sections may be saved to MIDI files separate from the main project.</p>
 <b class="definition">(MAKE-SECTION name &keys ...)</b><br>
@@ -49,12 +49,14 @@ keyword arguments
 :subbeats     - int, number of subbeats per beat, defaults to project value.
 :cuefn        - function, defaults to project value.
 :transposable - Boolean, if nil the section is not effected by transpose
-                and key-inversion operations.
+                and key-inversion operations. May be overridden by individual
+                parts.
 :reversible   - Boolean, if true the section is not effected by retrograde 
-                operations.
+                operations. May be overridden by individual parts.
 :remarks      - Optional remarks text solely for the users use.
 :project      - The parent project, defaults to *PROJECT*
 </pre>
+<a id="groups"></a>
 <b class="definition">(GROUP name members)</b><br>
 <p class="synopsis">Creates a new Group in the current section.  The group object is bound to the 
 symbol name</p>

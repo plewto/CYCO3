@@ -23,7 +23,7 @@
 <h2 class="section-head">Nodes</h2>
 <hr/>
 <p class="body">
-    A CYCO-NODE is a low-level object used to build structures     behind the scenes.  A node has at most one parent, and any number of child nodes.<br><br>    Each Node type define a pre-established set of properties and a node may either directly set    a property value or inherit the value from it's parent.</p>
+    A CYCO-NODE is a low-level object used to build structures     behind the scenes.  A node has at most one parent, and any number of child nodes.<br><br>    Each Node type defines a pre-established set of properties and a node may either directly set    a property value or inherit the value from it's parent.</p>
 <p class="body">
     CYCO-NODES are used to construct two major types of tree.</p>
 <ol>
@@ -56,7 +56,7 @@
 and it's previous parent is severed.</p>
 <b class="definition">(PRUNE node &optional (force nil))</b><br>
 <p class="synopsis">Deconstruct the tree starting with node.
-Node objects have a Boolean <i>TRANSIENT</i> &nbsp; value.&nbsp;&nbsp;
+Node objects have a Boolean <i>TRANSIENT</i> &nbsp; property.&nbsp;&nbsp;
 Prune will only remove nodes whose transient value is true.  If the optional 
 force argument is true, then all nodes are removed regardless of their 
 transient status.</p>

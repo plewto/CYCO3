@@ -23,7 +23,7 @@
 <h2 class="section-head">MIDI Events</h2>
 <hr/>
 <p class="body">
-    MIDI events are a low-level structure.  Typically they are    not handled directly while creating a score but they are just below the surface.      A MIDI Event is defined as a list of form    <b>&nbsp;(time&nbsp;midi-message)</b>&nbsp;.<br>        The following low-level functions return midi-messages.</p>
+    MIDI events are a low-level structure.  Typically they are    not handled directly while creating a score but they exists just below the surface.      <br><br><br>A MIDI Event is defined as a list of form    <b>&nbsp;<nobr>(time&nbsp;midi-message)</nobr></b>&nbsp;.        <br><br>The following low-level functions return midi-messages.</p>
 <pre class="code">
 (MIDI-NOTE-ON  channel keynumber velocity)
 (MIDI-NOTE-ON channel keynumber velocity)
@@ -60,7 +60,7 @@ to convert between the lsb and msb bend bytes and a signed-normalized form.
 <hr/>
 <h4 class="section-head">Event List</h4>
 <p class="body">
-    An <i>event-list</i> is a sorted list of MIDI events.    Events are sorted by time and then by <i>priority</i>.  Each MIDI message type     has a priority which determins the sort order when they occure at the same time.      The most common example are note-on and note-off events.  If they have the same     time value the note-off event is sorted after the note-on.  This is a low-level     detail usually haandled behind the scenes by the SORT-MIDI-EVENTS function.</p>
+    An <i>event-list</i> is a sorted list of MIDI events.    Events are sorted by time and then by <i>priority</i>.  Each MIDI message type     has a priority which determines the sort order when they occur at the same time.      The most common example are note-on and note-off events.  If they have the same     time value the note-off event is sorted after the note-on.  This is a low-level     detail handled behind the scenes by the <nobr>SORT-MIDI-EVENTS</nobr> function.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

@@ -23,11 +23,11 @@
 <h2 class="section-head">MIDI Channels</h2>
 <hr/>
 <p class="body">
-    The MIDI specification defines channels between 1 and 16 inclusive.      However the corresponding transmitted values are between 0 and 15.  Where     possible CYCO uses the 1..16 range for user facing values.   To keep these     two closely related ranges straight the term 'channel-index' is used for the    actual byte values of 0..15.  The unmodified term 'channel' always indicates    the 1..16 range.</p>
+    The MIDI specification defines channels between 1 and 16 inclusive.      However the corresponding transmitted values are between 0 and 15.  Where     possible CYCO uses the 1..16 range for user facing values.   To keep these     two closely related ranges straight the term 'channel-index' is used for the    actual byte values of 0..15.  The unqualified term 'channel' always indicates    the 1..16 range.</p>
 <h4 class="section-head">Meta Channels</h4>
 <b class="definition">(META-CHANNEL! name channel &optional remarks)</b><br>
-<p class="synopsis">Makes symbolic assignment to MIDI channel.  Meta channels may be 
-defined in terms of other channels so long as the ultimately point to a 'real' channel 
+<p class="synopsis">Makes symbolic assignment to MIDI channel.  A Meta channel may be 
+defined in terms of another channel so long as they ultimately point to a 'real' channel 
 number.</p>
 <pre class="code">
 name - symbol
@@ -41,7 +41,7 @@ Example:
 (meta-channel! 'drum-machine 10)
 (meta-channel! 'snare 'drum-machine)
 </pre>
-<p class="synopsis">The snare channel is defined indirectly via the drum-machine value.</p>
+<p class="synopsis">The snare channel is defined indirectly via the drum-machine.</p>
 <b class="definition">(META-CHANNEL chan &optional (resolve nil))</b><br>
 <p class="synopsis">Returns value of meta channel.  By default returns one-level 
 of indirection.  If resolve is true, returns the actual MIDI channel.</p>
@@ -55,7 +55,7 @@ of indirection.  If resolve is true, returns the actual MIDI channel.</p>
 (channel-name 10) --> 'drum-machine	 
 (channel-name 6) --> 6  unassigned channels return their integer value.
 </pre>
-<b class="definition">(META-CHANNEL-ASSIGNMENT-P obj</b><br>
+<b class="definition">(META-CHANNEL-ASSIGNMENT-P obj)</b><br>
 <p class="synopsis">Predicate, true if obj is a channel assignment.</p>
 <b class="definition">(?META-CHANNELS)</b><br>
 <p class="synopsis">Displays list of channel assignments<br></p>

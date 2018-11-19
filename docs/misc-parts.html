@@ -100,7 +100,7 @@ Keyword arguments
 <hr/>
 <h4 class="section-head">RAW-PART</h4>
 <p class="body">
-    A <i>raw-part</i>&nbsp;is a primitive type of&nbsp;<a href="parts.html">part</a>    &nbsp;intended as a fall-back when no other part does the job.&nbsp <nobr>Raw-parts</nobr> are for edge cases and generally you will want to use some other part     type.</p>
+    A <i>raw-part</i>&nbsp;is a primitive type of&nbsp;<a href="parts.html">part</a>    &nbsp;intended as a fall-back when no other part does the job.&nbsp; <nobr>Raw-parts</nobr> are for edge cases and generally you will want to use some other part     type.</p>
 <b class="definition">(MAKE-RAW-PART name &keys ...)</b><br>
 <b class="definition">(RAW-PART name &keys ...)</b><br>
 <p class="synopsis">Creates new raw-part, the only difference between MAKE-RAW-PART and RAW-PART is that 
@@ -129,15 +129,11 @@ Keywords
   (time-2 . midi-message-2)
    .......................
   (time-n . midi-message-n))
-
-See the CYCO source files in CYCO/src/midi/ for available MIDI message 
-functions.
-
-MIDI system-exclusive and meta messages are one area when raw-parts 
-could be useful.  Currently (2018.11.18) meta-messages are used internally
-in a few places and there are no higher-level system-exclusive functions,
-though some may be added later.
 </pre>
+<p class="body">
+    See&nbsp;<a href="midi-events.html">MIDI Events</a>    </p>
+<p class="body">
+    MIDI system-exclusive and meta messages are one area when raw-parts     could be useful.&nbsp; Currently (2018.11.18) meta-messages are used internally    in a few places and there are no higher-level system-exclusive functions,    though some may be added later.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

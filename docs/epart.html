@@ -53,7 +53,6 @@ Keywords
                 transformations.
 :chord-model  - defaults to global <a href='chords.html'>*CHORD-TABLE*</a>
 :render-once  - Boolean, if true do not repeat part after first time.
-:shift        - An offset time in seconds added to all events.
 :events       - <a href='#epart-events'>See Below</a>
 :remarks      - Optional remarks text.
 </pre>
@@ -74,7 +73,7 @@ Keywords
     <li>Commands which set parameters but do not actually produce events.</li>
 </ol>
 <p class="body">
-    The 2nd type are remembered until they are changed.  I.e. once a    dynamic level is set it is retained until explicitly changed.&nbsp;     Event generating commands must be explicitly stated each time.</p>
+    The 2nd type are remembered until they are changed.  I.e. once a    dynamic level has been set it is retained until explicitly changed.&nbsp;     Event generating commands must be explicitly stated each time.</p>
 <h4 class="section-head">Event generating commands</h4>
 <ul>
     <li><a href='#key'>:KEY</a>&nbsp;     - Produce note events</li>
@@ -110,7 +109,7 @@ Keywords
 </ul>
 <h4 class="section-head">Miscellaneous commands</h4>
 <ul>
-    <li><a href='#trace'>:TRACE</a>&nbsp; - sets diagnostic mode</li>
+    <li><a href='#trace'>:TRACE</a>&nbsp; - enable diagnostic mode</li>
     <li><a href='#break'>:BREAK</a>&nbsp; - do not evaluate remaining events</li>
     <li><a href='#stop'>:STOP</a>&nbsp; - do not evaluate remaining event-list</li>
 </ul>
@@ -118,7 +117,7 @@ Keywords
 <hr/>
 <h4 class="section-head">:TIME tspec</h4>
 <p class="body">
-    Set event <a href='event-timing.html'>time</a>&nbsp in terms of&nbsp;<a href="time-signature.html">time-signature</a>    &nbsp;and&nbsp;<a href="event-timing.html#cue-functions">cue-function.</a>    </p>
+    Set event <a href='event-timing.html'>time</a>&nbsp; in terms of&nbsp;<a href="time-signature.html">time-signature</a>    &nbsp;and&nbsp;<a href="event-timing.html#cue-functions">cue-function.</a>    </p>
 <p class="body">
     Event time is retained until explicitly changed.</p>
 <pre class="code">
@@ -179,7 +178,7 @@ Example
 <hr/>
 <h4 class="section-head">:STRUM delay</h4>
 <p class="body">
-    Sets delay between successive chord notes to simulate strumming.&nbsp;Delay times may be absolute in seconds which are not effected by the tempo.&nbsp;If the delay time is expressed by a&nbsp;<a href="metrics.html">metric expressions</a>    &nbsp;it is relative and scaled by the current tempo.&nbspRelatively long delays may be used to produce arpeggios.</p>
+    Sets delay between successive chord notes to simulate strumming.&nbsp;Delay times may be absolute in seconds which are not effected by the tempo.&nbsp;If the delay time is expressed by a&nbsp;<a href="metrics.html">metric expressions</a>    &nbsp;it is relative and scaled by the current tempo.&nbsp;Relatively long delays may be used to produce arpeggios.</p>
 <pre class="code">
 Examples
 (... :STRUM s ...)      ;; delay time 1/16th note, scaled by tempo.
@@ -200,7 +199,7 @@ Examples
 <hr/>
 <h4 class="section-head">:AMP* scale</h4>
 <p class="body">
-    Scale amplitude of chord notes.&nbsp; The first note has the    nominal amplitude level.&nbsp;Amplitudes for successive notes are scaled     by the scaling factor.&nbsp;    The allowed amplitudes are limited by the :AMP-RANGE parameters.&nbsp;    AMP* only applies to note within a chord.</p>
+    Scale amplitude of chord notes.&nbsp; The first note has the    nominal amplitude level.&nbsp;Amplitudes for successive notes are scaled     by the scaling factor.&nbsp;    The allowed amplitudes are limited by the <nobr>:AMP-RANGE</nobr> parameters.&nbsp;    AMP* only applies to notes within a chord.</p>
 <pre class="code">
 Examples	 
 
@@ -231,7 +230,7 @@ Examples
 <hr/>
 <h4 class="section-head">:END-TOGETHER flag</h4>
 <p class="body">
-    Determines how strummed notes are terminated.&nbsp;If END-TOGETHER is true all notes end at the same time.&nbsp;Otherwise the note off times are staggered in the same order as the corresponding     note on events.</p>
+    Determines how strummed notes are terminated.&nbsp;If END-TOGETHER is true all notes end at the same time.&nbsp;Otherwise note off times are staggered in the same order as the corresponding     on events.</p>
 <pre class="code">
 Example
 
@@ -255,11 +254,11 @@ Example
 <hr/>
 <h4 class="section-head">:GRACE-AMP-SCALE scale</h4>
 <p class="body">
-    Set grace note amplitude</p>
+    Set grace note amplitude scaling.  The grace note amplitude is the nominal     amplitude time scale.</p>
 <pre class="code">
 Example
 
-(... :GRACE-AMP pp ...)
+(... :GRACE-AMP-SCALE 0.75 ...)
 </pre>
 <a id="grace-articulation"></a>
 <hr/>
@@ -298,7 +297,7 @@ Examples
 <hr/>
 <h4 class="section-head">:CRES start stop steps</h4>
 <p class="body">
-    Sets up crescendo/decrescendo<br><br>    :CRES start end count<br><br>    Where start and end are&nbsp <a href="amplitudes.html">amplitude</a>    &nbsp; values and count is the number of events.<br><br>The amplitudes of the next n key-events will change between    start and end.&nbsp; thereafter the amplitude stays at the end    value until it is changed.</p>
+    Sets up crescendo/decrescendo<br><br>    :CRES start end count<br><br>    Where start and end are&nbsp; <a href="amplitudes.html">amplitude</a>    &nbsp; values and count is the number of events.<br><br>The amplitudes of the next n key-events will change between    start and end.&nbsp; Thereafter the amplitude stays at the end    value until it is changed.</p>
 <pre class="code">
 Examples
 
@@ -377,7 +376,7 @@ Example
 (... :PROGRAM default ...)
 </pre>
 <p class="footnote">The :PROGRAM command is useful when an instrument needs to change it's program
-part way through an EPART.&nbsp; There is a type of part called&nbsp;<a href="programs.html">Programs</a>
+part way through an EPART.&nbsp; There is a type of part called&nbsp;<a href="misc-parts.html#programs">Programs</a>
 &nbsp;which is in general a better choice for changing program-numbers.</p>
 <a id="bank"></a>
 <hr/>

@@ -23,7 +23,7 @@
 <h2 class="section-head">Projects</h2>
 <hr/>
 <p class="body">
-    A <i>Project</i> is the top level composition object and is      composed of one or more sequential <a href="sections.html.">Sections,</a>    &nbsp;where each section is composed of one or more parallel <a href="parts.html">Parts.</a>    </p>
+    A <i>Project</i> is the top level composition object and is      composed of one or more sequential <a href="sections.html">Sections,</a>    &nbsp;where each section is composed of one or more parallel <a href="parts.html">Parts.</a>    </p>
 <ul>
     <li>Project - Represents the piece as a whole.</li>
     <li>Section - Major division of the piece, i.e. verse, chorus, etc...</li>
@@ -134,7 +134,7 @@ Keyword arguments:
 :output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
 </pre>
 <p>See <a href="time-signature.html">Time Signatures</a>
- and <a href="cue-functions.html">Cue Functions</a>
+ and <a href="event-timing.html#cue-functions">Cue Functions</a>
 <a id="orchestra"></a>
 <hr/>
 <h4 class="section-head">Defining an Orchestra</h4>
@@ -151,8 +151,8 @@ Keyword arguments:
 <p class="body">
     Regardless of where the orchestra is defined, it is <b>very important to     call (PRUNE-ORCHESTRA)</b> before creating it.</p>
 <p class="body">
-    You can examine the orchestra tree with     <b>(PRINT-TREE +root-instrument+)</b></p>
-<a id="load-section"></a>
+    You may examine the orchestra tree with     <b>(PRINT-TREE +root-instrument+)</b></p>
+<a id="load-sections"></a>
 <hr/>
 <h4 class="section-head">Loading Section Files</h4>
 <p class="body">
@@ -163,12 +163,12 @@ Keyword arguments:
 <hr/>
 <h4 class="section-head">Setting Section Order</h4>
 <p class="body">
-    Prior to creating a MIDI file you must specify a    section order using the <b>SEQ-ORDER</b> function.&nbsp; At its simplest     list the section names in the desired order.</p>
+    Prior to creating a MIDI file you must specify a    section order using the <b>SEQ-ORDER</b> function.&nbsp; At its simplest     just list section names in the desired order.</p>
 <pre class="code">
 (seq-order '(verse verse chorus bridge verse))
 </pre>
 <p class="body">
-    To get more creative try including directives with the section names,    this modifies how the section is played.&nbsp; In the above example     the verse is repeated twice at the beginning.   Below the :x directive    indicates how many times to play the verse.</p>
+    To get more creative try including directives,    these modify how the a section is played.&nbsp; In the above example     the verse is repeated twice at the beginning.   Below the :x 2 directive    causes the first verse to be repeated.</p>
 <pre class="code">
 (seq-order '((verse :x 2) chorus bridge verse))
 </pre>
@@ -192,7 +192,7 @@ seq-order directives
 <p class="body">
     Finally the project may be <i>rendered</i>&nbsp; to a MIDI file     using the PROJECT->SMF function.</p>
 <b class="definition">(PROJECT->SMF &key (project *project*)(filename nil))</b><br>
-<p class="synopsis">Saves project to a Standard Midi File.</p>
+<p class="synopsis">Saves project to a Standard MIDI File.</p>
 <pre class="code">
 :project - defaults to *PROJECT*
 :filename - Sets file name relative to the project's output directory.
@@ -211,7 +211,6 @@ For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
 <hr/>
 <h4 class="section-head">Anatomy of Main Project File Structure</h4>
 <pre class="code">
-
 
 ;; ~/cyco-projects/foo/main.lisp
 

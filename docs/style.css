@@ -45,15 +45,14 @@ b.warning {
 
 b.code {
     color: #D9DBC5;
-    font: Mono;
+    font-family: Mono;
     font-size: 1.0em;
     margin-left: 60px;
 }
 
 b.definition {
-    # color: #D9DBC5;
     color: #CCFFe5;
-    font: Mono;
+    font-family: Mono;
     font-size: 1.1em;
     margin-left: 0px;
 }

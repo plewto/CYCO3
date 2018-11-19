@@ -786,8 +786,7 @@
 	(put epart :chord-model chord-model)
 	(put epart :muted nil)
 	(connect parent epart)
-	(put epart :shift
-      	      (funcall (property epart :cue-function) epart shift))
+	(put epart :shift (or shift 0.0))
 	(set-cyco-prompt)
 	(setf (epart-events epart) (reverse (process-events epart (->list events))))
 	epart)))

@@ -1,11 +1,11 @@
 ;;;; CYCO
 
-(constant +cpart-documentation+
-" Creates new CPART instance.
+(constant +controllers-documentation+
+" Creates new CONTROLLERS instance.
 
- A CPart generates MIDI bend, channel-pressure and controller signals.
+ A Controllers generates MIDI bend, channel-pressure and controller signals.
  Single-point or control curves may be produced.
- CParts do not directly have instruments or mute status, instead they 
+ Controllerss do not directly have instruments or mute status, instead they 
  depend on their parent node to provide these parameters.  
 
  name         - Symbol
@@ -68,7 +68,7 @@
  :TRACE all     
      Selects debug trace modes.")
 
-(defstruct cpart-state
+(defstruct controllers-state
   (source "")
   (time1 nil)
   (time2 nil)
@@ -80,69 +80,69 @@
   (cycles 1.0)	  ;; used as degree for line curve.
   (blur nil))
   
-(defmethod soft-reset ((state cpart-state))
-  (setf (cpart-state-curve-type state) nil)
+(defmethod soft-reset ((state controllers-state))
+  (setf (controllers-state-curve-type state) nil)
   state)
 
-(defmethod reset ((state cpart-state))
+(defmethod reset ((state controllers-state))
   (soft-reset state)
-  (setf (cpart-state-source state) nil)
-  (setf (cpart-state-time1 state) '(1 1 1))
-  (setf (cpart-state-time2 state) '(2 1 1))
-  (setf (cpart-state-steps state) 16)
-  (setf (cpart-state-value1 state) 0.0)
-  (setf (cpart-state-value2 state) 1.0)
-  (setf (cpart-state-event-type state) nil)
-  (setf (cpart-state-curve-type state) nil)
-  (setf (cpart-state-cycles state) 1.0)
+  (setf (controllers-state-source state) nil)
+  (setf (controllers-state-time1 state) '(1 1 1))
+  (setf (controllers-state-time2 state) '(2 1 1))
+  (setf (controllers-state-steps state) 16)
+  (setf (controllers-state-value1 state) 0.0)
+  (setf (controllers-state-value2 state) 1.0)
+  (setf (controllers-state-event-type state) nil)
+  (setf (controllers-state-curve-type state) nil)
+  (setf (controllers-state-cycles state) 1.0)
   state)
 
-(defmethod clone ((state cpart-state) &key new-name new-parent)
+(defmethod clone ((state controllers-state) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (make-cpart-state
-   :source (cpart-state-source state)
-   :time1 (cpart-state-time1 state)
-   :time2 (cpart-state-time2 state)
-   :steps (cpart-state-steps state)
-   :value1 (cpart-state-value1 state)
-   :value2 (cpart-state-value2 state)
-   :event-type (cpart-state-event-type state)
-   :curve-type (cpart-state-curve-type state)
-   :cycles (cpart-state-cycles state)
-   :blur (cpart-state-blur state)))
+  (make-controllers-state
+   :source (controllers-state-source state)
+   :time1 (controllers-state-time1 state)
+   :time2 (controllers-state-time2 state)
+   :steps (controllers-state-steps state)
+   :value1 (controllers-state-value1 state)
+   :value2 (controllers-state-value2 state)
+   :event-type (controllers-state-event-type state)
+   :curve-type (controllers-state-curve-type state)
+   :cycles (controllers-state-cycles state)
+   :blur (controllers-state-blur state)))
 
-(constant +cpart-properties+
+(constant +controllers-properties+
 	  (append +part-properties+
 		  '(:shift
 		    :render-once)))
 
-(constant +cpart-curve-types+
+(constant +controllers-curve-types+
 	  '(point line saw tri sin sin2 cos cos2 lin+cos random))
 
-(defclass cpart (part)
+(defclass controllers (part)
   ((state
-    :type cpart-state
-    :accessor cpart-state
-    :initform (let ((s (make-instance 'cpart-state)))
+    :type controllers-state
+    :accessor controllers-state
+    :initform (let ((s (make-instance 'controllers-state)))
 		(reset s)
 		s))
    (events
-   :type list   ; of cpart-states
-   :accessor cpart-events
+   :type list   ; of controllers-states
+   :accessor controllers-events
    :initform '())))
 
-(global *trace-cpart-events* nil)
-(global *trace-cpart-states* nil)
+(global *trace-controllers-events* nil)
+(global *trace-controllers-states* nil)
 
 (labels ((trace-event
 	  (part event)
-	  (if *trace-cpart-events*
+	  (if *trace-controllers-events*
 	      (let ((frmt "TRACE: ~A.~A event: ~A~%"))
 		(format t "~A~%" +banner-bar2+)
 		(format t frmt (name (parent part))(name part) event))))
 	 (trace-state
 	  (state)
-	  (if *trace-cpart-states*
+	  (if *trace-controllers-states*
 	      (progn 
 		(format t "~A~%" +banner-bar2+)
 		(format t "~A~%" state))))
@@ -150,8 +150,8 @@
 	 (switch-trace-mode
 	  (clause)
 	  (let ((mode (or (second clause) 'all)))
-	    (setf *trace-cpart-events* (or (eq mode 'events)(eq mode 'all)))
-	    (setf *trace-cpart-states* (or (eq mode 'state)(eq mode 'all)))))
+	    (setf *trace-controllers-events* (or (eq mode 'events)(eq mode 'all)))
+	    (setf *trace-controllers-states* (or (eq mode 'state)(eq mode 'all)))))
 	 
 	 (id-part
 	   (part)
@@ -180,13 +180,13 @@
 		     (arg1 (second clause))
 		     (arg2 (third clause))
 		     (t1 (if (eq arg1 '=)
-			     (or (cpart-state-time1 state) 0.0)
+			     (or (controllers-state-time1 state) 0.0)
 			   (funcall cuefn part arg1)))
 		     (t2 (if (eq arg2 '=)
-			     (or (cpart-state-time2 state) 0.0)
+			     (or (controllers-state-time2 state) 0.0)
 			   (funcall cuefn part arg2))))
-		(setf (cpart-state-time1 state) (min t1 t2))
-		(setf (cpart-state-time2 state) (max t1 t2))
+		(setf (controllers-state-time1 state) (min t1 t2))
+		(setf (controllers-state-time2 state) (max t1 t2))
 		t)
 	    nil))
 
@@ -196,9 +196,9 @@
 	      (let* ((cuefn (property part :cue-function))
 		     (arg2 (second clause))
 		     (t2 (funcall cuefn part arg2))
-		     (t1 (or (cpart-state-time2 state) 0.0)))
-		(setf (cpart-state-time1 state) (min t1 t2))
-		(setf (cpart-state-time2 state) (max t1 t2))
+		     (t1 (or (controllers-state-time2 state) 0.0)))
+		(setf (controllers-state-time1 state) (min t1 t2))
+		(setf (controllers-state-time2 state) (max t1 t2))
 		t)
 	    nil))
 	  
@@ -207,7 +207,7 @@
 	  (if (expect-n-arguments part event clause 1 1)
 	      (let* ((n (second clause)))
 		(if (and (integerp n)(plusp n))
-		    (setf (cpart-state-steps state) n)
+		    (setf (controllers-state-steps state) n)
 		  (cyco-warning
 		   (sformat "Expected positive integer, Encountered ~A" n)
 		   (id-part part)
@@ -227,9 +227,9 @@
 			   (list arg1 arg2))
 		    (progn 
 		      (if (not (eq arg1 '=))
-			  (setf (cpart-state-value1 state) arg1))
+			  (setf (controllers-state-value1 state) arg1))
 		      (if (not (eq arg2 '=))
-			  (setf (cpart-state-value2 state) arg2)))
+			  (setf (controllers-state-value2 state) arg2)))
 		  (cyco-warning "Expected signed-normalized value"
 				(id-part part)
 				(sformat "Event   ~A" event)
@@ -251,27 +251,27 @@
 				      (sformat "Event   ~A" event)
 				      (sformat "Clause  ~A" clause))
 				     nil))))
-		(setf (cpart-state-event-type state) value))))
+		(setf (controllers-state-event-type state) value))))
 
 
 	 (process-event-curve		; :curve shape [param]
 	  (part state event clause)
 	  (if (expect-n-arguments part event clause 1 2)
 	      (let* ((arg1 (second clause))
-		     (shape (and (member arg1 +cpart-curve-types+) arg1)))
+		     (shape (and (member arg1 +controllers-curve-types+) arg1)))
 		(if shape
-		    (setf (cpart-state-curve-type state) shape)
+		    (setf (controllers-state-curve-type state) shape)
 		  (cyco-warning
-		   (sformat "Expected one of ~A,  encountered ~A" +cpart-curve-types+ arg1)
+		   (sformat "Expected one of ~A,  encountered ~A" +controllers-curve-types+ arg1)
 		   (id-part part)
 		   (sformat "Event  ~A" event)
 		   (sformat "Clause ~A" clause)))
 		(let ((cycles (third clause)))
 		  (cond ((eq cycles '=)
-			 (setf (cpart-state-cycles state)
-			       (or (cpart-state-cycles state) 1.0)))
+			 (setf (controllers-state-cycles state)
+			       (or (controllers-state-cycles state) 1.0)))
 			((and (numberp cycles)(plusp cycles))
-			 (setf (cpart-state-cycles state) (float cycles)))
+			 (setf (controllers-state-cycles state) (float cycles)))
 			(cycles (cyco-warning
 				 (sformat "Expected positive cycle, encountered ~A" cycles)
 				 (id-part part)
@@ -283,7 +283,7 @@
 	  (if (expect-n-arguments part event clause 1 1)
 	      (let* ((arg (second clause)))
 		(if (and (<= 0 arg)(<= arg 1))
-		    (setf (cpart-state-blur state) arg)
+		    (setf (controllers-state-blur state) arg)
 		  (cyco-warning
 		   (sformat "Expected float between 0.0 and 1.0, encountered ~A" arg)
 		   (id-part part)
@@ -308,28 +308,28 @@
 		  ((eq command :blur)    ;:blur n
 		   (process-blur part state event clause))
 		  (t (cyco-warning
-		      (sformat "Undefined cpart event command: ~A" command)
+		      (sformat "Undefined controllers event command: ~A" command)
 		      (id-part part)
 		      (sformat "Event   ~A" event)
 		      (sformat "Clause  ~A" clause))) )))
 
 	 (real-event-p
 	  (state)
-	  (and (cpart-state-time1 state)
-	       (cpart-state-value1 state)
-	       (cpart-state-event-type state)
-	       (cpart-state-curve-type state)))
+	  (and (controllers-state-time1 state)
+	       (controllers-state-value1 state)
+	       (controllers-state-event-type state)
+	       (controllers-state-curve-type state)))
 	 
 	 (process-events
 	  (part events)
 	  (let ((acc '())
-	 	(state (cpart-state part)))
+	 	(state (controllers-state part)))
 	    (reset state)
 	    (block outerblock
 	      (dolist (event events)
 		(soft-reset state)
 		(trace-event part event)
-		(setf (cpart-state-source state) (->string event))
+		(setf (controllers-state-source state) (->string event))
 		(block innerblock
 		  (dolist (clause (partition-list event))
 		    (let ((command (car clause)))
@@ -349,46 +349,46 @@
 		      (trace-state state)))))
 	    acc)))
 
-  (defun make-cpart (name parent &key
+  (defun make-controllers (name parent &key
 			  render-once
 			  remarks
 			  events)
  
-    (let* ((cpart (make-instance 'cpart
+    (let* ((controllers (make-instance 'controllers
 				 :name name
 				 :remarks (->string (or remarks ""))
-				 :properties +cpart-properties+)))
-      (put cpart :render-once render-once)
-      (put cpart :transposable nil)
-      (put cpart :reversible nil)
-      (put cpart :muted nil)
-      (connect parent cpart)
-      (init-time-signature cpart)
-      (setf (cpart-events cpart)
-      	    (reverse (process-events cpart (->list events))))
-      cpart)) )
+				 :properties +controllers-properties+)))
+      (put controllers :render-once render-once)
+      (put controllers :transposable nil)
+      (put controllers :reversible nil)
+      (put controllers :muted nil)
+      (connect parent controllers)
+      (init-time-signature controllers)
+      (setf (controllers-events controllers)
+      	    (reverse (process-events controllers (->list events))))
+      controllers)) )
 
-(setf (documentation 'make-cpart 'function) +cpart-documentation+)
+(setf (documentation 'make-controllers 'function) +controllers-documentation+)
 
-(defmacro cpart (name parent &key render-once remarks events)
-  "Identical to make-cpart but binds part object to symbol name."
+(defmacro controllers (name parent &key render-once remarks events)
+  "Identical to make-controllers but binds part object to symbol name."
   `(progn
      (part-banner (name ,parent) ',name)
-     (let ((prt (make-cpart ',name ,parent :render-once ,render-once
+     (let ((prt (make-controllers ',name ,parent :render-once ,render-once
 			    :remarks ,remarks :events ,events)))
        (defparameter ,name prt)
        prt)))
 
-(defmethod clone ((src cpart) &key new-name new-parent)
+(defmethod clone ((src controllers) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (name (->symbol (sformat frmt (name src))))
 	 (parent (or new-parent (parent src)))
-	 (prt (make-cpart name parent :remarks (remarks src)))
+	 (prt (make-controllers name parent :remarks (remarks src)))
 	 (acc '()))
-    (setf (cpart-state prt)(clone (cpart-state src)))
-    (dolist (q (cpart-events src))
+    (setf (controllers-state prt)(clone (controllers-state src)))
+    (dolist (q (controllers-events src))
       (push (clone q) acc))
-    (setf (cpart-events prt)(reverse acc))
+    (setf (controllers-events prt)(reverse acc))
     prt))
 
 

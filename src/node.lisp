@@ -16,7 +16,7 @@
 ;;;;    |          +-- programs leaf
 ;;;;    |          +-- raw-part leaf
 ;;;;    |          +-- epart 
-;;;;    |          +-- cpart
+;;;;    |          +-- controllers
 ;;;;    |          +-- qball
 ;;;;    |     
 ;;;;    +-- instrument

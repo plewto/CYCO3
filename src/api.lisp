@@ -63,8 +63,6 @@ The default ptype is Cycle."))
 (defmethod ->symbol ((s string))(intern (string-upcase s)))
 (defmethod ->symbol ((n number))(->symbol (->string n)))
 
-
-
 (defgeneric ->vector (obj)
   (:documentation
    "Coerce object to vector.
@@ -79,6 +77,12 @@ See ->list"))
 
 (defmethod ? ((obj t))
   (format t "~A~%" (type-of obj)))
+
+(defmethod ? ((obj symbol))
+  (if (boundp obj)
+      (format t "Symbol ~A --> value ~A~%" obj (symbol-value obj)))
+  (if (fboundp obj)
+      (describe obj)))
 
 (defgeneric add-group (section group)
   (:documentation

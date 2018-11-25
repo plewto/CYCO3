@@ -24,8 +24,8 @@
 (global *local-host* #(127 0 0 1))
 
 (global *default-osc-send-host* *local-host*)
-(global *default-osc-send-port* 6800)
-(global *default-osc-send-address* "*")
+(global *default-osc-send-port* 65000)
+(global *default-osc-send-address* "pigiron")
 
 (global *osc-receive-port* *default-osc-send-port*)
 (global *osc-receive-address* "CYCO")

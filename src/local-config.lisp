@@ -1,35 +1,31 @@
 ;;;; CYCO
 ;;;;
-;;;; CYCO configuration is used customize it's environment to the user's
+;;;;
+;;;; Configuration is used to customize CYCO's environment to the user's
 ;;;; requirements.  The major motivation for configuration is to describe
-;;;; the available external MIDI devices,  and more then one set of 
-;;;; configurations may exists.
+;;;; the available external MIDI devices.  Configurations use the concept
+;;;; of a 'profile' and multiple profiles may exists. 
 ;;;;
-;;;; There is no pre-defined structure to the configuration files other
-;;;; then the location and name of primary configuration file.  The
-;;;; primary file should look after loading any additional configuration
-;;;; files.
+;;;; By default configuration files are located in  ~/.config/cyco/
+;;;; with each profile having it's own directory.
+;;;; For a profile named 'foo' the main configuration file is
+;;;; ~/.config/cyco/foo/config.lisp 
+;;;; This file is responsible for loading any additional profile files.
 ;;;;
-;;;; By default the primary configuration file is
-;;;;
-;;;;     <user-home>/.config/cyco/cyco-config.lisp
-;;;;
-;;;; The folder CYCO/config contains 2 example configuration schemes.
-;;;; The first is a simple scheme based on general MIDI instruments.
-;;;; The second, called sj, is more involved and is personal configuration.
-;;;;
-;;;; Configurations are not automatically loaded when CYCO starts.  Instead
-;;;; use the load-config function.  This, together with the SBCl save-snapshot
-;;;; feature, allows several executable copies of CYCO to be created with 
-;;;; different configuration.
-;;;;
+;;;; Profile file names should be lower-case.
+;;;; See CYCO/config/README for more details.
+;;;;  
+
 
 (setf *cyco-config-directory* (join-path (user-home) ".config/cyco" :as-file))
-(setf *cyco-config-file* "cyco-config.lisp")
+(setf *cyco-config-profile* "default")
+(setf *cyco-config-file* "config.lisp")
 
-(defun load-config-file (filename)
-  "Load file relative to config directory."
-  (let ((fqn (join-path *cyco-config-directory* filename :as-file)))
+(defun load-profile-file (filename)
+  "Load file relative to current configuration profile directory."
+  (let ((fqn (join-path *cyco-config-directory*
+			*cyco-config-profile*
+			filename :as-file)))
     (if (or (probe-file fqn)
 	    (probe-file (append-filename-extension fqn ".lisp")))
 	(progn
@@ -38,13 +34,17 @@
       (cyco-warning
        (sformat "Configuration file ~S does not exists." fqn)))))
 
-(defun load-config ()
-  "Loads the primary configuration file."
-  (load-config-file *cyco-config-file*))
+(defun load-profile (&optional profile)
+  "Loads main profile file.
+profile - The profile's name as a synbol or string.  Defaults to 
+*cyco-config-profile*"
+  (setf *cyco-config-profile*
+	(string-downcase (->string (or profile *cyco-config-profile*))))
+  (load-profile-file *cyco-config-file*))
 
-
-
-
-
-
-
+(defun load-sub-profile (sub-profile)
+  "Loads a configuration profile without making it the default profile.
+This allows a new profile to extend an existing profile."
+  (let ((temp *cyco-config-profile*))
+    (load-profile sub-profile)
+    (setf *cyco-config-profile* temp)))

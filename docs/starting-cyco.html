@@ -51,12 +51,19 @@ After the source files load, switch to the CYCO package.
 While using CYCO the Lisp prompt changes to :CYCO.  The exact prompt text
 changes to reflect the current project name.
 </pre>
-<h4 class="section-head">Optional Configuration</h4>
+<hr/>
+<h4 class="section-head">Optional Configuration Profiles</h4>
 <p class="body">
-    Configuration is optional but highly suggested.      See examples directory for details.<br>      Use the (load-config) function to load the configuration files.</p>
+    Profiles are optional but highly suggesetd.&nbsp;       See the next page for more details.</p>
 <pre class="code">
-CYCO: (load-config)
+
+CYCO: (load-profile)
+
+;; If the above line does not work try
+
+CYCO: (load-profile 'general-midi)
 </pre>
+<hr/>
 <h4 class="section-head">Snapshots</h4>
 <p class="body">
     Once CYCO is configured you may wish to create an    executable snapshot.</p>
@@ -64,7 +71,7 @@ CYCO: (load-config)
 CYCO: (save-snapshot "name-of-snapshot")
 </pre>
 <p class="body">
-    After creating the snapshot CYCO with terminate.  This is normal.</p>
+    After creating the snapshot CYCO will terminate.  This is normal.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

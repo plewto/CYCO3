@@ -1,44 +1,48 @@
 			 CYCO Configuration README
 
-There are no predefined configuration requirements and the user is free to
-structure configuration to meet their specific needs.
+Configuration uses the concept of a 'profile' and is optional.  Profiles
+customize CYCO to match the available external MIDI instruments.  By
+default configuration files are located in
 
-The intended use for configuration is to define the properties of the
-available MIDI instruments.   Two example configuration schemes are
-provided:
+      ~/.config/cyco/
 
-   1) general, a simple scheme based on general MIDI instruments.
-   2) sj, a much more involved scheme for my personal use.
+Each profile is located in a sub-folder of the above location.   
 
+    ~/.config/cyco/foo/ 
 
+Each profile must have a file named 'config.lisp' which is responsible for
+defining the profile and loading any additional files.  All profile
+filenames must be lower-case and contain no white space. 
 
-Two global variables establish the location and name of the configuration
-files:
-
-    *CYCO-CONFIG-DIRECTORY*
-
-      Location of the configuration directory.
-      defaults to   "~/.config/cyco/
+   ~/.config/cyco/foo/config.lisp
 
 
-    *CYCO-CONFIG-FILE*
-
-      Name of main configuration file relative to above directory.
-      defaults to  "cyco-config.lisp"
+Other then the above requirements there are no pre-defined structures to a
+profile's content.   The user is free to do with them what they will. 
 
 
-The function LOAD-CONFIG loads the main configuration file.  It takes two
-optional arguments which may be used to bypass either
-*CYCO-CONFIG-DIRECTORY* or *CYCO-CONFIG-FILE*
-
-The function LOAD-CONFIG-FILE loads a lisp file relative to the location
-contained in *CYCO-CONFIG-DIRECTORY*
+Use (load-profile 'foo) to load the file ~/.config/cyco/foo/config.lisp
+If a profile name is not specified it defaults to the previous profile.
+The initial default profile is 'default.
 
 
+The distribution contains two example profiles in in CYCO/config.
 
-The configuration files are not automatically loaded when CYCO starts.  This
-allows more flexibility for creating executable snapshots of the current
-CYCO state.   See (LOAD-CONFIG) and (SAVE-SNAPSHOT)
+  1) general-midi - A very basic profile using general MIDI instruments.
+  2) sj - A much more involved profile used for my personal work.  It is
+     included for illustration but unlikely to be useful to anyone else. 
+     I will try to keep it heavily annotated though.
 
-save-snapshot is only available with SBCL.
+The default profile is a sym-link to general-midi
+
+
+Initially you may wish to create ~/.config/cyco as a sym-link to
+CYCO/config.
+
+
+
+
+
+
+
 

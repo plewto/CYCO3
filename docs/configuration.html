@@ -20,16 +20,67 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="starting-cyco.html">Starting-Cyco</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="patterns.html">Patterns</a>
 
-<h2 class="section-head">Configuration</h2>
+<h2 class="section-head">Configuration Profiles</h2>
 <hr/>
 <p class="body">
-    Configuration is optional but recommended as it customizes CYCO to     the local environment.	It is possible to create multiple     configurations for specific needs.</p>
+    Profiles are optional but recommended as they customizes CYCO to     the local environment.	It is possible to use multiple profiles     simultaneously as long as they do not conflict.</p>
 <p class="body">
-    There is no prescribed structure to the configuration process other then     it loads the file <nobr>~/.config/cyco/cyco-config.lisp.</nobr>      Typical uses are to assign <a href="meta-channels.html">MIDI channels</a>     and describe available external gear.  See <a href="instruments.html">Instruments.</a>    </p>
+    Profiles are stored as folders under</p>
+<pre class="code">
+~/.config/cyco/
+</pre>
 <p class="body">
-    The folder CYCO/config/ contains two example configuration schemes.     The default is a basic scheme based on generic <a href="https://en.wikipedia.org/wiki/General_MIDI">General MIDI</a>    &nbsp; instruments.</p>
+    Each profile must have a main file, named <i>config.lisp</i>,&nbsp; which is     responsible for loading additional profile files.&nbsp; Profile names, and all     files within a profile directory, <em>MUST</em>&nbsp; be lower case without     embedded <nobr>white-space</nobr>. For a profile 'foo' the structure is then:</p>
+<pre class="code">
+~/.config/cyco/foo/config.lisp
+</pre>
 <p class="body">
-    The second example called <i>sj</i>&nbsp; is my personal configuration.    See the file CYCO/config/README for more details.</p>
+    There are a few functions for loading profile files:</p>
+<b class="definition">(LOAD-PROFILE &optional name)</b><br>
+<p class="synopsis">Loads the named profile.&nbsp; If name is not specified default to the
+previous profile.&nbsp; The name argument may either be a string or a
+symbol.&nbsp; The initial default profile is 'default.</p>
+<pre class="code">
+(load-profile 'foo) ;; Loads ~/.config/cyco/foo/config.lisp
+</pre>
+<b class="definition">(LOAD-SUB-PROFILE name)</b><br>
+<p class="synopsis">Loads named profile without making it the default.&nbsp
+<nobr>LOAD-SUB-PROFILE</nobr> is used within a profile to make use of
+another profile.</p>
+<b class="definition">(LOAD-PROFILE-FILE filename)</b><br>
+<p class="synopsis">Loads a file relative to the current profile.</p>
+<pre class="code">
+(load-profile 'foo)          ;; Makes foo profile current
+(load-profile-file ''baz'')  ;; Loads file ~/.config/cyco/foo/baz.lisp
+</pre>
+<p class="body">
+    The name and location for configuration fils are    specified by the following global variables.</p>
+<b class="definition">*CYCO-CONFIG-DIRECTORY*</b><br>
+<p class="synopsis">Location of the top level configuration directory.  Defaults to
+&nbsp;<nobr>~/.config/cyco/</nobr></p>
+<b class="definition">*CYCO-CONFIG-FILE*</b><br>
+<p class="synopsis">Name of main profile file, defaults to default.lisp</p>
+<b class="definition">*CYCO-CONFIG-PROFILE*</b><br>
+<p class="synopsis">Name of current profile, changes with use of
+<nobr>LOAD-PROFILE</nobr>.&nbsp defaults to ''default''</p>
+<hr/>
+<h4 class="section-head">Structure of Profile Files</h4>
+<p class="footnote">There is none.</p>
+<p class="body">
+    Other then the file-name requirements detailed above there is no    <nobr>pre-ordained</nobr> structure for profile files.&nbsp;     Probably the most common use for profiles, and in fact what they were implemented for,    is to describe external MIDI     <a href='instruments.html'>instruments.</a>&nbsp;     In reality you may use them as you wish.</p>
+<p class="body">
+    The distribution folder CYCO/config/ contains example profiles:</p>
+<ul>
+    <li>default</li>
+    <li>general-midi</li>
+    <li>sj</li>
+</ul>
+<p class="body">
+    general-midi is very basic and used for the example projects.</p>
+<p class="body">
+    The 'sj' profile is for my personal work and is much more involved.&nbsp; It is    included for illustration and unlikely to be directly useful to anyone but    myself.&nbsp; It does contain several instrument definitions and I will try    to keep it annotated.</p>
+<p class="body">
+    The 'default' profile is a sym-link to general-midi.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

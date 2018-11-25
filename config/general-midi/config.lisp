@@ -36,8 +36,8 @@
 ;;;; testing without adding needles duplicate instruments to the orchestra.
 ;;;;
 
-(load-config-file "general-midi/gm-program-map")
-(load-config-file "general-midi/gm-percussion")
+(load-profile-file "gm-program-map")
+(load-profile-file "gm-percussion")
 
 
 (defun make-general-midi-instrument (name &key

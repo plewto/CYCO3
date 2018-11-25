@@ -11,12 +11,17 @@
 (global *default-project-directory* "~/cyco-projects")
 (global *default-project-main-file* "main")
 (global *default-project-output-directory* "MIDI")
-(global *cyco-config-directory* nil)
-(global *cyco-config-file* nil)
 (global *project* nil)
 (global *metronome* nil)
 (global *countin* nil)
-(global *endpad* nil)
+(global *endpad* nil)  ;; ISSUE: should this be depreciated?
+
+
+;; Configuration
+(global *cyco-config-directory* nil)
+(global *cyco-config-profile* nil) 
+(global *cyco-config-file* nil)
+
 
 ;; OSC 
 ;;

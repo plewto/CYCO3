@@ -16,16 +16,19 @@ entailed additional dependencies:
 
 ##### Installation
 
-1. Place CYCO distribution folder in convenient location.
+1. Place CYCO distribution folder in a convenient location.
 
-2. Configuration is not absolutely necessary but allows CYCO to be
-customized to your needs. 
+2. Configuration profiles are not absolutely necessary but allows CYCO to be
+customized to your needs.  By default profiles are located in  
 
-   A. Create folder ~/.config/cyco/<p>
-   B. Create file ~/.config/cyco/cyco-config.lisp
+   ~/.config/cyco/
+   
 
-   The folder CYCO/config/ contains example configuration files you may
-   use,  see CYCO/config/README. 
+   The folder CYCO/config/ contains example profile directories you may
+   use,  see CYCO/config/README.  Initially you may wish to create a
+   sym-link from CYCO/configuration to ~/.config/cyco
+   
+   
 3. Create the directory ~/cyco-projects/
 
 4. Install [quicklisp](https://www.quicklisp.org/beta/) as per instructions
@@ -47,11 +50,15 @@ in the link.  CYCO expects quicklisp to be at the default location
 </pre>
 
 At this point CYCO is ready to use, but before doing anything else you may
-want to load the configuration files.
+want to load a profile
 
 <pre>
-    CYCO: (load-config)
-</pre>
+    CYCO: (load-profile)
+
+    ;; If the above does not work try
+
+    CYCO: (load-profile 'general-midi)
+</pre>   
 
 After configuration you may save a snapshot executable (so far this has only
 been tested with SBCL)
@@ -60,6 +67,7 @@ been tested with SBCL)
     CYCO: (save-snapshot "name-of-executable")
 </pre>
 
+CYCO will automatically terminate after creating a snapshot.
 
 Starting CYCO from an executable is considerably faster, once the Lisp
 prompt appears enter (CYCO) to use the CYCO package.   Configuration

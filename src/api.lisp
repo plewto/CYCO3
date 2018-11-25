@@ -2,6 +2,7 @@
 ;;;;
 ;;;; Defines all generic CYCO functions.
 ;;;; In a few cases implements simpler methods.
+;;;;
 
 (defmacro def-type-predicate (name &optional documentation)
   "Defines a new generic predicate function. 

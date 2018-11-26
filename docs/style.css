@@ -30,6 +30,11 @@ b.arg {
     font-size: 1.1em;
 }
 
+em.footnote {
+    font-family: "Open Sans", "sans-serif";
+    font-size: 0.8em;
+    color: #6A576E;
+}
 
 p.warning {
     color: red;

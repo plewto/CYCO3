@@ -1,12 +1,8 @@
 ;;;; CYCO osc/osc-receive
 ;;;;
-
-;; ISSUE: This is a place holder implementation for testing only.
-;; Need to implementd
-;;   1) OSC address discrimination
-;;   2) Dispatch functions
-;;   3) Way to externaly exit infinite loop ?
-;;
+;;;; This is a place holder implementation for testing only.
+;;;; It is unlikely OSC reception will be implemented.
+;;;; 
 
 (defun osc-receive (&key (port *osc-receive-port*)
 			 (host *local-host*)

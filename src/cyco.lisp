@@ -96,7 +96,7 @@
 		   "src/util/math-utilities"
 		   "src/util/paths"
 		   "src/osc/osc-send"
-		   "src/osc/osc-receive"
+		   ;; "src/osc/osc-receive"  // Not implemented
 		   "src/keynumbers"
 		   "src/dynamics"
 		   "src/metrics"

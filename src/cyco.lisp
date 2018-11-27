@@ -109,6 +109,7 @@
 		   "src/patterns/wrapper"
 		   "src/patterns/slewpat"
 		   "src/patterns/walker"
+		   "src/patterns/markov"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi-util"

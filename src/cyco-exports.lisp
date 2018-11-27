@@ -25,6 +25,7 @@
 	  ->alist
 	  ->cycle
 	  ->list
+	  ->markov-link
 	  ->pattern
 	  ->smf
 	  ->string
@@ -132,6 +133,10 @@
 	  load-profile-file
 	  load-sub-profile
 	  local-properties
+	  markov-add-link
+	  markov-chain-p
+	  markov-link-p
+	  markov-walk
 	  make-instrument
 	  meta-channel
 	  meta-channel!

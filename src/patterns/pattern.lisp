@@ -37,7 +37,8 @@
 ;;;;  +-- COIN    - random binary choice, unlike dice, coin may call functions
 ;;;;  +-- WRAPPER - wraps a function call in a pattern
 ;;;;  +-- SLEW    - extends pattern period
-;;;;  +-- WALKER
+;;;;  +-- WALKER  - random walk
+;;;;  +-- MARKOV  - Markov chain pattern
 ;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments
 ;;;;
 
@@ -127,7 +128,7 @@
   (make-instance ptype :of (->list obj)))
 
 (defmethod transpose ((pat pattern)(x integer))
-  (setf (elements pat)(transpose (elements pat) x))
+  (setf (elements pat)(transpose (elements pat) x))g
   pat)
 
 (defmethod invert ((pat pattern)(pivot t))

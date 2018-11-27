@@ -29,6 +29,9 @@ If object is some other sequence type, return new list of object's elements.
 For all other types, create new list with object as it's only element.
 see ->vector"))
 
+(defgeneric ->markov-link (obj)
+  (:documentation "Coerce object to a markov-link"))
+
 (defgeneric ->pattern (obj &key ptype)
   (:documentation
    "Coerce object to a Pattern of type ptype.
@@ -385,6 +388,22 @@ Keyname will not return names for user defined keynumbers."))
    "Returns list of object's local-property names.  
 A local property is a property defined directly by an object.
 Properties defined by an object's parent are not considered local."))
+
+(def-type-predicate markov-chain-p)
+(def-type-predicate markov-link-p)
+
+
+(defgeneric markov-add-link (source destination weight)
+  (:documentation
+   "Adds potentail destinations for a Markov-link.
+source - the markov-link
+destination - potentail next value.  The destination may be any type
+but is coerced to a markov-link.
+weight - The number of times destination is added to sources' links list."))
+
+(defgeneric markov-walk (mrkv)
+  (:documentation
+   "Returns the next markov-link from the argument."))
 
 (defgeneric meta-channel (name  &optional resolve)
   (:documentation

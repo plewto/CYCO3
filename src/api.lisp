@@ -774,6 +774,8 @@ subclasses.")
   (:documentation
    "Sets the sequence order of Sections within a project."))
 
+(def-type-predicate slew-p)
+
 (defgeneric slice (seq start &optional end)
   (:documentation
    "Returns a slice of a sequence.
@@ -878,6 +880,12 @@ x - integer, transposition amount."))
 (defgeneric unmute-all (obj)
   (:documentation
    "Unmute all child elements of object."))
+
+(defgeneric value (obj))
+(defmethod value ((obj t)) obj)
+
+(def-type-predicate walker-p)
+(def-type-predicate wrapper-p)
 
 (defgeneric write-smf (obj filename &key pad no-overwrite)
   (:documentation

@@ -32,10 +32,13 @@
 ;;;;  |
 ;;;;  +-- LINE
 ;;;;  +-- CYCLE
-;;;;  +-- BAG    - random without replacement
-;;;;  +-- DICE   - random with replacement
-;;;;  +-- COIN   - random binary choice, unlike dice, coin may call functions
-;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments.
+;;;;  +-- BAG     - random without replacement
+;;;;  +-- DICE    - random with replacement
+;;;;  +-- COIN    - random binary choice, unlike dice, coin may call functions
+;;;;  +-- WRAPPER - wraps a function call in a pattern
+;;;;  +-- SLEW    - extends pattern period
+;;;;  +-- WALKER
+;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments
 ;;;;
 
 (defclass pattern nil
@@ -64,10 +67,10 @@
     rs))
 		  
 (defmethod reset ((p pattern))
-  (setf (value p) nil
-	(pointer p) 0)
   (dolist (e (elements p))
     (reset e))
+  (setf (value p)(value (car (elements p)))
+	(pointer p) 0)
   p)
 
 (defmethod cardinality ((lst list))

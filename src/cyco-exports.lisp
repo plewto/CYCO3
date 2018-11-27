@@ -264,6 +264,8 @@
 	  set-cyco-prompt
 	  set-symbolic-program-map
 	  signed-norm->midi-data
+	  slew
+	  slew-p
 	  slice
 	  smf
 	  smf-track
@@ -293,5 +295,9 @@
 	  unmute
 	  unmute-all
 	  while
+	  walker
+	  walker-p
+	  wrapper
+	  wrapper-p
 	  write-smf
 	  zip) :cyco)

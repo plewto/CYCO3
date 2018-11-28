@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>Markov-Chains</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="patterns.html">Patterns</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+<h2 class="section-head">Markov Chains</h2>
+<hr/>
+<p class="body">
+    Creating a Markov pattern requires two stages</p>
+<ol>
+    <li>Create a graph using <em>MARKOV-LINK</em> objects.</li>
+    <li>Embed the graph in a <em>MARKOV-CHAIN</em> Pattern.</li>
+</ol>
+<p class="body">
+    A <em>MARKOV-LINK</em>&nbsp; has a value and a list of potential next values.      The elements of the list are themselves markov-links and the more times    a specific value occurs in the list the probability of it being the next     value increases.</p>
+<pre class="code">
+(markov-link value)
+     
+     Create new instance of Markov-Link with indicated value.
+
+(markov-add-link source destination weight) 
+      
+     Adds new link to a markov-link
+
+     origin      - A Markov-Link
+     destination - Another Markov-Link, a potential next value for the origin.
+     weight      - integer, number of times destination is added to origin list.
+
+
+(markov-walk markov-link)
+
+    Randomly select a new value from those available.
+    Returns the next (possibly the same) markov-link.
+
+
+An Example:
+
+(param ape (markov-link 'ape))
+(param bat (markov-link 'bat))
+(param cat (markov-link 'cat))
+
+(markov-add-link ape ape 1)
+(markov-add-link ape bat 5)
+(markov-add-link ape cat 2)
+
+(markov-add-link bat ape 2)
+(markov-add-link bat bat 1)
+(markov-add-link bat cat 5)
+
+(markov-add-link cat ape 1)
+(markov-add-link cat bat 1)
+(markov-add-link cat cat 4)
+
+(let ((current ape))
+  (dotimes (i 10)
+    (format t ''~A '' (value current))
+    (setf current (markov-walk current))))
+
+--> APE CAT CAT CAT CAT CAT BAT BAT APE APE
+</pre>
+<hr/>
+<h4 class="section-head">Markov Chains as Patterns</h4>
+<p class="body">
+    To treat a Markov graph, like the one above, as a Pattern,     embed it in a <em>MARKOV-CHAIN</em>&nbsp; object.</p>
+<pre class="code">
+(markov-chain root)
+
+     Create Pattern by linking to a Markov Graph.
+
+Using the above graph
+
+(param foo (markov-chain ape))
+
+(next foo 10)  --> (BAT CAT BAT APE BAT BAT APE CAT CAT BAT)
+
+
+
+If the 'value' of a Markov-Chain is a pattern, then when it is selected, 
+the pattern is evaluated to return it's next value.
+
+If in the above example the definition of cat is replaced with 
+
+    (param cat (markov-link (cycle :of '(lion tiger puma))))
+
+and everything else is left as is:
+
+(next foo 10) --> (APE BAT LION TIGER PUMA LION APE TIGER APE APE)
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="patterns.html">Patterns</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+</div>
+</body>
+</html>

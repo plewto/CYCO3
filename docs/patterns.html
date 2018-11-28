@@ -18,7 +18,7 @@
 <a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
 
 <h2 class="section-head">Patterns</h2>
 <hr/>
@@ -33,7 +33,11 @@
     <li><a href='#bag'>Bag pattern</a></li>
     <li><a href='#dice'>Dice pattern</a></li>
     <li><a href='#coin'>Coin pattern</a></li>
-    <li><a href='#nested'>Nested patterns</a></li>
+    <li><a href='#wrapper'>Function Wrapper</a></li>
+    <li><a href='#walker'>Random Walks</a></li>
+    <li><a href='#markov.html'>Markov Chains</a></li>
+    <li><a href='#slew'>Pattern Slew</a></li>
+    <li><a href='#nested'>Nested Patterns</a></li>
 </ul>
 <a id="pattern-functions"></a>
 <hr/>
@@ -165,6 +169,65 @@ The final argument may be another pattern.
 <pre class="code">
 (next-n (coin) 10) --> (T T NIL T T NIL NIL NIL NIL NIL)
 </pre>
+<a id="wrapper"></a>
+<hr/>
+<h4 class="section-head">Wrapper Pattern</h4>
+<p class="body">
+    A <em>Wrapper</em> allows a function to be treated as a Pattern.  The function     should take a single argument and return whatever it will.  Each call to next-1    calls the function with an ever increasing integer value.</p>
+<pre class="code">
+(wrapper &key (of #'identity)(period 16))
+
+:of - The wrapped function, default (lambda n) --> n
+:period - upper limit to the internal counter.
+
+
+(param foo (wrapper :period 8))
+(next foo 16) --> (0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7)
+
+(let ((current 0))
+   (param baz (wrapper :of #'(lambda (q)
+                                (prog1 
+                                    current
+                                  (setf current (+ current q))))
+                       :period 8))) 
+(next baz 16) --> (0 0 1 3 6 10 15 21 28 28 29 31 34 38 43 49)
+</pre>
+<a id="walker"></a>
+<hr/>
+<h2 class="section-head">Walker</h2>
+<p class="body">
+    A <em>Walker</em> is a pattern that random walks over it's elements.  Any element     which is a Pattern is called recursively.</p>
+<pre class="code">
+(walker &key of)
+
+(param foo (walker :of '(A B C D)))
+(next foo 8) --> (D C B A B C B A)
+
+
+(param cyc (cycle :of '(APE BAT CAT)))
+(param baz (walker :of (list 1 2 3 cyc)))
+(next baz 8) --> (APE 1 BAT 3 2 1 2 3)
+</pre>
+<a id="slew"></a>
+<hr/>
+<h2 class="section-head">Pattern Slew</h2>
+<p class="body">
+    A <em>Slew</em> is a modifier which extends the length of another pattern.</p>
+<pre class="code">
+(slew pattern delay)
+
+(param foo (slow (cycle :of '(A B C)) 3))
+(next foo 12) --> (A A A B B B C C C A A A)	   
+
+
+;; The client pattern may exist outside of the slew.
+;;
+(param cyc (cycle :of '(A B C D E F)))
+(param baz (slew cyc 3))
+(next baz 6) --> (A A A B B B)
+(next cyc 3) --> (C D E)
+(next baz 6) --> (F F F A A A)
+</pre>
 <a id="nested"></a>
 <hr/>
 <h4 class="section-head">Nested Patterns</h4>
@@ -192,7 +255,7 @@ The final argument may be another pattern.
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
 
 </div>
 </body>

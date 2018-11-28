@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Ghost</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="specialized-parts.html">Specialized-Parts</a>
+
+<h2 class="section-head">Ghost Parts</h2>
+<hr/>
+<p class="body">
+    A <em>GHOST</em>&nbsp; is a type of <a href="parts.html">PART</a>    &nbsp;which tracks another part.&nbsp; The ghost events may be transposed,     inverted, shifted in time, amplitude scaled or mapped to another MIDI channel.</p>
+<p class="body">
+    Only note events are tracked and only a single MIDI channel of the source part	    is tracked.</p>
+<b class="definition">(MAKE-GHOST name source track &key ...)</b><br>
+<b class="definition">(GHOST name source track &key ...)</b><br>
+<p class="synopsis">Create a new Ghost Part.  MAKE-GHOST and GHOST
+are nearly identical, the only difference is that GHOST binds the 
+new part to a symbol with the same name.&nbsp;The following two lines
+are equivalent.</p>
+<pre class="code">
+(param foo (make-ghost 'foo source track ...)   ;; name must be a quoted symbol 
+(ghost foo source track ...)	                ;; name must -not- be quoted.
+
+Arguments
+
+name       - Symbol
+source     - Part, the part being tracked
+track      - MIDI channel or instrument occurring in source.
+             Only a single MIDI channel is tracked.
+:delay     - Delay time of ghosted events.   The delay is specified in terms
+             of the parent section's time-signature and cue-function. 
+             It is NOT in terms of the tracked part.
+:transpose - Transpose amount in half-steps.
+:pivot     - Inversion pivot key.
+:ampscale  - Amplitude scale, default 1.0
+:keytab    - An array of keynumber translations, default +DEFAULT-KEYTABLE+
+:outchan   - The ghosted events MIDI channel.  If nil use same value as track
+:remarks   - Optional remarks text.
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="specialized-parts.html">Specialized-Parts</a>
+
+</div>
+</body>
+</html>

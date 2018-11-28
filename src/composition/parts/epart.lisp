@@ -833,7 +833,7 @@
   p)
 
 (defmethod invert ((p epart)(pivot t))
-  (if (property p :transposable)
+  (if (and pivot (property p :transposable))
       (dolist (evn (epart-events p))
 	(invert evn pivot)))
   p)

@@ -189,7 +189,7 @@ named name."
   qb)
 
 (defmethod invert ((qb qball)(pivot t))
-  (if (property qb :transposable)
+  (if (and pivot (property qb :transposable))
       (put qb :key-pattern
 	    (invert (property qb :key-pattern)
 		    (keynumber pivot))))

@@ -100,12 +100,13 @@
     state))
 
 (defmethod invert ((state epart-state)(pivot t))
-  (let ((kn (epart-state-key state))
-	(gk (epart-state-grace-key state)))
-    (setf (epart-state-key state)
-	  (invert kn pivot))
-    (setf (epart-state-grace-key state)
-	  (invert gk pivot))
+  (if pivot
+      (let ((kn (epart-state-key state))
+	    (gk (epart-state-grace-key state)))
+	(setf (epart-state-key state)
+	      (invert kn pivot))
+	(setf (epart-state-grace-key state)
+	      (invert gk pivot)))
     state))
 
 

@@ -354,6 +354,8 @@ inversion is applied.
 The pivot point is a key-number around which the inversion takes place.
 All negative values have an inversion of +REST+ = -1.
 
+Ignore transformation if pivot is nil.
+
 (invert '(-1234 59 60 70) 60) --> (-1 61 60 50)"))
 
 (defmethod invert ((obj t) pivot) obj)

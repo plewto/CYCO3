@@ -84,21 +84,25 @@ ilinks - potential destinations must, elements must have the form  (value weight
 		    (push mkv seen)
 		    (dolist (c (markov-links mkv))
 		      (if (new-item c)
-			  (_invert c pivot))))
-	   )
+			  (_invert c pivot)))) )
 		    
     (defmethod reset ((mkv markov-link))
       (setf seen '())
       (_reset mkv))
 
     (defmethod transpose ((mkv markov-link)(x t))
-      (setf seen '())
-      (_transpose mkv x))
+      (if x
+	  (progn 
+	    (setf seen '())
+	    (_transpose mkv x)))
+      mkv)
 
     (defmethod invert ((mkv markov-link)(pivot t))
-      (setf seen '())
-      (_invert mkv pivot))
-    ))
+      (if pivot
+	  (progn 
+	    (setf seen '())
+	    (_invert mkv pivot)))
+      mkv)))
 
 ;; ----------------------------------------------------------
 

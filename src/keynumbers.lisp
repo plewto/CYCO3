@@ -132,15 +132,17 @@ value - an integer in interval (-1..127) inclusive."
   (mapcar #'(lambda (q)(transpose q x)) lst))
 
 (defmethod invert ((n integer)(pivot t))
-  (let ((pp (keynumber pivot)))
-    (if (minusp n)
-	+rest+
-      (let* ((diff (- pp n))
-	     (rs (+ pp diff)))
-	rs))))
+  (if pivot
+      (let ((pp (keynumber pivot)))
+	(if (minusp n)
+	    +rest+
+	  (let* ((diff (- pp n))
+		 (rs (+ pp diff)))
+	    rs)))
+    n))
 
 (defmethod invert ((s symbol)(pivot t))
-  (if (keynumber-p s)
+  (if (and pivot (keynumber-p s))
       (invert (keynumber s) pivot)
     s))
 

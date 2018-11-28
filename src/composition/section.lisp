@@ -198,7 +198,7 @@ operations, default t.
   s)
 
 (defmethod invert ((s section)(pivot t))
-  (if (property s :transposable)
+  (if (and pivot (property s :transposable))
       (dolist (prt (children s))
 	(invert prt pivot)))
   s)

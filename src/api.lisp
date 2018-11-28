@@ -154,6 +154,10 @@ MIDI channel, an integer between 1 and 16 inclusive."))
   (dismiss resolve)
   1)
 
+(defmethod channel ((n integer) &optional resolve)
+  (dismiss resolve)
+  n)
+
 (defgeneric channel! (inst channel)
   (:documentation
    "Sets instrument's MIDI channel.  

@@ -148,10 +148,12 @@
     evn))
 
 (defmethod invert ((evn midi-key-message)(pivot t))
-  (let* ((kn (invert (data evn 0)(keynumber pivot))))
-    (while (> kn 128)(setf kn (- kn 12)))
-    (while (minusp kn)(setf kn (+ kn 12)))
-    (setf (aref (data-array evn) 0) kn)
+  (if pivot
+      (let* ((kn (invert (data evn 0)(keynumber pivot))))
+	(while (> kn 128)(setf kn (- kn 12)))
+	(while (minusp kn)(setf kn (+ kn 12)))
+	(setf (aref (data-array evn) 0) kn)
+	evn)
     evn))
 
 (defclass midi-note-off (midi-key-message)

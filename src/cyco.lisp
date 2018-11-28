@@ -142,6 +142,7 @@
 		   "src/composition/parts/controllers"
 		   "src/composition/parts/controllers-render"
 		   "src/composition/parts/qball"
+		   "src/composition/parts/ghost"
 		   "src/composition/parts/programs"
 		   "src/composition/parts/metronome"
 		   "src/composition/countin"

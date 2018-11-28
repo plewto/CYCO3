@@ -109,6 +109,8 @@
 	  flatten1
 	  float-bar
 	  global
+	  ghost
+	  ghost-p
 	  group-p
 	  has-group-p
 	  hash-property
@@ -138,6 +140,7 @@
 	  markov-link-p
 	  markov-walk
 	  make-instrument
+	  make-ghost
 	  meta-channel
 	  meta-channel!
 	  meta-channel-assignment-p

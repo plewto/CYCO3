@@ -1,5 +1,7 @@
 # CYCO Installation.
 
+## ISSUE: Configuration details are out of date.
+## TODO: Replace config section with plugins.
 
 ##### Requirements
 

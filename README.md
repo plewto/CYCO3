@@ -36,7 +36,7 @@ triplet, scale the whole thing by 0.6.
 (MF PP) may combine to produce (C MF)(E PP)(G MF)(C PP)(E MF)(G PP) among
 other possibilities.
 * Flexible instrument definitions.
-* Open configuration for customization to fit specific needs.
+* Plugins
 * Save snapshot executables (Under SBCL only)
 * OSC control over external MIDI player.
 

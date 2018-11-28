@@ -128,7 +128,7 @@
   (make-instance ptype :of (->list obj)))
 
 (defmethod transpose ((pat pattern)(x integer))
-  (setf (elements pat)(transpose (elements pat) x))g
+  (setf (elements pat)(transpose (elements pat) x))
   pat)
 
 (defmethod invert ((pat pattern)(pivot t))

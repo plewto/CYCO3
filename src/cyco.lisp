@@ -149,7 +149,7 @@
 		   "src/composition/countin"
 		   "src/composition/endpad"
 		   "src/util/inspection"
-		   "src/local-config"  ;; DEPRECIATED
+		   ;; "src/local-config"  ;; DEPRECIATED
 		   "src/plugins"
 		   "src/cyco-exports"
 		   )))

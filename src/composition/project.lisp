@@ -55,7 +55,7 @@ but only one will be bound to *project* as the default."))
   "Saves the current project name to a file in the config folder.
 This file may be used to reload the the project the next time CYCO is
 used."
-  (let* ((filename (join-path *cyco-config-directory*
+  (let* ((filename (join-path *config-directory*
 			      *persistent--project-name-namestring*
 			      :as-file))
 	 (stream (open filename
@@ -70,7 +70,7 @@ used."
 "Returns the project name, if any, saved by 
 save-persistent-project-name.  Returns nil if there is 
 no saved project."
-  (let* ((filename (join-path *cyco-config-directory*
+  (let* ((filename (join-path *config-directory*
 			      *persistent--project-name-namestring*
 			      :as-file))
 	 (stream (if (probe-file filename)

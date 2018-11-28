@@ -149,7 +149,8 @@
 		   "src/composition/countin"
 		   "src/composition/endpad"
 		   "src/util/inspection"
-		   "src/local-config"
+		   "src/local-config"  ;; DEPRECIATED
+		   "src/plugins"
 		   "src/cyco-exports"
 		   )))
  
@@ -211,4 +212,5 @@
 
 (defun cyco ()
   (cyco-banner))
+
 

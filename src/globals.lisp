@@ -17,10 +17,20 @@
 (global *endpad* nil)  ;; ISSUE: should this be depreciated?
 
 
-;; Configuration
+;; Configuration  *DEPRECIATED*
 (global *cyco-config-directory* nil)
 (global *cyco-config-profile* nil) 
 (global *cyco-config-file* nil)
+;; *END DEPRECIATED*
+
+
+
+;; Plugins
+;;
+(global *config-directory* nil)
+(global *plugin-directory* nil)
+(global *current-plugin* nil)
+
 
 
 ;; OSC 

@@ -150,4 +150,4 @@ value - an integer in interval (-1..127) inclusive."
   (mapcar #'(lambda (q)(invert q pivot)) lst))
 
 
-(constant +default-keytable+ (->vector (range 0 128)))
+

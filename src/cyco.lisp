@@ -98,6 +98,7 @@
 		   "src/osc/osc-send"
 		   ;; "src/osc/osc-receive"  // Not implemented
 		   "src/keynumbers"
+		   "src/keytables"
 		   "src/dynamics"
 		   "src/metrics"
 		   "src/patterns/pattern"

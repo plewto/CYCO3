@@ -1,24 +1,14 @@
 ;;;; CYCO
 ;;;; 
 
-(defclass chord-table (chord-model)
-  ((name
-    :type symbol
-    :reader name
-    :initform 'no-name
-    :initarg :name)
-   (templates
+(defclass chord-table (abstract-chord-model)
+  ((templates
     :type hash-table
     :reader chord-table-templates
     :initform (make-hash-table :size 36)
-    :initarg :templates)
-   (description
-    :type hash-table
-    :reader chord-table-descriptions
-    :initform (make-hash-table :size 36)
-    :initarg :descriptions))
+    :initarg :templates))
   (:documentation
-   "Default implementation of CHORD-MODEL"))
+   "Default implementation of ABSTRACT-CHORD-MODEL"))
    
 
 (defmethod define-chord ((model chord-table)

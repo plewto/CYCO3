@@ -1,24 +1,48 @@
 ;;;; CYCO
 ;;;;
 
+;; Generic methods on chord models
+;;    name model
+;;    chord-description model name
+;;    absolute-chords-p model
+;;    defines-chord-p model ctype
+;;    chord-types model --> list
+;;    dump-chords
+;;    chord-template  model name &optional variant
 
-(defclass chord-model nil nil
-  (:documentation
-   "A CHORD-MODEL provides named chord templates to a project.
-Each level of a project may have it's own chord-model or it may 
-inherit one from it's parent.  A project automatically inherits the 
-the chord-model bound to *CHORD-TABLE*.
+(defclass abstract-chord-model nil
+  ((name
+    :type symbol
+    :accessor name
+    :initform 'chord-model
+    :initarg :name)
+   (descriptions			; descriptions of
+    :type hash-table			; chord types
+    :reader chord-table-descriptions
+    :initform (make-hash-table :size 36)
+    :initarg :descriptions)
+   (is-absolute				; chords are either absolute
+    :type t				; list of keynumbers or
+    :reader absolute-chords-p		; relative list of keynumber
+    :initform nil			; offset.
+    :initarg :absolute)))
+    
+(defmethod chord-model-p ((obj abstract-chord-model)) t)
 
-The reason for this level of abstraction is to provide better realism 
-when using fretted instrument simulations.   The default chord-model
-takes basically a keyboard's view.  Currently (28 Oct 2018) no 
-other chord models are defined."))
+(defmethod defines-chord-p ((cm abstract-chord-model)(ctype t))
+  (error (sformat "DEFINES-CHORD-P not implemented for ~A" (type-of cm))))
 
-(defmethod chord-model-p ((obj chord-model)) t)
+(defmethod dump-chords ((cm abstract-chord-model))
+  (error (sformat "DUMP-CHORDS not implemented for ~A" (type-of cm))))
+
+(defmethod chord-template ((cm abstract-chord-model)(name t) &optional variant)
+  (dismiss variant)
+  (error (sformat "CHORD-TEMPLATE not implemented for ~A" (type-of cm))))
+
+
 
 ;; Transformations on chords
 ;;
-
 (flet ((rotate-right ;; (A B C) --> (B C A')
 	(key-list)
 	(let ((head (keynumber (car key-list)))

@@ -214,3 +214,4 @@
   (cyco-banner))
 
 
+(defun test ()(plugin 'strummer))

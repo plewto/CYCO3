@@ -59,13 +59,20 @@ The default ptype is Cycle."))
 (defmethod ->string ((s string)) s)
 (defmethod ->string ((lst list)) (mapcar #'->string lst))
 
-(defgeneric ->symbol (arg)
+(defgeneric ->symbol (arg &optional package)
   (:documentation
    "Intern new symbol using name of argument."))
 
-(defmethod ->symbol ((s symbol)) s)
-(defmethod ->symbol ((s string))(intern (string-upcase s)))
-(defmethod ->symbol ((n number))(->symbol (->string n)))
+(defmethod ->symbol ((s symbol) &optional (package :cyco))
+  (if (eq (symbol-package s)(find-package package))
+      s
+    (intern (string-downcase s) package)))
+
+(defmethod ->symbol ((s string) &optional (package :cyco))
+  (intern (string-upcase s) package))
+
+(defmethod ->symbol ((n number) &optional (package :cyco))
+  (->symbol (->string n) package))
 
 (defgeneric ->vector (obj)
   (:documentation

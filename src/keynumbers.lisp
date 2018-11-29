@@ -43,9 +43,6 @@ value - an integer in interval (-1..127) inclusive."
   
 (defmethod keynumber-p ((n integer)) t)
 
-(defmethod keynumber-p ((s symbol))
-  (gethash s *keynumbers*))
-
 (defmethod rest-p ((obj t))
   (and (keynumber-p obj)
        (or (eq obj 'r)(and (numberp obj)(minusp obj)))))
@@ -60,10 +57,23 @@ value - an integer in interval (-1..127) inclusive."
 	     (setf n (- n 12)))
 	   n)))
 
-(defmethod keynumber ((s symbol))
-  (or (gethash s *keynumbers*)
-      (cyco-value-error 'keynumber s)))
+(let ((cyco-package (find-package :cyco)))
+  ;; If symbol in foreign package intern in :CYCO 
+  (labels ((get-symbol-other-package (sym)
+				     (->symbol (symbol-name sym) :cyco))
+	   (resolve-symbol (sym)
+			   (if (eq (symbol-package sym) cyco-package)
+			       sym
+			     (get-symbol-other-package sym))))
 
+    (defmethod keynumber-p ((s symbol))
+      (gethash (resolve-symbol s) *keynumbers*))
+    
+    (defmethod keynumber ((s symbol))
+      (let ((sym (resolve-symbol s)))
+	(or (gethash sym *keynumbers*)
+	    (cyco-value-error 'keynumber sym)))) ))
+    
 (defmethod keynumber ((lst list))
   (mapcar #'keynumber lst))
 
@@ -148,6 +158,4 @@ value - an integer in interval (-1..127) inclusive."
 
 (defmethod invert ((lst list)(pivot t))
   (mapcar #'(lambda (q)(invert q pivot)) lst))
-
-
 

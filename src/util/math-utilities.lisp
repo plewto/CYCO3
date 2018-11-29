@@ -29,8 +29,9 @@ value  - number,
 		  (+ value delta))))
 	    min max)))
 		
-
-
+(defun mean (lst)
+  (/ (float (apply #'+ lst))
+     (length lst)))
 
 
 

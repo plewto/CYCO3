@@ -281,6 +281,8 @@ After a disconnect the child becomes a root node."))
   (:documentation
    "Displays list of chords defined by chord-model."))
 
+(defmethod dump-chords ((obj null)) )
+
 (defgeneric dump-events (obj &key range filter render)
   (:documentation
    "Display listing of MIDI events.

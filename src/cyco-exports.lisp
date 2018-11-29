@@ -141,6 +141,7 @@
 	  markov-walk
 	  make-instrument
 	  make-ghost
+	  mean
 	  meta-channel
 	  meta-channel!
 	  meta-channel-assignment-p

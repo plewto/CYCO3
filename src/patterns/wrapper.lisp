@@ -25,9 +25,11 @@ it's value."))
           pointer as an argument, and then the pointer is increment.
           The default function is #'identity
 :period - Sets maximum value for internal pointer"
-  (make-instance 'wrapper
-		 :function of
-		 :period (max 1 period)))
+  (let ((w (make-instance 'wrapper
+			  :function of
+			  :period (max 1 period))))
+    (setf (value w)(funcall of 0))
+    w))
 
 (defmethod cardinality ((w wrapper))
   (slot-value w 'period))

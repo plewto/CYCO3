@@ -9,7 +9,9 @@ replacement."))
 (defmethod dice-p ((obj dice)) obj)
 
 (defun dice (&key (of '()))
-  (reset (make-instance 'dice :of (->list of))))
+  (let ((d (reset (make-instance 'dice :of (->list of)))))
+    (setf (value d)(value (pick of)))
+    d))
 
 (defmethod next-1 ((q dice))
   (setf (pointer q)

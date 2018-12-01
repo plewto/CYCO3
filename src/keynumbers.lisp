@@ -43,9 +43,10 @@ value - an integer in interval (-1..127) inclusive."
   
 (defmethod keynumber-p ((n integer)) t)
 
-(defmethod rest-p ((obj t))
-  (and (keynumber-p obj)
-       (or (eq obj 'r)(and (numberp obj)(minusp obj)))))
+ (defmethod rest-p ((obj t))
+      (and (keynumber-p obj)
+	   (or (eq obj 'r)
+	       (and (numberp obj)(minusp obj)))))
 
 (defmethod keynumber ((obj t))
   (cyco-type-error 'keynumber '(integer symbol list) obj))
@@ -72,7 +73,11 @@ value - an integer in interval (-1..127) inclusive."
     (defmethod keynumber ((s symbol))
       (let ((sym (resolve-symbol s)))
 	(or (gethash sym *keynumbers*)
-	    (cyco-value-error 'keynumber sym)))) ))
+	    (cyco-value-error 'keynumber sym))))
+
+    (defmethod rest-p ((s symbol))
+      (eq 'r (resolve-symbol s)))
+    ))
     
 (defmethod keynumber ((lst list))
   (mapcar #'keynumber lst))

@@ -8,7 +8,7 @@
 ;;    defines-chord-p model ctype
 ;;    chord-types model --> list
 ;;    dump-chords
-;;    chord-template  model name &optional variant
+;;    chord-template  model name keynumber
 
 (defclass abstract-chord-model nil
   ((name
@@ -35,11 +35,9 @@
 (defmethod dump-chords ((cm abstract-chord-model))
   (error (sformat "DUMP-CHORDS not implemented for ~A" (type-of cm))))
 
-(defmethod chord-template ((cm abstract-chord-model)(name t) &optional variant)
-  (dismiss variant)
+(defmethod chord-template ((cm abstract-chord-model)(name t)(keynumber t))
+  (dismiss keynumber)
   (error (sformat "CHORD-TEMPLATE not implemented for ~A" (type-of cm))))
-
-
 
 (defmethod chord-description ((acm abstract-chord-model)(chord-name t))
   (gethash chord-name (chord-table-descriptions acm)))

@@ -406,7 +406,7 @@
 		     (template (cond ((and (listp id)(every #'integerp id))
 				      id)
 				     ((and (symbolp id)(defines-chord-p model id))
-				      (chord-template model id))
+				      (chord-template model id nil))
 				     (t (cyco-warning
 					 (sformat "Invalid chord ~A" id)
 					 (part-id part)

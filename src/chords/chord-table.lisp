@@ -42,9 +42,9 @@
 	    (gethash cname (chord-table-templates model))
 	    (gethash cname (chord-table-descriptions model)))))
 
-(defmethod chord-template ((cm chord-table)(name symbol) &optional variation)
-  "Optional variation argument is ignored."
-  (dismiss variation)
+(defmethod chord-template ((cm chord-table)(name symbol)(keynumber t))
+  "keynumber argument is ignored."
+  (dismiss keynumber)
   (or (gethash name (chord-table-templates cm))
       (and
        (progn 

@@ -202,3 +202,13 @@ Positions are one of:  integer fret position relative to capo.
     (process-chord-specs fcm chord-type 'fs fs gf)
     (process-chord-specs fcm chord-type 'g g)
     (process-chord-specs fcm chord-type 'gs gs af)) ) 
+
+(defmethod chord-template ((fcm fretted-chord-model)(chord-type symbol)(keynumber t))
+  (let ((family (gethash (->symbol chord-type :cyco)(chord-table fcm))))
+    (if family
+	(chord-variant family keynumber)
+      (progn
+	(cyco-warning
+	 (sformat "FRETTED-CHORD-MODEL ~A does not define chord-type ~A"
+		  (name fcm) chord-type))
+	'()))))

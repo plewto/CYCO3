@@ -35,7 +35,7 @@ lower-frequency notes are gshaved from the chord template."))
   (length (monochords fcm)))
 
 (defmethod defines-chord-p ((fcm fretted-chord-model)(chord-type symbol))
-  (gethash (->symbol chord-type :cyco)
+  (gethash (->cyco-symbol chord-type)
 	   (chord-table fcm)))
 
 (defmethod chord-types ((fcm fretted-chord-model))
@@ -46,18 +46,6 @@ lower-frequency notes are gshaved from the chord template."))
 	     (chord-table fcm))
     (sort acc #'string<)))
 
-(defmethod chord-template ((fcm fretted-chord-model)
-			   (chord-type symbol)
-			   &optional variant)
-  (let ((family (gethash (->symbol chord-type :cyco)(chord-table fcm))))
-    (if (not variant)
-	(cyco-error
-	 "Expected key-number passed by optional VARIANT argument to CHORD-TEMPLATE")
-      (if family
-	  (chord-variant family variant)
-	(cyco-warning (sformat "~A chords not defined for FRETTED-CHORD-MODEL ~A"
-			       chord-type (name fcm)))))))
-
 (defun fretted-chord-model (name frets tuning &key (minimum-octave 0))
   (let ((strings (->vector (mapcar #'(lambda (q)
 				       (make-monochord :root-key (keynumber q)
@@ -66,7 +54,7 @@ lower-frequency notes are gshaved from the chord template."))
     (make-instance 'fretted-chord-model
 		   :absolute t
 		   :min-octave minimum-octave
-		   :name (->symbol name :cyco)
+		   :name (->cyco-symbol name)
 		   :fret-count frets
 		   :strings strings)))
 
@@ -91,7 +79,7 @@ lower-frequency notes are gshaved from the chord template."))
 
 	 (get-or-create-chord-family
 	  (fcm chord-type)
-	  (let* ((sym (->symbol chord-type :cyco))
+	  (let* ((sym (->cyco-symbol chord-type))
 		 (family (gethash sym (chord-table fcm))))
 	    (if (not family)
 		(progn 
@@ -190,6 +178,7 @@ A position must be specified for each string.
 Positions are one of:  integer fret position relative to capo.
                        symbol X - mute string
                        symbol O - open string"
+    (setf chord-type (->cyco-symbol chord-type))
     (process-chord-specs fcm chord-type 'a a)
     (process-chord-specs fcm chord-type 'as as bf)
     (process-chord-specs fcm chord-type 'b b)
@@ -203,12 +192,15 @@ Positions are one of:  integer fret position relative to capo.
     (process-chord-specs fcm chord-type 'g g)
     (process-chord-specs fcm chord-type 'gs gs af)) ) 
 
+
 (defmethod chord-template ((fcm fretted-chord-model)(chord-type symbol)(keynumber t))
-  (let ((family (gethash (->symbol chord-type :cyco)(chord-table fcm))))
+  (let* ((ctype (->cyco-symbol chord-type))
+	 (family (gethash ctype (chord-table fcm))))
     (if family
-	(chord-variant family keynumber)
+  	(chord-variant family keynumber)
       (progn
-	(cyco-warning
-	 (sformat "FRETTED-CHORD-MODEL ~A does not define chord-type ~A"
-		  (name fcm) chord-type))
-	'()))))
+  	(cyco-warning
+  	 (sformat "FRETTED-CHORD-MODEL ~A does not define chord-type ~A"
+  		  (name fcm) chord-type))
+  	'()) )))
+

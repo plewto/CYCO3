@@ -8,32 +8,44 @@
   (:import-from :cyco
                 :+rest+
                 :->list
+                :->string
                 :->symbol
                 :->vector
-		:->string
                 :abstract-chord-model
+                :chord-template
+		:chord-types
+                :constant
                 :copies
                 :cyco-error
                 :cyco-warning
                 :dismiss
+		:defines-chord-p
                 :dump-chords
                 :keyname
                 :keynumber
                 :keynumber-p
                 :load-plugin-file
+                :name
                 :octave
                 :pitch-class
                 :rest-p
                 :sformat
                 :while
-		:name
-		:constant
 		
 		:param
 		))
 
 (in-package :cyco-fretworks)
 
+
+(defun ->cyco-symbol (sym)
+  (->symbol (string-upcase (->string sym)) :cyco))
+
+;; eq symbol test ignoring package.
+;;
+(defun symbol-eq-p (a b)
+  (eq (->cyco-symbol a)
+      (->cyco-symbol b)))
 
 ;; Returns mean keynumber of chord template, ignoring rest.
 ;;
@@ -46,11 +58,7 @@
       (/ (float sum) count))))
       
 
-;; eq symbol test ignoring package.
-;;
-(defun symbol-eq-p (a b)
-  (eq (->symbol a :cyco)
-      (->symbol b :cyco)))
+
 
 (load-plugin-file "chord-variations")
 (load-plugin-file "chord-family")

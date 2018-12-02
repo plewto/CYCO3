@@ -25,7 +25,7 @@
     (dotimes (pc 12)
       (setf (aref vary pc)(make-chord-variations pc minimum-octave)))
     (make-instance 'chord-family
-		   :chord-type (->symbol chord-type :cyco)
+		   :chord-type (->cyco-symbol chord-type)
 		   :pitch-classes vary
 		   :minimum-octave minimum-octave)))
 
@@ -38,18 +38,16 @@
 
 
 (defmethod chord-variant ((family chord-family)(key t))
-  (let ((pcarray (pitch-class family)))
+  (let ((pcarray (pitch-classes family)))
     (cond ((not key)
 	   (aref pcarray 0))
 	  ((rest-p key)
 	   nil)
 	  (t (let* ((kn (keynumber key))
-		    (pc (pitch-class kn))
-		    (oct (octave kn))
-		    (cv (aref (pitch-class family) pc)))
-	       (chord-variant cv out)))))) 
-	 
-
+		  (pc (pitch-class kn))
+		  (oct (octave kn))
+		  (cv (aref (pitch-classes family) pc)))
+	     (chord-variant cv oct))))))
 
 (defmethod dump-chords ((family chord-family))
   (format t "FRETWORKS:CHORD-FAMILY ~A~%" (chord-type family))

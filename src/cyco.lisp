@@ -213,4 +213,4 @@
   (cyco-banner))
 
 
-;; (defun test ()(plugin 'strummer))
+(defun test ()(plugin 'fretworks))

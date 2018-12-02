@@ -41,6 +41,9 @@
 
 
 
+(defmethod chord-description ((acm abstract-chord-model)(chord-name t))
+  (gethash chord-name (chord-table-descriptions acm)))
+
 ;; Transformations on chords
 ;;
 (flet ((rotate-right ;; (A B C) --> (B C A')

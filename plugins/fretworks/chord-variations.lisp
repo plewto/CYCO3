@@ -46,14 +46,19 @@
 (defmethod chord-variant ((cv chord-variations)(n integer))
   (let* ((vary (variants cv))
 	 (limit (1- (length vary)))
-	 (octave-offset (minimum-octave cv)))
-    (setf n (- n octave-offset))
-    (cond ((minusp n) nil)
-	  ((< n limit)(aref vary n))
-	  (t (let ((diff (- n limit))
-		   (high (aref vary limit)))
-	       (nthcdr diff high))))))
-	       
+	 (octave-offset (minimum-octave cv))
+	 (index (- n octave-offset))
+	 (rs  (cond ((minusp index)
+		     nil)
+		    
+		    ((< index limit)
+		     (aref vary index))
+		    
+		    (t (let ((diff (- index limit))
+			     (high-chord (aref vary limit)))
+			 (nthcdr diff high-chord))))))
+    rs))
+    
 (defmethod dump-chords ((cv chord-variations))
   (let ((pc (keyname (pitch-class cv)))
 	(offset (minimum-octave cv))

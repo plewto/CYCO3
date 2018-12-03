@@ -14,7 +14,7 @@
                 :abstract-chord-model
                 :chord-template
 		:chord-types
-                :constant
+                
                 :copies
                 :cyco-error
                 :cyco-warning
@@ -31,8 +31,9 @@
                 :rest-p
                 :sformat
                 :while
-		
 		:param
+
+		:constant
 		))
 
 (in-package :cyco-fretworks)
@@ -68,7 +69,7 @@
 
 (export '(fretted-chord-model
 	  define-chord-family
-	  +bass-guitar-chord-model+
+	  *bass-guitar-chord-model*
 	  )
 	:cyco-fretworks)
 
@@ -76,7 +77,7 @@
 ;;
 (import '(cyco-fretworks:fretted-chord-model
 	  cyco-fretworks:define-chord-family
-	  cyco-fretworks:+bass-guitar-chord-model+
+	  cyco-fretworks:*bass-guitar-chord-model*
 	  ) :cyco)
 
 (in-package :cyco)

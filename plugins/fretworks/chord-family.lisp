@@ -38,16 +38,19 @@
 
 
 (defmethod chord-variant ((family chord-family)(key t))
+  
   (let ((pcarray (pitch-classes family)))
     (cond ((not key)
 	   (aref pcarray 0))
 	  ((rest-p key)
 	   nil)
 	  (t (let* ((kn (keynumber key))
-		  (pc (pitch-class kn))
-		  (oct (octave kn))
-		  (cv (aref (pitch-classes family) pc)))
-	     (chord-variant cv oct))))))
+		    (pc (pitch-class kn))
+		    (oct (octave kn))
+		    (cv (aref (pitch-classes family) pc))
+		    (rs (chord-variant cv oct)))
+	       rs)))))
+		 
 
 (defmethod dump-chords ((family chord-family))
   (format t "FRETWORKS:CHORD-FAMILY ~A~%" (chord-type family))

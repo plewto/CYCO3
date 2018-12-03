@@ -1,10 +1,10 @@
 ;;;; CYCO fretworks Bass guitar Chord Model
 ;;;;
 
-(constant +BASS-GUITAR-CHORD-MODEL+
-	  (fretted-chord-model 'bass-guitar 24 '(e2 a2 e3 g3) :minimum-octave 2))
+(param *BASS-GUITAR-CHORD-MODEL*
+       (fretted-chord-model 'bass-guitar 24 '(e2 a2 e3 g3) :minimum-octave 2))
 
-(define-chord-family +bass-guitar-chord-model+ '[solo]
+(define-chord-family *bass-guitar-chord-model* '[solo]
   :e  '((0 (o x x x))
 	(0 (x x 2 x))
 	(0 (x x x 9))
@@ -46,7 +46,7 @@
 	(0 (x x x 8))
 	(0 (x x x 20))))
 
-(define-chord-family +bass-guitar-chord-model+ '[maj]
+(define-chord-family *bass-guitar-chord-model* '[maj]
   :a  '((0 (4 6 6 5))
   	(0 (5 4 2 2))
   	(0 (X o 2 6))
@@ -104,7 +104,7 @@
   	(0 (4 3 1 x))))
 
 
-(define-chord-family +bass-guitar-chord-model+ '[min]
+(define-chord-family *bass-guitar-chord-model* '[min]
   :a  '((0 (5 7 7 5))
 	(0 (x o 2 5))
 	(0 (5 3 2 2))

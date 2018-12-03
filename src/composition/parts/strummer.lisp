@@ -1,12 +1,8 @@
 ;;;; CYCO
 ;;;;
-;;;; EPART is a Part with explicit event specifications.
+;;;; STRUMMER is a Part with explicit event specifications.
 ;;;; 
-;;;; Any number of instruments may be used with an Epart.  By default multiple
-;;;; instruments are converted to an INSTRUMENT-LAYER pattern and are used in
-;;;; parallel, however any Pattern of instruments may be used.
-;;;; 
-;;;; An Epart may generate note events and has a rich set of options for
+;;;; An Strummer may generate note events and has a rich set of options for
 ;;;; strumming chords.   They may also generate simple touch, MIDI controller,
 ;;;; bend and program events.
 ;;;; 
@@ -49,7 +45,7 @@
 ;;;; :KEY k
 ;;;;     Creates a note event.
 ;;;;     The k argument is typically a keynumber, but it need not be so long as
-;;;;     each instrument's keynumber-map is able to convert it to a keynumber.
+;;;;     the instrument's keynumber-map is able to convert it to a keynumber.
 ;;;; 
 ;;;;     Keynumbers are not saved between events.
 ;;;; 
@@ -107,10 +103,10 @@
 ;;;;     Sets strum direction.
 ;;;; 
 ;;;;     Valid directions are
-;;;;         :down - play chord in note order
-;;;;         :up   - reverse note order
-;;;;         :dice - randomly select :up or :down
-;;;;         :random - select notes randomly.
+;;;;         down - play chord in note order
+;;;;         up   - reverse note order
+;;;;         dice - randomly select :up or :down
+;;;;         random - select notes randomly.
 ;;;; 
 ;;;;     The strum direction is a Cycle pattern
 ;;;; 
@@ -128,7 +124,7 @@
 ;;;;    Play grace note
 ;;;;    key    - key number
 ;;;;    delay  - metric expression
-;;;;    Grave notes ignore chord-template
+;;;;    Grave notes ignore chord
 ;;;;
 ;;;; :GRACE-AMP-SCALE n
 ;;;; :GRACE-ARTICULATION ex
@@ -180,11 +176,11 @@
 ;;;;    values and remain in effect until explicitly changed.
 ;;;; 
 ;;;; :TOUCH n
-;;;;    Creates a single MIDI after-touch event for each instrument.
+;;;;    Creates a single MIDI after-touch event
 ;;;;    0.0 <= n <= 1.0
 ;;;; 
 ;;;; :BEND b
-;;;;    Creates a single MIDI bend event for each instrument.
+;;;;    Creates a single MIDI bend event 
 ;;;;    -1.0 <= b <= +1.0
 ;;;; 
 ;;;; :CTRL c
@@ -193,14 +189,14 @@
 ;;;;    The controller number remains in effect until explicitly changed.
 ;;;; 
 ;;;; :CC n
-;;;;   Creates single MIDI controller event for each instrument, using
+;;;;   Creates single MIDI controller event 
 ;;;;   controller number established by CTRL.
 ;;;; 
 ;;;;   0.0 <= n <= 1.0
 ;;;; 
 ;;;; :PROGRAM p
-;;;;    Creates simple program-change events for each instrument.
-;;;;    The expected format for p is dependent on the instruments
+;;;;    Creates simple program-change events
+;;;;    The expected format for p is dependent on the instrument's
 ;;;;    program-map functions.
 ;;;; 
 ;;;;    A value of default should cause the instruments to generate their
@@ -208,7 +204,7 @@
 ;;;;    explicit MIDI program numbers."	  
 ;;;;
 ;;;; :BANK b p
-;;;;    Creates bank and program-change events for each instrument.
+;;;;    Creates bank and program-change events.
 ;;;;    The expected format for bank b and program p is dependent
 ;;;;    on the instruments program-map functions.
 ;;;; 
@@ -217,31 +213,31 @@
 ;;;;    explicit MIDI program numbers."	  
 ;;;; 
 
-(constant +epart-properties+
+(constant +strummer-properties+
 	  (append +part-properties+
 		  '(:shift		; shift intiial time relative to section
 		    :render-once)))
 
-(defclass epart (part)
+(defclass strummer (part)
   ((state
-    :type epart-state
-    :accessor epart-state
-    :initform (make-epart-state))
+    :type strummer-state
+    :accessor strummer-state
+    :initform (make-strummer-state))
    (events				
     :type list   ; list of states
-    :accessor epart-events
+    :accessor strummer-events
     :initform '())))
 
-;; Trace flag, if true print epart events as they are evaluated.
-(global *trace-epart-events* nil) 
+;; Trace flag, if true print strummer events as they are evaluated.
+(global *trace-strummer-events* nil) 
 
-;; Trace flag, if true display epart-state after evaluating each event-list.
-(global *trace-epart-states* nil)
+;; Trace flag, if true display strummer-state after evaluating each event-list.
+(global *trace-strummer-states* nil)
 
 
-;; Creates new epart and interprets the events list.
+;; Creates new strummer and interprets the events list.
 ;; The primary task is to convert event list contents into a list of
-;; epart-state objects.   Final conversion to MIDI events is taken care of
+;; strummer-state objects.   Final conversion to MIDI events is taken care of
 ;; separately during rendering stage.
 ;;
 (labels ((validate-section
@@ -249,12 +245,12 @@
 	  (let ((s (cond ((section-p section)
 			  section)
 			 ((and section (not (section-p section)))
-			  (cyco-type-error 'make-epart '(section nil) section)
+			  (cyco-type-error 'make-strummer '(section nil) section)
 			  nil)
 			 ((not (project-p *project*))
 			  (cyco-composition-error
-			   'make-epart
-			   (sformat "No default project while creating epart ~A" part-name))
+			   'make-strummer
+			   (sformat "No default project while creating strummer ~A" part-name))
 			  nil)
 			 (t (property *project* :current-section)))))
 	    s))
@@ -272,12 +268,12 @@
 	   ((listp instruments)
 	    (or (and (every #'instrument-p instruments)
 	 	     (instrument-layer :of instruments))
-	 	(cyco-type-error 'make-epart "List of instruments"
+	 	(cyco-type-error 'make-strummer "List of instruments"
 				 instruments
 	 	       		 (sformat "part name is ~A" part-name))))
 	   ((instrument-p instruments)
 	    (instrument-layer :of (->list instruments)))
-	   (t (cyco-type-error 'make-epart
+	   (t (cyco-type-error 'make-strummer
 	 		       "Instrument or list of instruments"
 	 		       instruments
 	 		       (sformat "part name is ~A" part-name)))))
@@ -286,7 +282,7 @@
 	 ;;
 	 (trace-event
 	  (part event)
-	  (if *trace-epart-events*
+	  (if *trace-strummer-events*
 	      (let ((frmt "TRACE: ~A.~A event: ~A~%"))
 		(format t "~A~%" +banner-bar2+)
 		(format t frmt
@@ -294,11 +290,11 @@
 			(name part)
 			event))))
 
-	 ;; Debug, prints epart-state after each event-list is evaluated.
+	 ;; Debug, prints strummer-state after each event-list is evaluated.
 	 ;;
 	 (trace-state
 	  (state)
-	  (if *trace-epart-states*
+	  (if *trace-strummer-states*
 	      (progn
 		(format t "~A~%" +banner-bar2+)
 		(format t "~A~%" state))))
@@ -386,7 +382,7 @@
 	      (let* ((cuefn (property part :cue-function))
 	 	     (args (second clause))
 	 	     (time (funcall cuefn part args)))
-	 	(setf (epart-state-time state) (float time))
+	 	(setf (strummer-state-time state) (float time))
 	 	state)
 	    nil))
 
@@ -394,45 +390,62 @@
 	  (part event clause state)
 	  (if (expect-n-arguments part event clause 1)
 	      (progn 
-		(setf (epart-state-key state)(second clause))
+		(setf (strummer-state-key state)(second clause))
 		state)
 	    nil))
 
-	 (process-chord-template	; :chord name
-	  (part event clause state)	; :chord template-list
+	 ;; (process-chord-template	; :chord name
+	 ;;  (part event clause state)	; :chord template-list
+	 ;;  (if (expect-n-arguments part event clause 1)
+	 ;;      (let* ((id (second clause))
+	 ;; 	     (model (property part :chord-model))
+	 ;; 	     (template (cond ((and (listp id)(every #'integerp id))
+	 ;; 			      id)
+	 ;; 			     ((and (symbolp id)(defines-chord-p model id))
+	 ;; 			      (chord-template model id nil))
+	 ;; 			     (t (cyco-warning
+	 ;; 				 (sformat "Invalid chord ~A" id)
+	 ;; 				 (part-id part)
+	 ;; 				 (sformat "Event ~A" event)
+	 ;; 				 "Using default '(0)")
+	 ;; 				'(0)))))
+	 ;; 	(setf (strummer-state-chord-template state) template)
+	 ;; 	state)
+	 ;;    nil))
+
+	 (process-chord-template        ; :chord name
+	  (part event clause state)     ; :chord template-list
 	  (if (expect-n-arguments part event clause 1)
 	      (let* ((id (second clause))
 		     (model (property part :chord-model))
-		     (template (cond ((and (listp id)(every #'integerp id))
-				      id)
-				     ((and (symbolp id)(defines-chord-p model id))
-				      (chord-template model id nil))
-				     (t (cyco-warning
-					 (sformat "Invalid chord ~A" id)
-					 (part-id part)
-					 (sformat "Event ~A" event)
-					 "Using default '(0)")
-					'(0)))))
-		(setf (epart-state-chord-template state) template)
+		     (cspec (cond ((listp id) id)
+				  ((defines-chord-p model id) id)
+				  (t (cyco-warning
+				      (sformat "Invalid cord ~A" id)
+				      (part-id part)
+				      (sformat "Event ~A" event)
+				      "Using default '(0)")
+				     '(0)))))
+		(setf (strummer-state-chord-type state) cspec)
 		state)
 	    nil))
 
 	 (process-chord-inversion	; :inversion degree
 	  (part event clause state)
 	  (let ((degree (expect-integer part event clause 1 :min -16 :max 16)))
-	    (setf (epart-state-chord-inversion state) degree)
+	    (setf (strummer-state-chord-inversion state) degree)
 	    state))
 
 	 (process-chord-octave          ; :octave n
 	  (part event clause state)
 	  (let ((degree (expect-integer part event clause 1 :min -2 :max 4)))
-	    (setf (epart-state-chord-octave state) degree)
+	    (setf (strummer-state-chord-octave state) degree)
 	    state))
 
 	 ;; (process-strum-delay	        ; :strum metric-expression
 	 ;;  (part event clause state)
 	 ;;  (let ((mexp (expect-metric-expression part event clause 1 0.0)))
-	 ;;    (setf (epart-state-strum-delay state) (metric-expression mexp))
+	 ;;    (setf (strummer-state-strum-delay state) (metric-expression mexp))
 	 ;;    state))
 
 
@@ -443,13 +456,13 @@
 			    (abs (float mexp))
 			  (* (metric-expression mexp)
 			     (/ 60.0 (tempo part))))))
-	    (setf (epart-state-strum-delay state) delay)
+	    (setf (strummer-state-strum-delay state) delay)
 	    state))
 		       
 	 (process-strum-acceleration 	; :strum* 0<float
 	  (part event clause state)
 	  (let ((acl (expect-float part event clause 1 :min 1/4 :max 4 :default 1.0)))
-	    (setf (epart-state-strum-acceleration state) acl)
+	    (setf (strummer-state-strum-acceleration state) acl)
 	    state))
 
 	 (process-strum-direction 	; :direction d
@@ -460,7 +473,7 @@
 		(if (every #'(lambda (q)
 			       (member q '(up down dice random)))
 			   args)
-		    (setf (epart-state-strum-direction state)
+		    (setf (strummer-state-strum-direction state)
 			  (cycle :of args))
 		  (progn 
 		    (cyco-warning
@@ -468,21 +481,21 @@
 		     (part-id part)
 		     (sformat "Event  ~A" event)
 		     (sformat "Clause ~A" clause))
-		    (setf (epart-state-strum-direction state)
+		    (setf (strummer-state-strum-direction state)
 			  (cycle :of 'down))))))
 	  state)
 
 	 (process-strum-amp-scale	; :amp* s
 	  (part event clause state)
 	  (let ((scale (expect-float part event clause 1 :min 1/2 :max 2 :default 1.0)))
-	    (setf (epart-state-strum-amp-scale state) scale)
+	    (setf (strummer-state-strum-amp-scale state) scale)
 	    state))
 
 	 (process-strum-end-together	; :end-together no
 	  (part event clause state)	; :end-together yes
 	  (let ((arg (and (expect-n-arguments part event clause 1)
 			  (second clause))))
-	    (setf (epart-state-strum-end-together state)
+	    (setf (strummer-state-strum-end-together state)
 		  (cond ((eq arg 'yes) t)
 			((eq arg 'no) nil)
 			(t (cyco-warning
@@ -501,7 +514,7 @@
 	      (or (and delay (* delay (/ 60.0 (tempo part))))
 		  (progn
 		    (cyco-warning (sformat "Invalid grace-note delay ~A" arg)
-				  (sformat "EPART ~A" (name part))
+				  (sformat "STRUMMER ~A" (name part))
 				  (sformat "Event ~A" event)
 				  (sformat "Using default 0.1"))
 		    0.1)))))
@@ -511,22 +524,22 @@
 	  (if (expect-n-arguments part event clause 2)
 	      (let ((key (second clause))
 	 	    (delay (third clause)))
-	 	(setf (epart-state-grace-key state) key)
-	 	(setf (epart-state-grace-delay state)
+	 	(setf (strummer-state-grace-key state) key)
+	 	(setf (strummer-state-grace-delay state)
 		      (process-grace-delay part event delay))))
 	  state)
 		    
 	 (process-grace-amp-scale	; :grace-amp* n
 	  (part event clause state)
 	  (let ((ascale (expect-normalized-value part event clause 1 0.25)))
-	    (setf (epart-state-grace-amp-scale state) ascale))
+	    (setf (strummer-state-grace-amp-scale state) ascale))
 	  state)
 
 	 (process-grace-articulation ; :grace-dur n
 	  (part event clause state)
 	  (if (expect-n-arguments part event clause 1)
 	      (let ((arg (second clause)))
-		(setf (epart-state-grace-articulation state)
+		(setf (strummer-state-grace-articulation state)
 		      (process-grace-delay part event arg))))
 	  state)
 		       
@@ -538,7 +551,7 @@
 			 (part-id part)
 			 (sformat "Event  ~A" event)
 			 (sformat "Clause ~A" clause))))
-	    (setf (epart-state-dynamic state)
+	    (setf (strummer-state-dynamic state)
 		   (cycle :of (dynamic (if (expect-n-arguments part event clause 1)
 	      				   (let ((args (->list (second clause))))
 	      				     (if (every #'dynamic-p args)
@@ -558,21 +571,21 @@
 		 (delta (/ diff count))
 		 (dlist (range start end :by delta))
 		 (pat (line :of dlist)))
-	    (setf (epart-state-dynamic state) pat)
+	    (setf (strummer-state-dynamic state) pat)
 	    state))
 
 	 (process-amp-blur		; :amp-blur s
 	  (part event clause state)
 	  (let ((blur (expect-float part event clause 1 :min 0.0 :max 1.0 :default 0.0)))
-	    (setf (epart-state-dynamic-blur state) blur)
+	    (setf (strummer-state-dynamic-blur state) blur)
 	    state))
 
 	 (process-amp-range		; :amp-range min max
 	  (part event clause state)
 	  (let ((mn (expect-dynamic-value part event clause 1 0.0))
 		(mx (expect-dynamic-value part event clause 2 1.0)))
-	    (setf (epart-state-dynamic-min state) mn
-		  (epart-state-dynamic-max state) mx)
+	    (setf (strummer-state-dynamic-min state) mn
+		  (strummer-state-dynamic-max state) mx)
 	    state))
 
 	 (process-articulation	       ; :dur metric-expression
@@ -580,7 +593,7 @@
 	  (if (expect-n-arguments part event clause 1)
 	      (let* ((arg (second clause))
 		     (mxp (metric-expression-p arg)))
-		(setf (epart-state-articulation state)
+		(setf (strummer-state-articulation state)
 		      (cond ((and (numberp arg)(<= 0 arg))
 			     arg)
 			    (mxp arg)
@@ -597,32 +610,32 @@
 	 (process-touch 		; :touch n
 	  (part event clause state)
 	  (let ((v (expect-normalized-value part event clause 1 0.0)))
-	    (setf (epart-state-touch state) v)
+	    (setf (strummer-state-touch state) v)
 	    state))
 
 	 (process-controller-number	; :ctrl n
 	  (part event clause state)
 	  (let ((v (expect-integer part event clause 1 :min 0 :max 127 :default 1)))
-	    (setf (epart-state-controller-number state) v)
+	    (setf (strummer-state-controller-number state) v)
 	    state))
 
 	 (process-controller-value	; :cc n
 	  (part event clause state)
 	  (let ((v (expect-normalized-value part event clause 1 0.0)))
-	    (setf (epart-state-controller-value state) v)
+	    (setf (strummer-state-controller-value state) v)
 	    state))
 
 	 (process-bend			; :bend n
 	  (part event clause state)
 	  (let ((v (expect-signed-normalized-value part event clause 1 0.0)))
-	    (setf (epart-state-bend state) v)
+	    (setf (strummer-state-bend state) v)
 	    state))
 
 	 (process-simple-program-change	; :program p
 	  (part event clause state)
 	  (if (expect-n-arguments part event clause 1)
 	      (let ((v (second clause)))
-		(setf (epart-state-program-number state)
+		(setf (strummer-state-program-number state)
 		      (if (eq v 'default) :default v))))
 	  state)
 
@@ -631,9 +644,9 @@
 	  (if (expect-n-arguments part event clause 2)
 	      (let ((b (second clause))
 		    (p (third clause)))
-		(setf (epart-state-program-number state)
+		(setf (strummer-state-program-number state)
 		      (if (eq p 'default) :default p))
-		(setf (epart-state-program-bank state)
+		(setf (strummer-state-program-bank state)
 		      (if (eq b 'default) :default b))))
 	  state)
 	 
@@ -706,28 +719,28 @@
 	 (switch-trace-mode
 	  (clause)
 	  (let ((mode (or (second clause) 'all)))
-	    (setf *trace-epart-events* (or (eq mode 'events)(eq mode 'all)))
-	    (setf *trace-epart-states* (or (eq mode 'state)(eq mode 'all)))))
+	    (setf *trace-strummer-events* (or (eq mode 'events)(eq mode 'all)))
+	    (setf *trace-strummer-states* (or (eq mode 'state)(eq mode 'all)))))
 
 	 ;; Returns true if state has non-nil key, grace, touch
 	 ;; controller, bend, program or bank values.
 	 ;; In other words, does state actually generate MIDI events?  
 	 (real-event-p
 	  (state)
-	  (or (epart-state-key state)
-	      (epart-state-grace-key state)
-	      (epart-state-touch state)
-	      (and (epart-state-controller-number state)
-		   (epart-state-controller-value state))
+	  (or (strummer-state-key state)
+	      (strummer-state-grace-key state)
+	      (strummer-state-touch state)
+	      (and (strummer-state-controller-number state)
+		   (strummer-state-controller-value state))
 	      
-	      (epart-state-bend state)
-	      (epart-state-program-number state)
-	      (epart-state-program-bank state)))
+	      (strummer-state-bend state)
+	      (strummer-state-program-number state)
+	      (strummer-state-program-bank state)))
 
 	 (process-events
 	  (part events)
 	  (let ((acc '())
-		(state (epart-state part)))
+		(state (strummer-state part)))
 	    (reset state)
 	    (block outer
 	      (dolist (event events)
@@ -748,12 +761,12 @@
 			    (t (dispatch-command event clause part state))))))
 		(if (real-event-p state)
 		    (let ((local-state (clone state)))
-		      (setf (epart-state-source local-state) (->string event))
+		      (setf (strummer-state-source local-state) (->string event))
 		      (trace-state local-state)
 		      (push local-state acc)))))
-	    (setf (epart-events part) acc))) )
+	    (setf (strummer-events part) acc))) )
 
-  (defun make-epart (name instruments &key
+  (defun make-strummer (name instrument &key
 			  section
 			  (cuefn #'bar)
 			  shift 
@@ -765,36 +778,34 @@
 			  remarks
 			  events)
     (let* ((parent (or (validate-section name section)
-		       (return-from make-epart nil))))
-      (let* ((instrument-pattern (or (validate-instruments name instruments)
-	   			     (return-from make-epart nil)))
-	     (epart (make-instance 'epart
-				   :properties +epart-properties+
+		       (return-from make-strummer nil))))
+      (let* ((strummer (make-instance 'strummer
+				   :properties +strummer-properties+
 				   :name name
 				   :remarks (->string (or remarks ""))
 				   :transient t)))
-	(put epart :instruments instrument-pattern)
-	(put epart :tempo tempo)
-	(put epart :unit unit)
-	(put epart :bars bars)
-	(put epart :beats beats)
-	(put epart :subbeats subbeats)
-	(put epart :cue-function cuefn)
-	(put epart :render-once render-once)
-	(put epart :transposable transposable)
-	(put epart :reversible reversible)
-	(put epart :chord-model chord-model)
-	(put epart :muted nil)
-	(connect parent epart)
-	(put epart :shift (or shift 0.0))
+	(put strummer :instruments instrument)
+	(put strummer :tempo tempo)
+	(put strummer :unit unit)
+	(put strummer :bars bars)
+	(put strummer :beats beats)
+	(put strummer :subbeats subbeats)
+	(put strummer :cue-function cuefn)
+	(put strummer :render-once render-once)
+	(put strummer :transposable transposable)
+	(put strummer :reversible reversible)
+	(put strummer :chord-model chord-model)
+	(put strummer :muted nil)
+	(connect parent strummer)
+	(put strummer :shift (or shift 0.0))
 	(set-cyco-prompt)
-	(setf (epart-events epart) (reverse (process-events epart (->list events))))
-	epart)))
+	(setf (strummer-events strummer) (reverse (process-events strummer (->list events))))
+	strummer)))
   ) ;; end labels
 
-(setf (documentation 'make-epart 'function) +epart-documentation+)
+(setf (documentation 'make-strummer 'function) +strummer-documentation+)
 
-(defmacro epart (name instruments &key 
+(defmacro strummer (name instrument &key 
 		      section
 		      shift
 		      tempo unit bars beats subbeats
@@ -805,10 +816,10 @@
 		      chord-model
 		      remarks
 		      events)
- "Same as epart except binds the part to a symbol named name."
+ "Same as strummer except binds the part to a symbol named name."
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((ep (make-epart ',name ,instruments
+     (let ((ep (make-strummer ',name ,instrument
 			   :section ,section
 			   :shift ,shift
 			   :tempo ,tempo
@@ -826,34 +837,34 @@
        (defparameter ,name ep)
        ep)))
 
-(defmethod transpose ((p epart)(x t))
+(defmethod transpose ((p strummer)(x t))
   (if (property p :transposable)
-      (dolist (evn (epart-events p))
+      (dolist (evn (strummer-events p))
 	(transpose evn x)))
   p)
 
-(defmethod invert ((p epart)(pivot t))
+(defmethod invert ((p strummer)(pivot t))
   (if (and pivot (property p :transposable))
-      (dolist (evn (epart-events p))
+      (dolist (evn (strummer-events p))
 	(invert evn pivot)))
   p)
 
-(defmethod retrograde ((p epart))
+(defmethod retrograde ((p strummer))
   (if (property p :reversible)
       (let ((acc '()))
-	(dolist (state (epart-events p))
-	  (let ((kn (epart-state-key state)))
+	(dolist (state (strummer-events p))
+	  (let ((kn (strummer-state-key state)))
 	    (if kn (push kn acc))))
-	(dolist (state (epart-events p))
-	  (let ((kn (epart-state-key state)))
-	    (if kn (setf (epart-state-key state)(pop acc)))))))
+	(dolist (state (strummer-events p))
+	  (let ((kn (strummer-state-key state)))
+	    (if kn (setf (strummer-state-key state)(pop acc)))))))
   p)
 
-(defmethod clone ((src epart) &key new-name new-parent)
+(defmethod clone ((src strummer) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (name (->symbol (sformat frmt (name src))))
 	 (parent (or new-parent (parent src)))
-	 (prt (make-epart name (clone (property src :instruments))
+	 (prt (make-strummer name (clone (property src :instruments))
 			  :section parent
 			  :cuefn (property src :cue-function)
 			  :transposable (property src :transposable)
@@ -861,19 +872,19 @@
 			  :remarks (remarks src)
 			  :events '())))
     (copy-time-signature src prt)
-    (setf (epart-state prt)(clone (epart-state src)))
+    (setf (strummer-state prt)(clone (strummer-state src)))
     (let ((acc '()))
-      (dolist (evn (epart-events src))
+      (dolist (evn (strummer-events src))
 	(push (clone evn) acc))
-      (setf (epart-events prt)(reverse acc)))
+      (setf (strummer-events prt)(reverse acc)))
     (dolist (c (children src))
       (clone c :new-name new-name :new-parent prt))
     prt))
 
-(defmethod dump-epart-events ((epart epart))
-  (format t "Section.EPart  ~A.~A~%" (name (parent epart))(name epart))
+(defmethod dump-strummer-events ((strummer strummer))
+  (format t "Section.Strummer  ~A.~A~%" (name (parent strummer))(name strummer))
   (let ((index 0))
-    (dolist (s (epart-events epart))
+    (dolist (s (strummer-events strummer))
       (format t "[~3D] -----------------------------------~%" index)
       (format t "~A~%" s)
       (setf index (1+ index)))))

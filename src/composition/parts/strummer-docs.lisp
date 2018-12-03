@@ -1,22 +1,17 @@
 
-(constant +epart-documentation+
-"Creates new instance of EPART, a part type with explicit event
+(constant +strummer-documentation+
+"Creates new instance of STRUMMER, a part type with explicit event
 specifications.
 
 name          - Symbol, part name
-instruments   - Instrument, list or Pattern of Instruments.
-                Individual Instrument or list of Instruments are converted 
-                to an instrument-layer and are used in parallel.  Other 
-                Pattern types are possible but they should not be nested.
-                Patterns apply only to key events.  Touch, controller, bend
-                and program events are applied to all instruments.
+instruments   - Instrument, single instrument only.
 :section      - Parent section, defaults to current-section of *project*
 :cuefn        - Cueing-function, default to parent value.
 :shift        - Offset time for initial event.  The format of shift is
-                dependent on cuefn.  When rendering an Epart within a
+                dependent on cuefn.  When rendering an Strummer within a
                 section, the first iteration is offset by shift amount.
                 Defaults to 0.0.
-:render-once  - Flag, if true, render-n only renders epart events one time. 
+:render-once  - Flag, if true, render-n only renders strummer events one time. 
 :transposable - Flag, if true this part is subject to transpose and invert.
 :reversible   - Flag, if true this part is subject to retrograde operations.
 :chord-model  - Establish chord-model, defaults to chord-model of 
@@ -29,7 +24,7 @@ instruments   - Instrument, list or Pattern of Instruments.
 :beats        - Time signature beats, defaults to parent's value.
 :subbeats     - Time signature subbeats, defaults to parent's value. 
 
- An Epart may generate note events and has a rich set of options for
+ A Strummer may generate note events and has a rich set of options for
  strumming chords.   They may also generate simple touch, MIDI controller,
  bend and program events.
  
@@ -72,7 +67,7 @@ instruments   - Instrument, list or Pattern of Instruments.
  :KEY k
      Creates a note event.
      The k argument is typically a keynumber but it need not be so long as
-     each instrument's keynumber-map is able to convert it to a keynumber.
+     the instrument's keynumber-map is able to convert it to a keynumber.
  
      Keynumbers are not saved between events.
  
@@ -206,11 +201,11 @@ instruments   - Instrument, list or Pattern of Instruments.
     values and remain in effect until explicitly changed.
  
  :TOUCH n
-    Creates a single MIDI after-touch event for each instrument.
+    Creates a single MIDI after-touch event 
     0.0 <= n <= 1.0
  
  :BEND b
-    Creates a single MIDI bend event for each instrument.
+    Creates a single MIDI bend event 
     -1.0 <= b <= +1.0
  
  :CTRL c
@@ -219,26 +214,26 @@ instruments   - Instrument, list or Pattern of Instruments.
     The controller number remains in effect until explicitly changed.
  
  :CC n
-   Creates single MIDI controller event for each instrument, using
+   Creates single MIDI controller event 
    controller number established by CTRL.
  
    0.0 <= n <= 1.0
  
  :PROGRAM p
-    Creates simple program-change events for each instrument.
+    Creates simple program-change events 
     The expected format for p is dependent on the instruments
     program-map functions.
  
-    A value of default should cause the instruments to generate their
+    A value of default should cause the instrument to generate it's
     default programs.   Numeric p values are typically interpreted as
     explicit MIDI program numbers.	  
 
  :BANK b p
-    Creates bank and program-change events for each instrument.
+    Creates bank and program-change events
     The expected format for bank b and program p is dependent
     on the instruments program-map functions.
  
-    A value of default should cause the instruments to generate their
+    A value of default should cause the instrument to generate it's
     default bank/programs.   Numeric p values are typically interpreted as
     explicit MIDI program numbers.	  
 ")

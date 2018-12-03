@@ -136,10 +136,13 @@
 		   "src/composition/section"
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
-		   "src/composition/parts/epart-docs"
-		   "src/composition/parts/epart-state"
-         	   "src/composition/parts/epart"
-		   "src/composition/parts/epart-render"
+		   
+		   "src/composition/parts/strummer-docs"
+		   "src/composition/parts/strummer-state"
+         	   "src/composition/parts/strummer"
+		   "src/composition/parts/strummer-render"
+		   
+		   
 		   "src/composition/parts/controllers"
 		   "src/composition/parts/controllers-render"
 		   "src/composition/parts/qball"

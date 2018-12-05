@@ -2,7 +2,7 @@
 ;;;;
 
 (param *BASS-GUITAR-CHORD-MODEL*
-       (fretted-chord-model 'bass-guitar 24 '(e2 a2 e3 g3) :minimum-octave 2))
+       (fretted-chord-model 'bass-guitar 24 '(e2 a2 d3 g3) :minimum-octave 2))
 
 (define-chord-family *bass-guitar-chord-model* '[solo]
   :e  '((0 (o x x x))

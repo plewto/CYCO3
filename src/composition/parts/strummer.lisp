@@ -592,137 +592,103 @@
 	 ;; State may be changed by side-effect
 	 (dispatch-event
 	  (part state event clause)
-	  (format t "DEBUG dispatch-event ~A~%" event)
 	  (let ((command (car clause)))
-	    ;; state modified by side-effect.
 	    (cond ((eq command :trace)
 		   nil)
-
 		  ((eq command :reset)
 		   (process-reset part event clause state))
-		  
 		  ((eq command :time)
 		   (process-time part event clause state))
-
 		  ((eq command :chord)
 		   (process-chord part event clause state))
-
 		  ((eq command :inversion)
 		   (process-chord-inversion part event clause state))
-
 		  ((eq command :octave)
 		   (process-chord-octave part event clause state))
-
 		  ((eq command :strum)
 		   (process-strum-delay part event clause state))
-
 		  ((eq command :strum*)
 		   (process-strum-acceleration part event clause state))
-
 		  ((eq command :direction)
 		   (process-strum-direction part event clause state))
-
 		  ((eq command :amp*)
 		   (process-strum-amp-scale part event clause state))
-
 		  ((eq command :end-together)
 		   (process-end-together part event clause state))
-
 		  ((eq command :grace-amp*)
 		   (process-grace-amp-scale part event clause state))
-
 		  ((eq command :grace-duration)
 		   (process-grace-articulation part event clause state))
-
 		  ((eq command :grace-delay)
 		   (process-grace-delay part event clause state))
-
 		  ((eq command :dur)
 		   (process-note-articulation part event clause state))
-
 		  ((eq command :amp)
 		   (process-simple-dynamic part event clause state))
-
 		  ((eq command :cres)
 		   (process-crescendo part event clause state))
-
 		  ((eq command :amp-blur)
 		   (process-dynamic-blur part event clause state))
-
 		  ((eq command :amp-limits)
 		   (process-dynamic-limits part event clause state))
-
 		  ((eq command :key)
 		   (process-key part event clause state))
-
 		  ((eq command :grace)
 		   (process-grace-note part event clause state))
-
 		  ((eq command :bend)
 		   (process-bend part event clause state))
-
 		  ((eq command :cc)
 		   (process-controller part event clause state))
-
 		  ((eq command :program)
 		   (process-simple-program part event clause state))
-
 		  ((eq command :bank)
 		   (process-bank-and-program part event clause state))
-		  
 		  (t
 		   (cyco-error
 		    (sformat "Invalid Strummer ~A event: ~A"
-			     (name part) command)))))
-		   
+			     (name part) command)))))) 
 
-	  (if (real-event-p state) state nil)
-	  )
+	 (process-strummer-events
+	  (strummer event-list)
+	  (let ((acc '())
+		(state (make-strummer-state)))
+	    (reset state)
+	    (dolist (event event-list)
+	      (trace-event strummer event)
+	      (dolist (clause (partition-list event))
+		(setf acc (cons? acc (dispatch-event strummer state event clause))))
+	      (if (real-event-p state)
+		  (progn 
+		    (trace-state state)
+		    (push (clone state) acc)
+		    (soft-reset state))))
+	    (setf (strummer-events strummer)(reverse acc))))
 
-	 
-	 ) ;; end labels assignments
- 
-  
-  (defun -process-strummer-events (strummer event-list)
-    (let ((acc '())
-	  (state (make-strummer-state)))
-      (reset state)
-      (dolist (event event-list)
-	(trace-event strummer event)
-	(dolist (clause (partition-list event))
-	  (setf acc (cons? acc (dispatch-event strummer state event clause))))
-	(trace-state state))
-      (setf (strummer-events strummer) acc))
-    ) ;; end -process-strummer-events
-) ;; end labels 
+	 (validate-section
+	  (part-name section)
+	  (let ((s (cond ((section-p section)
+			  section)
+			 ((and section (not (section-p section)))
+			  (cyco-type-error 'make-strummer '(section nil) section)
+			  nil)
+			 ((not (project-p *project*))
+			  (cyco-composition-error
+			   'make-strummer
+			   (sformat "No default project while creating strummer ~A" part-name))
+			  nil)
+			 (t (property *project* :current-section)))))
+	    s))
 
+	 (validate-instrument
+	  (part-name instrument)
+	  (if (not (instrument-p instrument))
+	      (progn 
+		(cyco-type-error 'make-strummer 'instrument instrument
+				 (sformat "Expected single instrument for Strummer: ~A" part-name)
+				 "Using +ROOT-INSTRUMENT+")
+		+root-instrument+)
+	    instrument)) )
 
-(flet ((validate-section
-	(part-name section)
-	(let ((s (cond ((section-p section)
-			section)
-		       ((and section (not (section-p section)))
-			(cyco-type-error 'make-strummer '(section nil) section)
-			nil)
-		       ((not (project-p *project*))
-			(cyco-composition-error
-			 'make-strummer
-			 (sformat "No default project while creating strummer ~A" part-name))
-			nil)
-		       (t (property *project* :current-section)))))
-	  s))
-
-       (validate-instrument
-	(part-name instrument)
-	(if (not (instrument-p instrument))
-	    (progn 
-	      (cyco-type-error 'make-strummer 'instrument instrument
-			       (sformat "Expected single instrument for Strummer: ~A" part-name)
-			       "Using +ROOT-INSTRUMENT+")
-	      +root-instrument+)
-	  instrument))
-       ) ;; end flet assignments
-	      
   (defun make-strummer (name instrument &key
 			     section
 			     (cuefn #'bar)
@@ -757,8 +723,71 @@
 	(connect parent strummer)
 	(set-cyco-prompt)
 	(setf (strummer-events strummer)
-	      (-process-strummer-events strummer (->list events)))
-	strummer))))
+	      (process-strummer-events strummer (->list events)))
+	strummer))) ) 
+
+;; (flet ((validate-section
+;; 	(part-name section)
+;; 	(let ((s (cond ((section-p section)
+;; 			section)
+;; 		       ((and section (not (section-p section)))
+;; 			(cyco-type-error 'make-strummer '(section nil) section)
+;; 			nil)
+;; 		       ((not (project-p *project*))
+;; 			(cyco-composition-error
+;; 			 'make-strummer
+;; 			 (sformat "No default project while creating strummer ~A" part-name))
+;; 			nil)
+;; 		       (t (property *project* :current-section)))))
+;; 	  s))
+
+;;        (validate-instrument
+;; 	(part-name instrument)
+;; 	(if (not (instrument-p instrument))
+;; 	    (progn 
+;; 	      (cyco-type-error 'make-strummer 'instrument instrument
+;; 			       (sformat "Expected single instrument for Strummer: ~A" part-name)
+;; 			       "Using +ROOT-INSTRUMENT+")
+;; 	      +root-instrument+)
+;; 	  instrument))
+;;        ) ;; end flet assignments
+	      
+;;   (defun make-strummer (name instrument &key
+;; 			     section
+;; 			     (cuefn #'bar)
+;; 			     shift 
+;; 			     tempo unit bars beats subbeats
+;; 			     render-once
+;; 			     transposable
+;; 			     reversible
+;; 			     chord-model
+;; 			     remarks
+;; 			     events)
+;;     (let* ((parent (or (validate-section name section)
+;; 		       (return-from make-strummer nil))))
+;;       (let* ((strummer (make-instance 'strummer
+;; 				      :properties +strummer-properties+
+;; 				      :name name
+;; 				      :remarks (->string (or remarks ""))
+;; 				      :transient t)))
+;; 	(put strummer :instruments (validate-instrument name instrument))
+;; 	(put strummer :tempo tempo)
+;; 	(put strummer :unit unit)
+;; 	(put strummer :bars bars)
+;; 	(put strummer :beats beats)
+;; 	(put strummer :subbeats subbeats)
+;; 	(put strummer :cue-function cuefn)
+;; 	(put strummer :render-once render-once)
+;; 	(put strummer :transposable transposable)
+;; 	(put strummer :reversible reversible)
+;; 	(put strummer :chord-model chord-model)
+;; 	(put strummer :muted nil)
+;; 	(put strummer :shift (or shift 0.0))
+;; 	(connect parent strummer)
+;; 	(set-cyco-prompt)
+;; 	(setf (strummer-events strummer)
+;; 	      (-process-strummer-events strummer (->list events)))
+;; 	strummer))))
 
 (setf (documentation 'make-strummer 'function) +strummer-documentation+)
 

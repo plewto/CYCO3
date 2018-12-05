@@ -7,4 +7,8 @@ BUG 0001 2018.11.17 Status Indeterminate.
     the articulation is supposed to be a rest.  Worse the corresponding
     note-off event may not be generated causing a stuck note on what
     should be a rest.
-    
+
+--------------------------------------------------------------------
+BUG 0002 2018.12.05 Status Open
+    general-midi plugin program-map does not recognize symbolic
+    program names.

@@ -6,14 +6,14 @@
 (defstruct strummer-state
   (source "")	                     ; CYCO event source text
   (time nil)		             ; nil | float >= 0
-  (time-increment 0)	             ; **DEPRECIATED**
+  ;;(time-increment 0)	             ; **DEPRECIATED**
   (key nil)		             ; nil | -1 | keynumber
   (chord-type '(0))	             ; Either list of keynumber offsets or chord-name
   (chord-inversion 0)	             ; int -+, template rotation
   (chord-octave 0)	             ; int +, if non-zero append octave to chord.
   (strum-delay 0.0)	             ; float >= 0.0
   (strum-acceleration 1.0)           ; float > 0
-  (strum-direction (line :of :down)) ; pattern {:down :up :dice :random}
+  (strum-direction (line :of 'down)) ; pattern {down up dice random}
   (strum-amp-scale 1.0)	             ; float > 0
   (strum-end-together t)             ; bool
   (grace-key nil)		     ; Grace notes
@@ -25,7 +25,6 @@
   (dynamic-blur 0.0)
   (dynamic-min 0.0)
   (dynamic-max 1.0)
-  (touch nil)
   (controller-number nil)
   (controller-value nil)
   (bend nil)
@@ -34,7 +33,6 @@
 
 (defmethod soft-reset ((state strummer-state))
   (setf (strummer-state-key state) nil)
-  (setf (strummer-state-touch state) nil)
   (setf (strummer-state-controller-value state) nil)
   (setf (strummer-state-bend state) nil)
   (setf (strummer-state-program-number state) nil)
@@ -45,13 +43,12 @@
 (defmethod reset ((state strummer-state))
   (soft-reset state)
   (setf (strummer-state-time state) nil)
-  (setf (strummer-state-time-increment state) 0)
   (setf (strummer-state-chord-type state) '(0))
   (setf (strummer-state-chord-inversion state) 0)
   (setf (strummer-state-chord-octave state) 0)
   (setf (strummer-state-strum-delay state) 0.0)
   (setf (strummer-state-strum-acceleration state) 1.0)
-  (setf (strummer-state-strum-direction state) (line :of :down))
+  (setf (strummer-state-strum-direction state) (line :of 'down))
   (setf (strummer-state-strum-amp-scale state) 1.0)
   (setf (strummer-state-strum-end-together state) t)
   (setf (strummer-state-grace-delay state) 0.0)
@@ -69,7 +66,6 @@
   (make-strummer-state
    :source (strummer-state-source state)
    :time (strummer-state-time state)
-   :time-increment (strummer-state-time-increment state)
    :key (strummer-state-key state)
    :chord-type (strummer-state-chord-type state)
    :chord-inversion (strummer-state-chord-inversion state)
@@ -88,7 +84,6 @@
    :program-number (strummer-state-program-number state)
    :program-bank (strummer-state-program-bank state)
    :dynamic (strummer-state-dynamic state)
-   :touch (strummer-state-touch state)
    :controller-value (strummer-state-controller-value state)
    :bend (strummer-state-bend state)))
    

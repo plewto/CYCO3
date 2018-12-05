@@ -1,6 +1,5 @@
-;;;; CYCO
+;;;; CYCO strummer
 ;;;;
-;;;; STRUMMER is a Part with explicit event specifications.
 ;;;; 
 ;;;; An Strummer may generate note events and has a rich set of options for
 ;;;; strumming chords.   They may also generate simple touch, MIDI controller,
@@ -24,31 +23,23 @@
 ;;;; :TRACE states
 ;;;; :TRACE all     
 ;;;;     Turns debug trace mode on/off 
-;;;; 
-;;;; :BREAK
-;;;;     Skips evaluation of remaining events.
-;;;; 
-;;;; :STOP
-;;;;     Skips remainder of current event.
+;;* ;;;; 
+;;* ;;;; :BREAK
+;;* ;;;;     Skips evaluation of remaining events.
+;;* ;;;; 
+;;* ;;;; :STOP
+;;* ;;;;     Skips remainder of current event.
 ;;;; 
 ;;;; :RESET
 ;;;;     Resets all parameters to initial condition.
 ;;;;
-;;;; :TIME argument
 ;;;; :TIME argument-list
 ;;;;     Specifies event time.  The accepted argument format is dependent on
 ;;;;     the part's cuing-function.  Time remains in effect for all future
 ;;;;     events until either:
 ;;;;     1) It is explicitly changed.
 ;;;;     3) On reset.
-;;;; 
-;;;; :KEY k
-;;;;     Creates a note event.
-;;;;     The k argument is typically a keynumber, but it need not be so long as
-;;;;     the instrument's keynumber-map is able to convert it to a keynumber.
-;;;; 
-;;;;     Keynumbers are not saved between events.
-;;;; 
+;;;;  
 ;;;; :CHORD name
 ;;;; :CHORD template
 ;;;;     Selects chord type, either by name or as a list of key offsets.
@@ -120,15 +111,6 @@
 ;;;; 
 ;;;;     Direction remains in effect until explicitly changed.
 ;;;;
-;;;; :GRACE key delay 
-;;;;    Play grace note
-;;;;    key    - key number
-;;;;    delay  - metric expression
-;;;;    Grave notes ignore chord
-;;;;
-;;;; :GRACE-AMP-SCALE n
-;;;; :GRACE-ARTICULATION ex
-;;;;
 ;;;; :AMP* s
 ;;;;     Scale dynamic of each chord note by s.
 ;;;;     For nominal dynamic a and scale s, note amplitudes are:
@@ -144,7 +126,11 @@
 ;;;;     staggered endings.
 ;;;; 
 ;;;;     end-together remains in effect until explicitly changed.
-;;;; 
+;;;;
+;;;; :GRACE-AMP-SCALE n     0.25 <= n <= 4.0
+;;;; :GRACE-DURATION ex
+;;;; :GRACE-DELAY metric
+;;;;
 ;;;; :DUR metric-expression|number
 ;;;;     Sets note duration.
 ;;;;     Duration remains in effect until explicitly changed.
@@ -152,6 +138,7 @@
 ;;;;     note duration, unless the instruments articulation-map changes it.
 ;;;;     If the duration is a metric-expression, it's value is scaled by 
 ;;;;     the current tempo.
+;;;;
 ;;;;
 ;;;; :AMP dynamic
 ;;;; :AMP list  (converted to cycle)
@@ -170,15 +157,23 @@
 ;;;; 
 ;;;;    Blur remains in effect until explicitly changed.
 ;;;; 
-;;;; :AMP-RANGE min max
+;;;; :AMP-LIMITS min max
 ;;;;    Sets minimum and maximum dynamic values. Limiting is applied after amp+,
 ;;;;    amp*, amp-blur and any strum scaling.  Both min and max are dynamic
 ;;;;    values and remain in effect until explicitly changed.
+;;;;
+;;;; -------- 'real' events
+;;;;
+;;;; :KEY k
+;;;;     Creates a note event.
+;;;;     The k argument is typically a keynumber, but it need not be so long as
+;;;;     the instrument's keynumber-map is able to convert it to a keynumber.
 ;;;; 
-;;;; :TOUCH n
-;;;;    Creates a single MIDI after-touch event
-;;;;    0.0 <= n <= 1.0
-;;;; 
+;;;; :GRACE key
+;;;;    Play grace note
+;;;;    key    - key number
+;;;;    Grave notes ignore chord
+;;;;
 ;;;; :BEND b
 ;;;;    Creates a single MIDI bend event 
 ;;;;    -1.0 <= b <= +1.0
@@ -188,10 +183,11 @@
 ;;;;    Where c is an integer between 0 and 127 inclusive.
 ;;;;    The controller number remains in effect until explicitly changed.
 ;;;; 
-;;;; :CC n
+;;;; :CC ctrl n
 ;;;;   Creates single MIDI controller event 
 ;;;;   controller number established by CTRL.
-;;;; 
+;;;;
+;;;;   0 <= ctrl < 128
 ;;;;   0.0 <= n <= 1.0
 ;;;; 
 ;;;; :PROGRAM p
@@ -215,151 +211,81 @@
 
 (constant +strummer-properties+
 	  (append +part-properties+
-		  '(:shift		; shift intiial time relative to section
+		  '(:shift
 		    :render-once)))
 
 (defclass strummer (part)
-  ((state
-    :type strummer-state
-    :accessor strummer-state
-    :initform (make-strummer-state))
-   (events				
+  ((events				
     :type list   ; list of states
     :accessor strummer-events
     :initform '())))
 
-;; Trace flag, if true print strummer events as they are evaluated.
-(global *trace-strummer-events* nil) 
+(global *trace-strummer-events* t)
+(global *trace-strummer-states* t)
 
-;; Trace flag, if true display strummer-state after evaluating each event-list.
-(global *trace-strummer-states* nil)
-
-
-;; Creates new strummer and interprets the events list.
-;; The primary task is to convert event list contents into a list of
-;; strummer-state objects.   Final conversion to MIDI events is taken care of
-;; separately during rendering stage.
-;;
-(labels ((validate-section
-	  (part-name section)
-	  (let ((s (cond ((section-p section)
-			  section)
-			 ((and section (not (section-p section)))
-			  (cyco-type-error 'make-strummer '(section nil) section)
-			  nil)
-			 ((not (project-p *project*))
-			  (cyco-composition-error
-			   'make-strummer
-			   (sformat "No default project while creating strummer ~A" part-name))
-			  nil)
-			 (t (property *project* :current-section)))))
-	    s))
-
-	 ;; Checks that instruments argument is valid.
-	 ;;   1) A single instrument --> converted to list --> 2
-	 ;;   2) A list of instruments --> converted to INSTRUMENT-LAYER pattern.
-	 ;;   3) A Pattern of instruments.
-	 ;; Returns Pattern.
-	 (validate-instruments
-	  (part-name instruments)
-	  (cond
-	   ((pattern-p instruments)
-	    instruments) ;; does not check pattern elements
-	   ((listp instruments)
-	    (or (and (every #'instrument-p instruments)
-	 	     (instrument-layer :of instruments))
-	 	(cyco-type-error 'make-strummer "List of instruments"
-				 instruments
-	 	       		 (sformat "part name is ~A" part-name))))
-	   ((instrument-p instruments)
-	    (instrument-layer :of (->list instruments)))
-	   (t (cyco-type-error 'make-strummer
-	 		       "Instrument or list of instruments"
-	 		       instruments
-	 		       (sformat "part name is ~A" part-name)))))
-
-	 ;; Debug, prints event-list prior to evaluating it.
-	 ;;
-	 (trace-event
+(labels ((trace-event
 	  (part event)
 	  (if *trace-strummer-events*
-	      (let ((frmt "TRACE: ~A.~A event: ~A~%"))
+	      (let ((frmt "TRACE: ~A.~A event ~A~%"))
 		(format t "~A~%" +banner-bar2+)
-		(format t frmt
-			(name (parent part))
-			(name part)
-			event))))
-
-	 ;; Debug, prints strummer-state after each event-list is evaluated.
-	 ;;
+		(format t frmt (name (parent part))(name part) event))))
+	 
 	 (trace-state
 	  (state)
 	  (if *trace-strummer-states*
-	      (progn
-		(format t "~A~%" +banner-bar2+)
-		(format t "~A~%" state))))
+	      (format t "~A~%" state)))
 
 	 (part-id
 	  (part)
 	  (sformat "Section.Part -->  ~A.~A" (name (parent part))(name part)))
 	 
-	 ;; Assert event clause has n arguments.
-	 ;; Returns nil on error
+	 ;; Test that clause has between n and m arguments.
+	 ;; Returns nil on error.
+	 ;;
 	 (expect-n-arguments
-	  (part event clause n)
-	  (let ((count (1- (length clause))))
-	    (if (not (= count n))
-		(progn
-		  (cyco-warning
-		   (sformat "Expected ~A arguments, Encountered ~A" n count)
-		   (part-id part)
-		   (sformat "Event  ~A" event)
-		   (sformat "Clause ~A" clause))
-		  nil)
+	  (part event clause n &optional m)
+	  (let* ((count (1- (length clause)))
+		 (mn n)
+		 (mx (or m n)))
+	    (if (not (and (<= mn count)(<= count mx)))
+		(cyco-warning
+		 (sformat "Expected between ~A and ~A arguments, encountered ~A" mn mx count)
+		 (part-id part)
+		 (sformat "Event ~A" event)
+		 (sformat "Clause ~A" clause))
 	      t)))
 
+	 (expect-0-arguments
+	  (part event clause)
+	  (expect-n-arguments part event clause 0))
+
+	 (expect-1-argument
+	  (part event clause)
+	  (expect-n-arguments part event clause 1))
+	 
 	 ;; Test that nth clause argument passes test.
-	 ;; For non-error return argument
-	 ;; On error return default.
+	 ;; On error print warning and return default.
+	 ;; On non-error return argument.
 	 (expect-nth-argument
 	  (part event clause pos label test default)
 	  (let ((arg (nth pos clause)))
 	    (if (not (funcall test arg))
 		(progn
 		  (cyco-warning
-		   (sformat "Expected ~A,  Encountered ~A" label arg)
+		   (sformat "Expected ~A, Encountered ~A" label arg)
 		   (part-id part)
-		   (sformat "Event  ~A" event)
-		   (sformat "Clause ~A" clause))
+		   (sformat "Event ~A" event)
+		   (sformat "Clause ~A" clause)
+		   (sformat "Using default ~A" default))
 		  default)
 	      arg)))
-
+		    
 	 (expect-metric-expression
 	  (part event clause pos default)
 	  (expect-nth-argument
 	   part event clause pos "metric-expression"
 	   #'metric-expression-p default))
-
-	 (expect-dynamic-value
-	  (part event clause pos default)
-	  (expect-nth-argument
-	   part event clause pos "dynamic-value"
-	   #'dynamic-p default))
 	 
-	 (expect-normalized-value
-	  (part event clause pos &optional (default 0.0))
-	  (expect-nth-argument
-	   part event clause pos "normalized value"
-	   #'(lambda (q)(and (numberp q)(<= 0 q)(<= q 1)))
-	   default))
-
-	 (expect-signed-normalized-value
-	  (part event clause pos &optional (default 0.0))
-	  (expect-nth-argument
-	   part event clause pos "signed normalized value"
-	   #'(lambda (q)(and (numberp q)(<= -1 q)(<= q +1)))
-	   default))
-
 	 (expect-integer
 	  (part event clause pos &key (min -1e6)(max 1e6)(default 0))
 	  (truncate (expect-nth-argument
@@ -376,415 +302,446 @@
 	 	  #'(lambda (q)(and (numberp q)(<= min q)(<= q max)))
 	 	  default)))
 
-	 (process-time                  ; :time args
-	  (part event clause state)     ; arg format dependent on cue function
-	  (if (expect-n-arguments part event clause 1)
+	 (expect-dynamic
+	  (part event clause pos &key (default 0.5))
+	  (let ((args (->list (nth pos clause))))
+	    (if (not (every #'dynamic-p args))
+	    	(progn
+	    	  (cyco-warning
+	    	   (sformat "Expected dynamic values, encountered ~A" args)
+	    	   (part-id part)
+	    	   (sformat "Event  ~A" event)
+	    	   (sformat "Clause ~A" clause)
+	    	   (sformat "Using default ~A" default))
+	    	  (if default (list default) nil))
+	      args)))
+	 
+	 ;; :reset
+	 ;; Set all state parameters to default values
+	 (process-reset
+	  (part event clause state)
+	  (if (expect-0-arguments part event clause)
+	      (reset state)))
+	 
+	 ;; :time (tspec)
+	 ;; tspec must be in form accept by cue-function
+	 (process-time
+	  (part event clause state)
+	  (if (expect-1-argument part event clause) 
 	      (let* ((cuefn (property part :cue-function))
-	 	     (args (second clause))
-	 	     (time (funcall cuefn part args)))
-	 	(setf (strummer-state-time state) (float time))
-	 	state)
-	    nil))
+		     (args (second clause))
+		     (time (funcall cuefn part args)))
+		(setf (strummer-state-time state)(float time)))))
 
-	 (process-key 		        ; :key k
+	 ;; :chord name
+	 ;; :chord template
+	 (process-chord
 	  (part event clause state)
-	  (if (expect-n-arguments part event clause 1)
-	      (progn 
-		(setf (strummer-state-key state)(second clause))
-		state)
-	    nil))
+	  (if (expect-1-argument part event clause) 
+	      (let ((ctype (second clause))
+		    (cmodel (property part :chord-model)))
+		(cond ((listp ctype)
+		       nil)
+		      ((not (defines-chord-p cmodel ctype))
+		       (progn
+			 (cyco-warning
+			  (sformat "CHORD-MODEL ~A does not define chord ~A"
+				   (name cmodel) ctype)
+			  (part-id part)
+			  (sformat "Event ~A" event)
+			  "Using default (0)")
+			 (setf ctype '(0))))
+		      (t nil))
+		(setf (strummer-state-chord-type state) ctype))))
 
-	 ;; (process-chord-template	; :chord name
-	 ;;  (part event clause state)	; :chord template-list
-	 ;;  (if (expect-n-arguments part event clause 1)
-	 ;;      (let* ((id (second clause))
-	 ;; 	     (model (property part :chord-model))
-	 ;; 	     (template (cond ((and (listp id)(every #'integerp id))
-	 ;; 			      id)
-	 ;; 			     ((and (symbolp id)(defines-chord-p model id))
-	 ;; 			      (chord-template model id nil))
-	 ;; 			     (t (cyco-warning
-	 ;; 				 (sformat "Invalid chord ~A" id)
-	 ;; 				 (part-id part)
-	 ;; 				 (sformat "Event ~A" event)
-	 ;; 				 "Using default '(0)")
-	 ;; 				'(0)))))
-	 ;; 	(setf (strummer-state-chord-template state) template)
-	 ;; 	state)
-	 ;;    nil))
-
-	 (process-chord-template        ; :chord name
-	  (part event clause state)     ; :chord template-list
-	  (if (expect-n-arguments part event clause 1)
-	      (let* ((id (second clause))
-		     (model (property part :chord-model))
-		     (cspec (cond ((listp id) id)
-				  ((defines-chord-p model id) id)
-				  (t (cyco-warning
-				      (sformat "Invalid cord ~A" id)
-				      (part-id part)
-				      (sformat "Event ~A" event)
-				      "Using default '(0)")
-				     '(0)))))
-		(setf (strummer-state-chord-type state) cspec)
-		state)
-	    nil))
-
-	 (process-chord-inversion	; :inversion degree
+	 ;; :inversion n     -12 <= n <= +12
+	 (process-chord-inversion
 	  (part event clause state)
-	  (let ((degree (expect-integer part event clause 1 :min -16 :max 16)))
-	    (setf (strummer-state-chord-inversion state) degree)
-	    state))
+	  (if (expect-1-argument part event clause) 
+	      (let ((n (expect-integer part event clause 1 :min -12 :max +12 :default 0)))
+		(setf (strummer-state-chord-inversion state) n))))
 
-	 (process-chord-octave          ; :octave n
+	 ;; :octave n   -3 <= n <= 3
+	 (process-chord-octave
 	  (part event clause state)
-	  (let ((degree (expect-integer part event clause 1 :min -2 :max 4)))
-	    (setf (strummer-state-chord-octave state) degree)
-	    state))
+	  (if (expect-1-argument part event clause) 
+	      (let ((n (expect-integer part event clause 1 :min -3 :max +3 :default 0)))
+		(setf (strummer-state-chord-octave state) n))))
 
-	 ;; (process-strum-delay	        ; :strum metric-expression
-	 ;;  (part event clause state)
-	 ;;  (let ((mexp (expect-metric-expression part event clause 1 0.0)))
-	 ;;    (setf (strummer-state-strum-delay state) (metric-expression mexp))
-	 ;;    state))
-
-
-	 (process-strum-delay	        ; :strum metric-expression
+	 ;; strum delay
+	 ;; where delay is metric-expression
+	 (process-strum-delay
 	  (part event clause state)
-	  (let* ((mexp (expect-metric-expression part event clause 1 0.0))
-		 (delay (if (numberp mexp)
-			    (abs (float mexp))
-			  (* (metric-expression mexp)
-			     (/ 60.0 (tempo part))))))
-	    (setf (strummer-state-strum-delay state) delay)
-	    state))
-		       
-	 (process-strum-acceleration 	; :strum* 0<float
-	  (part event clause state)
-	  (let ((acl (expect-float part event clause 1 :min 1/4 :max 4 :default 1.0)))
-	    (setf (strummer-state-strum-acceleration state) acl)
-	    state))
+	  (if (expect-1-argument part event clause) 
+	      (let* ((mexp (expect-metric-expression part event clause 1 0.0))
+		     (delay (if (numberp mexp)
+				(abs (float mexp))
+			      (* (metric-expression mexp)
+				 (/ 60.0 (tempo part))))))
+		(setf (strummer-state-strum-delay state) delay))))
 
-	 (process-strum-direction 	; :direction d
-	  (part event clause state)	; :direction list
-	  (if (expect-n-arguments	;   up down dice random
-	       part event clause 1)
-	      (let ((args (->list (second clause))))
-		(if (every #'(lambda (q)
-			       (member q '(up down dice random)))
-			   args)
-		    (setf (strummer-state-strum-direction state)
-			  (cycle :of args))
+	 ;; :strum* n   float 0.125 <= n <= 8.00
+	 (process-strum-acceleration
+	  (part event clause state)
+	  (if (expect-1-argument part event clause) 
+	      (let ((scale (expect-float part event clause 1 :min 0.125 :max 8 :default 1)))
+		(setf (strummer-state-strum-acceleration state) scale))))
+
+	 ;; :direction d
+	 ;; :direction (list...)
+	 ;;    valid directions down, up, coin, random
+	 (process-strum-direction
+	  (part event clause state)
+	  (if (expect-1-argument part event clause) 
+	      (let ((pat (->list (second clause))))
+		(if (every #'(lambda (q)(member q '(up down coin random))) pat)
+		    (setf (strummer-state-strum-direction state)(cycle :of pat))
 		  (progn 
 		    (cyco-warning
-		     (sformat "Expected only: up, down, dice or random,  Encountered ~A" args)
+		     (sformat "Expected strum direction or list of directions, encountered ~A" pat)
+		     "Valid directions are: up down coin & random"
 		     (part-id part)
 		     (sformat "Event  ~A" event)
-		     (sformat "Clause ~A" clause))
-		    (setf (strummer-state-strum-direction state)
-			  (cycle :of 'down))))))
-	  state)
+		     (sformat "Clause ~A" clause)
+		     "Using default: down")
+		    (setf (strummer-state-strum-direction state)(line :of 'down)))))))
 
-	 (process-strum-amp-scale	; :amp* s
+	 ;; :amp* n   0.25 <= n < 4
+	 (process-strum-amp-scale
 	  (part event clause state)
-	  (let ((scale (expect-float part event clause 1 :min 1/2 :max 2 :default 1.0)))
-	    (setf (strummer-state-strum-amp-scale state) scale)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let ((scale (expect-float part event clause 1 :min 0.25 :max 4 :default 1)))
+		(setf (strummer-state-strum-amp-scale state) scale))))
 
-	 (process-strum-end-together	; :end-together no
-	  (part event clause state)	; :end-together yes
-	  (let ((arg (and (expect-n-arguments part event clause 1)
-			  (second clause))))
-	    (setf (strummer-state-strum-end-together state)
-		  (cond ((eq arg 'yes) t)
-			((eq arg 'no) nil)
-			(t (cyco-warning
-			    (sformat "Expected either yes or no, encountered ~A" arg)
-			    (part-id part)
-	       		    (sformat "Event  ~A" event)
-			    (sformat "Clause ~A" clause)
-			    'no)))))
-	  state)
-
-	 (process-grace-delay ;; expect numeric or metric-expression for arg
-	  (part event arg)
-	  (if (numberp arg)
-	      (abs (float arg))
-	    (let ((delay (metric-expression-p arg)))
-	      (or (and delay (* delay (/ 60.0 (tempo part))))
-		  (progn
-		    (cyco-warning (sformat "Invalid grace-note delay ~A" arg)
-				  (sformat "STRUMMER ~A" (name part))
-				  (sformat "Event ~A" event)
-				  (sformat "Using default 0.1"))
-		    0.1)))))
-
-	 (process-grace 		; :grace key delay
+	 ;; :end-together no|yes
+	 (process-end-together
 	  (part event clause state)
-	  (if (expect-n-arguments part event clause 2)
-	      (let ((key (second clause))
-	 	    (delay (third clause)))
-	 	(setf (strummer-state-grace-key state) key)
-	 	(setf (strummer-state-grace-delay state)
-		      (process-grace-delay part event delay))))
-	  state)
-		    
-	 (process-grace-amp-scale	; :grace-amp* n
-	  (part event clause state)
-	  (let ((ascale (expect-normalized-value part event clause 1 0.25)))
-	    (setf (strummer-state-grace-amp-scale state) ascale))
-	  state)
-
-	 (process-grace-articulation ; :grace-dur n
-	  (part event clause state)
-	  (if (expect-n-arguments part event clause 1)
+	  (if (expect-1-argument part event clause)
 	      (let ((arg (second clause)))
-		(setf (strummer-state-grace-articulation state)
-		      (process-grace-delay part event arg))))
-	  state)
-		       
-	 (process-simple-dynamic	; :amp m
-	  (part event clause state)	; :amp list --> cycle
-	  (flet ((award ()
-			(cyco-warning
-			 (sformat "Expected dynamic values, encountered ~A" (cdr clause))
-			 (part-id part)
-			 (sformat "Event  ~A" event)
-			 (sformat "Clause ~A" clause))))
-	    (setf (strummer-state-dynamic state)
-		   (cycle :of (dynamic (if (expect-n-arguments part event clause 1)
-	      				   (let ((args (->list (second clause))))
-	      				     (if (every #'dynamic-p args)
-	      					 args
-	      				       (progn 
-	      					 (award)
-	      					 'mf)))
-	      				 'mf))))
-	    state))
+		(setf (strummer-state-strum-end-together state)
+		      (cond ((eq arg 'no) nil)
+			    ((eq arg 'yes) t)
+			    (t (cyco-warning
+				(sformat "Expected either yes or no, encountered ~A" arg)
+				(part-id part)
+				 (sformat "Event  ~A" event)
+				 (sformat "Clause ~A" clause)
+				 "Using default: no")
+			       nil))))))
 
-	 (process-crescendo 		; :cres start end count
+	 ;; :grace-amp* n   0.25 <= n <= 4
+	 (process-grace-amp-scale
 	  (part event clause state)
-	  (let* ((start (dynamic (expect-dynamic-value part event clause 1 0.5)))
-		 (end (dynamic (expect-dynamic-value part event clause 2 0.5)))
-		 (count (expect-integer part event clause 3 :min 1 :default 1))
-		 (diff (float (- (dynamic end)(dynamic start))))
-		 (delta (/ diff count))
-		 (dlist (range start end :by delta))
-		 (pat (line :of dlist)))
-	    (setf (strummer-state-dynamic state) pat)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let ((scale (expect-float part event clause 1 :min 0.25 :max 4 :default 0.5)))
+		(setf (strummer-state-grace-amp-scale state) scale))))
 
-	 (process-amp-blur		; :amp-blur s
+	 ;; :grace-duration metric
+	 ;; :grace-duration number
+	 (process-grace-articulation
 	  (part event clause state)
-	  (let ((blur (expect-float part event clause 1 :min 0.0 :max 1.0 :default 0.0)))
-	    (setf (strummer-state-dynamic-blur state) blur)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let* ((mexp (expect-metric-expression part event clause 1 's))
+		     (delay (if (numberp mexp)
+				(abs (float mexp))
+			      (* (metric-expression mexp)
+				 (/ 60.0 (tempo part))))))
+		(setf (strummer-state-grace-articulation state) delay))))
 
-	 (process-amp-range		; :amp-range min max
+	 ;; :grace-delay metric
+	 ;; :grace-delay metric
+	  (process-grace-delay
 	  (part event clause state)
-	  (let ((mn (expect-dynamic-value part event clause 1 0.0))
-		(mx (expect-dynamic-value part event clause 2 1.0)))
-	    (setf (strummer-state-dynamic-min state) mn
-		  (strummer-state-dynamic-max state) mx)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let* ((mexp (expect-metric-expression part event clause 1 's))
+		     (delay (if (numberp mexp)
+				(abs (float mexp))
+			      (* (metric-expression mexp)
+				 (/ 60.0 (tempo part))))))
+		(setf (strummer-state-grace-delay state) delay))))
+	 
+	 ;; :dur metric
+	 ;; :dur number
+	 (process-note-articulation
+	  (part event clause state)
+	  (if (expect-1-argument part event clause)
+	      (let* ((mexp (expect-metric-expression part event clause 1 's))
+		     (delay (if (numberp mexp)
+				(abs (float mexp))
+			      (* (metric-expression mexp)
+				 (/ 60.0 (tempo part))))))
+		(setf (strummer-state-articulation state) delay))))
 
-	 (process-articulation	       ; :dur metric-expression
+	 ;; :amp dynamic
+	 ;; :amp list (converted to cycle)
+	 (process-simple-dynamic
 	  (part event clause state)
-	  (if (expect-n-arguments part event clause 1)
-	      (let* ((arg (second clause))
-		     (mxp (metric-expression-p arg)))
-		(setf (strummer-state-articulation state)
-		      (cond ((and (numberp arg)(<= 0 arg))
-			     arg)
-			    (mxp arg)
-			    (t
-			     (cyco-warning "Expected positive float or metric-expression"
-					   (sformat "Encounterd ~A" arg)
-					   (part-id part)
-					   (sformat "Event  ~A" event)
-					   (sformat "Clause ~A" clause)
-					   'q)))))
-	    state))
-			    
-	    
-	 (process-touch 		; :touch n
-	  (part event clause state)
-	  (let ((v (expect-normalized-value part event clause 1 0.0)))
-	    (setf (strummer-state-touch state) v)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let ((dlst (expect-dynamic part event clause 1)))
+		(setf (strummer-state-dynamic state)(cycle :of dlst)))))
 
-	 (process-controller-number	; :ctrl n
+	 ;; :cres start end count
+	 (process-crescendo
 	  (part event clause state)
-	  (let ((v (expect-integer part event clause 1 :min 0 :max 127 :default 1)))
-	    (setf (strummer-state-controller-number state) v)
-	    state))
+	  (if (and (expect-n-arguments part event clause 3)
+		   (expect-dynamic part event clause 1 :default nil)
+		   (expect-dynamic part event clause 2 :default nil)) 
+	      (let* ((start (dynamic (second clause)))
+		     (end (dynamic (third clause)))
+		     (count (expect-integer part event clause 3 :min 1 :max 128 :default 8))
+		     (diff (float (- (dynamic end)(dynamic start))))
+		     (delta (/ diff count))
+		     (pat (line :of (range start end :by delta))))
+		(setf (strummer-state-dynamic state) pat))))
 
-	 (process-controller-value	; :cc n
+	 ;; :amp-blur n   0.0 <= n <= 1.0
+	 (process-dynamic-blur
 	  (part event clause state)
-	  (let ((v (expect-normalized-value part event clause 1 0.0)))
-	    (setf (strummer-state-controller-value state) v)
-	    state))
+	  (if (expect-1-argument part event clause)
+	      (let ((r (expect-float part event clause 1 :min 0 :max 1 :default 0)))
+		(setf (strummer-state-dynamic-blur state) r))))
 
-	 (process-bend			; :bend n
+	 ;; :amp-limits min max
+	 (process-dynamic-limits
 	  (part event clause state)
-	  (let ((v (expect-signed-normalized-value part event clause 1 0.0)))
-	    (setf (strummer-state-bend state) v)
-	    state))
+	  (if (and (expect-n-arguments part event clause 2)
+		   (expect-dynamic part event clause 1 :default nil)
+		   (expect-dynamic part event clause 2 :default nil))
+	      (let ((a (dynamic (second clause)))
+		    (b (dynamic (third clause))))
+		(setf (strummer-state-dynamic-min state)(min a b))
+		(setf (strummer-state-dynamic-max state)(max a b)))))
 
-	 (process-simple-program-change	; :program p
+	 ;; :key n
+	 ;;    Can not check validity of keynumber prior to
+	 ;;    application of instruments' keynumber-map.
+	 (process-key
 	  (part event clause state)
-	  (if (expect-n-arguments part event clause 1)
+	  (if (expect-1-argument part event clause)
+	      (setf (strummer-state-key state)(second clause))))
+
+	 ;; :grace n
+	 ;;    Can not check validity of keynumber prior to
+	 ;;    application of instruments' keynumber-map.
+	 (process-grace-note
+	  (part event clause state)
+	  (if (expect-1-argument part event clause)
+	      (setf (strummer-state-grace-key state)(second clause))))
+
+	 ;; :bend n    -1.0 <= n <= +1
+	 (process-bend
+	  (part event clause state)
+	  (if (expect-1-argument part event clause)
+	      (let ((bnd (expect-float part event clause 1 :min -1.0 :max +1.0 :default 0.0)))
+		(setf (strummer-state-bend state) bnd))))
+
+	 ;; :cc ctrl n    ctrl {0,1,2,3,...,127}
+	 ;;               0.0 <= n <= 1.0
+	 (process-controller
+	  (part event clause state)
+	  (if (and (expect-n-arguments part event clause 2)
+		   (expect-integer part event clause 1 :min 0 :max 127 :default nil)
+		   (expect-float part event clause 2 :min 0.0 :max 1.0 :default nil))
+	      (let ((ctrl (second clause))
+		    (value (third clause)))
+		(setf (strummer-state-controller-number state) ctrl
+		      (strummer-state-controller-value state) value))))
+	      
+	 ;; :pogram num
+	 (process-simple-program
+	  (part event clause state)
+	  (if (expect-1-argument part event clause)
 	      (let ((v (second clause)))
 		(setf (strummer-state-program-number state)
-		      (if (eq v 'default) :default v))))
-	  state)
+		      (if (eq v 'default) :default v)))))
+				 
 
-	 (process-compound-program-change ; :bank b program
+	 ;; :bank bank program
+	 (process-bank-and-program
 	  (part event clause state)
 	  (if (expect-n-arguments part event clause 2)
-	      (let ((b (second clause))
-		    (p (third clause)))
-		(setf (strummer-state-program-number state)
-		      (if (eq p 'default) :default p))
+	      (let ((bnk (second clause))
+		    (prg (third clause)))
 		(setf (strummer-state-program-bank state)
-		      (if (eq b 'default) :default b))))
-	  state)
-	 
-	 (dispatch-command
-	  (event clause part state)
-	  (let ((command (car clause))
-		(result nil))
-	    (setf result (cond ((eq command :time)
-	    		       	(process-time part event clause state))
-			       ((eq command :key)
-				(process-key part event clause state))
-			       ((eq command :chord)
-				(process-chord-template part event clause state))
-			       ((eq command :inversion)
-				(process-chord-inversion part event clause state))
-			       ((eq command :octave)
-				(process-chord-octave part event clause state))
-			       ((eq command :strum)
-				(process-strum-delay part event clause state))
-			       ((eq command :strum*)
-				(process-strum-acceleration part event clause state))
-			       ((eq command :direction)
-				(process-strum-direction part event clause state))
-			       ((eq command :amp*)
-				(process-strum-amp-scale part event clause state))
-			       ((eq command :end-together)
-				(process-strum-end-together part event clause state))
+		      (if (eq bnk 'default) :default bnk)
+		      (strummer-state-program-number state)
+	 	      (if (eq prg 'default) :default prg)))))
+		      
+	 ;; Conditional cons if object is non-nil
+	 (cons?
+	  (list object)
+	  (if object
+	      (cons object list)
+	    list))
 
-			       ((eq command :grace)
-				(process-grace part event clause state))
-
-			       ((eq command :grace-amp*)
-				(process-grace-amp-scale part event clause state))
-
-			       ((eq command :grace-dur)
-				(process-grace-articulation part event clause state))
-
-			       
-			       
-			       ((eq command :amp)
-				(process-simple-dynamic part event clause state))
-			       ((eq command :cres)
-				(process-crescendo part event clause state))
-			       ((eq command :amp-blur)
-				(process-amp-blur part event clause state))
-			       ((eq command :amp-range)
-				(process-amp-range part event clause state))
-			       ((eq command :dur)
-				(process-articulation part event clause state))
-			       ((eq command :touch)
-				(process-touch part event clause state))
-			       ((eq command :ctrl)
-				(process-controller-number part event clause state))
-			       ((eq command :cc)
-				(process-controller-value part event clause state))
-			       ((eq command :bend)
-				(process-bend part event clause state))
-			       ((eq command :program)
-				(process-simple-program-change part event clause state))
-			       ((eq command :bank)
-				(process-compound-program-change part event clause state))
-	    		       (t
-	    			(cyco-warning
-	    			 (sformat "Invalid command: ~A" command)
-	    			 (sformat "Section.Part  ~A.~A" (name (parent part))(name part))
-	    			 (sformat "Event ~A" event))
-	    			nil)))
-	    result))
-
-	 (switch-trace-mode
-	  (clause)
-	  (let ((mode (or (second clause) 'all)))
-	    (setf *trace-strummer-events* (or (eq mode 'events)(eq mode 'all)))
-	    (setf *trace-strummer-states* (or (eq mode 'state)(eq mode 'all)))))
-
-	 ;; Returns true if state has non-nil key, grace, touch
+	 ;; Returns true if state has non-nil key, grace,
 	 ;; controller, bend, program or bank values.
-	 ;; In other words, does state actually generate MIDI events?  
+	 ;; In other words, does state actually generate MIDI events?
 	 (real-event-p
 	  (state)
 	  (or (strummer-state-key state)
 	      (strummer-state-grace-key state)
-	      (strummer-state-touch state)
 	      (and (strummer-state-controller-number state)
 		   (strummer-state-controller-value state))
-	      
 	      (strummer-state-bend state)
 	      (strummer-state-program-number state)
 	      (strummer-state-program-bank state)))
 
-	 (process-events
-	  (part events)
-	  (let ((acc '())
-		(state (strummer-state part)))
-	    (reset state)
-	    (block outer
-	      (dolist (event events)
-		(soft-reset state)
-		(trace-event part event)
-		(block inner
-		  (dolist (clause (partition-list event))
-		    (let ((command (car clause)))
-		      (cond ((eq command :trace)
-			     (switch-trace-mode clause))
-			    ((eq command :break)
-			     (return-from outer nil))
-			    ((eq command :stop)
-			     (return-from inner nil))
-			    ((eq command :reset)
-			     (reset state)
-			     (return-from inner nil))
-			    (t (dispatch-command event clause part state))))))
-		(if (real-event-p state)
-		    (let ((local-state (clone state)))
-		      (setf (strummer-state-source local-state) (->string event))
-		      (trace-state local-state)
-		      (push local-state acc)))))
-	    (setf (strummer-events part) acc))) )
+	 ;; Returns new state if clause produces 'real' event.
+	 ;; Returns nil otherwise
+	 ;; State may be changed by side-effect
+	 (dispatch-event
+	  (part state event clause)
+	  (format t "DEBUG dispatch-event ~A~%" event)
+	  (let ((command (car clause)))
+	    ;; state modified by side-effect.
+	    (cond ((eq command :trace)
+		   nil)
 
+		  ((eq command :reset)
+		   (process-reset part event clause state))
+		  
+		  ((eq command :time)
+		   (process-time part event clause state))
+
+		  ((eq command :chord)
+		   (process-chord part event clause state))
+
+		  ((eq command :inversion)
+		   (process-chord-inversion part event clause state))
+
+		  ((eq command :octave)
+		   (process-chord-octave part event clause state))
+
+		  ((eq command :strum)
+		   (process-strum-delay part event clause state))
+
+		  ((eq command :strum*)
+		   (process-strum-acceleration part event clause state))
+
+		  ((eq command :direction)
+		   (process-strum-direction part event clause state))
+
+		  ((eq command :amp*)
+		   (process-strum-amp-scale part event clause state))
+
+		  ((eq command :end-together)
+		   (process-end-together part event clause state))
+
+		  ((eq command :grace-amp*)
+		   (process-grace-amp-scale part event clause state))
+
+		  ((eq command :grace-duration)
+		   (process-grace-articulation part event clause state))
+
+		  ((eq command :grace-delay)
+		   (process-grace-delay part event clause state))
+
+		  ((eq command :dur)
+		   (process-note-articulation part event clause state))
+
+		  ((eq command :amp)
+		   (process-simple-dynamic part event clause state))
+
+		  ((eq command :cres)
+		   (process-crescendo part event clause state))
+
+		  ((eq command :amp-blur)
+		   (process-dynamic-blur part event clause state))
+
+		  ((eq command :amp-limits)
+		   (process-dynamic-limits part event clause state))
+
+		  ((eq command :key)
+		   (process-key part event clause state))
+
+		  ((eq command :grace)
+		   (process-grace-note part event clause state))
+
+		  ((eq command :bend)
+		   (process-bend part event clause state))
+
+		  ((eq command :cc)
+		   (process-controller part event clause state))
+
+		  ((eq command :program)
+		   (process-simple-program part event clause state))
+
+		  ((eq command :bank)
+		   (process-bank-and-program part event clause state))
+		  
+		  (t
+		   (cyco-error
+		    (sformat "Invalid Strummer ~A event: ~A"
+			     (name part) command)))))
+		   
+
+	  (if (real-event-p state) state nil)
+	  )
+
+	 
+	 ) ;; end labels assignments
+ 
+  
+  (defun -process-strummer-events (strummer event-list)
+    (let ((acc '())
+	  (state (make-strummer-state)))
+      (reset state)
+      (dolist (event event-list)
+	(trace-event strummer event)
+	(dolist (clause (partition-list event))
+	  (setf acc (cons? acc (dispatch-event strummer state event clause))))
+	(trace-state state))
+      (setf (strummer-events strummer) acc))
+    ) ;; end -process-strummer-events
+) ;; end labels 
+
+
+(flet ((validate-section
+	(part-name section)
+	(let ((s (cond ((section-p section)
+			section)
+		       ((and section (not (section-p section)))
+			(cyco-type-error 'make-strummer '(section nil) section)
+			nil)
+		       ((not (project-p *project*))
+			(cyco-composition-error
+			 'make-strummer
+			 (sformat "No default project while creating strummer ~A" part-name))
+			nil)
+		       (t (property *project* :current-section)))))
+	  s))
+
+       (validate-instrument
+	(part-name instrument)
+	(if (not (instrument-p instrument))
+	    (progn 
+	      (cyco-type-error 'make-strummer 'instrument instrument
+			       (sformat "Expected single instrument for Strummer: ~A" part-name)
+			       "Using +ROOT-INSTRUMENT+")
+	      +root-instrument+)
+	  instrument))
+       ) ;; end flet assignments
+	      
   (defun make-strummer (name instrument &key
-			  section
-			  (cuefn #'bar)
-			  shift 
-			  tempo unit bars beats subbeats
-			  render-once
-			  transposable
-			  reversible
-			  chord-model
-			  remarks
-			  events)
+			     section
+			     (cuefn #'bar)
+			     shift 
+			     tempo unit bars beats subbeats
+			     render-once
+			     transposable
+			     reversible
+			     chord-model
+			     remarks
+			     events)
     (let* ((parent (or (validate-section name section)
 		       (return-from make-strummer nil))))
       (let* ((strummer (make-instance 'strummer
-				   :properties +strummer-properties+
-				   :name name
-				   :remarks (->string (or remarks ""))
-				   :transient t)))
-	(put strummer :instruments instrument)
+				      :properties +strummer-properties+
+				      :name name
+				      :remarks (->string (or remarks ""))
+				      :transient t)))
+	(put strummer :instruments (validate-instrument name instrument))
 	(put strummer :tempo tempo)
 	(put strummer :unit unit)
 	(put strummer :bars bars)
@@ -796,18 +753,18 @@
 	(put strummer :reversible reversible)
 	(put strummer :chord-model chord-model)
 	(put strummer :muted nil)
-	(connect parent strummer)
 	(put strummer :shift (or shift 0.0))
+	(connect parent strummer)
 	(set-cyco-prompt)
-	(setf (strummer-events strummer) (reverse (process-events strummer (->list events))))
-	strummer)))
-  ) ;; end labels
+	(setf (strummer-events strummer)
+	      (-process-strummer-events strummer (->list events)))
+	strummer))))
 
 (setf (documentation 'make-strummer 'function) +strummer-documentation+)
 
 (defmacro strummer (name instrument &key 
-		      section
-		      shift
+			 section
+			 shift
 		      tempo unit bars beats subbeats
 		      (cuefn #'bar)
 		      render-once
@@ -872,7 +829,6 @@
 			  :remarks (remarks src)
 			  :events '())))
     (copy-time-signature src prt)
-    (setf (strummer-state prt)(clone (strummer-state src)))
     (let ((acc '()))
       (dolist (evn (strummer-events src))
 	(push (clone evn) acc))

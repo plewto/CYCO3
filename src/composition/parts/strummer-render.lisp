@@ -4,13 +4,13 @@
 
 (labels (
 
-	 (process-touch
-	  (acc time state cindex)
-	  (let ((touch (strummer-state-touch state)))
-	    (if touch
-		(cons (cons time (midi-channel-pressure cindex (norm->midi-data touch)))
-		      acc)
-	      acc)))
+	 ;; (process-touch
+	 ;;  (acc time state cindex)
+	 ;;  (let ((touch (strummer-state-touch state)))
+	 ;;    (if touch
+	 ;; 	(cons (cons time (midi-channel-pressure cindex (norm->midi-data touch)))
+	 ;; 	      acc)
+	 ;;      acc)))
 
 	 (process-bend
 	  (acc time state cindex)
@@ -172,7 +172,6 @@
 	 
 	 (process-key-events
 	  (acc time state chord-model instrument)
-	  ;; (format t "------------------------------------- PROCESS-KEY-EVENT~%") ;; DEBUG
 	  (let* ((cindex (channel-index instrument))
 		 (base-key (let ((bk (strummer-state-key state)))
 	  		     (if (or (null bk)(rest-p bk))
@@ -198,7 +197,7 @@
   	   (cindex (channel-index instrument)))
       (dolist (state (strummer-events part))
       	(let ((time (+ offset (or (strummer-state-time state) 0))))
-      	  (setf acc (process-touch acc time state cindex))
+      	  ;; (setf acc (process-touch acc time state cindex))
       	  (setf acc (process-bend acc time state cindex))
       	  (setf acc (process-controller acc time state cindex))
       	  (setf acc (process-program acc time state instrument))

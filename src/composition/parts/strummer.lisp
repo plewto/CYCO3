@@ -214,8 +214,8 @@
     :accessor strummer-events
     :initform '())))
 
-(global *trace-strummer-events* t)
-(global *trace-strummer-states* t)
+(global *trace-strummer-events* nil)
+(global *trace-strummer-states* nil)
 
 (labels ((trace-event
 	  (part event)
@@ -659,13 +659,13 @@
 		    (cond ((eq command :break)
 			   (return-from event-loop))
 			  (t (dispatch-event strummer state event clause)))))
+		(trace-state state)
 		(if (real-event-p state)
 		    (progn 
-		      (trace-state state)
 		      (push (clone state) acc)
 		      (soft-reset state)))))
 	    (setf (strummer-events strummer)(reverse acc))))
-
+	 
 	 (validate-section
 	  (part-name section)
 	  (let ((s (cond ((section-p section)

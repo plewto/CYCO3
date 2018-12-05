@@ -2,6 +2,8 @@
 ;;;; Strummer part methods.
 ;;;;
 
+(global *strummer-render-trace* nil)
+
 (labels ((process-bend
 	  (acc time state cindex)
 	  (let ((bend (strummer-state-bend state)))
@@ -146,6 +148,8 @@
 		 (note-on-times (expand-strum-times start-time chord-template state))
 		 (note-off-times (expand-end-times note-on-times duration state))
 		 (dynamics (expand-dynamics state count base-amp))
+		 (dynamic-min (strummer-state-dynamic-min state))
+		 (dynamic-max (strummer-state-dynamic-max state))
 		 (note-list (select-strum-direction state chord-template))
 		 (bcc '()))
 	    (dotimes (i count)
@@ -153,7 +157,10 @@
 		(if (not (rest-p kn))
 		    (let ((on-time (aref note-on-times i))
 			  (off-time (aref note-off-times i))
-			  (velocity (norm->midi-data (aref dynamics i))))
+			  (velocity (norm->midi-data
+				     (limit (aref dynamics i)
+					    dynamic-min
+					    dynamic-max))))
 		      (push (cons on-time (midi-note-on channel-index kn velocity)) bcc)
 		      (push (cons off-time (midi-note-off channel-index kn 0)) bcc)))))
 	    (reverse bcc)))
@@ -168,14 +175,21 @@
 		 (chord-template (expand-chord-template state chord-model base-key instrument))
 		 (base-amp (funcall (dynamic-map instrument)
 				    (approximate
-				     (next-1 (strummer-state-dynamic state))
-				     :scale (strummer-state-dynamic-blur state)
-				     :max (strummer-state-dynamic-max state)
-				     :min (strummer-state-dynamic-min state))))
+				     (dynamic (next-1 (strummer-state-dynamic state)))
+		  		     :scale (strummer-state-dynamic-blur state)
+		  		     :max (strummer-state-dynamic-max state)
+		  		     :min (strummer-state-dynamic-min state))))
 		 (base-dur (funcall (articulation-map instrument)
 				    (or (strummer-state-articulation state) 1.0))))
 	    (setf acc (append acc (strum-chord state time cindex chord-template base-dur base-amp))))
-	  acc) )
+	  acc)
+
+	 (trace-events
+	  (state)
+	  (if *strummer-render-trace*
+	      (progn 
+		(format t "---------------------------------------------~%")
+		(format t "~A~%" state)))) )
 
   (defmethod render-once ((part strummer) &key (offset 0))
     (let* ((acc '())
@@ -183,6 +197,7 @@
   	   (instrument (property part :instruments))
   	   (cindex (channel-index instrument)))
       (dolist (state (strummer-events part))
+	  (trace-events state)
       	(let ((time (+ offset (or (strummer-state-time state) 0))))
       	  (setf acc (process-bend acc time state cindex))
       	  (setf acc (process-controller acc time state cindex))

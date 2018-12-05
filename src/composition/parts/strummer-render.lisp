@@ -50,11 +50,12 @@
 		      (velocity (norm->midi-data
 				 (funcall (dynamic-map instrument)
 					  (* (value (strummer-state-dynamic state))
-					     (strummer-state-grace-amp-scale state))))))
+					     (strummer-state-grace-amp-scale state)))))
+		      (delay (strummer-state-grace-delay state)))
 		  (if (not (rest-p kn))
 		      (let ((ci (channel-index instrument)))
-			(append acc (list (cons time (midi-note-on ci kn velocity))
-					  (cons (+ time d)(midi-note-off ci kn 0)))))
+			(append acc (list (cons (+ delay time) (midi-note-on ci kn velocity))
+					  (cons (+ delay time d)(midi-note-off ci kn 0)))))
 		    acc))
 	      acc)))
 
@@ -131,7 +132,7 @@
 			    chord-template)
 			   ((eq dir 'up)
 			    (reverse chord-template))
-			   ((eq dir 'dice)
+			   ((eq dir 'coin)
 			    (if (> (random 1.0) 0.5)
 				chord-template
 			      (reverse chord-template)))

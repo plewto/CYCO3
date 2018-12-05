@@ -85,7 +85,7 @@
        ;;     :print-off - print load off.
        ;;     :verbose - Display file names as they are loaded.
        ;;     :quite   - Opposite of :verbose
-       (manifest '(:verbose
+       (manifest '(:quite
 		   "src/constants"
 		   "src/globals"
 		   "src/api"
@@ -136,13 +136,10 @@
 		   "src/composition/section"
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
-		   
 		   "src/composition/parts/strummer-docs"
 		   "src/composition/parts/strummer-state"
-         	   "src/composition/parts/strummer"
+          	   "src/composition/parts/strummer"
 		   "src/composition/parts/strummer-render"
-		   
-		   
 		   "src/composition/parts/controllers"
 		   "src/composition/parts/controllers-render"
 		   "src/composition/parts/qball"
@@ -153,8 +150,7 @@
 		   "src/composition/endpad"
 		   "src/util/inspection"
 		   "src/plugins"
-		   "src/cyco-exports"
-		   )))
+		   "src/cyco-exports" )))
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."
@@ -214,6 +210,3 @@
 
 (defun cyco ()
   (cyco-banner))
-
-
-(defun test ()(plugin 'fretworks))

@@ -172,11 +172,6 @@
 ;;;;    Creates a single MIDI bend event 
 ;;;;    -1.0 <= b <= +1.0
 ;;;; 
-;;;; :CTRL c
-;;;;    Sets MIDI controller number.
-;;;;    Where c is an integer between 0 and 127 inclusive.
-;;;;    The controller number remains in effect until explicitly changed.
-;;;; 
 ;;;; :CC ctrl n
 ;;;;   Creates single MIDI controller event 
 ;;;;   controller number established by CTRL.
@@ -423,11 +418,11 @@
 				 "Using default: no")
 			       nil))))))
 
-	 ;; :grace-amp* n   0.25 <= n <= 4
+	 ;; :grace-amp* n   0.0 <= n <= 4
 	 (process-grace-amp-scale
 	  (part event clause state)
 	  (if (expect-1-argument part event clause)
-	      (let ((scale (expect-float part event clause 1 :min 0.25 :max 4 :default 0.5)))
+	      (let ((scale (expect-float part event clause 1 :min 0.0 :max 4 :default 0.5)))
 		(setf (strummer-state-grace-amp-scale state) scale))))
 
 	 ;; :grace-duration metric

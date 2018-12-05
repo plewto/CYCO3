@@ -18,18 +18,12 @@
 ;;;; and :command is one of the keywords below. Argument counts are between 
 ;;;; 0 and 3, depending on the specific command.
 ;;;; 
-;;;; :TRACE off
-;;;; :TRACE events
-;;;; :TRACE states
-;;;; :TRACE all     
-;;;;     Turns debug trace mode on/off 
-;;* ;;;; 
-;;* ;;;; :BREAK
-;;* ;;;;     Skips evaluation of remaining events.
-;;* ;;;; 
-;;* ;;;; :STOP
-;;* ;;;;     Skips remainder of current event.
-;;;; 
+;;;; :TRACE-ON
+;;;; :TRACE-OFF
+;;;;
+;;;; :BREAK
+;;;;     Skips evaluation of remaining events.
+;;;;
 ;;;; :RESET
 ;;;;     Resets all parameters to initial condition.
 ;;;;
@@ -593,8 +587,12 @@
 	 (dispatch-event
 	  (part state event clause)
 	  (let ((command (car clause)))
-	    (cond ((eq command :trace)
-		   nil)
+	    (cond ((eq command :trace-on)
+		   (setf *trace-strummer-events* t
+			 *trace-strummer-states* t))
+		  ((eq command :trace-off)
+		   (setf *trace-strummer-events* nil
+			 *trace-strummer-states* nil))
 		  ((eq command :reset)
 		   (process-reset part event clause state))
 		  ((eq command :time)
@@ -653,15 +651,19 @@
 	  (let ((acc '())
 		(state (make-strummer-state)))
 	    (reset state)
-	    (dolist (event event-list)
-	      (trace-event strummer event)
-	      (dolist (clause (partition-list event))
-		(setf acc (cons? acc (dispatch-event strummer state event clause))))
-	      (if (real-event-p state)
-		  (progn 
-		    (trace-state state)
-		    (push (clone state) acc)
-		    (soft-reset state))))
+	    (block event-loop
+	      (dolist (event event-list)
+		(trace-event strummer event)
+		(dolist (clause (partition-list event))
+		  (let ((command (car clause)))
+		    (cond ((eq command :break)
+			   (return-from event-loop))
+			  (t (dispatch-event strummer state event clause)))))
+		(if (real-event-p state)
+		    (progn 
+		      (trace-state state)
+		      (push (clone state) acc)
+		      (soft-reset state)))))
 	    (setf (strummer-events strummer)(reverse acc))))
 
 	 (validate-section
@@ -725,69 +727,6 @@
 	(setf (strummer-events strummer)
 	      (process-strummer-events strummer (->list events)))
 	strummer))) ) 
-
-;; (flet ((validate-section
-;; 	(part-name section)
-;; 	(let ((s (cond ((section-p section)
-;; 			section)
-;; 		       ((and section (not (section-p section)))
-;; 			(cyco-type-error 'make-strummer '(section nil) section)
-;; 			nil)
-;; 		       ((not (project-p *project*))
-;; 			(cyco-composition-error
-;; 			 'make-strummer
-;; 			 (sformat "No default project while creating strummer ~A" part-name))
-;; 			nil)
-;; 		       (t (property *project* :current-section)))))
-;; 	  s))
-
-;;        (validate-instrument
-;; 	(part-name instrument)
-;; 	(if (not (instrument-p instrument))
-;; 	    (progn 
-;; 	      (cyco-type-error 'make-strummer 'instrument instrument
-;; 			       (sformat "Expected single instrument for Strummer: ~A" part-name)
-;; 			       "Using +ROOT-INSTRUMENT+")
-;; 	      +root-instrument+)
-;; 	  instrument))
-;;        ) ;; end flet assignments
-	      
-;;   (defun make-strummer (name instrument &key
-;; 			     section
-;; 			     (cuefn #'bar)
-;; 			     shift 
-;; 			     tempo unit bars beats subbeats
-;; 			     render-once
-;; 			     transposable
-;; 			     reversible
-;; 			     chord-model
-;; 			     remarks
-;; 			     events)
-;;     (let* ((parent (or (validate-section name section)
-;; 		       (return-from make-strummer nil))))
-;;       (let* ((strummer (make-instance 'strummer
-;; 				      :properties +strummer-properties+
-;; 				      :name name
-;; 				      :remarks (->string (or remarks ""))
-;; 				      :transient t)))
-;; 	(put strummer :instruments (validate-instrument name instrument))
-;; 	(put strummer :tempo tempo)
-;; 	(put strummer :unit unit)
-;; 	(put strummer :bars bars)
-;; 	(put strummer :beats beats)
-;; 	(put strummer :subbeats subbeats)
-;; 	(put strummer :cue-function cuefn)
-;; 	(put strummer :render-once render-once)
-;; 	(put strummer :transposable transposable)
-;; 	(put strummer :reversible reversible)
-;; 	(put strummer :chord-model chord-model)
-;; 	(put strummer :muted nil)
-;; 	(put strummer :shift (or shift 0.0))
-;; 	(connect parent strummer)
-;; 	(set-cyco-prompt)
-;; 	(setf (strummer-events strummer)
-;; 	      (-process-strummer-events strummer (->list events)))
-;; 	strummer))))
 
 (setf (documentation 'make-strummer 'function) +strummer-documentation+)
 

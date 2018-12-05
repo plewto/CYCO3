@@ -2,17 +2,7 @@
 ;;;; Strummer part methods.
 ;;;;
 
-(labels (
-
-	 ;; (process-touch
-	 ;;  (acc time state cindex)
-	 ;;  (let ((touch (strummer-state-touch state)))
-	 ;;    (if touch
-	 ;; 	(cons (cons time (midi-channel-pressure cindex (norm->midi-data touch)))
-	 ;; 	      acc)
-	 ;;      acc)))
-
-	 (process-bend
+(labels ((process-bend
 	  (acc time state cindex)
 	  (let ((bend (strummer-state-bend state)))
 	    (if bend
@@ -28,7 +18,8 @@
 		(cc (strummer-state-controller-value state)))
 	    (if (and ctrl cc)
 		(let ((data (norm->midi-data cc)))
-		  (cons (cons time (midi-control-change cindex ctrl data)) acc))
+		  (cons (cons time (midi-control-change cindex ctrl data)) 
+			acc))
 	      acc)))
 	  
 	 (process-program
@@ -37,7 +28,8 @@
 	    (if program 
 		(let ((bank (strummer-state-program-bank state))
 		      (pmap (property instrument :program-map)))
-		  (setf acc (append acc (funcall pmap time :bank bank :program program))))
+		  (setf acc (append acc (funcall pmap time 
+						 :bank bank :program program))))
 	      acc)))
 	 
 	 (simple-note-events
@@ -56,7 +48,7 @@
 		      (velocity (norm->midi-data
 				 (funcall (dynamic-map instrument)
 					  (* (value (strummer-state-dynamic state))
-					     (strummer-state-grace-amp-scale state))))) )
+					     (strummer-state-grace-amp-scale state))))))
 		  (if (not (rest-p kn))
 		      (let ((ci (channel-index instrument)))
 			(append acc (list (cons time (midi-note-on ci kn velocity))
@@ -105,7 +97,6 @@
 	    (->vector (reverse bcc))))
 
 	 ;; start-times as vector
-	 ;;
 	 (expand-homogeneous-end-times
 	  (start-times duration)
 	  (let ((end-time (+ (apply #'max (->list start-times)) duration)))
@@ -113,7 +104,6 @@
 
 	 ;; start times as vector
 	 ;; return vector
-	 ;;
 	 (expand-end-times
 	  (start-times duration state)
 	  (if (strummer-state-strum-end-together state)
@@ -148,7 +138,6 @@
 			   (t
 			    (cyco-error
 			     (sformat "Invalid STRUMMER STRUM-DIRECTION ~A" dir))))))
-			     
 	    (->vector rs)))
 	 
 	 (strum-chord
@@ -168,7 +157,6 @@
 		      (push (cons on-time (midi-note-on channel-index kn velocity)) bcc)
 		      (push (cons off-time (midi-note-off channel-index kn 0)) bcc)))))
 	    (reverse bcc)))
-	  
 	 
 	 (process-key-events
 	  (acc time state chord-model instrument)
@@ -179,16 +167,15 @@
 	  		     bk))
 		 (chord-template (expand-chord-template state chord-model base-key instrument))
 		 (base-amp (funcall (dynamic-map instrument)
-				    (approximate (next-1 (strummer-state-dynamic state))
-						 :scale (strummer-state-dynamic-blur state)
-						 :max (strummer-state-dynamic-max state)
-						 :min (strummer-state-dynamic-min state))))
+				    (approximate
+				     (next-1 (strummer-state-dynamic state))
+				     :scale (strummer-state-dynamic-blur state)
+				     :max (strummer-state-dynamic-max state)
+				     :min (strummer-state-dynamic-min state))))
 		 (base-dur (funcall (articulation-map instrument)
 				    (or (strummer-state-articulation state) 1.0))))
 	    (setf acc (append acc (strum-chord state time cindex chord-template base-dur base-amp))))
-	  acc)
-
-	 ) ;; END LABELS ASSIGNMENTS
+	  acc) )
 
   (defmethod render-once ((part strummer) &key (offset 0))
     (let* ((acc '())
@@ -197,19 +184,12 @@
   	   (cindex (channel-index instrument)))
       (dolist (state (strummer-events part))
       	(let ((time (+ offset (or (strummer-state-time state) 0))))
-      	  ;; (setf acc (process-touch acc time state cindex))
       	  (setf acc (process-bend acc time state cindex))
       	  (setf acc (process-controller acc time state cindex))
       	  (setf acc (process-program acc time state instrument))
       	  (setf acc (process-grace-note acc time state instrument))
       	  (setf acc (process-key-events acc time state chord-model instrument))))
-      acc))
-      
-
-  ) ;; END LABELS
-
-
-	 
+      acc)) )
 			  
 (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))
   (let ((period (phrase-duration part))

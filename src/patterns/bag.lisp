@@ -38,5 +38,22 @@
     (setf (elements b)
 	  (cdr (elements b)))))
 
+(defmethod transpose ((b bag)(x integer))
+  (call-next-method)
+  (transpose (final-value b) x)
+  b)
 
+(defmethod invert ((b bag)(pivot t))
+  (call-next-method)
+  (invert (final-value b) pivot)
+  b)
 
+(defmethod retrograde ((b bag))
+  (call-next-method)
+  (retrograde (final-value b))
+  b)
+
+(defmethod clone ((b bag) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (bag :of (clone (seed b))
+       :final (clone (final-value b))))

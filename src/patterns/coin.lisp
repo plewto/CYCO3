@@ -58,5 +58,11 @@ Note: (retrograde coin) flips head/tail probability."))
 	  (rem (1+ (pointer c))(cardinality c)))
     (value c)))
 
+(defmethod clone ((src coin) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (coin :p (probability src)
+	:head (clone (car (elements src)))
+	:tail (clone (second (elements src)))
+	:period (slot-value src 'period)))
 
 

@@ -112,6 +112,7 @@
 		   "src/patterns/walker"
 		   "src/patterns/markov"
 		   "src/patterns/shift-register"
+		   "src/patterns/merger"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi-util"

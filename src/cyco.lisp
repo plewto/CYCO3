@@ -111,6 +111,7 @@
 		   "src/patterns/slewpat"
 		   "src/patterns/walker"
 		   "src/patterns/markov"
+		   "src/patterns/shift-register"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi-util"
@@ -151,7 +152,6 @@
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/cyco-exports"
-		   "src/patterns/shift-register"
 
 		   )))
  

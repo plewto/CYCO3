@@ -273,6 +273,8 @@
 	  set-cyco-prompt
 	  set-symbolic-program-map
 	  signed-norm->midi-data
+	  shift-register-p
+	  shift-register
 	  slew
 	  slew-p
 	  slice
@@ -284,6 +286,8 @@
 	  solo
 	  sort-midi-events
 	  split-list
+	  strummer
+	  strummer-p
 	  subbeat-duration
 	  subbeats
 	  subbeats!

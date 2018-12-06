@@ -821,6 +821,8 @@ subclasses.")
   (:documentation
    "Sets the sequence order of Sections within a project."))
 
+
+(def-type-predicate shift-register-p)
 (def-type-predicate slew-p)
 
 (defgeneric slice (seq start &optional end)
@@ -857,6 +859,8 @@ specific object type."))
 (defgeneric solo (obj)
   (:documentation
    "Convenience method same as (mute obj :solo)"))
+
+(def-type-predicate strummer-p)
 
 (defgeneric subbeat-duration (obj)
   (:documentation

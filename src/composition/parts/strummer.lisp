@@ -209,6 +209,8 @@
     :accessor strummer-events
     :initform '())))
 
+(defmethod strummer-p ((obj strummer)) t)
+
 (global *trace-strummer-events* nil)
 (global *trace-strummer-states* nil)
 

@@ -42,6 +42,8 @@
     :initform 0
     :initarg :bias)))
 
+(defmethod shift-register-p ((sr shift-register)) t)
+
 (defmethod reset ((sr shift-register))
   (setf (shift-register-register sr)
 	(shift-register-seed sr))

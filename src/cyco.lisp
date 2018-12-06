@@ -150,7 +150,10 @@
 		   "src/composition/endpad"
 		   "src/util/inspection"
 		   "src/plugins"
-		   "src/cyco-exports" )))
+		   "src/cyco-exports"
+		   "src/patterns/shift-register"
+
+		   )))
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."

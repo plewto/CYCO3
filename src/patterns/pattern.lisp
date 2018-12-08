@@ -39,6 +39,7 @@
 ;;;;  +-- SLEW    - extends pattern period
 ;;;;  +-- WALKER  - random walk
 ;;;;  +-- MARKOV  - Markov chain pattern
+;;;;  +-- SHIFT-REGISTER 
 ;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments
 ;;;;
 

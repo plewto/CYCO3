@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO Line Pattern
 ;;;;
 
 (defclass line (pattern) nil

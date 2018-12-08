@@ -1,4 +1,4 @@
-;;;; CYCO pattern merger
+;;;; CYCO Merger Pattern
 ;;;;
 
 (defclass merger (pattern)
@@ -16,7 +16,14 @@
     :type function
     :accessor merger-mixer-hook
     :initform #'(lambda (a b)(cons a b))
-    :initarg :mixer-hook)))
+    :initarg :mixer-hook))
+  (:documentation
+   "A MERGER combines two Pattern objects a & b.
+Upon calling NEXT-1 the next values of patterns a and b are generated.
+These are processed by the a-hook and b-hook functions respectively.  a-hook
+and b-hook take a single argument and have an undefined return type.  The
+results of a-hook and b-hook are combined by the mixer function.
+mixer takes tow arguments and has an undefined return type."))
 
 (defun merger (a b &key
 		 (a-hook #'identity)
@@ -27,20 +34,12 @@
 			:b-hook b-hook
 			:mixer-hook mixer-hook)))
 
-;; (defmethod value ((m merger))
-;;   (let ((a (car (elements m)))
-;; 	(b (second (elements m))))
-;;     (funcall (merger-mixer-hook m)
-;; 	     (funcall (merger-a-hook m)(value a))
-;; 	     (funcall (merger-b-hook m)(value b)))))
-
 (defmethod value ((m merger))
   (let ((a (car (elements m)))
 	(b (second (elements m))))
     (funcall (merger-mixer-hook m)
 	     (funcall (merger-a-hook m)(value a))
 	     (funcall (merger-b-hook m)(value b)))))
-
 	     
 (defmethod reset ((m merger))
   (reset (car (elements m)))

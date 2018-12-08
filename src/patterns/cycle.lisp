@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO Cycle Pattern
 ;;;;
 
 (defclass cycle (pattern) nil

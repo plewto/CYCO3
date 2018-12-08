@@ -1,5 +1,6 @@
-;;;; CYCO walker pattern
-;;;; Random Walk patterns
+;;;; CYCO Walker Pattern (Random Walks)
+;;;; 
+;;;;
 
 (defclass walker (pattern)
   ((current-position

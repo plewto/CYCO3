@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO INSTRUMENT-LAYER Pattern
 ;;;;
 
 

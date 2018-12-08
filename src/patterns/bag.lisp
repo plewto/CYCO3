@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO Bag Pattern.
 ;;;;
 
 (defclass bag (pattern)

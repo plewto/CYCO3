@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO Dice Pattern
 ;;;;
 
 (defclass dice (pattern) nil

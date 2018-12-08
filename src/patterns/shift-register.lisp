@@ -44,7 +44,22 @@
     :type integer
     :accessor sr-prerun
     :initform 0
-    :initarg :prerun)))
+    :initarg :prerun))
+  (:documentation
+   "Implements a 16-bit linear feedback shift-register using binary
+'cells', where any stage may be selected for feedback.  If there are an odd
+number of true feedback stages, the feedback value is 1, otherwise it is 0.
+
+Shift Register values have a tendency to blow-up producing very high
+results.  The following function composition limits the results to a
+manageable range.  
+
+                     (bias (base (mask x)))
+
+Where x is the 'nominal' register value.
+mask - a bit-wise and 
+base - output modulo, multiples of 12 are useful for key-number.
+bias - fixed value added to result."))
 
 (defmethod shift-register-p ((sr shift-register)) t)
 
@@ -58,6 +73,23 @@
 			    (base #xffff)
 			    (bias 0)
 			    (prerun 0))
+  "Create new SHIFT-REGISTER object.
+seed    - initial state 0 < seed <= #xffff.  The register consist of 16 
+          stages.  The binary representation of seed, padded to the right
+          with zeros, is the initial register state.  With each shift
+          operation  the value is shifted to the right with bit 0 
+          set to the feedback value.
+taps    - Selects feedback taps.  The binary representation directly 
+          indicates which stages are fed-back. 0 <= taps <= #xffff.
+:mask   - mask logically anded to register value. 0 <= mask <= #xffff
+:base   - register value is modulo base, default 2 <= base <= #xffff
+          The modulo operation is applied after the mask.
+:bias   - value added to register.  Bias addition is applied after 
+          the base.
+:prerun - Number of times to step the register after it is created.
+          For many configurations the register will progress through 
+          an initial sequence of values before settling into a cyclical
+          pattern.  prerun may be used to skip over these initial values." 
   (reset (make-instance 'shift-register
 			:seed (logand seed #xffff)
 			:taps (logand taps #xffff)
@@ -81,19 +113,6 @@
 	(bias (sr-bias sr)))
     (+ (rem (logand mask (sr-register sr)) base) bias)))
     
-;; (defmethod shift-register-feedback ((sr shift-register) &optional (insert 0))
-;;   (let ((acc insert)
-;; 	(reg (sr-register sr))
-;; 	(taps (sr-taps sr)))
-;;     (dotimes (bit (sr-length sr))
-;;       (let ((fb (logand (logand reg 1)
-;; 			(logand taps 1))))
-;; 	;; (format t "DEBUG bit ~2D FB ~D  reg ~16B taps ~16B~%" bit fb reg taps)
-;; 	(setf acc (if (zerop fb) 0 1)
-;; 	      reg (ash reg -1)
-;; 	      taps (ash taps -1))))
-;;     (logand acc 1)))
-
 (defmethod shift-register-feedback ((sr shift-register) &optional (insert 0))
   (let* ((a (sr-register sr))
 	 (b (sr-taps sr))

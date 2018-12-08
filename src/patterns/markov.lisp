@@ -6,10 +6,9 @@
 ;;;; The number of occurrence of a new link determines it's probability of
 ;;;; being the next value.
 ;;;;
-;;;; Once the graph has been defined it may be wrapped in a Pattern by
-;;;; using a markov-chain.  The resulting object may be used as any other
-;;;; pattern type.
-
+;;;; Once the graph has been defined it may be wrapped in a MARKOV-CHAIN
+;;;; Pattern.  The resulting object may be used as any other pattern type.
+;;;;;
 
 (defclass markov-link nil
   ((value
@@ -26,9 +25,8 @@
   type including a general Pattern.
 
 The links field is a list of potential next-values. Each element is also a
-markov-link and the relative number of occurrences in the list determines 
-the probability of each potential value."))
-
+markov-link and the relative number of occurrences determines the probability 
+of each potential value."))
 
 (defmethod markov-link-p ((obj markov-link)) t)
 
@@ -50,15 +48,13 @@ the probability of each potential value."))
 			    (weight integer))
   (markov-add-link source (->markov-link destination) weight))
 
-  
-
 (defmethod markov-walk ((link markov-link))
   (pick (markov-links link)))
 
 (defun markov-link (value &rest ilinks)
   "Constructs new markov-link
 value - The links 'value', may be any type.
-ilinks - potential destinations must, elements must have the form  (value weight)"
+ilinks - potential destinationS, elements must have the form (value weight)"
   (let ((node (make-instance 'markov-link :value value)))
     (dolist (lnk ilinks)
       (markov-add-link node (car lnk)(second lnk)))

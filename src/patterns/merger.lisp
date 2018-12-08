@@ -2,86 +2,75 @@
 ;;;;
 
 (defclass merger (pattern)
-  ((source-a
-    :type pattern
-    :accessor merger-source-a
-    :initform (line :of '(1))
-    :initarg :a)
-   (hook-a
+  ((hook-a
     :type function
-    :accessor merger-hook-a
+    :accessor merger-a-hook
     :initform #'identity
     :initarg :a-hook)
-   (source-b
-    :type pattern
-    :accessor merger-source-b
-    :initform (line :of '(1))
-    :initarg :b)
    (hook-b
     :type function
-    :accessor merger-hook-b
+    :accessor merger-b-hook
     :initform #'identity
     :initarg :b-hook)
    (mixer
     :type function
-    :accessor merger-mixer
-    :initform #'(lambda (a b)(dismiss a b) a)
-    :initarg :mixer)))
-
-
-(defmethod elements ((m merger)) nil)
-
-(defmethod cardinality ((m merger))
-  (let ((ca (cardinality (merger-source-a m)))
-	(cb (cardinality (merger-source-b m))))
-    (if (= ca cb) ca (* ca cb))))
-
-(defmethod reset ((m merger))
-  (setf (pointer m) 0)
-  (reset (merger-source-a m))
-  (reset (merger-source-b m))
-  m)
+    :accessor merger-mixer-hook
+    :initform #'(lambda (a b)(cons a b))
+    :initarg :mixer-hook)))
 
 (defun merger (a b &key
 		 (a-hook #'identity)
 		 (b-hook #'identity)
-		 (mixer #'(lambda (a b)(dismiss a b) a)))
-  (make-instance 'merger
-		 :a a :a-hook a-hook
-		 :b b :b-hook b-hook
-		 :mixer mixer))
+		 (mixer-hook #'(lambda (a b)(cons a b))))
+  (reset (make-instance 'merger :of (list a b)
+			:a-hook a-hook
+			:b-hook b-hook
+			:mixer-hook mixer-hook)))
+
+;; (defmethod value ((m merger))
+;;   (let ((a (car (elements m)))
+;; 	(b (second (elements m))))
+;;     (funcall (merger-mixer-hook m)
+;; 	     (funcall (merger-a-hook m)(value a))
+;; 	     (funcall (merger-b-hook m)(value b)))))
+
+(defmethod value ((m merger))
+  (let ((a (car (elements m)))
+	(b (second (elements m))))
+    (funcall (merger-mixer-hook m)
+	     (funcall (merger-a-hook m)(value a))
+	     (funcall (merger-b-hook m)(value b)))))
+
+	     
+(defmethod reset ((m merger))
+  (reset (car (elements m)))
+  (reset (second (elements m)))
+  m)
+
+(defmethod cardinality ((m merger))
+  (let ((a (cardinality (car (elements m))))
+	(b (cardinality (second (elements m)))))
+    (if (= a b) a (* a b))))
 
 (defmethod clone ((m merger) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (merger (clone (merger-source-a m))
-	  (clone (merger-source-b m))
-	  :a-hook (merger-hook-a m)
-	  :b-hook (merger-hook-b m)
-	  :mixer (merger-mixer m)))
-
-(defmethod value ((m merger))
-  (let ((a-hook (merger-hook-a m))
-	(b-hook (merger-hook-b m))
-	(mixer (merger-mixer m)))
-    (funcall mixer
-	     (funcall a-hook (value (merger-source-a m)))
-	     (funcall b-hook (value (merger-source-b m))))))
+  (let* ((e (elements m))
+	 (a (clone (car e)))
+	 (b (clone (second e))))
+    (merger a b
+	    :a-hook (merger-a-hook m)
+	    :b-hook (merger-b-hook m)
+	    :mixer-hook (merger-mixer-hook m))))
 
 (defmethod next-1 ((m merger))
   (setf (pointer m)
-	(rem (1+ (pointer m))(cardinality m)))
-  (next-1 (merger-source-a m))
-  (next-1 (merger-source-b m))
+	(rem (1+ (pointer m))
+	     (cardinality m)))
+  (next-1 (car (elements m)))
+  (next-1 (second (elements m)))
   (value m))
 
-(defmethod transpose ((m merger))
-  (transpose (
-
-;; ----------------- TEST
-;;
-
-(param a (cycle :of '(0 1 2)))
-(param b (cycle :of '(3 4 5 6)))
-(param foo (merger a b :mixer #'(lambda (q r)(+ q r))))
-
-
+(defmethod retrograde ((m merger))
+  (dolist (obj (elements m))
+    (retrograde obj))
+  m)

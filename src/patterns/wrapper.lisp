@@ -46,3 +46,8 @@ it's value."))
     (setf (pointer w)
 	  (rem (+ (pointer w) 1)
 	       (cardinality w)))))
+
+(defmethod clone ((w wrapper) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (wrapper :of (slot-value w 'function)
+	   :period (slot-value w 'period)))

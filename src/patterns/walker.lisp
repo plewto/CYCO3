@@ -1,7 +1,11 @@
 ;;;; CYCO walker pattern
 ;;;; Random Walk patterns
 
-(defclass walker (pattern) nil
+(defclass walker (pattern)
+  ((current-position
+    :type integer
+    :accessor walker-current-position
+    :initform 0))
   (:documentation
    "Random walks over patterns"))
 
@@ -11,16 +15,30 @@
   "Creates new instance of WALKER pattern"
   (reset (make-instance 'walker :of (->list of))))
 
+(defmethod value ((w walker))
+  (value (nth (walker-current-position w)
+	      (elements w))))
+
+(defmethod reset ((w walker))
+  (dolist (obj (elements w))(reset obj))
+  (setf (walker-current-position w) 0)
+  (setf (pointer w) 0)
+  w)
+
 (let ((walker-coin (coin :head 1 :tail -1)))
-
   (defmethod next-1 ((w walker))
-    (let ((ptr (+ (next-1 walker-coin)
-		  (pointer w))))
-      (setf ptr (cond ((>= ptr (length (elements w))) 0)
-		      ((minusp ptr)(1- (length (elements w))))
-		      (t ptr)))
-      (prog1
-	  (next-1 (nth ptr (elements w)))
-	(setf (pointer w) ptr)))))
-
-
+    (let ((count (cardinality w))
+	  (pos (+ (walker-current-position w)
+		  (next-1 walker-coin)))
+	  (ptr (pointer w)))
+      (setf (pointer w)(rem (1+ ptr) count))
+      (setf (walker-current-position w)
+	    (cond ((>= pos count) 0)
+		  ((minusp pos)(1- count))
+		  (t pos)))
+      (next-1 (nth (walker-current-position w)
+		   (elements w))))))
+      
+(defmethod clone ((w walker) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (walker :of (clone (elements w))))

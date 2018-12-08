@@ -35,6 +35,9 @@ embedded pattern.
   (value (slot-value s 'client)))
 
 (defmethod next-1 ((s slew))
+  (setf (pointer s)
+	(rem (1+ (pointer s))
+	     (cardinality s)))
   (let ((cnt (1- (slot-value s 'slew-counter))))
     (if (not (plusp cnt))
 	(progn
@@ -44,4 +47,28 @@ embedded pattern.
       (setf (slot-value s 'slew-counter) cnt))
     (value (slot-value s 'client))))
 
+(defmethod cardinality ((s slew))
+  (* (slot-value s 'delay)
+     (cardinality (slot-value s 'client))))
+
+(defmethod elements ((s slew))
+  (elements (slot-value s 'client)))
+
+(defmethod transpose ((s slew)(x integer))
+  (transpose (slot-value s 'client) x)
+  (setf (value s)(transpose (value s) x))
+  s)
+
+(defmethod invert ((s slew)(pivot t))
+  (invert (slot-value s 'client) pivot)
+  (setf (value s)(invert (value s) pivot))
+  s)
+
+(defmethod retrograde ((s slew))
+  (retrograde (slot-value s 'client))
+  s)
+	      
+(defmethod clone ((s slew) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (slew (clone (slot-value s 'client))(slot-value s 'delay)))
 

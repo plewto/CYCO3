@@ -69,6 +69,24 @@ Returns two values:
 Convenience function, same as calling (format nil frmt args...)"
   (apply #'format (append (list nil frmt) args)))
 
+(defun format-binary (n &key (bits 16) group)
+  "Format binary value
+n      - The number 
+:bits  - Number of bits, default 16
+:group - Insert space every group bits, defaults to bits.
+Returns string."
+  (let ((acc "")
+	(brk (or group bits))
+	(probe 1))
+    (dotimes (bit bits)
+      (setf acc (str+ (if (zerop (logand probe n)) "0" "1") acc))
+      (setf brk (1- brk))
+      (setf probe (ash probe 1))
+      (if (zerop brk)
+	  (setf acc (str+ " " acc)
+		brk (or group bits))))
+    acc))
+
 (defmethod palindrome ((s string) &key (elide nil))
   (let ((r (reverse s)))
     (setf r (cond ((eq elide :last)

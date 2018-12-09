@@ -1,5 +1,5 @@
 ;;;; CYCO
-;;;; Strummer part methods.
+;;;; Strummer rendering functions.
 ;;;;
 
 (global *strummer-render-trace* nil)

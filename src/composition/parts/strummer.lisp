@@ -121,7 +121,7 @@
 ;;;; 
 ;;;;     end-together remains in effect until explicitly changed.
 ;;;;
-;;;; :GRACE-AMP-SCALE n     0.25 <= n <= 4.0
+;;;; :GRACE-AMP* n     0.25 <= n <= 4.0
 ;;;; :GRACE-DURATION ex
 ;;;; :GRACE-DELAY metric
 ;;;;

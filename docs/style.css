@@ -62,6 +62,13 @@ b.definition {
     margin-left: 0px;
 }
 
+b.argument {
+    color: #CCFFe5;
+    font-family: Mono;
+    font-size: 0.9em;
+    margin-left: 0px;
+}
+
 #page_wrapper {
   border: 1px solid #000;
   color: #FFFFCC;

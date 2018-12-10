@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Shift-register</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+<h2 class="section-head">Shift Register</h2>
+<hr/>
+<img class="center" src="shift-register.gif" alt="Shift Register Animation"/>
+<p class="body">
+    A <a href='https://en.wikipedia.org/wiki/Linear-feedback_shift_register'>Shift Register</a>&nbsp;    is a <a href='patterns.html'>Pattern</a> capable of producing a wide range    of numeric sequences.&nbsp; It consist of up to 16 <i>cells</i>, each holding    either 0 or 1.&nbsp; Upon a shift operation the contents of the cells are    shift one place to the left.&nbsp; Any cell may be selected as a feedback    <i>tap</i>.&nbsp; Prior to a shift the tapped cells containing 1 are    counted, if the count is odd then a 1 is inserted into the <nobr>right-most</nobr>    space.&nbsp; If the count is even the feedback value is 0.</p>
+<p class="body">
+    The nominal register <i>value</i> is the weighted binary sum    of the cells, and values expressed in binary directly indicate the    current register state.&nbsp; Likewise the selected feedback taps are    directly indicated by numbers formatted as binary.</p>
+<p class="body">
+    If the register is shifted with no feedback taps, the current value    is shifted to the left with a 0 padding it from the right.&nbsp; Eventually    all non-zero cells are shifted out and the value becomes 0    indefinitely.&nbsp; With a single tap the sequence of values is endlessly    repeated with a period determined by the tap position.</p>
+<p class="body">
+    The plot thickens when more then one feedback tap is selected.&nbsp; The    resulting sequence is dependent on the specific taps selected and the    initial <i>seed</i> value.&nbsp; In all cases the register will enter a    cyclical pattern of some sort, with the maximum possible period of     2<sup>n</sup>.&nbsp; Where n is the register length.&nbsp; It is not trivial to    predict the period length but most will be less then the maximum    possible.&nbsp; In many cases the register will produce an initial sequence    of values before entering the cyclical phase.</p>
+<p class="body">
+    The following test runs use a 4-cell register with different tap    configurations.&nbsp; A seed value of 0001 is used for all test.</p>
+<pre class="code">
+
+Run 1  Seed 0001  Taps 0000  Period 1
+Sequence 0001 0010 0100 1000 0000 0000 ...
+            1    2    4    8    0    0 ...
+
+Run 2  Seed 0001  Taps 1000  Period 4
+Sequence 0001 0010 0100 1000 0001 ...    
+            1    2    4    8    1
+
+Run 3  Seed 0001  Taps 1010  Period 6
+Sequence 0001 0010 0101 1010 0100 1000 0001 ...
+            1    2    5   10    4    8    1 ...
+
+Run 3  Seed 0001  Taps 1001  Period 15
+Sequence 1 3 7 15 14 13 10 5 11 6 12 9 2 4 8 1 ...
+</pre>
+<p class="body">
+    The maximum value of a length n register is 2<sup>n</sup>, with longer    registers tending to produce more complex results.&nbsp; One problem is    that the results tend to blow up, producing values far outside those    typical for music composition.&nbsp; To address this, parameters are    provided to reign in the possible values.</p>
+<ul>
+    <li><b>mask</b> - Selects effective register length.&nbsp; All shift-register
+instances have a length of 16 cells.&nbsp; The mask parameter is a bit-wise
+and which may effectively shorten the register length.&nbsp; I.E. a binary
+mask of #b1111 sets the effective length to 4 cells.&nbsp; It is important
+to note that shift-registers <i>always</i> have a length of 16.&nbsp; The
+mask only applies to how values are read from the register.&nbsp; In
+particular it is possible for feedback taps to exists outside the range set by the mask.</li>
+    <li><b>base</b> - Sets value modulus.&nbsp; After masking a remainder
+operation is applied modulus base.&nbsp; Bases which are multiples of 12
+are particularly useful for treating shift-register values as MIDI
+key-numbers.</li>
+    <li><b>bias</b> - A fixed offset added after the application of base.&nbsp;
+Base and bias act together to set the range of possible values.&nbsp; Specifically 
+bias sets the minium possible value while base establishes a maximum
+relative to the bias.&nbsp;  For bias bi and base ba the range of possible
+values is <nobr>(bi, bi+ba)</nobr></li>
+</ul>
+<p class="body">
+    A few observations:</p>
+<ul>
+    <li>It is not possible for an <i>interesting</i> shift-register to
+have a nominal value of 0.</li>
+    <li>A shift-register is a pattern but may not contain nested patterns.</li>
+</ul>
+<b class="definition">(SHIFT-REGISTER seed taps &key mask base bias prerun)</b><br>
+<p class="synopsis">Create new shift-register object.</p>
+<pre class="code">
+
+seed    - Initial register value, 0 &le; seed &le; #xffff
+taps    - Feedback taps, 0 &le; taps &le; #xffff
+:mask   - Value mask, 0 &le; mask &le; #xffff, default #xffff
+:base   - Value base, 2 &le; base &le; #xffff, default #xffff
+:bias   - Value bias, float, default 0.
+:prerun - Number of times to step the register after construction. 0 &le; prerun.
+          Prerun is used to advance the register past any initial values
+          before it enters the cyclical phase.
+
+The effective value is determined by the following composition, where V is
+the nominal register value.
+
+        (+ (rem (logand v mask) base) bias)
+</pre>
+<b class="definition">(SHIFT-REGISTER-FEEDBACK sr &optional insert)</b><br>
+<p class="synopsis">Returns the feedback value for the current register
+state.</p>
+<pre class="code">
+
+sr - an instance of shift-register.
+insert - optional value added to feedback.  Insert allows an external 
+         signal to be injected in to shift-register during a shift 
+         operation. Default 0.
+</pre>
+<b class="definition">(SHIFT-1 sr &optional insert)</b><br>
+<p class="synopsis">Shift register by one step.  Returns value after the shift
+operation.&nbsp; The optional insert argument is combined with the feedback
+value.&nbsp; For use as a Pattern, the NEXT-1 method does little more then 
+call SHIFT-1.</p>
+<b class="definition">(FIND-SHIFT-REGISTER-PERIOD sr &key prerun guard)</b><br>
+<p class="synopsis">Attempts to determine register period by brute-force.</p>
+<pre class="code">
+
+:prerun - Number of times to advance register prior to test, default 100. 
+:guard  - Maximum number of iterations, default 8000.
+
+Returns period.  Returns nil if the iteration count exceeds the guard value.
+</pre>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+</div>
+</body>
+</html>

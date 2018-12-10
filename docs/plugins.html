@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Plugins</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="starting-cyco.html">Starting-Cyco</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="patterns.html">Patterns</a>
+
+<h2 class="section-head">Plugins</h2>
+<hr/>
+<p class="body">
+    Plugins allow additional features to be added to CYCO.$nbsp; One of the    most important uses for plugins is to define the local MIDI    environment.&nbsp; Profile files reside at <nobr>~/.config/cyco/plugins/</nobr></p>
+<p class="body">
+    The distribution folder <nobr>CYCO/plugins/</nobr> contains several    pre-defined plugins.&nbsp; You should either copy these to    .config.cyco/plugins or create a symbolic link between these to locations.</p>
+<p class="body">
+    Each plugin is defined in a sub-folder with the same name, and the entry    point is a file named <i>name-main.lisp</i>&nbsp; For example the main file    for plugin 'foo' is:</p>
+<pre class="code">
+~/.config/cyco/plugins/foo/foo-main.lisp
+</pre>
+<p class="body">
+    Plugin filenames must be lower case and may not contain white-space.</p>
+<b class="definition">(PLUGIN name &optional reload)</b><br>
+<p class="synopsis">Load named plugin.&nbsp; Previously loaded plugins are not
+reloaded unless the optional reload argument is true.&nbsp; The name
+argument may either be a string or symbol.</p>
+<b class="definition">(LOAD-PLUGIN-FILE filename)</b><br>
+<p class="synopsis">Loads file relative to the current plugin.&nbsp;</p>
+<pre class="code">
+(plugin 'foo)              ;; loads ~/.config/cyco/plugins/foo/foo-main.lisp
+(load-plugin-file 'alpha)  ;; loads ~/.config/cyco/plugins/foo/alpha.lisp
+</pre>
+<b class="definition">(SUB-PLUGIN name)</b><br>
+<p class="synopsis">Loads the named plugin but does not make it the 'current'
+plugin.&nbsp; This allows new plugins to extend existing plugins.</p>
+<pre class="code">
+(plugin 'foo)              ;; loads ~/.config/cyco/plugins/foo/foo-main.lisp
+(load-plugin-file 'alpha)  ;; loads ~/.config/cyco/plugins/foo/alpha.lisp
+(sub-plugin 'baz)          ;; loads ~/.config/cyco/plugins/baz/baz-main.lisp
+(load-plugin-file 'beta)   ;; foo is still 'current', loads ../foo/beta.lisp
+</pre>
+<b class="definition">(FORGET-PLUGINS)</b><br>
+<p class="synopsis">Remove all plugins from the list of loaded plugins.<br>
+<b>NOTE: forget-plugins does not actually remove the plugin from the running 
+instance of CYCO.</b>&nbsp; All it does is remove the <i>record</i> of the plugins 
+being loaded.</p>
+<p class="body">
+    The following global variables control the names and locations of plugin files.</p>
+<b class="definition">*CONFIG-DIRECTORY*</b><br>
+<b class="definition">*PLUGIN-DIRECTORY*</b><br>
+<b class="definition">*CURRENT-PLUGIN*</b><br>
+<hr/>
+<h4 class="section-head">Anatomy of a Plugin</h4>
+<p class="body">
+    Other then the locations and file names described    above there are no pre-defined plugin structures; they are simply lisp    source files.&nbsp; The distribution contains a few    pre-defined plugins.  As of this wring <nobr>(8 December 2018)</nobr>    these are:</p>
+<ul>
+    <li>general-midi - A basic orchestra scheme based on <a href='https://en.wikipedia.org/wiki/General_MIDI'>General MIDI</a>.</li>
+    <li>sj - A much more involved scheme for my personal use,&nbsp; included for illustration only.</li>
+    <li>fretworks - A model of chords as played on fretted instruments (as yet incomplete).</li>
+    <li>pigiron - An OSC client for the PigIron MIDI utility (as yet incomplete).</li>
+</ul>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="starting-cyco.html">Starting-Cyco</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="patterns.html">Patterns</a>
+
+</div>
+</body>
+</html>

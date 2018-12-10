@@ -18,7 +18,7 @@
 <a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="home.html">Home</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="plugins.html">Plugins</a>
 
 <h2 class="section-head">Starting CYCO</h2>
 <hr/>
@@ -31,13 +31,13 @@
  CYCO: - Lisp REPL prompt while using CYCO.
 </pre>
 <p class="body">
-    The first time CYCO is started, or anytime you wish to change     the configuration, do the following.</p>
+    To start CYCO:</p>
 <pre class="code">
 Change directory to wherever the CYCO distribution folder is located.
 
 $ cd ~/CYCO
 
-Start your preferred Lisp,  here <a href='http://www.sbcl.org/'>SBCl</a> is assumed.
+Start your preferred Lisp (<a href='http://www.sbcl.org/'>SBCl</a> is assumed).
 
 $ sbcl
 
@@ -52,16 +52,11 @@ While using CYCO the Lisp prompt changes to :CYCO.  The exact prompt text
 changes to reflect the current project name.
 </pre>
 <hr/>
-<h4 class="section-head">Optional Configuration Profiles</h4>
+<h4 class="section-head">Optional Configuration</h4>
 <p class="body">
-    Profiles are optional but highly suggesetd.&nbsp;       See the next page for more details.</p>
+    CYCO may be customized by loading plugins to add    additional functionality.&nbsp;   One of the most important uses for plugins is to    define the local MIDI environment.&nbsp;  The <nobr>'general-midi'</nobr> plugin is provided    as a default fallback.&nbsp;  Unless otherwise noted all of the example projects    use the <nobr>general-midi</nobr> plugin.nbsp; To load the general-midi plugin use:</p>
 <pre class="code">
-
-CYCO: (load-profile)
-
-;; If the above line does not work try
-
-CYCO: (load-profile 'general-midi)
+CYCO: (plugin 'general-midi)
 </pre>
 <hr/>
 <h4 class="section-head">Snapshots</h4>
@@ -76,7 +71,7 @@ CYCO: (save-snapshot "name-of-snapshot")
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="home.html">Home</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="plugins.html">Plugins</a>
 
 </div>
 </body>

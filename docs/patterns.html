@@ -17,7 +17,7 @@
 <div id="page_wrapper">
 <a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="plugins.html">Plugins</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
 
 <h2 class="section-head">Patterns</h2>
@@ -36,47 +36,64 @@
     <li><a href='#wrapper'>Function Wrapper</a></li>
     <li><a href='#walker'>Random Walks</a></li>
     <li><a href='#markov.html'>Markov Chains</a></li>
+    <li><a href='#shift-register.html'>Shift Register</a></li>
     <li><a href='#slew'>Pattern Slew</a></li>
     <li><a href='#nested'>Nested Patterns</a></li>
 </ul>
 <a id="pattern-functions"></a>
 <hr/>
 <h4 class="section-head">Pattern Functions</h4>
-<pre class="code">
-
-(NEXT-1 pattern)
-     Returns next value from pattern.
-
-(NEXT-N pattern n)
-     Returns next n values from pattern as a list.
-
-(NEXT pattern &optional n)
-     Returns next n (default 1) value(s) from pattern.
-     If n is :ALL return list of all values unevaluated.
-     If n is :REST return then remaining values as a list.
-
-(RESET pattern)
-     Restores pattern state to initial condition
-
-(PATTERN-P obj)
-     Predicate, true if object is a Pattern.
-
-(CARDINALITY pattern)
-     Returns number of elements in pattern.
-     Note: Some pattern types have a natural length while for other types
-           the cardinality is arbitrary.
-
-(REMAINING pattern)
-     Returns number of elements yet to be returned.
-     Note: The comment about pattern cardinality applies here as well.
-</pre>
+<b class="definition">(NEXT-1 pattern)</b><br>
+<p class="synopsis">Returns next value from pattern.</p>
+<b class="definition">(NEXT-N pattern n)</b><br>
+<p class="synopsis">Returns list of next n pattern values.</p>
+<b class="definition">(NEXT pattern &optional n)</b><br>
+<p class="synopsis">By default returns next value from pattern (as per NEXT-1).<br>
+If n is a positive integer, returns list of next n values (as per NEXT-N).<br>
+If n is the keyword :ALL, returns list of all elements from the pattern.<br>
+If n is the keyword :REST, returns list of all values yet to be returned.</p>
+<p class="synopsis">The behavior of the :ALL and :REST options is not consistent across all
+pattern types.   For instance with a Markov Chain, ALL and REST do not have 
+obvious meanings. In such cases the results are somewhat arbitrary.</p>
+<b class="definition">(VALUE pattern)</b><br>
+<p class="synopsis">Returns the current value of pattern.</p>
+<b class="definition">(RESET pattern)</b><br>
+<p class="synopsis">Restore pattern, and all nested patterns, to their initial state.</p>
+<b class="definition">(PATTERN-P object)</b><br>
+<p class="synopsis">Predicate, true if object is a Pattern.</p>
+<b class="definition">(CARDINALITY pattern)</b><br>
+<p class="synopsis">Returns the number of elements in the pattern.<br>
+Cardinality is not well defined for all pattern types.</p>
+<b class="definition">(REMAINING pattern)</b><br>
+<p class="synopsis">Returns count of elements yet to be returned.<br>
+Remaining is not well defined for all pattern types.</p>
+<b class="definition">(-&gt;PATTERN object &key ptype)</b><br>
+<p class="synopsis">Coerce object to a Pattern.<br>
+If (PATTERN-P object) is true, return object.<br>
+Otherwise return pattern of type ptype with object as an element.&nbsp;
+ptype defaults to CYCLE.</p>
+<b class="definition">(TRANSPOSE pattern n)</b><br>
+<p class="synopsis">Apply key transposition to pattern elements.<br>
+Transpose is not defined for all pattern types, where undefined 
+returns the pattern unaltered.</p>
+<b class="definition">(INVERT pattern pivot)</b><br>
+<p class="synopsis">Apply key inversion on pattern elements.<br>
+Invert is not defined for all pattern types, where undefined
+returns pattern unaltered.</p>
+<b class="definition">(RETROGRADE pattern)</b><br>
+<p class="synopsis">Reverse order of pattern elements.<br>
+Retrograde is not defined for all pattern types, where undefined
+returns pattern unaltered.</p>
+<b class="definition">(clone pattern)</b><br>
+<p class="synopsis">Returns a deep copy of pattern.  The original and the 
+clone will have no objects in common.</p>
 <a id="line"></a>
 <hr/>
-<h4 class="section-head">Line Pattern</h4>
-<p class="body">
-    A <em>Line</em> is a simple pattern which returns it's values in    sequence until the final value is reached.  Thereafter a line continues to    return the final value indefinitely.</p>
+<b class="definition">(LINE &key of)</b><br>
+<p class="synopsis">A <em>Line</em> is a simple pattern which returns values in
+sequence until the final value is reached.  Thereafter it continues to
+return the final value indefinitely.</p>
 <pre class="code">
-
 (param foo (line :of '(A B C)))
 
 (next foo)  --> A
@@ -87,11 +104,10 @@
 </pre>
 <a id="cycle"></a>
 <hr/>
-<h4 class="section-head">Cycle Pattern</h4>
-<p class="body">
-    A <em>Cycle</em> is a pattern which returns it's elements in a cyclical    manner.</p>
+<b class="definition">(CYCLE &key of)</b><br>
+<p class="synopsis">A <em>Cycle</em> is a pattern which returns elements in a cyclical
+manner.</p>
 <pre class="code">
-
 (param cyc (cycle :of '(A B C)))
 
 (next cyc) --> A
@@ -103,11 +119,11 @@
 </pre>
 <a id="bag"></a>
 <hr/>
-<h4 class="section-head">Bag Pattern</h4>
-<p class="body">
-    A <em>Bag</em>&nbsp;&nbsp;returns elements randomly without replacement.  Once    all elements have been returned,  future calls to next returns a designated    final element.   The final element may itself be a Pattern.</p>
+<b class="definition">(BAG &key of final)</b><br>
+<p class="synopsis">A <em>Bag</em>&nbsp;&nbsp;returns elements randomly without replacement.  Once
+all elements have been returned, indefinitely returns a designated
+final element.   The final element may itself be a Pattern.</p>
 <pre class="code">
-
 (param bg (bag :of '(A B C) :final 1234))
 
 (next bg) --> B
@@ -130,11 +146,9 @@ The final argument may be another pattern.
 </pre>
 <a id="dice"></a>
 <hr/>
-<h4 class="section-head">Dice Pattern</h4>
-<p class="body">
-    A <em>Dice</em> returns elements at random with replacement.</p>
+<b class="definition">(DICE &key of)</b><br>
+<p class="synopsis">A <em>Dice</em> returns elements at random with replacement.</p>
 <pre class="code">
-
 (param dc (dice :of '(A B C)))
 
 (next dc) --> B
@@ -147,9 +161,8 @@ The final argument may be another pattern.
 <hr/>
 <h4 class="section-head">Coin Pattern</h4>
 <p class="body">
-    A <em>Coin</em> is like a two-sided dice but has the ability to call    functions.</p>
+    A <em>Coin</em> is like a two-sided dice but with the ability to call    functions.</p>
 <pre class="code">
-
 (coin :p n :head value :tail value :period n)
 
 :p n - sets probability of getting a 'head', default 0.5
@@ -169,11 +182,18 @@ The final argument may be another pattern.
 <pre class="code">
 (next-n (coin) 10) --> (T T NIL T T NIL NIL NIL NIL NIL)
 </pre>
+<p class="body">
+    The RETROGRADE method swaps head/tail probability.</p>
+<pre class="code">
+(param foo (coin :p 0.75))     ;; create coin with head probability of 75%.
+(retrograde foo)               ;; head probability now 25%.
+</pre>
 <a id="wrapper"></a>
 <hr/>
-<h4 class="section-head">Wrapper Pattern</h4>
-<p class="body">
-    A <em>Wrapper</em> allows a function to be treated as a Pattern.  The function     should take a single argument and return whatever it will.  Each call to next-1    calls the function with an ever increasing integer value.</p>
+<b class="definition">(WRAPPER &key (of #'identity)(period 16))</b><br>
+<p class="synopsis">A <em>Wrapper</em> allows a function to be treated as a Pattern.  The function 
+should take a single argument and return whatever it will.  Each call to next-1
+calls the function with an ever increasing integer value.</p>
 <pre class="code">
 (wrapper &key (of #'identity)(period 16))
 
@@ -194,9 +214,9 @@ The final argument may be another pattern.
 </pre>
 <a id="walker"></a>
 <hr/>
-<h2 class="section-head">Walker</h2>
-<p class="body">
-    A <em>Walker</em> is a pattern that random walks over it's elements.  Any element     which is a Pattern is called recursively.</p>
+<b class="definition">(WALKER &key of)</b><br>
+<p class="synopsis">A <em>Walker</em> is a pattern that random walks over it's elements. Nested patterns 
+are called recursively.</p>
 <pre class="code">
 (walker &key of)
 
@@ -206,17 +226,16 @@ The final argument may be another pattern.
 
 (param cyc (cycle :of '(APE BAT CAT)))
 (param baz (walker :of (list 1 2 3 cyc)))
-(next baz 8) --> (APE 1 BAT 3 2 1 2 3)
+(next baz 9) --> (APE 1 BAT 3 2 1 2 3 CAT)
 </pre>
 <a id="slew"></a>
 <hr/>
-<h2 class="section-head">Pattern Slew</h2>
-<p class="body">
-    A <em>Slew</em> is a modifier which extends the length of another pattern.</p>
+<b class="definition">(SLEW pattern delay)</b><br>
+<p class="synopsis">A <em>Slew</em> is a modifier which extends the length of another pattern.</p>
 <pre class="code">
 (slew pattern delay)
 
-(param foo (slow (cycle :of '(A B C)) 3))
+(param foo (slew (cycle :of '(A B C)) 3))
 (next foo 12) --> (A A A B B B C C C A A A)	   
 
 
@@ -244,17 +263,16 @@ The final argument may be another pattern.
 ;;
 (param foo (cycle :of (list 'A 'B (line :of '(1 2 3)))))
 (next-n foo 15) --> (A B 1 A B 2 A B 3 A B 3 A B 3)
-
 	    
 ;; A dice of cycle and line
 ;;
-(param foo (dice :of (list (cycle :of '(A B C)(line :of '(1 2 3))))))
+(param foo (dice :of (list (cycle :of '(A B C))(line :of '(1 2 3)))))
 (next-n foo 16) --> (1 2 A 3 B C 3 A 3 B 3 C 3 A B 3)
 </pre>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="configuration.html">Configuration</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="plugins.html">Plugins</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
 
 </div>

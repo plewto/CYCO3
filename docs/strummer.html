@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Strummer</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="qball.html">Qball</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+
+<h2 class="section-head">Strummer</h2>
+<hr/>
+<p class="body">
+    A <i>STRUMMER</i>&nbsp; is a PART with heavy emphasis on producing    chords.<br>Strummer features:</p>
+<ul>
+    <li>Alternate chord models</li>
+    <li>Chord inversions</li>
+    <li>Strum chords with acceleration and direction patterns.</li>
+    <li>Grace Notes</li>
+    <li>Amplitude scale notes across a chord.</li>
+    <li>Amplitude patterns including crescendos.</li>
+    <li>Amplitude randomization.</li>
+    <li>Simple events for bend, MIDI controller and program changes.</li>
+</ul>
+<b class="definition">(MAKE-STRUMMER name instrument &key ...)</b><br>
+<b class="definition">(STRUMMER name instrument &key ...)</b><br>
+<p class="synopsis">Create Strummer part. MAKE-STRUMMER and STRUMMER are
+identical except that strummer binds the new object to a symbol with the
+same name.  The following two lines are equivalent.</p>
+<pre class="code">
+(param foo (make-strummer 'foo instrument ...))   ;; name must be quoted
+(strummer foo instrument ...) 	                  ;; name must -not- be quoted
+</pre>
+<p class="synopsis">Keyword options:</p>
+<pre class="code">
+:section      - Parent section, defaults to current section of *PROJECT*
+:cuefn        - Cueinig function, defaults to section value.
+:shift        - Initial offset time (ISSUE: Verify shift is implemented)
+:tempo        - Default inherited from section.
+:unit         - Default inherited from section.
+:bars         - Default inherited from section.
+:beats        - Default inherited from section.
+:subbeats     - Default inherited from section.
+:render-once  - Boolean, if true do not repeat events when rendered.
+:transposable - Boolean, if false transpose and invert methods have no effect.
+:reversible   - Boolean, if false retrograde method has no effect.
+:chord-model  - Default inherited from section.
+:remarks      - Optional remarks text.
+:events       - List, see below.
+</pre>
+<p class="body">
+    Strummer events are specified as a nested list of <i>clauses</i>&nbsp;    where each clause begins with a keyword and then zero or more    arguments.&nbsp; The exact number of arguments is dependent of the specific    command.&nbsp; Commands fall into one of three categories:</p>
+<ol>
+    <li>Test<br><em class='footnote'>:TRACE :BREAK</em></li>
+    <li>Parameter values.  Most of the commands set a parameter value,
+such as note amplitude or duration.<br>
+These do not produce any events and remain in effect until explicitly changed.<br>
+<em class='footnote'>:RESET :TIME :CHORD :INVERSION :OCTAVE :STRUM :STRUM* :DIRECTION<br>
+:AMP* :END-TOGETHER :GRACE-AMP* :GRACE-DURATION :GRACE-DELAY<br>
+:DUR :AMP :CRES :AMP-BLUR :AMP-LIMITS</em></li>
+    <li>Generators, these commands produce one or more MIDI events.<br>
+<em class='footnote'>:KEY :GRACE :BEND :CC :PROGRAM :BANK</em></li>
+</ol>
+<b class="argument">:TRACE-OFF</b><br>
+<b class="argument">:TRACE-ON</b><br>
+<p class="synopsis">Turn diagnostic tracing on/off.</p>
+<b class="argument">:BREAK</b><br>
+<p class="synopsis">Skip evaluation of remainder of events</p>
+<b class="argument">:RESET</b><br>
+<p class="synopsis">Returns all parameters to default values.</p>
+<b class="argument">:TIME (list xxx)</b><br>
+<p class="synopsis">Establish time for following events.&nbsp; The exact format
+is dependent on the <a href='event-timing.html'>cue-function.</a></p>
+<b class="argument">:CHORD name</b><br>
+<b class="argument">:CHORD (template-list)</b><br>
+<p class="synopsis">Specifies chord, either by name or as a list of key-number 
+offsets.&nbsp; A list of offsets is always relative to the current
+<nobr>key-number,</nobr> i.e. (0 4 7) is a major triad.&nbsp; Named chords 
+must be defined by the <a href='chords.html'>chord-model</a> in use.&nbsp; Use 
+the function (nobr>(?chord-mode model)</nobr> to display list of available
+chords.&nbsp; By convention chord names are enclosed in square brackets, as
+in [maj], though there are exceptions.&nbsp; Named chords may either be
+relative to the key-number, as above, or they may be a list of absolute
+key-numbers.&nbsp; depending on the chord-model.&nbsp; The default model, 
+<nobr>*CHORD-TABLE*,</nobr> uses relative chords.&nbsp; Chord models
+provided by the fretworks <a href='plugins.html'>plugin</a> use absolute chords.</p>
+<p class="synopsis">To effectively disable chords use (0).</p>
+<b class="argument">:INVERSION n</b><br>
+<p class="synopsis">Sets chord <a href='chords.html'>inversion.</a></p>
+<b class="argument">:OCTAVE n</b><br>
+<p class="synopsis">Adds <a href='chords.html'>octave copy</a> of initial note to chord template.</p>
+<b class="argument">:STRUM delay</b><br>
+<p class="synopsis">Sets delay time between individual chord notes.&nobr; The
+delay may either be in absolute seconds, or a relative <a
+href='metrics.html'>metric expression.</a></p>
+<pre class="code">
+:strum 0.01     ;; produce chord notes 1/100 second apart, ignores tempo.
+:strum s        ;; produce chord notes with sixteenth note delay, sensitive to tempo.
+</pre>
+<b class="argument">:STRUM* s</b><br>
+<p class="synopsis">Adds acceleration to strummed notes.</p>
+<pre class="code">
+0.125 &le; s &le; 8.00, default 1.0 = no acceleration.
+</pre>
+<b class="argument">:DIRECTION d</b><br>
+<b class="argument">:DIRECTION list</b><br>
+<p class="synopsis">Sets strum direction pattern.&nbsp; Possible values are</p>
+<pre class="code">
+  down   - play notes in order
+  up     - reverse order
+  dice   - select up or down randomly
+  random - play notes in random order
+</pre>
+<p class="synopsis">A list it is treated as a cycle pattern applied over future key events.</p>
+<b class="argument">:AMP* s</b><br>
+<p class="synopsis">Applies amplitude scaling to chord notes.&nbsp; The first
+note is played at the nominal amplitude as<sup>0</sup>, 
+the second note is scaled to as<sup>1</sup>,
+the third to as<sup>2</sup>, etc.</p>
+<pre class="code">
+0.25 &le; s &le; 4.0
+</pre>
+<b class="argument">:END-TOGETHER no</b><br>
+<b class="argument">:END-TOGETHER yes</b><br>
+<p class="synopsis">Selects how chord note durations are handled.&nbsp; If the
+argument is no, the note endings are staggered in the same order they are
+played.&nbsp; If the argument is yes, all notes are held to same duration.</p>
+<b class="argument">:GRACE-AMP* s</b><br>
+<p class="synopsis">Grace note amplitude relative to nominal amplitude.</p>
+<pre class="code">
+0.25 &le; s &le; 4.0
+</pre>
+<b class="argument">:GRACE-DURATION d</b><br>
+<p class="synopsis">Grace note duration.  Argument may be in absolute seconds
+or a <a href='metrics.html'>metric expression.</a></p>
+<b class="argument">:GRACE-DELAY dly</b><br>
+<p class="synopsis">Grace note onset delay relative to current time. Argument
+may be absolute time in seconds or a <a href='metrics.html'>metric expression.</a></p>
+<b class="argument">:DUR d</b><br>
+<p class="synopsis">Note duration. Argument
+may be absolute time in seconds or a <a href='metrics.html'>metric expression.</a></p>
+<b class="argument">:AMP a</b><br>
+<b class="argument">:AMP list</b><br>
+<p class="synopsis">Sets note <a href='dynamics.html'>amplitude</a> pattern. 
+If the argument is a list, it is treated as a cycle pattern and applied to
+future key events.</p>
+<b class="argument">:CRES start end count</b><br>
+<p class="synopsis">Sets up crescendo/decrescendo over the next count
+notes.&nbsp; Once final amplitude has been reached it remains in effect
+until explicitly changed.</p>
+<pre class="code">
+count - number of steps  0 &lt; count
+start - initial <a href='dynamics.html'>amplitude</a>
+end   - final amplitude.
+</pre>
+<b class="argument">:AMP-BLUR s</b><br>
+<p class="synopsis">Amplitude blurring ratio.</p>
+<pre class="code">
+0.0 &le; s &le; 1.0
+A value of 0.0 disables blurring
+A value of 0.5 indicates nominal amplitude may be changed by up to 50%.
+</pre>
+<b class="argument">:AMP-LIMIT min max</b><br>
+<p class="synopsis">Sets limit on minimum and maximum amplitudes.<br>
+Amplitude related parameters (:AMP :AMP* :GRACE-AMP* :AMP-BLUR and :CRESS)
+are not allowed to exceed these limits.</p>
+<b class="argument">:KEY k</b><br>
+<p class="synopsis">Generate note event.&nbsp; key-number k is first
+processed by the instruments <a href='keynumber-maps.html'>keynumber-map.</a></p>
+<p class="synopsis">The actual events generated is determined by current chord,
+strum, amplitude and duration parameters.</p>
+<b class="argument">:GRACE k</b><br>
+<p class="synopsis">Produce a grace note.&nbsp; The key-number k is first 
+processed by the instruments <a href='keynumber-maps.html'>keynumber-map.</a></p>
+<p class="synopsis">Grace notes are single-events only which ignore 
+chord and strum parameters.</p>
+<b class="argument">:BEND b</b><br>
+<p class="synopsis">Produce a single MIDI pitch-bend event.&nbsp; Use a 
+<a href='controllers.html'>Controllers part</a> for more complex options.</p>
+<pre class="code">
+-1.0 &le; b &le; +1.0
+</pre>
+<b class="argument">:CC ctrl value</b><br>
+<p class="synopsis">Produce a single MIDI controller event.&nbsp; Use a 
+<a href='controllers.html'>Controllers part</a> for more complex options.</p>
+<pre class="code">
+ctrl - integer controller number  0,1,2,...,127
+value - <i>normalized</i> value  0 &le; value &le; 1.0
+</pre>
+<b class="argument">:PROGRAM prg</b><br>
+<b class="argument">:BANK bnk prg</b><br>
+<p class="synopsis">Produce program-change events.&nbsp The exact format for
+program prg and bank bnk arguments is dependent on the instrument's 
+<a href='program-maps.html'>program-map</a>.&nbsp; in either case the 
+symbol 'default selects the default program and/or bank.&nbsp;  Most
+program-maps <i>should</i> treat integer arguments as MIDI program numbers.</p>
+<hr/>
+<h4 class="section-head">Example Strummer Usage</h4>
+<p class="body">
+    TODO: ADD STRUMMER EXAMPLE</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="qball.html">Qball</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="controllers.html">Controllers</a>
+
+</div>
+</body>
+</html>

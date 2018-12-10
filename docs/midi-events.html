@@ -23,15 +23,15 @@
 <h2 class="section-head">MIDI Events</h2>
 <hr/>
 <p class="body">
-    MIDI events are a low-level structure.  Typically they are    not handled directly while creating a score but they exists just below the surface.      <br><br><br>A MIDI Event is defined as a list of form    <b>&nbsp;<nobr>(time&nbsp;midi-message)</nobr></b>&nbsp;.        <br><br>The following low-level functions return midi-messages.</p>
+    MIDI events are a low-level structure.  Typically they are    not handled directly while creating a score but exists just below the surface.      <br><br><br>A MIDI Event is defined as a list of form    <b>&nbsp;<nobr>(time&nbsp;midi-message)</nobr></b>&nbsp;.        <br><br>The following low-level functions return midi-messages.</p>
 <pre class="code">
-(MIDI-NOTE-ON  channel keynumber velocity)
-(MIDI-NOTE-ON channel keynumber velocity)
-(MIDI-POLY-PRESSURE channel keynumber value)
-(MIDI-CONTROL-CHANGE channel controller-number value)
-(MIDI-CHANNEL-PRESSURE channel value)
-(MIDI-PROGRAM-CHANGE channel program-number)
-(MIDI-PITCH-BEND channel lsb msb) * see below
+(MIDI-NOTE-ON  channel-index key-number velocity)
+(MIDI-NOTE-ON channel-index key-number velocity)
+(MIDI-POLY-PRESSURE channel-index key-number value)
+(MIDI-CONTROL-CHANGE channel-index controller-number value)
+(MIDI-CHANNEL-INDEX-PRESSURE channel-index value)
+(MIDI-PROGRAM-CHANGE channel-index program-number)
+(MIDI-PITCH-BEND channel-index lsb msb) * see below
 (MIDI-SYSTEM-EXCLUSIVE 	data)
 (MIDI-END-SYSTEM-EXCLUSIVE)
 (MIDI-META-TEXT text)
@@ -44,19 +44,20 @@
 (MIDI-TEMPO-CHANGE bpm)
 (MIDI-TIME-SIGNATURE num unit)
 (MIDI-KEY-SIGNATURE sf &optional (minor nil))
-
-channel is an integer MIDI channel number between 1 and 16 inclusive.
-All MIDI data values are integers between 0 and 127 inclusive.  
-MIDI pitch bend is specified as two 7-bit bytes.  Two functions are available 
-to convert between the lsb and msb bend bytes and a signed-normalized form.
-
-(BEND->MIDI-DATA value)
-     Converts bend amount to vector #(lsb msb)
-     The bend depth is a singed normalized float -1.0 &le; value &le; 1.0
-
-(MIDI-DATA->BEND lsb msb)
-     Convert bend lsb and msb bytes to signed normal form.
 </pre>
+<p class="body">
+    A Note on MIDI channels: MIDI specifies channel numbers between    <nobr>1 and 16</nobr> inclusive.&nbsp; However for actual transmission the    range used is <nobr>0 to 15.</nobr> CYCO endeavors to always use the    <nobr>1-16</nobr> range for user facing values, but by necessity the    <nobr>0-15</nobr> range is required behind the scenes.&nbsp; In order to    distinguish these two closely related ranges the following    convention is strictly adhered to.</p>
+<ul>
+    <li><b>channel-index</b> - Refers to the actual binary range 0-15.</li>
+    <li><b>channel</b> - The unmodified term <i>channel</i> always
+refers to the range of <nobr>1-16</nobr></li>
+</ul>
+<b class="definition">(BEND->MIDI-DATA value)</b><br>
+<p class="synopsis">Converts <i>normalized</i> bend amount to vector #(lsb,msb)<br>
+Where value is a float -1.0 &le; value &le; +1.0</p>
+<b class="definition">(MIDI-DATA->BEND lsb msb)</b><br>
+<p class="synopsis">Converts lsb and msb MIDI bend data bytes to normalized
+form.<br> Returns float.</p>
 <hr/>
 <h4 class="section-head">Event List</h4>
 <p class="body">

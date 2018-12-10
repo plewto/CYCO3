@@ -17,20 +17,20 @@
 <div id="page_wrapper">
 <a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="shift-register.html">Shift-Register</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="dynamics.html">Dynamics</a>
 
-<h2 class="section-head">Keynumbers</h2>
+<h2 class="section-head">Key Numbers</h2>
 <hr/>
-<h4 class="section-head">Numeric keynumbers</h4>
+<h4 class="section-head">Numeric key Numbers</h4>
 <p class="body">
-    CYCO use the standard MIDI keynumbers 0..127 but treats all negative values    as rest.   The canonical rest value is -1.</p>
+    CYCO use the standard MIDI key-numbers 0..127 but treats all negative values    as rest.   The canonical rest value is -1.</p>
 <hr/>
-<h4 class="section-head">Symbolic Keynumbers</h4>
+<h4 class="section-head">Symbolic Key-numbers</h4>
 <p class="body">
-    Symbolic keynumbers have the <nobr>form:&nbsp;&nbsp;&nbsp; root-key + optional accidental + octave.</nobr>    <br><br>Where root keys are one of:  <b>C   D   E   F   G   A  or  B </b>.    <br>Optional accidentals are either <b>F</b> for flat or <b>S</b> for sharp.    <br>Octave numbers are between 0 and 10 inclusive.</p>
+    Symbolic key-numbers have the <nobr>form:&nbsp;&nbsp;&nbsp; root-key + optional accidental + octave.</nobr>    <br><br>Where root key is one of:  <b>C   D   E   F   G   A  or  B </b>.    <br>Optional accidental is either <b>F</b>&nbsp;(flat) or <b>S</b>&nbsp;(sharp).    <br>Octave number is between 0 and 10 inclusive.</p>
 <p class="body">
-    A few examples:    <br><b>AS4</b> = <b>BF4</b> = keynumber 58    <br><b>B4</b> = keynumber 59    <br><b>C5</b> = keynumber 60, 'Middle C'    <br><b>CS5</b> = <b>DF5</b> = keynumber 61    <br><br>Enharmonic values are defined for b-sharp, c-flat, e-sharp and f-flat:    <br><b>BS4</b> = <b>CF5</b>  and <b>ES5</b> = <b>FF5</b>    <br><br>The symbol <b>R</b> is a rest with value -1.    </p>
+    A few examples:    <br><b>AS4</b> = <b>BF4</b> = key-number 58    <br><b>B4</b> = key-number 59    <br><b>C5</b> = key-number 60, 'Middle C'    <br><b>CS5</b> = <b>DF5</b> = key-number 61    <br><br>Enharmonic values are defined for b-sharp, c-flat, e-sharp and f-flat:    <br><b>BS4</b> = <b>CF5</b>  and <b>ES5</b> = <b>FF5</b>    <br><br>The symbol <b>R</b> is a rest with value -1.    </p>
 <hr/>
 <h4 class="section-head">Keynumber functions</h4>
 <b class="definition">(KEYNUMBER obj)</b><br>
@@ -41,41 +41,41 @@
 (keynumber 'r)   --> -1
 (keynumber 'c4)  --> 48
 
-Most keynumber related functions may be called with a nested list argument.
+Most key-number related functions may be called with a nested list argument.
 (keynumber '(20 30 40 (c4 c5 c6)) --> (20 30 40 (48 60 72)))
 </pre>
 <b class="definition">(KEYNUMBER-P obj)</b><br>
-<p class="synopsis">Predicate, true if argument is a keynumber.</p>
+<p class="synopsis">Predicate, true if argument is a key-number.</p>
 <b class="definition">(REST-P obj)</b><br>
-<p class="synopsis">Predicate, true if argument is a keynumber with negative value.</p>
+<p class="synopsis">Predicate, true if argument is a key-number with negative value.</p>
 <b class="definition">(PITCH-CLASS obj)</b><br>
-<p class="synopsis">Returns integer pitch-class of keynumber or list of keynumbers.
-The pitch class is the keynumber <nobr>mod 12.</nobr>&nbsp; All negative values have pitch class 
+<p class="synopsis">Returns integer pitch-class of key-number or list of key-numbers.
+The pitch class is the key-number <nobr>mod 12.</nobr>&nbsp; All negative values have pitch class 
 of -1.</p>
 <b class="definition">(OCTAVE obj)</b><br>
-<p class="synopsis">Returns octave number of keynumber or list of keynumbers.&nbsp;  
-All negative keynumbers have octave value -1.</p>
+<p class="synopsis">Returns octave number of key-number or list of key-numbers.&nbsp;  
+All negative key-numbers have octave value -1.</p>
 <b class="definition">(KEYNAME obj)</b><br>
-<p class="synopsis">Returns symbolic name of keynumber or list of keynumbers.&nbsp;
+<p class="synopsis">Returns symbolic name of key-number or list of key-numbers.&nbsp;
 All negative values have name 'R.<br>
-For keynumbers with more then one name, 
+For key-numbers with more then one name, 
 i.e. CS5 and DF5,  the sharp version is returned.</p>
 <b class="definition">(TRANSPOSE key n)</b><br>
-<p class="synopsis">Transposes keynumber or list of keynumbers by n steps.<br>
+<p class="synopsis">Transposes key-number or list of key-numbers by n steps.<br>
 Rest are always transposed to -1.<br>
 Out of bound results are automatically shifted to pitch-equivalent in-bounds value.
 The n argument may be nil</p>
 <b class="definition">(INVERT key pivot)</b><br>
-<p class="synopsis">Apply key inversion on keynumber or list of keynumbers.  
+<p class="synopsis">Apply key inversion on key-number or list of key-numbers.  
 The pivot point maybe an integer, symbolic-keynumber or nil.</p>
 <b class="definition">(DEFKEYNUMBER symbol value)</b><br>
-<p class="synopsis">Define user keynumber.<br>
+<p class="synopsis">Define user key-number.<br>
 value should be an integer between -1 and 127 inclusive.<br>
-The keyname function does not recognize user-defined keynumbers.</p>
+The keyname function does not recognize user-defined key-numbers.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="markov-chains.html">Markov-Chains</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="shift-register.html">Shift-Register</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="dynamics.html">Dynamics</a>
 
 </div>

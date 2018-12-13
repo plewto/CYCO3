@@ -24,11 +24,11 @@
 <hr/>
 <img class="center" src="shift-register.gif" alt="Shift Register Animation"/>
 <p class="body">
-    A <a href='https://en.wikipedia.org/wiki/Linear-feedback_shift_register'>Shift Register</a>&nbsp;    is a <a href='patterns.html'>Pattern</a> capable of producing a wide range    of numeric sequences.&nbsp; It consist of up to 16 <i>cells</i>, each holding    either 0 or 1.&nbsp; Upon a shift operation the contents of the cells are    shift one place to the left.&nbsp; Any cell may be selected as a feedback    <i>tap</i>.&nbsp; Prior to a shift the tapped cells containing 1 are    counted, if the count is odd then a 1 is inserted into the <nobr>right-most</nobr>    space.&nbsp; If the count is even the feedback value is 0.</p>
+    A <a href='https://en.wikipedia.org/wiki/Linear-feedback_shift_register'>Shift Register</a>&nbsp;    is a <a href='patterns.html'>Pattern</a> capable of producing a wide range    of numeric sequences.&nbsp; The device consist of up to 16 <i>cells</i>, each holding    either 0 or 1.&nbsp; Upon a shift operation the contents of the cells are    shift one place to the left.&nbsp; Any cell may be selected as a feedback    <i>tap</i>.&nbsp; Prior to a shift the tapped cells containing 1 are    counted, if the count is odd then a 1 is inserted into the <nobr>right-most</nobr>    space.&nbsp; If the count is even the feedback value is 0.</p>
 <p class="body">
-    The nominal register <i>value</i> is the weighted binary sum    of the cells, and values expressed in binary directly indicate the    current register state.&nbsp; Likewise the selected feedback taps are    directly indicated by numbers formatted as binary.</p>
+    The nominal register <i>value</i> is the weighted binary sum    of the cells, and values expressed in binary directly illustrate the    current register state.&nbsp; Likewise the selected feedback taps are    directly indicated by numbers formatted as binary.</p>
 <p class="body">
-    If the register is shifted with no feedback taps, the current value    is shifted to the left with a 0 padding it from the right.&nbsp; Eventually    all non-zero cells are shifted out and the value becomes 0    indefinitely.&nbsp; With a single tap the sequence of values is endlessly    repeated with a period determined by the tap position.</p>
+    If the register is shifted without feedback, the current value    is shifted to the left with a 0 padding it from the right.&nbsp; Eventually    all non-zero cells are shifted out and the value becomes 0    indefinitely.&nbsp;         With a single tap a sequence of values is repeat endlessly    with a period determined by the tap position.</p>
 <p class="body">
     The plot thickens when more then one feedback tap is selected.&nbsp; The    resulting sequence is dependent on the specific taps selected and the    initial <i>seed</i> value.&nbsp; In all cases the register will enter a    cyclical pattern of some sort, with the maximum possible period of     2<sup>n</sup>.&nbsp; Where n is the register length.&nbsp; It is not trivial to    predict the period length but most will be less then the maximum    possible.&nbsp; In many cases the register will produce an initial sequence    of values before entering the cyclical phase.</p>
 <p class="body">
@@ -91,7 +91,7 @@ taps    - Feedback taps, 0 &le; taps &le; #xffff
           before it enters the cyclical phase.
 
 The effective value is determined by the following composition, where V is
-the nominal register value.
+the nominal value.
 
         (+ (rem (logand v mask) base) bias)
 </pre>

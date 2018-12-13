@@ -34,7 +34,8 @@
 <hr/>
 <h4 class="section-head">Project File Structure</h4>
 <p class="body">
-    Each project has it's own directory in <b>~/cyco-projects/</b>.&nbsp;  The project     directory has the same name as the project, but converted to lower-case,  and all     project related files are store there.  The main project file is named 'main.lisp'.      A project named 'Foo' has the following directory structure:</p>
+    Each project has it's own directory in <b>~/cyco-projects/</b>.&nbsp;  The project     directory has the same name as the project, but converted to lower-case,  and all     project related files are store there.  <strike>The main project file is named 'main.lisp'.      A project named 'Foo' has the following directory structure:</strike></p>
+<p class="footnote">TODO change project main file name to  name-main.lisp</p>
 <pre class="code">
 ~/cyco-projects/
     |
@@ -107,15 +108,12 @@ CYCO(FOO): (lpf)           - reloads verse.
     The project object is responsible for generally holding everything together and     establishing default values.</p>
 <b class="definition">(MAKE-PROJECT name &key ...)</b><br>
 <b class="definition">(PROJECT name &key ...)</b><br>
-<p class="synopsis">MAKE-PROJECT and PROJECT are nearly identical, the only practical difference 
-is that PROJECT binds the new object to a symbol with the project's name.  With 
-MAKE-PROJECT the name argument should be a quoted symbol.  With PROJECT do not quote 
-the name.  Both take the same set of keyword arguments and the following two lines 
-are equivalent.</p>
+<p class="synopsis">MAKE-PROJECT and PROJECT are nearly identical, the only difference 
+is that PROJECT binds the new object to a symbol with the project's name. 
+The following two lines are equivalent.</p>
 <pre class="code">
-
-(param foo (make-project 'foo))
-(project foo)
+(param foo (make-project 'foo)) ;; name must be quoted
+(project foo)                   ;; name must -not- be quoted
 
 Keyword arguments:
 
@@ -139,13 +137,10 @@ Keyword arguments:
 <hr/>
 <h4 class="section-head">Defining an Orchestra</h4>
 <p class="body">
-    CYCO does not have an 'orchestra' class perse, instead the term implies    the instrument tree built on top of +ROOT-INSTRUMENT+.&nbsp;&nbsp;    Instruments fall in two general classes:</p>
+    CYCO does not have an 'orchestra' class perse, instead the term implies    the tree of instruments built on +ROOT-INSTRUMENT+ &nbsp;&nbsp;    Instruments fall in two general classes:</p>
 <ol>
-    <li><strike>Permanent (non-transient) instruments defined by the <a href="configuration.html">configuration</a>
- process.</li>
-    <li></strike></li>
-    <li>Temporary (transient) <a href="instruments.html">Instruments</a>
- defined by the project.</li>
+    <li>Permanent (no-transient) instruments, often defined by a <a href='plugins.html'>plugin</a>.</li>
+    <li>Temporary (transient), defined by the project.</li>
 </ol>
 <p class="body">
     If the orchestra is simple you may define it directly in the main file, otherwise     consider using LPF to load a dedicated 'orchestra' file.</p>
@@ -169,7 +164,7 @@ Keyword arguments:
 (seq-order '(verse verse chorus bridge verse))
 </pre>
 <p class="body">
-    To get more creative try including directives,    these modify how the a section is played.&nbsp; In the above example     the verse is repeated twice at the beginning.   Below the :x 2 directive    causes the first verse to be repeated.</p>
+    <i>Directives</i> modify how a section is played.&nbsp; In the above example     the verse is repeated twice at the beginning.   Below the :x 2 directive    causes the first verse to be repeated.</p>
 <pre class="code">
 (seq-order '((verse :x 2) chorus bridge verse))
 </pre>
@@ -202,12 +197,13 @@ seq-order directives
 For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
 </pre>
 <h4 class="section-head">Miscellaneous Comments</h4>
-<p class="body">
-    It is also possible to save individual sections to a MIDI file.  These are    often more useful, for example while 'tracking', then a project level file.</p>
-<p class="body">
-    The project structure may be examined by <b>(PRINT-TREE *project*)</b></p>
-<p class="body">
-    The <b>?</b> function is a great way to see information of just about anything.      Try <b>(? *project*)</b>.</p>
+<ul>
+    <li>Individual sections may be save to a MIDI file.<br>
+These are often more useful, for example while 'tracking', then a project level file.</li>
+    <li>The project structure may be examined by <b>(PRINT-TREE *project*)</b></li>
+    <li>The <b>?</b> function is a great way to see information of just about anything.  
+Try <b>(? *project*)</b>.</li>
+</ul>
 <a id="summery"></a>
 <hr/>
 <h4 class="section-head">Anatomy of Main Project File Structure</h4>

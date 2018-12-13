@@ -22,18 +22,16 @@
 
 <h2 class="section-head">Dynamic Maps</h2>
 <p class="body">
-    A <i>dynamic-map</i> &nbsp; is a function which defines an instrument's    dynamic response.   These maps may be used to either reduce or boost velocity levels of     overly loud/quite instrument.  The function form is:</p>
+    A <i>dynamic-map</i> &nbsp; is a function which defines an instrument's    dynamic response.   These maps may be used to reduce or boost velocity levels of     overly loud/quite instrument.</p>
 <pre class="code">
-(fn d)
+(lambda d) --&gt; float
 </pre>
-<p class="body">
-    and it should return a normalized float between 0 and 1 inclusive.</p>
 <b class="definition">(BASIC-DYNAMIC-MAP &key scale min max)</b><br>
 <p class="synopsis">Returns a simple dynamic-map function.</p>
 <pre class="code">
-scale - float scaling factor, default 1.0
-min and max - limits the range of results, defaults 0 and 1 respectively.
-The range test is applied after scaling.
+:scale  - float scaling factor, default 1.0
+:min :max - limits the range of results, defaults 0 and 1 respectively.
+            The range test is applied post scaling.
 </pre>
 <b class="definition">(METRONOME-DYNAMIC-MAP &key phrase bar beat)</b><br>
 <p class="synopsis">Creates dynamic-map function for use with metronomes.</p>
@@ -43,13 +41,13 @@ The range test is applied after scaling.
 <hr/>
 <h4 class="section-head">Articulation Maps</h4>
 <p class="body">
-    An <i>Articulation-Map</i>&nbsp; is a function which defines an instrument's    response to note duration. The function form is:</p>
+    An <i>Articulation-Map</i>&nbsp; is a function which defines an instrument's    response to note duration.</p>
 <pre class="code">
-(fn m &key time-scale)
+(lambda m &key time-scale) --&gt; float
 
 m - a metric value
-time-scale - scales result based on current tempo.
-Returns float, the note on time.
+:time-scale - scales result based on current tempo.
+              Returns float, the note on time.
 </pre>
 <b class="definition">(BASIC-ARTICULATION-MAP &key scale min max)</b><br>
 <p class="synopsis">Creates a simple articulation map.</p>

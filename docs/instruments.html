@@ -25,21 +25,15 @@
 <p class="body">
     An <i>Instrument</i>&nbsp; is a&nbsp;<a href="nodes.html">cyco-node</a>    &nbsp;which defines    the properties of an external MIDI device.  Essentially they are proxies for     external gear.  All Instruments are linked together in a tree rooted at     <br><b>+ROOT-INSTRUMENT+</b>.  CYCO does not define an 'orchestra' object perse,      instead the term 'orchestra' indicates the tree built on top of +ROOT-INSTRUMENT+.</p>
 <p class="body">
-    <strike>The lower branches of the orchestra are usually defined during&nbsp;<a href="configuration.html">configuration</a>    &nbsp;while Projects extend the orchestra for their specific needs.&nbsp; For example an Oberheim     synthesizer may be available, this would best be defined as a permanent instrument during     configuration.  A project may use the Oberheim for a bass part, this instrument would best     be defined at the project level by making 'bass' a child instrument off 'Oberheim'.    The Oberheim proper would establish MIDI channel and any other common parameters.      The project-level bass instrument would set the specific program number.  The project may     define any number of additional instruments off the Oberheim.</strike></p>
+    <a href='plugins.html'>Plugins</a>&nbsp; are useful for defining permanent    instruments, while <a href='projects.html'>projects</a> extend these for    specific requirements.&nbsp; For example an Oberheim synthesizer may be    available, this would best be defined as a permanent instrument.&nbsp; A    project may then define specific instruments, such as 'obx-bass' or    'obx-pad', as child instruments of the Oberheim.&nbsp; The Oberheim proper    would establish MIDI channel and any other common parameter.&nbsp; The    project level instruments would provide program-numbers and optional    mapping functions.</p>
 <p class="body">
     In practice instruments are divided into two group:</p>
 <ul>
-    <li>Non-Transient</li>
-    <li>Transient</li>
+    <li>Non-Transient - permanent</li>
+    <li>Transient - project-level</li>
 </ul>
 <p class="body">
-    <strike>Non-transient instruments are defined by the    configuration process.  These are instruments     which form the permanent collection of external gear.  Transient instruments are     defined at the project level,  these instruments are pruned from the orchestra when a     new project is created.  The project then defines it's own set of instruments.</strike></p>
-<p class="footnote">The reason for this transient/non-transient nonsense is to prevent the 
-orchestra from building up with unnecessary duplicate instruments.  While developing a 
-project it is not uncommon to repeatably reload it multiple times.  With each reload the 
-project defines a set of instruments.  If the old instruments are not removed the orchestra
-quickly becomes clogged with duplicates.   On the other hand you do not want remove the 
-permanent instruments each time a project is loaded.</p>
+    The reason for this transient/non-transient nonsense is to prevent the     orchestra from building up with unnecessary duplicate instruments.  While developing a     project it is common to repeatably load it multiple times.  With each reload the     project defines a set of instruments.  If the old instruments are not removed the orchestra    quickly becomes clogged with duplicates.   On the other hand you do not    	   want to remove the permanent instruments each time a project is loaded.</p>
 <h4 class="section-head">Instrument Properties</h4>
 <ul>
     <li><a href="program-maps.html">program-maps</a>
@@ -90,7 +84,7 @@ to an actual MIDI channel.  See Meta channels.</p>
 <p class="synopsis">+root-instrument+ is at then root of the orchestra tree and defines 
 sane defaults.  All instruments ultimately inherit from +root-instrument+.</p>
 <b class="definition">NULL-INSTRUMENT</b><br>
-<p class="synopsis">The null-instrument is an instrument which does not generate 
+<p class="synopsis">The null-instrument does not generate 
 MIDI events.  It may be used as a place holder instrument.</p>
 <b class="definition">(MAKE-INSTRUMENT name &key parent transient channel program bank keynumber-map dynamic-map articulation-map remarks)</b><br>
 <b class="definition">(INSTRUMENT name &key parent transient channel program bank keynumber-map dynamic-map articulation-map remarks)</b><br>
@@ -104,11 +98,10 @@ new instance to a symbol with the same name.  The following two lines are equiva
 <p class="synopsis">Arguments to MAKE-INSTRUMENT and INSTRUMENT</p>
 <pre class="code">
 :parent - the parent instrument, default +ROOT-INSTRUMENT+
-<strike>
-:transient - Boolean, Instruments created during configuration should set
-             transient to nil.  Instruments created by a project should set
-             transient to t.  Default t.
-</strike>
+:transient - Boolean.  Indicates whether this instrument should be purged 
+             from the orchestra when a project is loaded.  Permanent 
+             instruments should set transient to nil, project-level
+             instruments should be t. Default t
 :channel - MIDI channel,  see Meta Channels.
 :program - Default program number.  The program number form is dependent 
            on the program-map function.  

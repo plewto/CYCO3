@@ -23,7 +23,22 @@
 <h2 class="section-head">Chords</h2>
 <hr/>
 <p class="body">
-    Chords are implemented as a list of key-number offsets, i.e. the list     (0&nbsp;4&nbsp;7) is a major triad.&nbsp; As this is less then     mnemonic the global variable <b>*CHORD-TABLE*</b> contains around 100     predefined chord types.</p>
+    Chords are defined in one of two ways:</p>
+<ol>
+    <li>Relative - a list of key-number offsets, i.e. (0 4 7) for a major triad.</li>
+    <li>Absolute - a list of key-numbers, (60 64 67) for a C-Major triad.</li>
+</ol>
+<p class="body">
+    As these are less-then mnemonic there is a global    structure called <b>*CHORD-TABLE*</b> which defines about 100 chord-types    accessed by name.&nbsp; Use (?CHORDS) to print a list of available    chord-types.</p>
+<p class="body">
+    *CHORD-TABLE* basically takes a keyboardist view of    chords, there are other possibilities.&nbsp; The     <a href='Fretworks.html'>fretworks</a>&nbsp;    <a href='plugins.html'>plugin</a>&nbsp;    defines chords as they appear on fretted instruments.</p>
+<p class="footnote">TODO Currently, 13 December 2018, fretworks is not completely
+implemented.&nbsp; The basic structure is in place and the beginnings of a
+bass guitar model has been defined.&nbsp; A 6-string guitar should be
+defined soon.&nbsp At some future point ukulele, banjo and 
+mandolin may be added.</p>
+<p class="body">
+    Technically *CHORD-TABLE* and the structures defined by Fretworks are    instances of the <nobr><b>CHORD-MODEL</b></nobr> class.&nbsp; In use there is no real    difference between *CHORD-TABLE* and the fretted chord models.&nbsp; The    types of available chords will be different but otherwise they are used    the same way.&nbsp; *CHORD-TABLE* is the default model for all    <a href='projects.html'>projects.</a>&nbsp; Alternate    <nobr>chord-models</nobr> are selected at either the     <a href='sections.html'>Section</a> level&nbsp; or when using a    <a href='strummer.html'>Strummer</a>&nbsp;    <a href='parts.html'>Part.</a></p>
 <b class="definition">(DEFCHORD name template &optional description)</b><br>
 <p class="synopsis">Defines a new chord for default *CHORD-TABLE*.</p>
 <pre class="code">
@@ -44,23 +59,23 @@ degree - Sets number and direction of rotations applied to template.
          For positive values the template is rotated to the right degree times, with 
          the left most value transposed up an octave.  Negative values rotate to the
          left.
-         
+        
           template '(0 4 7)
-          degree --> result
-         -2 --> (-8 -5 0)
-         -1 --> (-5 0 4)
-          0 --> (0 4 7)    no rotation, root position
-          1 --> (4 7 12)   1st inversion
-          2 --> (7 12 16)  2nd inversion
-          3 --> (12 16 19) 
-   
+          degree --&gt; result
+            -2   --&gt; (-8 -5 0)
+            -1   --&gt; (-5 0 4)
+             0   --&gt; (0 4 7)    no rotation, root position
+             1   --&gt; (4 7 12)   1st inversion
+             2   --&gt; (7 12 16)  2nd inversion
+             3   --&gt; (12 16 19) 
+  
 :add-octave - Boolean, if true the first note <i>after rotation</i> is repeated 
               at end of template shifted up an octave.  For the above examples 
               with add-octave t
 
-         0 --> (0 4 7 12)
-         1 --> (4 7 12 16)
-         2 --> (7 12 16 19)
+         0 --&gt; (0 4 7 12)
+         1 --&gt; (4 7 12 16)
+         2 --&gt; (7 12 16 19)
 </pre>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>

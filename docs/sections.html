@@ -59,7 +59,7 @@ keyword arguments
 <a id="groups"></a>
 <b class="definition">(GROUP name members)</b><br>
 <p class="synopsis">Creates a new Group in the current section.  The group object is bound to the 
-symbol name</p>
+symbol name.</p>
 <pre class="code">
 name  - Symbol, the group name, do -not- quote.
 members - List of member part names.  The parts must exists within the section.
@@ -73,16 +73,18 @@ Example:
 <b class="definition">(MUTE group-or-part &optional state)</b><br>
 <p class="synopsis">Change mute state of group or part.  Possible states are:</p>
 <pre class="code">
-:mute  - mute part or all members of group.
+:mute   - mute part or all members of group.
 :unmute - unmute part or all members of group.
 :solo   - unmute this part or group, mute all sibling groups or parts.
+
+The default value, nil, leaves the current state as is.
 </pre>
 <b class="definition">(CLONE section &key new-name new-parent)</b><br>
 <p class="synopsis">Creates a clone of the section and all of it's member parts.</p>
 <pre class="code">
 :new-name   - By default the clone has the same name as the original. new-name
-               specifies a format string to convert the original name to the 
-               new-name.
+              specifies a format string to convert the original name to the 
+              new-name.
 
 :new-parent - By default the clone has the same parent as the original.  
               new-parent is used to change the parent of the clone.
@@ -107,8 +109,8 @@ Each event is shifted by offset seconds.</p>
 <p class="synopsis">Save section events to Standard MIDI File.</p>
 <pre class="code">
 :filename - MIDI filename relative to the projects MIDI directory.
-             For project foo and section verse, defaults to 
-             ~/cyco-projects/foo/MIDI/verse.mid
+            For project foo and section verse, defaults to 
+            ~/cyco-projects/foo/MIDI/verse.mid
 :offset - Time in seconds added to each event, default 0.0
 :repeat - Int, number of times to repeat section, default 1.
 :pad	- Float, number of seconds added to end of track, default 2.0.

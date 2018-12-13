@@ -23,11 +23,11 @@
 <h2 class="section-head">Plugins</h2>
 <hr/>
 <p class="body">
-    Plugins allow additional features to be added to CYCO.$nbsp; One of the    most important uses for plugins is to define the local MIDI    environment.&nbsp; Profile files reside at <nobr>~/.config/cyco/plugins/</nobr></p>
+    Plugins extend CYCO with additional features.&nbsp; One of the most important    uses for plugins is to define the local MIDI environment.&nbsp;    Plugin reside at <nobr>~/.config/cyco/plugins/</nobr></p>
 <p class="body">
-    The distribution folder <nobr>CYCO/plugins/</nobr> contains several    pre-defined plugins.&nbsp; You should either copy these to    .config.cyco/plugins or create a symbolic link between these to locations.</p>
+    The distribution folder <nobr>CYCO/plugins/</nobr> contains several    pre-defined plugins.&nbsp; You should either copy these to    <nobr>~/.config.cyco/plugins/</nobr> or create a symbolic link between these     locations.</p>
 <p class="body">
-    Each plugin is defined in a sub-folder with the same name, and the entry    point is a file named <i>name-main.lisp</i>&nbsp; For example the main file    for plugin 'foo' is:</p>
+    Each plugin is defined in a sub-folder with the same name, with the entry    point named <nobr><i>name-main.lisp</i></nobr>&nbsp; For plugin 'foo'     the main file is:</p>
 <pre class="code">
 ~/.config/cyco/plugins/foo/foo-main.lisp
 </pre>
@@ -44,8 +44,8 @@ argument may either be a string or symbol.</p>
 (load-plugin-file 'alpha)  ;; loads ~/.config/cyco/plugins/foo/alpha.lisp
 </pre>
 <b class="definition">(SUB-PLUGIN name)</b><br>
-<p class="synopsis">Loads the named plugin but does not make it the 'current'
-plugin.&nbsp; This allows new plugins to extend existing plugins.</p>
+<p class="synopsis">Loads the named plugin without making it 'current'.
+&nbsp; This allows a plugin to make use of an existing plugin.</p>
 <pre class="code">
 (plugin 'foo)              ;; loads ~/.config/cyco/plugins/foo/foo-main.lisp
 (load-plugin-file 'alpha)  ;; loads ~/.config/cyco/plugins/foo/alpha.lisp
@@ -65,13 +65,20 @@ being loaded.</p>
 <hr/>
 <h4 class="section-head">Anatomy of a Plugin</h4>
 <p class="body">
-    Other then the locations and file names described    above there are no pre-defined plugin structures; they are simply lisp    source files.&nbsp; The distribution contains a few    pre-defined plugins.  As of this wring <nobr>(8 December 2018)</nobr>    these are:</p>
-<ul>
-    <li>general-midi - A basic orchestra scheme based on <a href='https://en.wikipedia.org/wiki/General_MIDI'>General MIDI</a>.</li>
-    <li>sj - A much more involved scheme for my personal use,&nbsp; included for illustration only.</li>
-    <li>fretworks - A model of chords as played on fretted instruments (as yet incomplete).</li>
-    <li>pigiron - An OSC client for the PigIron MIDI utility (as yet incomplete).</li>
-</ul>
+    Other then the locations and file names described    above there are no pre-defined plugin structures; they are simply lisp    source files.</p>
+<a id="configuration"></a>
+<hr/>
+<h4 class="section-head">CYCO Configuration</h4>
+<p class="body">
+    Plugins evolved from a previous configuration feature used to define    the locally available MIDI devices.&nbsp; CYCO includes two     <nobr>configuration-like</nobr> plugins.</p>
+<ol>
+    <li>general-midi - A very basic scheme based  around 
+<a href='https://en.wikipedia.org/wiki/General_MIDI'>General MIDI</a>
+instruments.</li>
+    <li>sj - A more involved scheme used as my personal configuration.&nbsp;<br> 
+sj has been included solely for illustration, it is unlikely to be of 
+use to anyone but myself.</li>
+</ol>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

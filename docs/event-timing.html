@@ -78,12 +78,12 @@ cue-functions may treat out of bounds values differently.
 <p class="body">
     In general a cue-function has the form:</p>
 <pre class="code">
-(lambda time-signature arguments)
+(lambda time-signature arguments) --&gt; float
 </pre>
 <p class="body">
-    Where arguments is the user-supplied cue-point as a list.   The function    should return a float.</p>
+    Where arguments is the user-supplied cue-point as a list.</p>
 <p class="body">
-    In practice the cue-function is called by whatever part it is attached to     which is responsible for passing the correct arguments.</p>
+    In practice the cue-function is called by whatever part it is attached to,     which is responsible for passing the correct arguments.</p>
 <hr/>
 <h4 class="section-head">The FLOAT-BAR  cue function</h4>
 <p class="body">

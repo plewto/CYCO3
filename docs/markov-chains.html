@@ -23,76 +23,76 @@
 <h2 class="section-head">Markov Chains</h2>
 <hr/>
 <p class="body">
-    Creating a Markov pattern requires two stages</p>
+    Creating a Markov pattern requires two steps:</p>
 <ol>
-    <li>Create a graph using <em>MARKOV-LINK</em> objects.</li>
-    <li>Embed the graph in a <em>MARKOV-CHAIN</em> Pattern.</li>
+    <li>Create a graph using <em>MARKOV-LINK</em>&nbsp; objects.</li>
+    <li>Embed the graph in a <em>MARKOV-CHAIN</em>&nbsp; pattern.</li>
 </ol>
 <p class="body">
-    A <em>MARKOV-LINK</em>&nbsp; has a value and a list of potential next values.      The elements of the list are themselves markov-links and the more times    a specific value occurs in the list the probability of it being the next     value increases.</p>
+    A <em>MARKOV-LINK</em>&nbsp; has a value and a list of potential next values.      The elements of the list are themselves markov-links        and the more times    a specific value occurs in the list the probability of it being the next     value increases.</p>
 <b class="definition">(markov-link value)</b><br>
 <p class="synopsis">Create new instance of Markov-Link with indicated value.  The value may be 
-of any type,  if it is a Pattern, then upon selection the NEXT-1 method is called.</p>
+of any type.  If it is a Pattern, then upon selection the NEXT-1 method is called.</p>
 <b class="definition">(markov-add-link source destination weight)</b><br>
 <p class="synopsis">Adds new link to a markov-link</p>
 <pre class="code">
 origin      - A Markov-Link
 destination - Another Markov-Link, a potential next value for the origin.
+              source and destination may be the same object.
 weight      - integer, number of times destination is added to origin list.
+              Higher values increase probability of selection.
 </pre>
 <b class="definition">(markov-walk markov-link)</b><br>
 <p class="synopsis">Randomly select a new value from those available.<br>
-Returns the next (possibly the same) markov-link.<br><br>
-An Example:</p>
+Returns the next markov-link.</p>
+<hr/>
+<h4 class="section-head">An Example</h4>
+<img class="center" src="markov_01.png" alt="Markov Chain Example"/>
 <pre class="code">
 (param ape (markov-link 'ape))
 (param bat (markov-link 'bat))
 (param cat (markov-link 'cat))
-
-(markov-add-link ape ape 1)
-(markov-add-link ape bat 5)
-(markov-add-link ape cat 2)
-
-(markov-add-link bat ape 2)
-(markov-add-link bat bat 1)
-(markov-add-link bat cat 5)
-
-(markov-add-link cat ape 1)
-(markov-add-link cat bat 1)
-(markov-add-link cat cat 4)
+(param dog (markov-link 'dog))
+(param elk (markov-link 'elk))
+(markov-add-link ape bat 3)
+(markov-add-link ape cat 4)
+(markov-add-link bat cat 2)
+(markov-add-link bat dog 3)
+(markov-add-link cat dog 1)
+(markov-add-link cat elk 2)
+(markov-add-link dog elk 1)
+(markov-add-link elk ape 5)
+(markov-add-link elk bat 3)
 
 (let ((current ape))
-  (dotimes (i 10)
-    (format t ''~A '' (value current))
+  (dotimes (i 20)
+    (format t "~A " (value current))
     (setf current (markov-walk current))))
+--&gt; APE CAT ELK APE BAT CAT ELK APE BAT DOG ELK APE BAT DOG ELK BAT DOG ELK BAT DOG 
 
---> APE CAT CAT CAT CAT CAT BAT BAT APE APE
 </pre>
 <hr/>
 <h4 class="section-head">Markov Chains as Patterns</h4>
 <p class="body">
     To treat a Markov graph as a Pattern,     embed it in a <em>MARKOV-CHAIN</em>&nbsp; object.</p>
 <b class="definition">(MARKOV-CHAIN root)</b><br>
-<p class="synopsis">Create Pattern by linking to a Markov Graph.</p>
+<p class="synopsis">Create Pattern by linking to a Markov Graph.&nbsp;
+ Using the above graph as an example:</p>
 <pre class="code">
-Using the above graph as an example:
-
 (param foo (markov-chain ape))
 
-(next foo 10)  --> (BAT CAT BAT APE BAT BAT APE CAT CAT BAT)
-
-
-
-If the 'value' of a Markov-Chain is a pattern, then when it is selected, 
-the pattern is evaluated to return it's next value.
-
-If in the above example the definition of cat is replaced with 
-
-    (param cat (markov-link (cycle :of '(lion tiger puma))))
-
-and everything else is left as is:
-
-(next foo 10) --> (APE BAT LION TIGER PUMA LION APE TIGER APE APE)
+(next foo 20)  
+--&gt; (APE CAT DOG ELK BAT DOG ELK APE CAT ELK BAT CAT ELK APE BAT DOG ELK APE CAT ELK)
+</pre>
+<p class="body">
+    If the 'value' of a Markov-Chain is a pattern, then when it is selected,     the pattern is evaluated to return it's next value.        If in the above example the definition of cat is replaced with</p>
+<pre class="code">
+(param cat (markov-link (cycle :of '(lion tiger puma))))
+</pre>
+<p class="body">
+    and everything else is left as is, the above run would have produced:</p>
+<pre class="code">
+(APE LION DOG ELK BAT DOG ELK APE TIGER ELK BAT PUMA ELK APE BAT DOG ELK APE LION ELK)
 </pre>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>

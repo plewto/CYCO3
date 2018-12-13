@@ -112,7 +112,7 @@ Keywords
 :key '(c4 e4 g4 (c4 e4 a4))
 </pre>
 <p class="body">
-    The key pattern contains symbols recognized by the instrument's&nbsp;<a href="keynumber-maps.html">keynumber-map.</a>    &nbsp;Unrecognized keys are treated as a rest.&nbsp; The following    example layers snare and tom instruments.  The snare recognizes     'X 'RIM and 'BOUNCE, the tom recognizes 'X and 'BOUNCE but     not 'RIM.</p>
+    Prior to use each key-number is processed by the instrument's&nbsp;<a href="keynumber-maps.html">keynumber-map.</a>    &nbsp;Unrecognized keys are treated as a rest.&nbsp; The following    example layers snare and tom instruments.  The snare recognizes     'X 'RIM and 'BOUNCE, the tom recognizes 'X and 'BOUNCE but     not 'RIM.</p>
 <pre class="code">
 (instrument snare :channel 10
     :keynumber-map (symbolic-keynumber-map '((x . 30)
@@ -132,7 +132,7 @@ Keywords
 <hr/>
 <h4 class="section-head">Articulation (note duration) Patterns</h4>
 <p class="body">
-    The articulation pattern also defaults to a cycle.</p>
+    The articulation pattern defaults to a cycle.</p>
 <pre class="code">
 :dur '(q h w) --> (cycle :of '(q h w))
 </pre>

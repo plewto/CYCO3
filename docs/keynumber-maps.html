@@ -23,12 +23,12 @@
 <h2 class="section-head">Keynumber Maps</h2>
 <hr/>
 <p class="body">
-    a <i>keynumber-map</i>&nbsp; is a function which maps     it's input argument to MIDI key numbers.  The functions form is:</p>
+    a <i>keynumber-map</i>&nbsp; is a function which maps     it's argument to a MIDI key number.</p>
 <pre class="code">
-(lambda kn)  --> int
+(lambda kn)  --&gt; int
 </pre>
 <p class="body">
-    Where kn argument type is undefined and result is an integer between -1 and    127 inclusive.  A negative result indicates a rest.   The kn argument does have     some specifications.  First if it has the value :DOC the map should display     documentation text and return -1.  Most maps, but by no means all, will treat an     integer kn as a literal MIDI keynumber. A few general key-maps are pre-defined.    The map should return -1 for all unrecognized arguments.</p>
+    Where kn argument type is undefined and result is an integer between -1 and    127 inclusive.  A negative result indicates a rest.   The kn argument does have     some specifications.  First if it has the value :DOC the map should display     documentation text and return -1.  Most maps, but by no means all, will treat an     integer kn as a literal MIDI keynumber. A few general key-maps are pre-defined.    Most maps should return -1 for all unrecognized arguments.</p>
 <ul>
     <li><a href="#basic-keymap">Basic</a>
 </li>
@@ -44,23 +44,24 @@
 <p class="synopsis">Creates a basic keynumber map</p>
 <pre class="code">
 
-:min - Minimum value, keynumbers below min return a rest, -1, default 0.
-:max - Maximum value, keynumbers greater then max return a rest, default 127.
-:transpose - Transposition in half-steps.  The transposition is applied after the
-min and max range test, default 0.
+:min  - Minimum value, keynumbers below min return a rest, -1, default 0.
+:max  - Maximum value, keynumbers greater then max return a rest, default 127.
+:transpose - Transposition in half-steps.  
+             Transposition is applied after the range test, default 0.
 </pre>
 <a id="circular-keymap"></a>
 <b class="definition">(CIRCULAR-KEYNUMBER-MAP start end)</b><br>
-<p class="synopsis">Creates map where keynumbers between start and end are returned in a circular manner.</p>
+<p class="synopsis">Creates map where keynumbers between start and end are returned in a circular manner.
+Circular maps are useful for certain percussion instruments such as shakers.</p>
 <pre class="code">
-A circular map foo where start=10 and end=12 has the following response.
+A circular map foo where start=10 and end=12 has the following response. 
 
-(foo 0) --> 10
-(foo 1) --> 11
-(foo 2) --> 12
-(foo 3) --> 10
-(foo 4) --> 11
-(foo 'whatever) --> -1  
+(foo 0) --&gt; 10
+(foo 1) --&gt; 11
+(foo 2) --&gt; 12
+(foo 3) --&gt; 10
+(foo 4) --&gt; 11
+(foo 'whatever) --&gt; -1  
 ...
 </pre>
 <a id="symbolic-keymap"></a>

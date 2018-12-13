@@ -22,8 +22,6 @@
 
 <h2 class="section-head">MIDI Channels</h2>
 <hr/>
-<p class="body">
-    The MIDI specification defines channels between 1 and 16 inclusive.      However the corresponding transmitted values are between 0 and 15.  Where     possible CYCO uses the 1..16 range for user facing values.   To keep these     two closely related ranges straight the term 'channel-index' is used for the    actual byte values of 0..15.  The unqualified term 'channel' always indicates    the 1..16 range.</p>
 <h4 class="section-head">Meta Channels</h4>
 <b class="definition">(META-CHANNEL! name channel &optional remarks)</b><br>
 <p class="synopsis">Makes symbolic assignment to MIDI channel.  A Meta channel may be 
@@ -59,8 +57,6 @@ of indirection.  If resolve is true, returns the actual MIDI channel.</p>
 <p class="synopsis">Predicate, true if obj is a channel assignment.</p>
 <b class="definition">(?META-CHANNELS)</b><br>
 <p class="synopsis">Displays list of channel assignments<br></p>
-<p class="body">
-    <strike>Channel assignments are typically made during <a href="configuration.html">configuration</a>    .</strike></p>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

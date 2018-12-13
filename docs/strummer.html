@@ -88,8 +88,8 @@ is dependent on the <a href='event-timing.html'>cue-function.</a></p>
 <p class="synopsis">Specifies chord, either by name or as a list of key-number 
 offsets.&nbsp; A list of offsets is always relative to the current
 <nobr>key-number,</nobr> i.e. (0 4 7) is a major triad.&nbsp; Named chords 
-must be defined by the <a href='chords.html'>chord-model</a> in use.&nbsp; Use 
-the function (nobr>(?chord-mode model)</nobr> to display list of available
+must be defined by the <a href='chords.html'><nobr>chord-model</nobr></a> in use.&nbsp; Use 
+the function <nobr>(?chord-mode model)</nobr> to display list of available
 chords.&nbsp; By convention chord names are enclosed in square brackets, as
 in [maj], though there are exceptions.&nbsp; Named chords may either be
 relative to the key-number, as above, or they may be a list of absolute
@@ -102,7 +102,7 @@ provided by the fretworks <a href='plugins.html'>plugin</a> use absolute chords.
 <b class="argument">:OCTAVE n</b><br>
 <p class="synopsis">Adds <a href='chords.html'>octave copy</a> of initial note to chord template.</p>
 <b class="argument">:STRUM delay</b><br>
-<p class="synopsis">Sets delay time between individual chord notes.&nobr; The
+<p class="synopsis">Sets delay time between individual chord notes.&nbsp; The
 delay may either be in absolute seconds, or a relative <a
 href='metrics.html'>metric expression.</a></p>
 <pre class="code">
@@ -123,7 +123,7 @@ href='metrics.html'>metric expression.</a></p>
   dice   - select up or down randomly
   random - play notes in random order
 </pre>
-<p class="synopsis">A list it is treated as a cycle pattern applied over future key events.</p>
+<p class="synopsis">A list of directions is treated as a cycle pattern applied over future key events.</p>
 <b class="argument">:AMP* s</b><br>
 <p class="synopsis">Applies amplitude scaling to chord notes.&nbsp; The first
 note is played at the nominal amplitude as<sup>0</sup>, 
@@ -169,7 +169,7 @@ end   - final amplitude.
 <p class="synopsis">Amplitude blurring ratio.</p>
 <pre class="code">
 0.0 &le; s &le; 1.0
-A value of 0.0 disables blurring
+A value of 0.0 disables blurring.
 A value of 0.5 indicates nominal amplitude may be changed by up to 50%.
 </pre>
 <b class="argument">:AMP-LIMIT min max</b><br>

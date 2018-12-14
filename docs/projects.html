@@ -34,14 +34,13 @@
 <hr/>
 <h4 class="section-head">Project File Structure</h4>
 <p class="body">
-    Each project has it's own directory in <b>~/cyco-projects/</b>.&nbsp;  The project     directory has the same name as the project, but converted to lower-case,  and all     project related files are store there.  <strike>The main project file is named 'main.lisp'.      A project named 'Foo' has the following directory structure:</strike></p>
-<p class="footnote">TODO change project main file name to  name-main.lisp</p>
+    Each project has it's own directory in <b>~/cyco-projects/</b>.&nbsp;  The project     directory has the same name as the project converted to lower-case.&nbsp;    For project named 'Foo' the directory structure is:</p>
 <pre class="code">
 ~/cyco-projects/
     |
     +-- foo/
          |
-         +-- main.lisp
+         +-- foo-main.lisp                 ;; The main project file
          +-- additional project files       
          +--
          +-- MIDI/
@@ -51,7 +50,7 @@
               +--
 </pre>
 <p class="body">
-    The following global variables set the location and names of project files:<br>    	   <b>*DEFAULT-PROJECT-DIRECTORY*</b><br>               <b>*DEFAULT-PROJECT-MAIN-FILE*</b><br>               <b>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</b><br></p>
+    The following global variables set the location and names of project files:<br>    	   <b>*DEFAULT-PROJECT-DIRECTORY*</b><br>               <b>*PROJECT-MAIN-FILENAME-FORMAT*</b><br>               <b>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</b><br></p>
 <hr/>
 <h4 class="section-head">Creating and Loading Project files</h4>
 <b class="definition">(CREATE-PROJECT-FRAMEWORK name)</b><br>
@@ -67,10 +66,10 @@ additional tricks.  Once a project has been loaded with LP it may be reloaded
 without supplying the name.  Further LP remembers the current project
 after CYCO has been stopped and restarted.</p>
 <pre class="code">
-CYCO: (lp 'foo)   - load main project file   ~/cyco-projects/foo/main.lisp
-CYCO(FOO): (lp)   - reloads foo project.
+CYCO: (lp 'foo)   - load main project file   ~/cyco-projects/foo/foo-main.lisp
+CYCO: (lp)   - reloads foo project.
 
-Notice the CYCO prompt changes to reflect the current project name.
+The CYCO prompt will change to reflect the current project.
 </pre>
 <b class="definition">(LOAD-PROJECT-FILE name)</b><br>
 <p class="synopsis">Loads a lisp file relative to the current project directory.
@@ -128,7 +127,7 @@ Keyword arguments:
 :cuefn          - Function used for time specifications, default #'BAR
 :make-current   - Boolean, if true bind project object to *PROJECT*, default t.
 :project-directory - String, defaults to *DEFAULT-PROJECT-DIRECTORY*
-:main-file         - String, defaults to *DEFAULT-PROJECT-MAIN-FILE*
+:main-file         - String, specify an alternate project main file.
 :output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
 </pre>
 <p>See <a href="time-signature.html">Time Signatures</a>
@@ -209,7 +208,7 @@ Try <b>(? *project*)</b>.</li>
 <h4 class="section-head">Anatomy of Main Project File Structure</h4>
 <pre class="code">
 
-;; ~/cyco-projects/foo/main.lisp
+;; ~/cyco-projects/foo/foo-main.lisp
 
 (project foo :tempo 120 :bars 2)  ;; Create project object, bind it to *PROJECT*,
                                   ;;    sets default tempo and bar count.

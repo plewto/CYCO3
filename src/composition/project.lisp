@@ -82,11 +82,16 @@ no saved project."
 	  (close stream))
       nil))) 
 
+(defun format-project-main-filename (project-name &optional (format *project-main-filename-format*))
+  (sformat format (string-downcase (->string project-name))))
+
+
 (defun make-project (name &key
 			  title
 			  (catalog-number "")
 			  (project-directory *default-project-directory*)
-			  (main-file *default-project-main-file*)
+			  ;;(main-file *project-main-filename-format*)
+			  main-file
 			  (output-directory *default-project-output-directory*)
 			  (cuefn #'bar)
 			  (tempo 60.0)
@@ -110,14 +115,14 @@ name  - Symbol, the project's name.
 :remarks  - Optional remarks text.
 :catalog-number - Optional catalog number.
 :make-current   - boolean, if true the new project is made the default 
-           project by binding it to *project*.
+                  project by binding it to *project*.
 :project-directory - Sets the top level project directory where this 
-           projects files are stored.  Defaults to *default-project-directory* 
+                     projects files are stored.  Defaults to *default-project-directory* 
 :main-file -  Sets the lisp file name for the main project file.
-           This file is responsible for loading all other project files.
-           Defaults to *default-project-main-file*
+              This file is responsible for loading all other project files.
+              Defaults to name-main.lisp
 :output-directory - Output directory where rendered MIDI files are saved.
-           Defaults to *default-project-output-directory*
+                    Defaults to *default-project-output-directory*
 
 The location of the project's files is determined by a combination 
 of it's name and the values of project-directory, main-file and 
@@ -158,7 +163,7 @@ abbreviations lp and lpf."
     (put proj :title title)
     (put proj :catalog-number catalog-number)
     (put proj :project-directory project-directory)
-    (put proj :main-file main-file)
+    (put proj :main-file (or main-file (format-project-main-filename name)))
     (put proj :output-directory output-directory)
     (put proj :chord-model *chord-table*)
     (put proj :cue-function cuefn)
@@ -175,12 +180,13 @@ abbreviations lp and lpf."
 	  (setf *project* proj)
 	  (set-cyco-prompt)))
     proj))
-  
+
+
 (defmacro project (name &key
 			  title
 			  (catalog-number "")
 			  (project-directory *default-project-directory*)
-			  (main-file *default-project-main-file*)
+			  main-file
 			  (output-directory *default-project-output-directory*)
 			  (cuefn #'bar)
 			  (tempo 60.0)
@@ -315,7 +321,7 @@ Additional modifiers may be added later."
   
   (defun load-project (name &key
 			    (project-directory *default-project-directory*)
-			    (main-file *default-project-main-file*))
+			    main-file)
     "Loads the main project file, which should then load the remaining files.
 
 name should be a symbol matching the project's directory.
@@ -327,7 +333,10 @@ See LP as a more convenient method of loading a project."
 
     (let ((pname (default-project-name name)))
       (if pname
-	  (let ((fqn (join-path project-directory pname main-file :as-file)))
+	  (let ((fqn (join-path project-directory pname
+				(or main-file
+				    (format-project-main-filename pname))
+				:as-file)))
 	    (setf current-project-main-file fqn)
 	    (format t frmt fqn)
 	    (load fqn))
@@ -460,7 +469,7 @@ project-name - quoted symbol
 
 Each additional argument must be a quoted symbol and is used to create
 a matching project-file with the same name.   The main project file
-is automatically created.   Any existing files are not overwritten."
+is automatically created.   Existing files are not overwritten."
     (let* ((pname (format-name project-name))
 	   (pdir (join-path *default-project-directory* pname))
 	   (outdir (join-path pdir *default-project-output-directory*)))
@@ -468,7 +477,8 @@ is automatically created.   Any existing files are not overwritten."
       (dolist (d (list pdir outdir))
 	(format t "Ensuring directory exist: ~A~%" d)
 	(ensure-directories-exist d))
-      (dolist (fn (cons *default-project-main-file* extras))
+      (dolist (fn (cons (sformat *project-main-filename-format* project-name)
+			extras))
 	(let ((fqn (append-filename-extension
 		    (join-path pdir (format-name fn) :as-file)
 		    ".lisp")))

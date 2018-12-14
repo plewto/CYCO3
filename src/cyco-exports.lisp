@@ -7,9 +7,6 @@
 	  *default-osc-send-address*
 	  *default-osc-send-host*
 	  *default-osc-send-port*
-	  *default-project-directory*
-	  *default-project-main-file*
-	  *default-project-output-directory*
 	  *local-host*
 	  *metronome*
 	  *osc-receive-address*

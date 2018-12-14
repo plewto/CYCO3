@@ -9,21 +9,12 @@
 ;; Default project
 ;;
 (global *default-project-directory* "~/cyco-projects")
-(global *default-project-main-file* "main")
+(global *project-main-filename-format* "~A-main")
 (global *default-project-output-directory* "MIDI")
 (global *project* nil)
 (global *metronome* nil)
 (global *countin* nil)
 (global *endpad* nil)  ;; ISSUE: should this be depreciated?
-
-
-;; Configuration  *DEPRECIATED*
-(global *cyco-config-directory* nil)
-(global *cyco-config-profile* nil) 
-(global *cyco-config-file* nil)
-;; *END DEPRECIATED*
-
-
 
 ;; Plugins
 ;;
@@ -35,7 +26,6 @@
 
 ;; OSC 
 ;;
-
 (global *local-host* #(127 0 0 1))
 
 (global *default-osc-send-host* *local-host*)

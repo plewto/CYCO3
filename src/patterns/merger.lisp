@@ -2,44 +2,44 @@
 ;;;;
 
 (defclass merger (pattern)
-  ((hook-a
+  ((function-a
     :type function
-    :accessor merger-a-hook
+    :accessor merger-function-a
     :initform #'identity
-    :initarg :a-hook)
-   (hook-b
+    :initarg :a-function)
+   (function-b
     :type function
-    :accessor merger-b-hook
+    :accessor merger-function-b
     :initform #'identity
-    :initarg :b-hook)
+    :initarg :b-function)
    (mixer
     :type function
-    :accessor merger-mixer-hook
+    :accessor merger-mixer-function
     :initform #'(lambda (a b)(cons a b))
-    :initarg :mixer-hook))
+    :initarg :mixer-function))
   (:documentation
    "A MERGER combines two Pattern objects a & b.
 Upon calling NEXT-1 the next values of patterns a and b are generated.
-These are processed by the a-hook and b-hook functions respectively.  a-hook
-and b-hook take a single argument and have an undefined return type.  The
-results of a-hook and b-hook are combined by the mixer function.
+These are processed by the a-function and b-function functions respectively.  a-function
+and b-function take a single argument and have an undefined return type.  The
+results of a-function and b-function are combined by the mixer function.
 mixer takes tow arguments and has an undefined return type."))
 
 (defun merger (a b &key
-		 (a-hook #'identity)
-		 (b-hook #'identity)
-		 (mixer-hook #'(lambda (a b)(cons a b))))
+		 (a-function #'identity)
+		 (b-function #'identity)
+		 (mixer-function #'(lambda (a b)(cons a b))))
   (reset (make-instance 'merger :of (list a b)
-			:a-hook a-hook
-			:b-hook b-hook
-			:mixer-hook mixer-hook)))
+			:a-function a-function
+			:b-function b-function
+			:mixer-function mixer-function)))
 
 (defmethod value ((m merger))
   (let ((a (car (elements m)))
 	(b (second (elements m))))
-    (funcall (merger-mixer-hook m)
-	     (funcall (merger-a-hook m)(value a))
-	     (funcall (merger-b-hook m)(value b)))))
+    (funcall (merger-mixer-function m)
+	     (funcall (merger-function-a m)(value a))
+	     (funcall (merger-function-b m)(value b)))))
 	     
 (defmethod reset ((m merger))
   (reset (car (elements m)))
@@ -57,9 +57,9 @@ mixer takes tow arguments and has an undefined return type."))
 	 (a (clone (car e)))
 	 (b (clone (second e))))
     (merger a b
-	    :a-hook (merger-a-hook m)
-	    :b-hook (merger-b-hook m)
-	    :mixer-hook (merger-mixer-hook m))))
+	    :a-function (merger-function-a m)
+	    :b-function (merger-function-b m)
+	    :mixer-function (merger-mixer-function m))))
 
 (defmethod next-1 ((m merger))
   (setf (pointer m)

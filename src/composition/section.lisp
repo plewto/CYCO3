@@ -209,6 +209,23 @@ operations, default t.
 	(retrograde c)))
   s)
 
+;; (defmethod render-once ((sec section) &key (offset 0.0))
+;;   (let* ((acc (list (cons offset
+;; 			  (midi-meta-marker (sformat "Start Section ~A" (name sec))))))
+;; 	 (period (phrase-duration sec))
+;; 	 (end-mask (+ offset period)))
+;;     (dolist (prt (reverse (children sec)))
+;;       (let* ((pperiod (phrase-duration prt))
+;; 	     (count (truncate (/ period pperiod)))
+;; 	     (shift (or (property prt :shift) 0.0))
+;; 	     (pevents (render-n prt count :offset (+ offset shift))))
+;; 	(dolist (evn pevents)
+;; 	  (let* ((time (car evn))
+;; 		 (msg (cdr evn)))
+;; 	    (if (or (< time end-mask)(not (midi-note-on-p msg)))
+;; 		(push (clone evn) acc))))))
+;;     (sort-midi-events acc)))
+
 (defmethod render-once ((sec section) &key (offset 0.0))
   (let* ((acc (list (cons offset
 			  (midi-meta-marker (sformat "Start Section ~A" (name sec))))))
@@ -216,15 +233,17 @@ operations, default t.
 	 (end-mask (+ offset period)))
     (dolist (prt (reverse (children sec)))
       (let* ((pperiod (phrase-duration prt))
-	     (count (truncate (/ period pperiod)))
+	     (count (truncate (+ (if (dividesp period pperiod) 0 1)
+				 (/ period pperiod))))
 	     (shift (or (property prt :shift) 0.0))
 	     (pevents (render-n prt count :offset (+ offset shift))))
 	(dolist (evn pevents)
 	  (let* ((time (car evn))
 		 (msg (cdr evn)))
-	    (if (or (< time end-mask)(not (midi-note-on-p msg)))
+	    (if (or (< time end-mask)(midi-note-off-p msg))
 		(push (clone evn) acc))))))
     (sort-midi-events acc)))
+	      
 
 
 (defmethod render-n ((sec section)(n integer) &key (offset 0.0))

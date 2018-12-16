@@ -34,4 +34,7 @@ value  - number,
      (length lst)))
 
 
-
+(defun dividesp (a b)
+  "Predicate, true if b evenly divides a, b != 0"
+  (let ((q (truncate (/ (float a) b))))
+    (= a (* q b))))

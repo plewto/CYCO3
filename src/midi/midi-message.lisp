@@ -140,6 +140,9 @@
 
 (defmethod midi-key-message-p ((evn midi-key-message)) t)
 
+(defmethod keynumber ((mkm midi-key-message))
+  (data mkm 0))
+
 (defmethod transpose ((evn midi-key-message)(n integer))
   (let ((kn (+ n (data evn 0))))
     (while (> kn 128)(setf kn (- kn 12)))

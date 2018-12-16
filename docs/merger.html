@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO Merger</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="shift-register.html">Shift Register</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+<h2 class="section-head">Pattern Merger</h2>
+<hr/>
+<p class="body">
+    A <i>MERGER</i>&nbsp; combines the outputs of two Patterns.&nbsp; Both    source patterns and their combined values are processed through    the function composition:</p>
+<pre class="code">
+(mixer (function-a pattern-a)(function-b pattern-b))
+</pre>
+<b class="definition">(MERGER a b &key a-function b-function mixer-function)</b><br>
+<p class="synopsis">Creates MERGER Pattern to combine values from Patterns a and b.</p>
+<pre class="code">
+a - source pattern a
+b - source pattern b
+:a-function - Functions used to process patterns a and b.  The functions
+:b-function   should have the following form with returns suitable for the
+              first and second mixer arguments respectively:
+              default #'identity (lambda x) --&gt; x
+:mixer-function - A function of form (lambda q r).  The result of
+                  mixer-function becomes the Merger's value.
+                  default (lambda q r) --&gt; (cons q r)
+</pre>
+<p class="body">
+    Example usage, transpose key-numbers</p>
+<pre class="code">
+
+(param a (cycle :of (c4 e4 g4)))
+(param b (cycle :of '(0 5 7)))
+(param foo a b :a-function #'keynumber 
+               :b-function #'keynumber
+               :mixer-function #'transpose)
+
+(keyname (next-n foo 9)) --&gt (C4 E4 G4 F4 A4 C5 G4 B4 D5)
+</pre>
+<hr/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="shift-register.html">Shift Register</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="keynumbers.html">Keynumbers</a>
+
+</div>
+</body>
+</html>

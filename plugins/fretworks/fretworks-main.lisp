@@ -66,10 +66,12 @@
 (load-plugin-file "monochord")
 (load-plugin-file "fretted-chord-model")
 (load-plugin-file "bass-guitar")
+(load-plugin-file "ukulele")
 
 (export '(fretted-chord-model
 	  define-chord-family
 	  *bass-guitar-chord-model*
+	  *ukulele-chord-model*
 	  )
 	:cyco-fretworks)
 
@@ -78,6 +80,7 @@
 (import '(cyco-fretworks:fretted-chord-model
 	  cyco-fretworks:define-chord-family
 	  cyco-fretworks:*bass-guitar-chord-model*
+	  cyco-fretworks:*ukulele-chord-model*
 	  ) :cyco)
 
 (in-package :cyco)

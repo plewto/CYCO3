@@ -65,7 +65,7 @@
 (load-plugin-file "chord-family")
 (load-plugin-file "monochord")
 (load-plugin-file "fretted-chord-model")
-(load-plugin-file "bass-guitar/bass-guitar")
+(load-plugin-file "bass-guitar")
 
 (export '(fretted-chord-model
 	  define-chord-family

@@ -46,7 +46,7 @@
 	(0 (x x x 8))
 	(0 (x x x 20))))
 
-(define-chord-family *bass-guitar-chord-model* '+oct
+(define-chord-family *bass-guitar-chord-model* 'dy[oct]
   :e  '((0 (o x 2 x))
 	(0 (12 x 14 x)))
   :f  '((0 (1 x 3 x))
@@ -73,7 +73,7 @@
 	(0 (x x 13 20))))
 
 ;; Some higher intervalsare invertred.
-(define-chord-family *bass-guitar-chord-model* '+per4
+(define-chord-family *bass-guitar-chord-model* 'dy[per4]
   :e  '((0 (o o x x))
 	(0 (x x 2 2))
 	(0 (x x 14 14)))
@@ -111,7 +111,7 @@
 	(0 (x x 13 13))))
 
 ;; Some higher intervals are inverted.
-(define-chord-family *bass-guitar-chord-model* '+per5
+(define-chord-family *bass-guitar-chord-model* 'dy[per5]
   :e  '((0 (o 2 x x))
 	(0 (x x 2 4))
 	(0 (12 14 x x)))

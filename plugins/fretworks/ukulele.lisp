@@ -28,7 +28,7 @@
   :ds '((0 (x 3 x x))
 	(0 (x x 11 x))))
 
-(define-chord-family *ukulele-chord-model* '+oct
+(define-chord-family *ukulele-chord-model* 'dy[oct]
   :e  '((0 (x x o 7)))
   :f  '((0 (x x 1 8)))
   :fs '((0 (x x 2 9)))
@@ -43,7 +43,7 @@
   :ds '((0 (x 3 11 x))))
 
 
-(define-chord-family *ukulele-chord-model* '+min3
+(define-chord-family *ukulele-chord-model* 'dy[min3]
   :e  '((0 (o x o x))
 	(0 (12 x 12 x)))
   :f  '((0 (1 x 1 x)))
@@ -58,7 +58,7 @@
   :d  '((0 (x 2 1 x)))
   :ds '((0 (x 3 2 x))))
 
-(define-chord-family *ukulele-chord-model* '+maj3
+(define-chord-family *ukulele-chord-model* 'dy[maj3]
   :e  '((0 (1 x o x)))
   :f  '((0 (2 x 1 x)))
   :fs '((0 (3 x 2 x)))
@@ -72,7 +72,7 @@
   :d  '((0 (x 2 2 x)))
   :ds '((0 (x 3 3 x))))
 
-(define-chord-family *ukulele-chord-model* '+per4
+(define-chord-family *ukulele-chord-model* 'dy[per4]
   :e  '((0 (x x o o)))
   :f  '((0 (x x 1 1)))
   :fs '((0 (x x 2 2)))
@@ -86,7 +86,7 @@
   :d  '((0 (x x 10 10)))
   :ds '((0 (x x 11 11))))
 
-(define-chord-family *ukulele-chord-model* '+per5
+(define-chord-family *ukulele-chord-model* 'dy[per5]
   :e  '((0 (x x o 2)))
   :f  '((0 (x x 1 3)))
   :fs '((0 (x x 2 4)))

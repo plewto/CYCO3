@@ -3,6 +3,8 @@
 ;;;; Fretted Instrument Chord Model
 ;;;;
 
+(error "FRETWORKS HAS BEEN DEPRECIATED, USE OUD")
+
 (defpackage :cyco-fretworks
   (:use :cl)
   (:import-from :cyco

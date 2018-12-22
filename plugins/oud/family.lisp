@@ -30,6 +30,9 @@
     (add-variation cvar template)))
 
 (defmethod chord-variant ((family chord-family)(key t))
+  "Returns key-number list for indicated key.
+The octave-value of key selects specific variation.
+See method for CHORD-VARIATIONS."
   (let ((pcarray (pitch-classes family)))
     (cond ((not key)(aref pcarray 0))
 	  ((rest-p key) nil)

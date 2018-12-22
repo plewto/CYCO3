@@ -1,11 +1,10 @@
 ;;;; cyco-oud chord-variations
 ;;;;
-;;;; Holds all variations of specific chord-type (for a single key).
+;;;; Holds all variations of specific chord-type for a single key,
 ;;;; IE all c-major chords.
 ;;;;
 ;;;; Chord templates are sorted by mean key-number, ignoring muted strings.
 ;;;;
-
 
 (defclass chord-variations nil
   ((pitch-class
@@ -31,6 +30,9 @@
 			      (mean-keynumber b)))))))
 
   (defun make-chord-variations (pitch-class chord-type)
+    "Creates new instance of CHORD-VARIATIONS
+pitch-class - an integer or key-number, 0..11
+chord-type  - symbol"
     (make-instance 'chord-variations
 		   :pitch-class (pitch-class pitch-class)
 		   :chord-type (->cyco-symbol chord-type)
@@ -42,6 +44,14 @@
 			       (->list (variants cv)))))) )
 
 (defmethod chord-variant ((cv chord-variations)(index integer))
+  "Returns chord variation
+index - Integer.
+        For index < 0, return nil
+        For index > variation count, return 'slice' of the 
+        highest chord template.  As index increases above 
+        variation count, slice progressively more notes from 
+        the template.  If index is sufficiently high, return nil."
+
   (let* ((vary (variants cv))
 	 (limit (1- (length vary))))
     (cond ((minusp limit) nil)
@@ -58,16 +68,3 @@
     (dotimes (i (length vary))
       (format t "   pitch ~3A ~8A [variant ~2D] ~A~%"
 	      pc ctype i (keyname (aref vary i))))))
-  
-;;;; TEST
-;;;; TEST
-;;;; TEST
-
-;;(param baz (make-chord-variations 0 '[test]))
-;;(add-variation baz '(60 64 67))
-;;(add-variation baz '(64 67 72))
-;;(dump-chords baz)
-
-;; (format t "DEBUG ~A~%" (chord-variant baz 0))
-;; (format t "DEBUG ~A~%" (chord-variant baz 1))
-;; (format t "DEBUG ~A~%" (chord-variant baz 2))

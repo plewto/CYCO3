@@ -1,6 +1,6 @@
 ;;;; cyco-oud polychord
 ;;;;
-;;;; Defines stringed instrument as set of monochords.
+;;;; Extends ABSTRACT-CHORD-MODEL using suit of monochords.
 ;;;;
 
 (defclass polychord (abstract-chord-model)
@@ -24,6 +24,10 @@
     :initform (make-hash-table :size 8))))
 
 (defun make-polychord (name fret-count tuning)
+  "Creates new instance of POLYCHORD.
+name - symbol
+fret-count - integer
+tuning - list of open string tunings as absolute key-numbers."
   (let ((acc '()))
     (dolist (kn (->list tuning))
       (push (make-monochord :root-key (keynumber kn)
@@ -38,6 +42,7 @@
 		   :strings (->vector (reverse acc)))))
     
 (defmethod polychord->string ((plychrd polychord) &key (frets nil))
+  "Returns string representation of instrument neck."
   (let ((acc "    ||")
 	(bcc "----++")
 	(ccc "")
@@ -82,13 +87,13 @@
 	      (chord-spec-error "Chord specification does not match string count"
 				plychrd chord-type key)))
 
-	 ;; Returns minimun integer value in list, ignors non-integer items.
+	 ;; Returns minimum integer value in list, ignores non-integer items.
 	 (fret-min
 	  (template)
 	  (apply #'min (remove nil template :test #'(lambda (a b)
 						      (dismiss a)
 						      (not (integerp b))))))
-	 ;; Returns maximum integer value in list, ignors non-integer items.		       
+	 ;; Returns maximum integer value in list, ignores non-integer items.		       
 	 (fret-max
 	  (template)
 	  (apply #'max (remove nil template :test #'(lambda (a b)
@@ -152,11 +157,35 @@
 				  plychrd chord-type key)
 		(return-from process-chord-specs)))
 	  (dolist (spec (or spec1 spec2))
-	    (parse-fret-positions plychrd chord-type key spec))) )
+	    (parse-fret-positions plychrd chord-type key spec)))
 
+	 (merge-description
+	  (plychrd chord-type text)
+	  (setf chord-type (->cyco-symbol chord-type))
+	  (if text 
+	      (let ((txt (gethash chord-type (chord-table-descriptions plychrd))))
+		(setf txt (if txt
+			      (setf txt (sformat "~A~%~A" txt text))
+			    text))
+		(setf (gethash chord-type (chord-table-descriptions plychrd)) txt)))) )
+  
   (defmethod define-chord-family ((plychrd polychord)
   				  (chord-type symbol)
-  				  &key a as bf b c cs df d ds ef e f fs gf g gs af)
+  				  &key
+				  a as bf b
+				  c cs df d
+				  ds ef e f
+				  fs gf g gs af
+				  description)
+    "Defines finger positions for each keey of specific chord-type.
+Only specify one enharmonic key.  That is -only- use one of the keywords
+from each list below.
+    :AS :BF
+    :CS :DF
+    :DS :EF
+    :FS :GF
+    :GS :AF
+    :AS :BF"
     (setf chord-type (->cyco-symbol chord-type))
     (process-chord-specs plychrd chord-type 'a a)
     (process-chord-specs plychrd chord-type 'as as bf)
@@ -169,13 +198,16 @@
     (process-chord-specs plychrd chord-type 'f f)
     (process-chord-specs plychrd chord-type 'fs fs gf)
     (process-chord-specs plychrd chord-type 'g g)
-    (process-chord-specs plychrd chord-type 'gs gs af))
+    (process-chord-specs plychrd chord-type 'gs gs af)
+    (merge-description plychrd chord-type description))
 
   (defmethod define-movable-chord ((plychrd polychord)
 				   (chord-type symbol)
 				   (starting-position integer)
 				   (starting-key t)
-				   (template list))
+				   (template list)
+				   &key (description nil))
+    "Defines a set of chords using a 'movable' bar-chord template."
     (let* ((min-offset (fret-min template))
 	   (min-starting-position (+ starting-position min-offset))
 	   (max-offset (fret-max template))
@@ -189,17 +221,23 @@
 	  (chord-spec-error
 	   "DEFINE-MOVEABLE-CHORD initial position too low."
 	   plychrd chord-type starting-key))
-	(while (<= pos max-position)
-	  (process-chord-specs plychrd chord-type
-	  		       (aref keys (pitch-class current-key))
-	  		       (list (list capo template)))
-	  (setf current-key (1+ current-key))
-	  (setf pos (1+ pos))
-	  (setf capo (1+ capo))))) )
+      (merge-description plychrd chord-type description)
+      (while (<= pos max-position)
+	(process-chord-specs plychrd chord-type
+	  		     (aref keys (pitch-class current-key))
+	  		     (list (list capo template)))
+	(setf current-key (1+ current-key))
+	(setf pos (1+ pos))
+	(setf capo (1+ capo))))) )
 
 (defmethod dump-chords ((plychrd polychord))
   (format t "POLYCHORD ~A~%" (name plychrd))
   (dolist (ctype (chord-types plychrd))
-    (let ((family (gethash ctype (chord-table plychrd))))
+    (let ((descript (gethash ctype (chord-table-descriptions plychrd)))
+	  (family (gethash ctype (chord-table plychrd))))
+      (if descript
+	  (progn
+	    (format t "Descriptions:~%")
+	    (format t "~A~%" descript)))
       (dump-chords family))))
       

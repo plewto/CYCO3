@@ -21,7 +21,7 @@
   (+ (monochord-root-key mc)
      (monochord-fret-count mc)))
 
-;; Determin key-number from fret-position relative to capo.
+;; Determine key-number from fret-position relative to capo.
 ;; Special positions:  'O  --> open string
 ;;                     'X  --> muted string --> +REST+
 ;;                     'R  --> same as 'X
@@ -32,7 +32,7 @@
 	    (monochord-capo-position mc)))
 	((symbol-eq-p position 'x) +REST+)
 	((symbol-eq-p position 'r) +REST+)
-	(t (cyco-error "INVALID MONOCHORD POSITIN: ~A" position)
+	(t (cyco-error "INVALID MONOCHORD POSITION: ~A" position)
 	   +REST+)))
 
 (defmethod monochord-keynumber ((mc monochord)(position integer))
@@ -64,7 +64,6 @@
 	((symbol-eq-p pclass 'r) nil)
 	((symbol-eq-p pclass 'o)(monochord-key-positions mc 0))
 	(t (monochord-key-positions mc (pitch-class pclass)))))
-
 
 
 (defmethod monochord->string ((mc monochord) &optional pos)

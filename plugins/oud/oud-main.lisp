@@ -88,9 +88,10 @@
   (equal (remove-rest-and-duplicate-keys a)
 	 (remove-rest-and-duplicate-keys b)))
 	 
-
-
 (load-plugin-file "variations")
 (load-plugin-file "family")
 (load-plugin-file "monochord")
 (load-plugin-file "polychord")
+
+
+(in-package :cyco)

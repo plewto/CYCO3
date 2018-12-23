@@ -195,5 +195,8 @@
 (remove-duplicate-chords *guitar-chord-model*)
 
 
+(export '(*guitar-chord-model*)
+	:cyco-oud)
 
-
+(import '(cyco-oud:*guitar-chord-model*) :cyco)
+(in-package :cyco)

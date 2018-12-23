@@ -1,5 +1,7 @@
 ;;;; CYCO guitar-chords (Oud) Plugin
 ;;;;
+;;;; Defines a guitar chord-model using the Oud Plugin.
+;;;; Exports a single object: *GUITAR-CHORD-MODEL* 
 
 (sub-plugin 'oud)
 (in-package :cyco-oud)

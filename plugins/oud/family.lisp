@@ -48,3 +48,7 @@ See method for CHORD-VARIATIONS."
     (dotimes (i 12)
       (dump-chords (aref pcarray i)))))
 
+(defmethod remove-duplicate-chords ((family chord-family))
+  (let ((vary (pitch-classes family)))
+    (dotimes (i (length vary))
+      (remove-duplicate-chords (aref vary i)))))

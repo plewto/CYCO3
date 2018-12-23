@@ -25,7 +25,7 @@ By default *chord-table*"
 (defchord '[maj]<2     '(-5 0 4)  "Major 2nd inversion down 1 octave")
 (defchord '[maj]<1     '(-8 -5 0) "Major 1st inversion down 1 octave")
 (defchord '[maj7]      '(0 4 7 11) "Major 7th")
-(defchord '[dom7]      '(0 4 7 10) "Dominate 7th")
+(defchord '[7]         '(0 4 7 10) "Dominate 7th")
 (defchord '[maj6]      '(0 4 7 9) "Major 6th")
 (defchord '[sus2]      '(0 2 7) "Major sustained 2")
 (defchord '[sus4]      '(0 5 7) "Major sustained 4")

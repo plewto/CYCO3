@@ -68,3 +68,11 @@ index - Integer.
     (dotimes (i (length vary))
       (format t "   pitch ~3A ~8A [variant ~2D] ~A~%"
 	      pc ctype i (keyname (aref vary i))))))
+
+;; Removes duplicate chord templates.
+;; Ignroes rest and repeated notes.
+;;
+(defmethod remove-duplicate-chords ((cv chord-variations))
+  (let ((vlist (->list (variants cv))))
+    (setf (variants cv)
+	  (->vector (remove-duplicates vlist :test #'equal-template-p)))))

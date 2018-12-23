@@ -67,6 +67,29 @@
 	0
       (/ (float sum) count))))
 
+;; Remove all rest from key-number template, then sort by MIDI key-number.
+;;
+(defun remove-rest-then-sort (template)
+  (sort (remove nil (keynumber template)
+		:test #'(lambda (a b)(dismiss a)(minusp b)))
+	#'<))
+
+;; Remove all rest and duplicate key-numbers from list.
+;; Sort by MIDi key-number
+;;
+(defun remove-rest-and-duplicate-keys (template)
+  (remove-duplicates (remove-rest-then-sort template) :test #'=))
+
+;; Predicate true if key-number list a and b
+;; are efectivly the same.  Rest, duplicate keys and sort-order are
+;; ignored.
+;; 
+(defun equal-template-p (a b)
+  (equal (remove-rest-and-duplicate-keys a)
+	 (remove-rest-and-duplicate-keys b)))
+	 
+
+
 (load-plugin-file "variations")
 (load-plugin-file "family")
 (load-plugin-file "monochord")

@@ -167,7 +167,9 @@ tuning - list of open string tunings as absolute key-numbers."
 		(setf txt (if txt
 			      (setf txt (sformat "~A~%~A" txt text))
 			    text))
-		(setf (gethash chord-type (chord-table-descriptions plychrd)) txt)))) )
+		(setf (gethash chord-type (chord-table-descriptions plychrd)) txt))))
+	 
+	 )
   
   (defmethod define-chord-family ((plychrd polychord)
   				  (chord-type symbol)
@@ -208,8 +210,8 @@ from each list below.
 				   (template list)
 				   &key (description nil))
     "Defines a set of chords using a 'movable' bar-chord template."
-    (let* ((min-offset (fret-min template))
-	   (min-starting-position (+ starting-position min-offset))
+    (let* (;; (min-offset (fret-min template))
+	   ;; (min-starting-position (+ starting-position min-offset))
 	   (max-offset (fret-max template))
 	   (max-position (- (polychord-fret-count plychrd)
 			    (+ max-offset starting-position)))
@@ -217,10 +219,10 @@ from each list below.
 	   (pos starting-position)
 	   (capo 0)
 	   (keys #(c cs d ds e f fs g gs a as b)))
-      (if (< starting-position min-starting-position)
-	  (chord-spec-error
-	   "DEFINE-MOVEABLE-CHORD initial position too low."
-	   plychrd chord-type starting-key))
+      ;; (if (< starting-position min-starting-position)
+      ;; 	  (chord-spec-error
+      ;; 	   "DEFINE-MOVEABLE-CHORD initial position too low."
+      ;; 	   plychrd chord-type starting-key))
       (merge-description plychrd chord-type description)
       (while (<= pos max-position)
 	(process-chord-specs plychrd chord-type
@@ -228,7 +230,9 @@ from each list below.
 	  		     (list (list capo template)))
 	(setf current-key (1+ current-key))
 	(setf pos (1+ pos))
-	(setf capo (1+ capo))))) )
+	(setf capo (1+ capo)))))
+
+  )
 
 (defmethod dump-chords ((plychrd polychord))
   (format t "POLYCHORD ~A~%" (name plychrd))
@@ -240,4 +244,8 @@ from each list below.
 	    (format t "Descriptions:~%")
 	    (format t "~A~%" descript)))
       (dump-chords family))))
-      
+
+(defmethod remove-duplicate-chords ((plychrd polychord))
+  (dolist (ctype (chord-types plychrd))
+    (let ((family (gethash ctype (chord-table plychrd))))
+      (remove-duplicate-chords family))))

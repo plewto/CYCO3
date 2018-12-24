@@ -1,6 +1,9 @@
 ;;;; CYCO PigIron Profile
 ;;;;
 
+(sub-plugin 'osc)
+
+
 (defpackage :pigiron
   (:use :cl)
   (:import-from :cyco :global :str+ :->string
@@ -12,8 +15,6 @@
 (global *pigiron-port* 65000)
 (global *pigiron-id* "/pigiron")
 (global *midi-file-player-id* "midi-file-player-1")
-
-
 
 (defun bool (arg)
   (if arg "TRUE" "FALSE"))

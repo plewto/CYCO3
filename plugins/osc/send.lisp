@@ -1,4 +1,4 @@
-;;;; CYCO osc/osc-send
+;;;; CYCO osc plugin
 ;;;;
 
 (labels ((format-host
@@ -33,4 +33,3 @@ address   - The OSC address on server, defaults to *DEFAULT-OSC-SEND-ADDRESS*"
       (unwind-protect
       	  (socket-send s b (length b))
       	(when s (socket-close s))))))
-

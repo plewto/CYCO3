@@ -1,13 +1,8 @@
 ;;;; CYCO cyco-loaders
 ;;;;
 
-(load "~/quicklisp/setup")
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (ql:quickload :osc)
-  (ql:quickload :usocket))
-
 (defpackage :cyco
-  (:use :cl :osc :usocket))
+  (:use :cl))
 
 (in-package :cyco)
 
@@ -85,7 +80,7 @@
        ;;     :print-off - print load off.
        ;;     :verbose - Display file names as they are loaded.
        ;;     :quite   - Opposite of :verbose
-       (manifest '(:quite
+       (manifest '(:verbose
 		   "src/constants"
 		   "src/globals"
 		   "src/api"
@@ -95,8 +90,6 @@
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
 		   "src/util/paths"
-		   "src/osc/osc-send"
-		   ;; "src/osc/osc-receive"  // Not implemented
 		   "src/keynumbers"
 		   "src/keytables"
 		   "src/dynamics"
@@ -153,7 +146,6 @@
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/cyco-exports"
-
 		   )))
  
   (defun ld (filename &key (verbose t)(print nil))

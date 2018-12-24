@@ -21,21 +21,3 @@
 (global *config-directory* nil)
 (global *plugin-directory* nil)
 (global *current-plugin* nil)
-
-
-
-;; OSC 
-;;
-(global *local-host* #(127 0 0 1))
-
-(global *default-osc-send-host* *local-host*)
-(global *default-osc-send-port* 65000)
-(global *default-osc-send-address* "pigiron")
-
-(global *osc-receive-port* *default-osc-send-port*)
-(global *osc-receive-address* "CYCO")
-(global *osc-receive-buffer-length* 1024)
-
-(global *osc-send-verbose* t)
-
-

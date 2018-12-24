@@ -29,16 +29,18 @@
     <li>Absolute - a list of key-numbers, (60 64 67) for a C-Major triad.</li>
 </ol>
 <p class="body">
-    As these are less-then mnemonic there is a global    structure called <b>*CHORD-TABLE*</b> which defines about 100 chord-types    accessed by name.&nbsp; Use (?CHORDS) to print a list of available    chord-types.</p>
+    The global structure     <nobr><b>*CHORD-TABLE*</b></nobr> defines     about 100 chord-types accessible by name.&nbsp;         <nobr>*CHORD-TABLE*</nobr> takes a keyboardist view,&nbsp; several     <a href='plugins.html'>plugins</a> exists for stringed instrument chording:</p>
+<ul>
+    <li>Oud - defines an abstract lute instrument.&nbsp; Oud does not directly 
+provide alternate chords, instead it serves as the backbone for concrete 
+stringed instruments.</li>
+    <li>bass-chords - bass guitar</li>
+    <li>guitar-chords - 6 string guitar with standard tuning.</li>
+    <li>mandolin-chords</li>
+    <li>ukulele-chords</li>
+</ul>
 <p class="body">
-    *CHORD-TABLE* basically takes a keyboardist view of    chords, there are other possibilities.&nbsp; The     <a href='Fretworks.html'>fretworks</a>&nbsp;    <a href='plugins.html'>plugin</a>&nbsp;    defines chords as they appear on fretted instruments.</p>
-<p class="footnote">TODO Currently, 13 December 2018, fretworks is not completely
-implemented.&nbsp; The basic structure is in place and the beginnings of a
-bass guitar model has been defined.&nbsp; A 6-string guitar should be
-defined soon.&nbsp At some future point ukulele, banjo and 
-mandolin may be added.</p>
-<p class="body">
-    Technically *CHORD-TABLE* and the structures defined by Fretworks are    instances of the <nobr><b>CHORD-MODEL</b></nobr> class.&nbsp; In use there is no real    difference between *CHORD-TABLE* and the fretted chord models.&nbsp; The    types of available chords will be different but otherwise they are used    the same way.&nbsp; *CHORD-TABLE* is the default model for all    <a href='projects.html'>projects.</a>&nbsp; Alternate    <nobr>chord-models</nobr> are selected at either the     <a href='sections.html'>Section</a> level&nbsp; or when using a    <a href='strummer.html'>Strummer</a>&nbsp;    <a href='parts.html'>Part.</a></p>
+    <br>Technically *CHORD-TABLE* and the structures defined by Oud are    instances of the <nobr><b>CHORD-MODEL</b></nobr> class.&nbsp; In use there is no real    difference between *CHORD-TABLE* and the fretted chord models.&nbsp; The    types of available chords will be different but otherwise they are used    the same way.&nbsp; <nobr>*CHORD-TABLE*</nobr> is the default model for all    <a href='projects.html'>projects.</a>&nbsp; Alternate    <nobr>chord-models</nobr> are selected at either the     <a href='sections.html'>Section</a> &nbsp; or     <a href='parts.html'>Part</a>&nbsp; levels.</p>
 <b class="definition">(DEFCHORD name template &optional description)</b><br>
 <p class="synopsis">Defines a new chord for default *CHORD-TABLE*.</p>
 <pre class="code">

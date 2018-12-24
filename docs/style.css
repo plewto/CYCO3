@@ -141,7 +141,11 @@ p.footnote {
     max-width: 800px;    
 }
 
-
+small.footnote {
+    font-family: "Open Sans", "sans-serif";
+    font-size: 1.0em;
+    color: #6A576E;
+}
 
 pre {
     font-family: "Ubuntu Mono", "mono";

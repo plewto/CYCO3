@@ -12,30 +12,37 @@ requirements; a good Lisp implementation.  The inclusion of OSC
 entailed additional dependencies:
 
 * Lisp implementation, CYCO has only been tested with SBCL.
+<strike>
 * [quicklisp](https://www.quicklisp.org/beta/)
 * [OSC](https://github.com/zzkt/osc), Installed with quicklisp when CYCO is loaded.
 * [USOCKET](https://common-lisp.net/project/usocket/), Installed with quicklisp when CYCO is loaded.
+</strike>
 
 ##### Installation
 
 1. Place CYCO distribution folder in a convenient location.
 
+<strike>
 2. Configuration profiles are not absolutely necessary but allows CYCO to be
 customized to your needs.  By default profiles are located in  
 
    ~/.config/cyco/
-   
+
+
 
    The folder CYCO/config/ contains example profile directories you may
    use,  see CYCO/config/README.  Initially you may wish to create a
    sym-link from CYCO/configuration to ~/.config/cyco
    
-   
+</strike>
+
 3. Create the directory ~/cyco-projects/
 
+<strike>
 4. Install [quicklisp](https://www.quicklisp.org/beta/) as per instructions
 in the link.  CYCO expects quicklisp to be at the default location
 ~/quicklisp/
+</strike>
 
 
 ##### Starting CYCO
@@ -51,8 +58,11 @@ in the link.  CYCO expects quicklisp to be at the default location
    CYCO: 
 </pre>
 
+
+<strike>
 At this point CYCO is ready to use, but before doing anything else you may
 want to load a profile
+
 
 <pre>
     CYCO: (load-profile)
@@ -64,6 +74,7 @@ want to load a profile
 
 After configuration you may save a snapshot executable (so far this has only
 been tested with SBCL)
+</strike>
 
 <pre>
     CYCO: (save-snapshot "name-of-executable")

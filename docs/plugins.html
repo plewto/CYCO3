@@ -23,7 +23,7 @@
 <h2 class="section-head">Plugins</h2>
 <hr/>
 <p class="body">
-    Plugins extend CYCO with additional features.&nbsp; One of the most important    uses for plugins is to define the local MIDI environment.&nbsp;    Plugin reside at <nobr>~/.config/cyco/plugins/</nobr></p>
+    Plugins extend CYCO with additional features.&nbsp;    Plugins are located under <nobr>~/.config/cyco/plugins/</nobr></p>
 <p class="body">
     The distribution folder <nobr>CYCO/plugins/</nobr> contains several    pre-defined plugins.&nbsp; You should either copy these to    <nobr>~/.config.cyco/plugins/</nobr> or create a symbolic link between these     locations.</p>
 <p class="body">
@@ -54,9 +54,8 @@ argument may either be a string or symbol.</p>
 </pre>
 <b class="definition">(FORGET-PLUGINS)</b><br>
 <p class="synopsis">Remove all plugins from the list of loaded plugins.<br>
-<b>NOTE: forget-plugins does not actually remove the plugin from the running 
-instance of CYCO.</b>&nbsp; All it does is remove the <i>record</i> of the plugins 
-being loaded.</p>
+<b>NOTE: forget-plugins does not actually remove the plugin from memory.</b>&nbsp; 
+All it does is remove the <i>record</i> of the plugins being loaded.</p>
 <p class="body">
     The following global variables control the names and locations of plugin files.</p>
 <b class="definition">*CONFIG-DIRECTORY*</b><br>
@@ -67,10 +66,10 @@ being loaded.</p>
 <p class="body">
     Other then the locations and file names described    above there are no pre-defined plugin structures; they are simply lisp    source files.</p>
 <a id="configuration"></a>
-<hr/>
-<h4 class="section-head">CYCO Configuration</h4>
+<a id="profiles"></a>
+<h4 class="section-head">MIDI Profiles</h4>
 <p class="body">
-    Plugins evolved from a previous configuration feature used to define    the locally available MIDI devices.&nbsp; CYCO includes two     <nobr>configuration-like</nobr> plugins.</p>
+    One of the most important uses for plugin is to define a profile of the    available MIDI equipment.&nbsp; CYCO includes two <nobr>profile-like</nobr>     plugins</p>
 <ol>
     <li>general-midi - A very basic scheme based  around 
 <a href='https://en.wikipedia.org/wiki/General_MIDI'>General MIDI</a>

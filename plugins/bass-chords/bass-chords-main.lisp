@@ -45,7 +45,7 @@
 (define-movable-chord *bass-chord-model* '[per4] 0 (pitch-class 'd) '(x x 0 0))
 
 ;; (remove-duplicate-chords *bass-chord-model*)
-(dump-chords *bass-chord-model*)
+;; (dump-chords *bass-chord-model*)
 
 (export '(*bass-chord-model*) :cyco-oud)
 (import '(cyco-oud:*bass-chord-model*) :cyco)

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="index,follow,archive">
+    <meta name="description" content="CYCO Documentation">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="icon.png"/>
+    <title>CYCO PDF Plugin</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+    
+</head>
+
+<body>
+<div id="page_wrapper">
+<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="pigiron.html">PigIron Plugin</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="contents.html">Contents</a>
+
+<img class="center" src="pdf.png" alt="PDF Logo"/>
+<h2 class="section-head">PDF Plugin</h2>
+<h5>Random Distributions</h5><hr/>
+<p class="body">
+    The PDF plugin provides several random distribution functions.&nbsp;     Much of the core functionality was ported from     <a href='https://www.cs.cmu.edu/~music/nyquist/'>Nyquist</a>.</p>
+<p class="body">
+    For each distribution 'foo', two functions are provided:</p>
+<ul>
+    <li>foo-dist - Returns random numbers with the distribution foo.&nbsp;
+These functions take one or more keyword arguments.</li>
+    <li>foo-pdf - Create a new function with distribution foo.&nbsp;
+foo-pdf takes the same arguments as foo-dist and also arguments which place
+limits on the results.&nbsp; The resulting function takes no arguments.</li>
+</ul>
+<p class="body">
+    All foo-dist and foo-pdf functions take a :RNF keyword argument to     set the random number generator.&nbsp; The default :RNF is #'random</p>
+<p class="body">
+    All foo-pdf functions take the keyword :MINMAX to restrict the     possible numeric range.&nbsp; If specified the value for :MINMAX must be a list of     form <nobr>(min max)</nobr>.&nbsp; The default is to not restrict the results.</p>
+<hr/>
+<b class="definition">(linear-dist (&key (scale 1.0)(rnf #'random))</b><br>
+<b class="definition">(linear-pdf (&key (scale 1.0)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(exponential-dist (&key (delta 2)(rnf #'random))</b><br>
+<b class="definition">(exponential-pdf (&key (delta 2)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(gamma-dist (&key (mu 5)(rnf #'random))</b><br>
+<b class="definition">(gamma-pdf (&key (mu 5)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(bilateral-dist (&key (mu 0)(tau 1)(rnf #'random))</b><br>
+<b class="definition">(bilateral-pdf (&key (mu 0)(tau 1)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(cauchy-dist (&key (tau 1.0)(rnf #'random))</b><br>
+<b class="definition">(cauchy-pdf (&key (tau 1.0)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(hyperbolic-cosine-dist (&key (rnf #'random))</b><br>
+<b class="definition">(hyperbolic-cosine-pdf (&key (rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(gaussian-dist (&key (mu 0)(sigma 1)(rnf #'random))</b><br>
+<b class="definition">(gaussian-pdf (&key (mu 0)(sigma 1)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(beta-dist (&key (a 1)(b 1)(rnf #'random))</b><br>
+<b class="definition">(beta-pdf (&key (a 1)(b 1)(rnf #'random) minmax)</b><br>
+<p class="synopsis"></p>
+<hr/>
+<b class="definition">(bernoulli-dist (&key (p 0.5)(a 1)(b 0)(rnf #'random))</b><br>
+<b class="definition">(bernoulli-pdf (&key (p 0.5)(a 1)(b 0)(rnf #'random) minmax)</b><br>
+<p class="synopsis">discrete</p>
+<hr/>
+<b class="definition">(binomial-dist (&key (p 0.5)(count 10)(rnf #'random))</b><br>
+<b class="definition">(binomial-pdf (&key (p 0.5)(count 10)(rnf #'random) minmax)</b><br>
+<p class="synopsis">discrete</p>
+<hr/>
+<b class="definition">(geometric-dist (&key (p 0.5)(count 10)(rnf #'random))</b><br>
+<b class="definition">(geometric-pdf (&key (p 0.5)(count 10)(rnf #'random) minmax)</b><br>
+<p class="synopsis">discrete</p>
+<hr/>
+<b class="definition">(poisson-dist (&key (mu 5)(rnf #'random))</b><br>
+<b class="definition">(poisson-pdf (&key (mu 5)(rnf #'random) minmax)</b><br>
+<p class="synopsis">discrete</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="pigiron.html">PigIron Plugin</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="contents.html">Contents</a>
+
+</div>
+</body>
+</html>

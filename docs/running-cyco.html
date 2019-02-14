@@ -6,7 +6,7 @@
     <meta name="description" content="CYCO Documentation">
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <link rel="icon" href="icon.png"/>
-    <title>Starting-CYCO</title>
+    <title>Running-CYCO</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -20,48 +20,46 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Previous:</b>&nbsp;<a class="navigation" href="home.html">HOME</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<b class="navigation">Next:</b>&nbsp;<a class="navigation" href="plugins.html">Plugins</a>
 
-<h2 class="section-head">Starting CYCO</h2>
+<h2 class="section-head">Running CYCO</h2>
 <hr/>
 <p class="body">
-    These symbols are used in the following examples.</p>
+    CYCO may either be ran from source, or if using     <a href='http://www.sbcl.org/'>SBCL</a>, a saved snapshot.&nbsp; This    illustration assumes SBCL and uses the following symbols:</p>
 <pre class="code">
 
- $     - Command line prompt.
- *     - Lisp REPL prompt.
- CYCO: - Lisp REPL prompt while using CYCO.
+#     - shell comment
+$     - command line prompt.
+*     - lisp REPL prompt.
+CYCO: - lisp REPL prompt while using CYCO (changes to reflect the current project name)
 </pre>
 <p class="body">
-    To start CYCO:</p>
+    To run CYCO from source:</p>
 <pre class="code">
-Change directory to wherever the CYCO distribution folder is located.
+cd into the CYCO distribution directory.
 
-$ cd ~/CYCO
+    $ cd ~/CYCO
 
-Start your preferred Lisp (<a href='http://www.sbcl.org/'>SBCl</a> is assumed).
+Start your favorite lisp and load the source.
 
-$ sbcl --load src/cyco<br><br>After the source files load, switch to the CYCO package.
+    $ sbcl --load src/cyco
 
-* (CYCO)
+After the source files load switch to the CYCO package.
 
-While using CYCO the Lisp prompt changes to :CYCO.  The exact prompt text
-changes to reflect the current project name.
-</pre>
-<hr/>
-<h4 class="section-head">Optional Configuration</h4>
-<p class="body">
-    <strike>CYCO may be customized by loading plugins to add    additional functionality.&nbsp;   One of the most important uses for plugins is to    define the local MIDI environment.&nbsp;  The <nobr>'general-midi'</nobr> plugin is provided    as a default fallback.&nbsp;  Unless otherwise noted all of the example projects    use the <nobr>general-midi</nobr> plugin.nbsp; To load the general-midi plugin use:</p>
-<pre class="code">
-CYCO: (plugin 'general-midi)</strike>
+    * (CYCO)
+
+The lisp prompt should change to CYCO:  As projects are created the 
+prompt text changes to reflect the current project name.
 </pre>
 <hr/>
-<h4 class="section-head">Snapshots</h4>
 <p class="body">
-    Once CYCO is configured you may wish to create an    executable snapshot.</p>
+    After CYCO has loaded you'll want to configure it to match your    local MIDI environment.&nbsp; This is accomplished by writing     <a href='plugins.html'>plugins</a>.&nbsp; Initially you may use the predefined    <a href='https://en.wikipedia.org/wiki/General_MIDI'>General MIDI</a>&nbsp plugin</p>
 <pre class="code">
-CYCO: (save-snapshot "name-of-snapshot")
+CYCO: (plugin 'general-midi)
 </pre>
 <p class="body">
-    After creating the snapshot CYCO will terminate.  This is normal.</p>
+    Once configured you may save a snapshot executable.&nbsp; Snapshots have    the advantage of 'baking-in' the current state of CYCO for future    use.&nbsp; They also have near instantaneous startup time.  Use the    following command to create a snapshot in your home directory.</p>
+<pre class="code">
+CYCO: (save-snapshot "~/cyco-snapshot-name")
+</pre>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="home.html">Home</a>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="navigation" href="contents.html">Contents</a>

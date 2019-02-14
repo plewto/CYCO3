@@ -72,7 +72,7 @@ Remaining is not well defined for all pattern types.</p>
 <p class="synopsis">Coerce object to a Pattern.<br>
 If (PATTERN-P object) is true, return object.<br>
 Otherwise return pattern of type ptype with object as an element.&nbsp;
-ptype defaults to CYCLE.&nbsp; ptype is restricted to the following 
+ptype defaults to CYCLE and is restricted to the following 
 pattern types:</p>
 <ul>
     <li>list</li>
@@ -213,6 +213,9 @@ calls the function with an ever increasing integer value.</p>
 (param foo (wrapper :period 8))
 (next foo 16) --&gt; (0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7)
 
+
+;; Using wrapper to produce triangular numbers.
+;;
 (let ((current 0))
    (param baz (wrapper :of #'(lambda (q)
                                 (prog1 

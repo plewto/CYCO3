@@ -1,4 +1,8 @@
-;;;; PigIron CYCO sj config yamaha mu100r
+;;;; CYCO plugins sj yamaha mu100r
+;;;;
+;;;; The Yamaha MU100R is a general MIDI "rompler"
+;;;; Regretfully it is missing the optional VL card which
+;;;; would thicken it's plot.
 ;;;;
 
 (instrument mu100r
@@ -23,7 +27,7 @@
      (program-map! inst #'(lambda (time &key bank program)
 			    (if (eq program :doc)
 				(progn
-				  (format t "Use (?GENERAL-MIDI-PROGRAMS) for list oif MU100R programs.~%")
+				  (format t "Use (?GENERAL-MIDI-PROGRAMS) for list of MU100R programs.~%")
 				  nil)
 			      (let ((ci (channel-index inst))
 				    (bank (cond ((eq bank :default)

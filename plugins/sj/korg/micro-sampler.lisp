@@ -1,4 +1,4 @@
-;;;; PigIron CYCO sj config korg microsampler
+;;;; CYCO plugins sj korg micro-sampler.lisp
 ;;;;
 
 (instrument microsampler

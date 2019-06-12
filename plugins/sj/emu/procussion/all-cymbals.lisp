@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/all-cymbals
+;;;; CYCO plugins sj emu procussion all-cymbals.lisp
 ;;;;
 ;;;;  zone/stack            range
 ;;;;  1 507 Gong Pow      : 036 037                                                               
@@ -36,62 +36,62 @@
 ;;;;
 
 (let* ((gong-keys '((gong1  . (36))
-		     (gong2  . (70))
-		     (gong3  . (37))
-		     (gong   . (71))))
+		    (gong2  . (70))
+		    (gong3  . (37))
+		    (gong   . (71))))
        (hha-keys '((ped   . (44))
-		    (op    . (38))
-		    (opn   . (40))
-		    (open  . (42))
-		    (ped2  . (45))
-		    (op2   . (38))
-		    (opn2  . (41))
-		    (open2 . (43))))
+		   (op    . (38))
+		   (opn   . (40))
+		   (open  . (42))
+		   (ped2  . (45))
+		   (op2   . (38))
+		   (opn2  . (41))
+		   (open2 . (43))))
        (hhb-keys '((x     . (84))
-		    (op    . (86))
-		    (opn   . (88))
-		    (open  . (90))
-		    (ped   . (92))
-		    (x2    . (85))
-		    (op2   . (87))
-		    (opn2  . (89))
-		    (open2 . (91))
-		    (ped2  . (93))))
+		   (op    . (86))
+		   (opn   . (88))
+		   (open  . (90))
+		   (ped   . (92))
+		   (x2    . (85))
+		   (op2   . (87))
+		   (opn2  . (89))
+		   (open2 . (91))
+		   (ped2  . (93))))
        (cym-keys '((ride-1      . (046))
-		    (choke-1     . (048))
-		    (crash-1     . (050))
-		    (pang-1      . (052))
-		    (ping-1      . (054))
-		    (bell-1      . (057))
-		    (hyper-1     . (060))
-		    (dark-1      . (064))
-		    (dark-2      . (067))
-		    (hyper-1     . (072))
-		    (malt-1      . (075))
-		    (ride-2      . (047))
-		    (choke-2     . (049))
-		    (crash-2     . (051))
-		    (pang-2      . (053))
-		    (ping-2      . (056))
-		    (bell-2      . (059))
-		    (hyper-2     . (063))
-		    (dark-3      . (066))
-		    (dark-4      . (069))
-		    (hyper-2     . (074))
-		    (malt-2      . (076))))
+		   (choke-1     . (048))
+		   (crash-1     . (050))
+		   (pang-1      . (052))
+		   (ping-1      . (054))
+		   (bell-1      . (057))
+		   (hyper-1     . (060))
+		   (dark-1      . (064))
+		   (dark-2      . (067))
+		   (hyper-1     . (072))
+		   (malt-1      . (075))
+		   (ride-2      . (047))
+		   (choke-2     . (049))
+		   (crash-2     . (051))
+		   (pang-2      . (053))
+		   (ping-2      . (056))
+		   (bell-2      . (059))
+		   (hyper-2     . (063))
+		   (dark-3      . (066))
+		   (dark-4      . (069))
+		   (hyper-2     . (074))
+		   (malt-2      . (076))))
        (sfx-keys '((nse-1  . (077))
-		    (nss-2  . (078))
-		    (ice1   . (079))
-		    (ice2   . (080))
-		    (ice3   . (081))
-		    (ice4   . (082))
-		    (ice5   . (083))))
+		   (nss-2  . (078))
+		   (ice1   . (079))
+		   (ice2   . (080))
+		   (ice3   . (081))
+		   (ice4   . (082))
+		   (ice5   . (083))))
        (combined-keys (append gong-keys
-			       hha-keys
-			       hhb-keys
-			       cym-keys
-			       sfx-keys)))
-  (defun all-cymbals (&key (parent pro2) channel articulation-map dynamic-map)
+			      hha-keys
+			      hhb-keys
+			      cym-keys
+			      sfx-keys)))
+  (defun all-cymbals (&key (parent PROB) channel articulation-map dynamic-map)
     (let ((ac (instrument all-cymbals
 			  :parent parent
 			  :remarks "Procussion all-cymbals parent instrument"
@@ -101,29 +101,29 @@
 			  :articulation-map articulation-map
 			  :dynamic-map dynamic-map
 			  :keynumber-map (symbolic-keynumber-map combined-keys))))
-    (instrument acym-gong
-		:parent ac
-		:remarks "Procussion all-cymbals gong instrument"
-		:transient t
-		:keynumber-map (symbolic-keynumber-map gong-keys))
-    (instrument acym-ahat
-		:parent ac
-		:remarks "Procussion all-cymbals hat A instrument"
-		:transient t
-		:keynumber-map (symbolic-keynumber-map hha-keys))
-     (instrument acym-bhat
-		:parent ac
-		:remarks "Procussion all-cymbals hat B instrument"
-		:transient t
-		:keynumber-map (symbolic-keynumber-map hhb-keys))
-    (instrument acym-cym
-		:parent ac
-		:remarks "Procussion all-cymbals cymbals instrument"
-		:transient t
-		:keynumber-map (symbolic-keynumber-map cym-keys))
-    (instrument acym-sfx
-		:parent ac
-		:remarks "Procussion all-cymbals effects instrument"
-		:transient t
-		:keynumber-map (symbolic-keynumber-map sfx-keys))
-    ac))) 
+      (instrument acym-gong
+		  :parent ac
+		  :remarks "Procussion all-cymbals gong instrument"
+		  :transient t
+		  :keynumber-map (symbolic-keynumber-map gong-keys))
+      (instrument acym-ahat
+		  :parent ac
+		  :remarks "Procussion all-cymbals hat A instrument"
+		  :transient t
+		  :keynumber-map (symbolic-keynumber-map hha-keys))
+      (instrument acym-bhat
+		  :parent ac
+		  :remarks "Procussion all-cymbals hat B instrument"
+		  :transient t
+		  :keynumber-map (symbolic-keynumber-map hhb-keys))
+      (instrument acym-cym
+		  :parent ac
+		  :remarks "Procussion all-cymbals cymbals instrument"
+		  :transient t
+		  :keynumber-map (symbolic-keynumber-map cym-keys))
+      (instrument acym-sfx
+		  :parent ac
+		  :remarks "Procussion all-cymbals effects instrument"
+		  :transient t
+		  :keynumber-map (symbolic-keynumber-map sfx-keys))
+      ac))) 

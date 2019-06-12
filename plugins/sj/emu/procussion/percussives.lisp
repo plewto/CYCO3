@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/percussives
+;;;; CYCO plugins sj emu procussion percussives.lisp
 ;;;;
 ;;;;                                  3   4         5         6         7         8         9 
 ;;;; Zone Stack             key-range 678901234567890123456789012345678901234567890123456789012345678 
@@ -24,7 +24,7 @@
 ;;;;    +-- voxcym        84-96 
 ;;;;    +-- SFX2          98-98
 
-(defun percussives (&key (parent pro3) channel articulation-map dynamic-map)
+(defun percussives (&key (parent PROB) channel articulation-map dynamic-map)
   (let ((perc (instrument percussives
 			  :parent parent
 			  :remarks "Emu Procussion Percussives parent instrument"

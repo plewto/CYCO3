@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/cymbals2
+;;;; CYCO plugins sj emu procussion cymbals2.lisp
 ;;;;
 ;;;; Zone Stack             key range
 ;;;;  1 241 HiHatBStmp    : 024 025                                                               
@@ -137,7 +137,7 @@
        (combined-keys (append gong-keys ride-keys ping-keys hats-keys
 			       crash-keys mallet-keys mallet-keys)))
 
-  (defun cymbals2 (&key (parent pro2) channel articulation-map dynamic-map)
+  (defun cymbals2 (&key (parent PROB) channel articulation-map dynamic-map)
     (let ((c2 (instrument cymbals2
 			  :parent parent
 			  :remarks "Procussion cymbals2 parent instrument"

@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/toolkit
+;;;; CYCO plugins sj em procussion tollkit.lisp
 ;;;;
 ;;;; Zone    Stack             key-range 
 ;;;; Z01     S540 twank        036 038
@@ -57,9 +57,9 @@
 				((numberp kn)
 				 (cnth (truncate kn) acc))
 				(t +rest+)))))) ;; ignore unrecognized keynumbers
-				 
   
-  (defun toolkit (&key (parent pro3)(channel nil) articulation-map dynamic-map)
+  
+  (defun toolkit (&key (parent PROB)(channel nil) articulation-map dynamic-map)
     (let ((inst (instrument toolkit
 			    :parent parent
 			    :channel channel
@@ -72,73 +72,73 @@
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 36))
-
+      
       (instrument tk-waterpin 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 42))
-
+      
       (instrument tk-doom 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 45))
-
+      
       (instrument tk-clank 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 54))
-
+      
       (instrument tk-echo-thud 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 57))
-
+      
       (instrument tk-kick 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 78))
-
+      
       (instrument tk-tom
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap 102))
-
+      
       (instrument tk-planks
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap '(39 69)))
-
+      
       (instrument tk-ratchet 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap '(51 66)))
-
+      
       (instrument tk-awk-bosk 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap '(60 75)))
-
+      
       (instrument tk-gymnasium 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap '(63 72)))
-
+      
       (instrument tk-cym 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"
 		  :transient t
 		  :keynumber-map (make-keymap '(84 87)))
-
+      
       (instrument tk-snare 
 		  :parent inst
 		  :remarks "Procussion toolkit XXX instrument"

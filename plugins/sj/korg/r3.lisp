@@ -1,4 +1,4 @@
-;;;; PigIron CYCO sj config korg R3
+;;;; CYCO plugins sj korg korg.lisp
 ;;;;
 
 (let ((bank-alist '((A  0)(B  1)(C  2)(D  3)

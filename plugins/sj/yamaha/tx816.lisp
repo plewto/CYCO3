@@ -1,4 +1,8 @@
-;;;; Pigiron sj config yamaha tx816
+;;;; CYCO sj yamaha tx816
+;;;;
+;;;; The TX816 is an FM beast.  When fully loaded it is equvilent
+;;;; to 8 DX7s. This unit has 6 modlues which are always used
+;;;; in pairs.
 ;;;;
 ;;;; TX816
 ;;;;  |

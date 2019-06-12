@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/standard-kit
+;;;; CYCO plugins sj emu procussion standard-kit.lisp
 ;;;;
 ;;;; Within all "standard" Procussion kits, specific key numbers are 
 ;;;; assigned to the same type of instrument.  Thees sub instruments are:
@@ -366,7 +366,7 @@
 
 (macrolet ((definst (name)
 	     `(progn 
-		(defun ,name (&key (parent pro1) channel)
+		(defun ,name (&key (parent PROA) channel)
 		  (instrument ,name 
 			      :parent parent
 			      :transient t

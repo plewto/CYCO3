@@ -1,63 +1,64 @@
-;;;; sj-config
+;;;; CYCO plugins sj sj-main.lisp  05-June-2019
+;;;;
 
-;;; Primary MIDI Channels
-;;;
-(meta-channel! :TXA     1 "Yamaha TX816 A")
-(meta-channel! :TXB     2 "Yamaha TX816 B")
-(meta-channel! :TXC     3 "Yamaha TX816 C")
-(meta-channel! :SY35    4 "Yamaha SY35")
-(meta-channel! :R3      5 "Korg R3")
-(meta-channel! :Q1      6 "Quantum Leap 1")
-(meta-channel! :Q2      7 "Quantum Leap 2")
-(meta-channel! :Q3      8 "Quantum Leap 3")
-(meta-channel! :Q4      9 "Quantum Leap 4")
-(meta-channel! :Q5     10 "Quantum Leap 5")
-(meta-channel! :PRO1   11 "Emu Procussion 1")
-(meta-channel! :PRO2   12 "Emu Procussion 2")
-(meta-channel! :PRO3   13 "Emu Procussion 3")
-(meta-channel! :LLIA   14 "SuperCollider")
-(meta-channel! :MU100R 15 "Yamaha MU100R ")
+
+;; general      rhythm   pad
+;; 01 TXA       TXA      TXA
+;; 02 TXB       TXB      TXB
+;; 03 TXC       TXC      TXC
+;; 04 SY35      SY35     SY35
+;; 05 R3        R3       R3
+;; 06 BASS      BASS     BASS
+;; 07 GUITAR    GUITAR   GUITAR
+;; 08 ROMA      ROMA     ROMA 
+;; 09 VOP       SAMPLER  VOP
+;; 10 DRUMS     DRUMS    DRUMS
+;; 11 PROA      PROA     PROA
+;; 12 PROB      PROB     CASIO
+;; 13 SDA       SDA      ROMAB
+;; 14 SDB       SDB      VOPB
+;; 15 MU100R    SDC      MU100R
+;; 16 BEEP      SDD      OBX/SAMPLER
+
+
+;; General assignments
+(meta-channel! :TXA    01 "Yamaha TX816 A")
+(meta-channel! :TXB    02 "Yamaha TX816 B")
+(meta-channel! :TXC    03 "Yamaha TX816 C")
+(meta-channel! :SY35   04 "Yamaha SY35")
+(meta-channel! :R3     05 "Korg R3")
+(meta-channel! :BASS   06 "MOR Bass")
+(meta-channel! :GUITAR 07 "MOR/Roma guitar")
+(meta-channel! :ROMA   08 "Roma")
+(meta-channel! :VOP    09 "Voices of Passion")
+(meta-channel! :DRUMS  10 "MOR drum kits")
+(meta-channel! :PROA   11 "Procussion standard kits")
+(meta-channel! :PROB   12 "Procussion cymbals")
+(meta-channel! :SDA    13 "Stormdrum")
+(meta-channel! :SDB    14 "Stormdrum")
+(meta-channel! :MU100R 15 "Yamaha MU100")
 (meta-channel! :BEEP   16 "Metronome")
 
-;;; Secondary Channels
-;;;
-(meta-channel! :BASS   :Q1 "QL MOR Bass")
-(meta-channel! :GUITAR :Q2 "QL MOR/Gypsy guitar")
-(meta-channel! :GYPSY  :Q3 "QL Gypsy")
-(meta-channel! :VOP    :Q4 "QL VOP")
-(meta-channel! :DRUMS  :Q5 "QL MOR Percussion")
-(meta-channel! :PROKIT :PRO1 "Procussion Standard kit")
-(meta-channel! :PROCYM :PRO2 "Procussion cymbals")
+;; Overloaded rhythm track channels
+;;
+(meta-channel! :SAMPLER 09 "RT Sampler")
+(meta-channel! :SDC     15 "RT Stormdrums")
+(meta-channel! :SDD     16 "RT Stormdrums")
 
-;;; Piggyback Channels
-;;;
-(meta-channel! :OBX        :R3   "Oberheim Matrix1000")
-(meta-channel! :SAMPLER    :SY35 "Korg Micro sampler")
-(meta-channel! :VOP-ALT    :TXC  "VOP alternate")
-(meta-channel! :MU100R-ALT :SY35 "MU100R Alternate")
-(meta-channel! :LLIA-ALT   :SY35 "LLia Alternate")
+;; Overloaded pad channels
+;;
+(meta-channel! :CASIO  12 "")
+(meta-channel! :ROMAB  15 "PAD ROMA B")
+(meta-channel! :VOPB   16 "PAD Voices of passion B")
+
 
 (prune-orchestra :force t)
 
-(sub-plugin 'general-midi)       
+(sub-plugin 'general-midi)
 (load-plugin-file "emu/procussion/procussion")
-(load-plugin-file "yamaha/tx816")
-(load-plugin-file "yamaha/sy35")
-(load-plugin-file "yamaha/mu100r")
-(load-plugin-file "quantumleap/quantumleap")
-(load-plugin-file "quantumleap/keyswitch")
-(load-plugin-file "quantumleap/mor2/basses")
-(load-plugin-file "quantumleap/mor2/guitars")
-(load-plugin-file "quantumleap/mor2/percussion")
-(load-plugin-file "quantumleap/gypsy/gypsy")
-(load-plugin-file "quantumleap/gypsy/accordians")
-(load-plugin-file "quantumleap/gypsy/guitars")
-(load-plugin-file "quantumleap/vop/american")
-(load-plugin-file "quantumleap/vop/bulgarian")
-(load-plugin-file "quantumleap/vop/indian")
-(load-plugin-file "quantumleap/vop/syrian")
-(load-plugin-file "quantumleap/vop/welsh")
-(load-plugin-file "korg/r3")
-(load-plugin-file "korg/micro-sampler")
-
-
+(load-plugin-file "yamaha/yamaha")
+(load-plugin-file "korg/korg")
+(load-plugin-file "oberheim/oberheim")
+(load-plugin-file "casio/casio")
+(load-plugin-file "eastwest/eastwest")
+ 

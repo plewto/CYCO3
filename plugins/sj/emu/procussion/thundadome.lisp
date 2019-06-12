@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/thundadome
+;;;; CYCO plugins sj emu procussion thundadome
 ;;;;
 ;;;;                             3   4         5         6         7         8         9         
 ;;;; Zone/Stack        Key Range 6789012345678901234567890123456789012345678901234567890123456
@@ -33,7 +33,7 @@
 ;;;;    +-- td-hallowell
 ;;;;
 
-(defun thundadome (&key (parent pro3)(channel nil) articulation-map dynamic-map)
+(defun thundadome (&key (parent PROB)(channel nil) articulation-map dynamic-map)
   (let* ((inst (instrument thundadome
 			   :parent parent
 			   :channel channel

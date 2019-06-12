@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/procussion.lisp
+;;;; CYCO plugins sj emu procussion procussion.lisp
 ;;;;
 ;;;; The Emu Procussion is essentially a Proteus dedicated to percussion.
 ;;;; It has 128 memory slots, the first 64 are factory ROM, the final 64
@@ -106,22 +106,17 @@
 ;; ---------------------------------------------------------------------- 
 ;;		     Top level Procussion instruments.
 
-(instrument pro1
+(instrument PROA
 	    :parent procussion
-	    :channel (meta-channel :prokit)
+	    :channel (meta-channel :PROA)
 	    :transient nil
 	    :remarks "Reserved for 'standard' or primary Procussion kit.")
 
-(instrument pro2
+(instrument PROB
 	    :parent procussion
-	    :channel (meta-channel :procym)
+	    :channel (meta-channel :PROB)
 	    :transient nil
 	    :remarks "Reserved for cymbals.")
-
-(instrument pro3
-	    :parent procussion
-	    :channel (meta-channel :pro3)
-	    :transient nil)
 
 (load-plugin-file "emu/procussion/standard-kit")
 (load-plugin-file "emu/procussion/tuned-instruments")

@@ -1,4 +1,4 @@
-;;;; CYCO sj config emu/procussion/more-cymbals
+;;;; CYCO plugin sj emu procussion more-cymbals.lisp
 ;;;;
 ;;;; more-cymbals
 ;;;; Zone Stack
@@ -72,8 +72,8 @@
 		   (cons 'CRASH-3        '(89) )
 		   (cons 'CRASH-4        '(90))
 		   (cons 'SFX            '(98)) )))
-
-  (defun more-cymbals (&key (parent pro2)(channel nil) articulation-map dynamic-map)
+  
+  (defun more-cymbals (&key (parent PROB)(channel nil) articulation-map dynamic-map)
     (instrument more-cymbals
   		:parent parent
 		:remarks "Procussion more-cymbals instrument"

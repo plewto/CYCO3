@@ -1,5 +1,16 @@
-;;;; PigIron CYCo sj config yamaha sy35
+;;;; CYCO plugins sj yamaha sy35
 ;;;;
+;;;; The SY35 is the low end of Yamaha's "vector" synths.
+;;;; It is little more then a rompler with joystick.
+;;;;
+;;;; The memory is divided into:
+;;;;       1) "internal" RAM
+;;;;       2) "card"     plugable RAM
+;;;;       3) "preset"   factory ROM
+;;;;
+;;;; Unfortunatly there is no way to select these over MIDI.
+;;;;
+
 
 (instrument sy35
 	    :parent +root-instrument+

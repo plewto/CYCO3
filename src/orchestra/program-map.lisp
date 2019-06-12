@@ -77,7 +77,8 @@ Map entry format has the form
     ((cons name-1 program-number-1 name [optional-remarks])
      (cons name-2 program-number-2 name [optional-remarks])
       ....)"
-  (if (alist-p htab)(setf htab (alist->hash-table htab (length htab))))
+  ;;(if (alist-p htab)(setf htab (alist->hash-table htab (length htab))))
+  (setf htab (alist->hash-table htab (length htab)))
   (flet ((docfn ()
 		(format t "Instrument ~A Symbolic Program Map~%" (name instrument))
 		(let ((acc '()))

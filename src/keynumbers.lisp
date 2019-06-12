@@ -164,3 +164,38 @@ value - an integer in interval (-1..127) inclusive."
 (defmethod invert ((lst list)(pivot t))
   (mapcar #'(lambda (q)(invert q pivot)) lst))
 
+
+(defun white-keys (start end)
+  "Returns list of white-key numbers between start and end.
+If either start or end is not a white-key, it is coerced to be so."
+  (let ((pc (pitch-class start))
+	(s (keynumber start))
+	(e (keynumber end)))
+    (if (> s e)
+	nil
+      (cons (if (member pc '(1 3 6 8 10))
+		(1+ s)
+	      s)
+	    (cond ((or (= pc 4)(= pc 11)) ;; E or B
+		   (white-keys (1+ s) e))
+		  ((member pc '(0 2 5 7 9))
+		   (white-keys (+ 2 s) e))
+		  (t (white-keys (1+ s) e)))))))
+
+
+(defun black-keys (start end)
+  "Returns list of black key numbers between start and end.
+If either start or end is not a black-key, it is coerced to be so."
+  (let ((pc (pitch-class start))
+	(s (keynumber start))
+	(e (keynumber end)))
+    (if (> s e)
+	nil
+      (cons (if (member pc '(0 2 4 5 7 9 11))
+		(1+ s)
+	      s)
+	    (cond ((or (= pc 3)(= pc 10)) ;; DS or AS
+		   (black-keys (+ 3 s) e))
+		  ((member pc '(1 6 8 10))
+		   (black-keys (+ 2 s) e))
+		  (t (black-keys (1+ s) e)))))))

@@ -50,54 +50,54 @@ remarks - optional explanation."
   (defmethod meta-channel ((chan null) &optional resolve)
     (if resolve 0 nil))
 
-  ;; ISSUE: Use flet or labels to hide .META-CHANNEL. and .META-CHANNEL-1.
-  
-  (defun .meta-channel. (target-name name depth)
-    (if (zerop depth)
-	(cyco-error 'meta-channel! name "Circular channel assignment")
-    (let* ((p (cdr (assoc name assignments)))
-  	   (chan (and p (meta-channel-value p))))
-      (if (and (integerp chan)(plusp chan)(<= chan 16))
-  	  chan
-  	(.meta-channel. target-name chan (1- depth))))))
-  
-  (defun .meta-channel-1. (name)
-    (let ((p (cdr (assoc name assignments))))
-      (or (and p (meta-channel-value p))
-  	  (cyco-value-error 'meta-channel name))))
+ 
+  (labels ((resolve-channel (target-name name depth)
+			   (if (zerop depth)
+			       (cyco-error 'meta-channel! name "Circular channel assignment")
+			     (let* ((p (cdr (assoc name assignments)))
+				    (chan (and p (meta-channel-value p))))
+			       (if (and (integerp chan)(plusp chan)(<= chan 16))
+				   chan
+				 (resolve-channel target-name chan (1- depth))))))
+	   (resolve-channel-once (name)
+			     (let ((p (cdr (assoc name assignments))))
+			       (or (and p (meta-channel-value p))
+				   (cyco-value-error 'meta-channel name)))))
+	   
+    (defmethod meta-channel ((name symbol) &optional (resolve t))
+      (if resolve
+	  (resolve-channel name name 10)
+	(resolve-channel-once name)))
     
-  (defmethod meta-channel ((name symbol) &optional (resolve t))
-    (if resolve
-  	(.meta-channel. name name 5)
-      (.meta-channel-1. name)))
-
-  (defun channel-name (c)
-    "Returns primary symbolic name for MIDI channel c."
-    (let ((ci (1- c)))
-      (if (and (>= ci 0)(<= ci 15))
-	  (let ((mc (aref reverse-assignments ci)))
-	    (meta-channel-name mc))
-	nil)))
-
-  (defun ?meta-channels ()
-    "print list of defined meta channels."
-    (let ((acc '()))
-      (dolist (p assignments)
-	(push (cons (->string (car p))
-		    (->string (meta-channel-value (cdr p)))) acc))
-      (dolist (p (sort acc #'(lambda (a b)(string< (car a)(car b)))))
-	(format t "[~16A] --> ~A~%" (car p)(cdr p)))
-      (format t "~%")
-      (dotimes (ci 16)
-	(let* ((chan (1+ ci))
-	       (primary (channel-name chan)))
-	  (format t "[~02D] --> ~A~%" chan primary)))))
-
-  (defun meta-channel-assignment-p (obj)
-    "Predicate, true if obj is either a numeric MIDI channel 
+    (defun channel-name (c)
+      "Returns primary symbolic name for MIDI channel c."
+      (let ((ci (1- c)))
+	(if (and (>= ci 0)(<= ci 15))
+	    (let ((mc (aref reverse-assignments ci)))
+	      (meta-channel-name mc))
+	  nil)))
+    
+    (defun ?meta-channels ()
+      "print list of defined meta channels."
+      (let ((acc '()))
+	(dolist (p assignments)
+	  (push (cons (->string (car p))
+		      (->string (meta-channel-value (cdr p)))) acc))
+	(dolist (p (sort acc #'(lambda (a b)(string< (car a)(car b)))))
+	  (format t "[~16A] --> ~A~%" (car p)(cdr p)))
+	(format t "~%")
+	(dotimes (ci 16)
+	  (let* ((chan (1+ ci))
+		 (primary (channel-name chan)))
+	    (format t "[~02D] --> ~A~%" chan primary)))))
+    
+    
+    
+    (defun meta-channel-assignment-p (obj)
+      "Predicate, true if obj is either a numeric MIDI channel 
 or a defined symbolic meta channel."
-    (or (and (integerp obj)(plusp obj)(<= obj 16))
-	(assoc obj assignments))) )
-
+      (or (and (integerp obj)(plusp obj)(<= obj 16))
+	  (assoc obj assignments))))) 
+  
 
 

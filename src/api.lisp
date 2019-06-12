@@ -99,11 +99,13 @@ See ->list"))
   (:documentation
    "Adds group to section."))
 
-(def-type-predicate alist-p
-   "Predicate true if argument is an association list.")
 
-(defmethod alist-p ((lst list))
-  (every #'(lambda (q)(and (consp q)(symbolp (car q)))) lst))
+;; *** DEPRECIATED ***
+;; (def-type-predicate alist-p
+;;    "Predicate true if argument is an association list.")
+
+;; (defmethod alist-p ((lst list))
+;;   (every #'(lambda (q)(and (consp q)(symbolp (car q)))) lst))
 
 (defgeneric articulation-map (inst)
   (:documentation

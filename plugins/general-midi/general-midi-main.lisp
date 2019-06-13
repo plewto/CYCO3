@@ -1,8 +1,12 @@
-;;;; Example CYCO configuration for General MIDI instruments.
+;;;; CYCO plugins general-midi general-midi-main.lisp
 ;;;;
-;;;; These files illustrate a simple configuration scheme based on the
-;;;; General MIDI standard.  gm-percussion defines several permanent
-;;;; (i.e. non-transient) instruments on MIDI channel 10.  
+;;;; Defines General MIDI instruments.
+;;;;
+;;;;
+;;;; The instruments are divided into two groups: percussion and 
+;;;; non-percussion.  The GM-PERCUSSION instrument, and it's descendants,
+;;;; are created when the plugin is loaded.  The non-percussion instruments
+;;;; are created by calling the GENERAL-MIDI-INSTRUMENT macro.
 ;;;;
 ;;;;  +root-instrument+
 ;;;;     |
@@ -25,20 +29,10 @@
 ;;;; it's child instruments.  gm-cowbell on the other hand will only produce
 ;;;; cowbell and other closely related tones (agogo and triangle).
 ;;;;
-;;;;
-;;;; The function MAKE-GENERAL-MIDI-INSTRUMENT creates non-percussion
-;;;; instruments.  By default these instruments are "transient".  When a
-;;;; new project is created all transient instruments are removed from the
-;;;; orchestra tree, while non-transient instruments remain in place.
-;;;; In general non-transient instruments should only be defined during
-;;;; configuration, and all project defined instruments should be
-;;;; transient.  This allows a project to be reloaded several times while
-;;;; testing without adding needles duplicate instruments to the orchestra.
-;;;;
+
 
 (load-plugin-file "gm-program-map")
 (load-plugin-file "gm-percussion")
-
 
 (defun make-general-midi-instrument (name &key
 					  program 
@@ -50,7 +44,7 @@
 					  articulation-map
 					  remarks)
   "Creates new GENERAL MIDI instrument.
-name  - Symbol
+name       - Symbol
 :program   - Symbol or integer program-number, defaults to name.
              If an integer is used it must be in range 0,127 inclusive.
              If program is a symbol it must match an entry in 
@@ -58,9 +52,7 @@ name  - Symbol
              displays a list of valid program symbols.
 :parent    - nil or instance of Instrument, defaults to +ROOT-INSTRUMENT+
 :transient - bool, If true this instrument is purged form the orchestra
-	     tree by the (PRUNE-ORCHESTRA) function.  Instruments defined
-             during configuration are usually non-transient.  Conversely
-             instruments created by a project should be transient. Default t.
+	     tree by the (PRUNE-ORCHESTRA) function. Default t
 :channel   - MIDI channel, defaults to parent's channel.
 :remarks   - Optional remarks text
 :keynumber-map    - See orchestra/keynumber-map.lisp

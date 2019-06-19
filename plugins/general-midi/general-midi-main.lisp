@@ -3,7 +3,7 @@
 ;;;; Defines General MIDI instruments.
 ;;;;
 ;;;;
-;;;; The instruments are divided into two groups: percussion and 
+;;;; These instruments are divided into two groups: percussion and 
 ;;;; non-percussion.  The GM-PERCUSSION instrument, and it's descendants,
 ;;;; are created when the plugin is loaded.  The non-percussion instruments
 ;;;; are created by calling the GENERAL-MIDI-INSTRUMENT macro.
@@ -24,10 +24,11 @@
 ;;;;            +-- gm-timbale
 ;;;;            +-- gm-tom
 ;;;;
-;;;; These instruments use a symbolic keynumber-map specific to their
-;;;; type.   gm-percussion may produce any of the tones associated with
-;;;; it's child instruments.  gm-cowbell on the other hand will only produce
-;;;; cowbell and other closely related tones (agogo and triangle).
+;;;; The percussion instruments use a symbolic keynumber-map specific to
+;;;; their type.  However the main instrument, gm-percussion, may produce
+;;;; any of the tones associated with it's child instruments.  gm-cowbell
+;;;; on the other hand will only produce cowbell and other closely related
+;;;; tones (agogo and triangle).
 ;;;;
 
 

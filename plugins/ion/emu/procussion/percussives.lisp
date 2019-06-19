@@ -1,10 +1,10 @@
-;;;; CYCO plugins sj emu procussion percussives.lisp
+;;;; CYCO plugins ion emu procussion percussives.lisp
 ;;;;
 ;;;;                                  3   4         5         6         7         8         9 
 ;;;; Zone Stack             key-range 678901234567890123456789012345678901234567890123456789012345678 
 ;;;; Z01  S488 BAM BAM      036 047   6**********7                                                   
 ;;;; Z02  S274 Noise Hat A  037 053    7***************3                                                
-;;;; Z03  S064 Tick Kick    048 059               8**********9                                                                    
+;;;; Z03  S064 Tick Kick    048 059               8**********9
 ;;;; Z04  S336 Syn Scratch  054 065                     4**********5                                    
 ;;;; Z05  S352 Analog Tick  060 071                           0**********1                              
 ;;;; Z06  S263 HouseHat 1   066 077                                 6**********7                        
@@ -14,14 +14,14 @@
 ;;;; Z10  S312 SFX 2        098 098                                                                 8   
 ;;;;
 ;;;;
-;;;; percussives
+;;;; PERCUSSIVES
 ;;;;    |
 ;;;;    +-- BAMBAM        36-47
-;;;;    +-- tick-kick     48-59   (w scratch 54..59)
-;;;;    +-- analog-tick   60-65
-;;;;    +-- househat      66-77   (w block 72..77)
-;;;;    +-- blockcym      78-83
-;;;;    +-- voxcym        84-96 
+;;;;    +-- TICK-KICK     48-59   (W SCRATCH 54..59)
+;;;;    +-- ANALOG-TICK   60-65
+;;;;    +-- HOUSEHAT      66-77   (W BLOCK 72..77)
+;;;;    +-- BLOCKCYM      78-83
+;;;;    +-- VOXCYM        84-96 
 ;;;;    +-- SFX2          98-98
 
 (defun percussives (&key (parent PROB) channel articulation-map dynamic-map)

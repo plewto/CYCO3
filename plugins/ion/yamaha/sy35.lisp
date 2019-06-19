@@ -1,16 +1,32 @@
-;;;; CYCO plugins sj yamaha sy35
+;;;; CYCO plugins ion yamaha sy35
 ;;;;
-;;;; The SY35 is the low end of Yamaha's "vector" synths.
-;;;; It is little more then a rompler with joystick.
+;;;; The SY35 is at the low-end of Yamaha's "vector" synths.  It is little
+;;;; more the a rompler combined with cheap FM and a joystick.   Memory is
+;;;; divided into three spaces:
 ;;;;
-;;;; The memory is divided into:
-;;;;       1) "internal" RAM
-;;;;       2) "card"     plugable RAM
-;;;;       3) "preset"   factory ROM
+;;;;    1  "Internal" - User RAM
+;;;;    2  "Card"     - External ram/rom cards
+;;;;    3  "Preset"   - Factory ROM
 ;;;;
-;;;; Unfortunatly there is no way to select these over MIDI.
+;;;; Each of these spaces is organized into 8 banks of 8 programs each.
+;;;; Unfortunately they neglected  to include a means of selecting which
+;;;; memory to use via external MIDI commands; you have to do it manually.
 ;;;;
-
+;;;; This plugin defines a main "SY35" instrument and a macro to add
+;;;; instruments under it.  Two sets of programs are defines; one for
+;;;; internal and the other for preset memories.  Card memory is ignored. 
+;;;;
+;;;; Calling the SY35 macro binds a new instrument to a symbol with the
+;;;; same name as the name argument.   Program numbers are specified in one
+;;;; of three ways:
+;;;; 
+;;;;   1  If the name matches a defined program name the program-number is
+;;;;      automatically set.  Use (?SY35) or (?SY35 :ROM) for list or
+;;;;      programs. 
+;;;;   2  Directly as a MIDI program number 0..63
+;;;;   3  List of form (BANK PROGRAM) where both bank and program are
+;;;;      integers between 1 and 8 inclusive.
+;;;;
 
 (instrument sy35
 	    :parent +root-instrument+

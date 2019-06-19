@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion procussion.lisp
+;;;; CYCO plugins ion emu procussion procussion.lisp
 ;;;;
 ;;;; The Emu Procussion is essentially a Proteus dedicated to percussion.
 ;;;; It has 128 memory slots, the first 64 are factory ROM, the final 64
@@ -12,6 +12,8 @@
 ;;;; key positions.  Finally there are a few tuned instruments such as
 ;;;; vibraphone.  The standard and tuned instruments are the easiest to
 ;;;; deal with.  The other kits must be treated more or less individually.
+;;;;
+
 
 
 (constant +PROCUSSION-PROGRAMS+

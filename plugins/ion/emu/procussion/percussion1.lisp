@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion percusssion1.lisp
+;;;; CYCO plugins ion emu procussion percusssion1.lisp
 ;;;;
 ;;;; Zone    Stack             key-range  cyco-instrument
 ;;;; Z01     S306 TempleBlok   036 038    WoodBlock
@@ -26,18 +26,18 @@
 ;;;; Z23     S392 Guiro Down   100 100    Guiro
 ;;;; Z24     S424 VlctyGuiro   101 101    Guiro
 ;;;;
-;;;; percussion1
+;;;; PERCUSSION1
 ;;;;    |
-;;;;    +-- p1-woodblock
-;;;;    +-- p1-clave
-;;;;    +-- p1-agogo
-;;;;    +-- p1-triangle
-;;;;    +-- p1-mambo
-;;;;    +-- p1-campana
-;;;;    +-- p1-chacha
-;;;;    +-- p1-cabasa
-;;;;    +-- p1-guiro
-;;;;    +-- p1-shakernet
+;;;;    +-- P1-WOODBLOCK
+;;;;    +-- P1-CLAVE
+;;;;    +-- P1-AGOGO
+;;;;    +-- P1-TRIANGLE
+;;;;    +-- P1-MAMBO
+;;;;    +-- P1-CAMPANA
+;;;;    +-- P1-CHACHA
+;;;;    +-- P1-CABASA
+;;;;    +-- P1-GUIRO
+;;;;    +-- P1-SHAKERNET
 ;;;;
 
 (param percussion1 nil)

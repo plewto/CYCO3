@@ -1,8 +1,9 @@
-;;;; CYCO sj yamaha tx816
+;;;; CYCO plugins ion yamaha tx816
 ;;;;
-;;;; The TX816 is an FM beast.  When fully loaded it is equvilent
-;;;; to 8 DX7s. This unit has 6 modlues which are always used
-;;;; in pairs.
+;;;; The TX816 is an FM beast. When fully loaded it is equivalent to 8
+;;;; DX7s.  This specific instrument has 6 modules which are always used in
+;;;; pairs.  Loading the plugin creates a TX816 instrument and three child
+;;;; instruments: TXA, TXB and TXC.
 ;;;;
 ;;;; TX816
 ;;;;  |
@@ -10,29 +11,45 @@
 ;;;;  +-- TXB
 ;;;;  +-- TXC
 ;;;;
+;;;; Corresponding macros (TXA, TXB, TXC) and info functions (?TXA, ?TXB,
+;;;; ?TXC) are defined.  Calling one of the info functions displays a list
+;;;; of the available programs
+;;;;
+;;;; Calling one of the instrument macros (TXA, TXB or TXC), binds a new
+;;;; instrument to a symbol with the same name as the name argument and
+;;;; places it as a child of the appropriate "module" instruments.
+;;;;
+;;;; The TX memories are a linear list of programs between 0 and 31
+;;;; inclusive.  Program numbers may be specified in one of two ways:
+;;;;
+;;;;   1  If the name argument matches a defined program the corresponding
+;;;;      program-number is used.
+;;;;   2  Directly via the :program keyword argument.
+;;;;
+
 
 (instrument tx816 :parent +root-instrument+ :transient nil)
 (instrument txa :parent tx816 :channel (meta-channel :txa) :transient nil)
 (instrument txb :parent tx816 :channel (meta-channel :txb) :transient nil)
 (instrument txc :parent tx816 :channel (meta-channel :txc) :transient nil)
 
-(let ((txa-programs '((BASS-A1    0 "BASS-1        Bass-Keys ")
-		      (BASS-A2    1 "BASS-1        BASS1EDBOW")
-		      (BASS-A3    2 "BASS-1        Best Bass ") 
-		      (BASS-A4    3 "BASS-1        FrtLess II") 
-		      (BASS-A5    4 "BASS-1        FrtLess IB") 
-		      (BASS-A6    5 "BASS-1        FrtLess IC") 
-		      (BASS-B1    6 "BASS-MOVIE    BASS THUMB") 
-		      (BASS-C1    7 "BASS2-PULZ    BASS1EDBOW") 
-		      (BASS-C2    8 "BASS2-PULZ    Best Bass ") 
-		      (BASS-C3    9 "BASS2-PULZ    FrtLess II") 
-		      (BASS-C4   10 "BASS2-PULZ    FrtLess IB") 
-		      (FRTLSS-2  11 "FrtLess IB    FrtLess II") 
-		      (FRTLSS-1B 12 "FrtLess IB    FrtLess IB") 
-		      (SUBHARM   13 "SUBASS1       SB1Harmnc ") 
-		      (BASSORCH  14 "FlatBass      5thFlat   ") 
-		      (SIMPAD    15 "SIMPSYNTH1    ODDSYN    ") 
-		      (INIVOICE  31 "INVOICE       INVOICE   ")))
+(let ((txa-programs '((BASS-A1     0 "BASS-1        Bass-Keys ")
+		      (BASS-A2     1 "BASS-1        BASS1EDBOW")
+		      (BASS-A3     2 "BASS-1        Best Bass ") 
+		      (BASS-A4     3 "BASS-1        FrtLess II") 
+		      (BASS-A5     4 "BASS-1        FrtLess IB") 
+		      (BASS-A6     5 "BASS-1        FrtLess IC") 
+		      (BASS-B1     6 "BASS-MOVIE    BASS THUMB") 
+		      (BASS-C1     7 "BASS2-PULZ    BASS1EDBOW") 
+		      (BASS-C2     8 "BASS2-PULZ    Best Bass ") 
+		      (BASS-C3     9 "BASS2-PULZ    FrtLess II") 
+		      (BASS-C4    10 "BASS2-PULZ    FrtLess IB") 
+		      (FRTLSS-2   11 "FrtLess IB    FrtLess II") 
+		      (FRTLSS-1B  12 "FrtLess IB    FrtLess IB") 
+		      (SUBHARM    13 "SUBASS1       SB1Harmnc ") 
+		      (BASSORCH   14 "FlatBass      5thFlat   ") 
+		      (SIMPAD     15 "SIMPSYNTH1    ODDSYN    ") 
+		      (INIVOICE   31 "INVOICE       INVOICE   ")))
       (txb-programs '((PIANO-21    0   "PIANO 21A   PIANO 21B ")
 		      (PIANO-26    1   "PIANO 26A   PIANO 26B ")
 		      (RHODES      2   "RHODESdb1   RHODESdb2 ")

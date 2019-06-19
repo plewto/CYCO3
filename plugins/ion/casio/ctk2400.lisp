@@ -1,12 +1,18 @@
-;;;; CYCO sj plugins casio ctk2400.lisp
+;;;; CYCO plugin ion casio ctk2400
 ;;;;
-;;;; The CTK2400 is a consumer grade general MIDI instrument.
-;;;; This one is in near mint condition and was forsaken next to
-;;;; a dumpster by a departing Washington University student.  
-;;;; It comes with a crappy stand, half way decent organs
-;;;; and vibraphone sounds, and some kind of sampler functionality
-;;;; I don't have the patient to investigate.
+;;;; The CTK2400 is a consumer grade general MIDI instrument.  This one
+;;;; was forsaken in near mint condition next to a dumpster by a departing
+;;;; Washington University student.  It comes with a crappy stand and a
+;;;; live-action LCD image of hands showing you which keys you are
+;;;; pressing (I just look at my hands). There is some kind of sampler
+;;;; functionality I haven't had time to investigate.  On the plus side
+;;;; the vibes and organ sounds are not half bad and thereare  over 400
+;;;; ROM presets.
 ;;;;
+;;;;    |
+;;;;    +-- casio
+;;;;    |    |
+;;;;        
 
 
 (instrument casio
@@ -51,7 +57,3 @@
 				  (list (cons time (midi-program-change ci (or pnum 0)))))))))
        (defparameter ,name inst)
        inst))
-
-
-
-

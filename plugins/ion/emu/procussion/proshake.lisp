@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion proshake.lisp
+;;;; CYCO plugins ion emu procussion proshake.lisp
 ;;;;
 ;;;; Zone Stack             key range
 ;;;;  1 368 Tambourine    : 024 026     
@@ -26,18 +26,18 @@
 ;;;; 23 520 CircleNoys    : 087 095     
 ;;;; 24 478 Surfin USA    : 096 127
 ;;;;
-;;;; proshake
+;;;; PROSHAKE
 ;;;;    |
-;;;;    +-- tambourine
-;;;;    +-- cabasa
-;;;;    +-- shaker
-;;;;    +-- guiro
-;;;;    +-- noisy-hat
-;;;;    +-- jangler
-;;;;    +-- crack
-;;;;    +-- circle-noise
-;;;;    +-- castanet
-;;;;    +-- surfinusa
+;;;;    +-- TAMBOURINE
+;;;;    +-- CABASA
+;;;;    +-- SHAKER
+;;;;    +-- GUIRO
+;;;;    +-- NOISY-HAT
+;;;;    +-- JANGLER
+;;;;    +-- CRACK
+;;;;    +-- CIRCLE-NOISE
+;;;;    +-- CASTANET
+;;;;    +-- SURFINUSA
 ;;;;
 
 (let* ((tam-keys '((x      . (24 "Tambourine"))

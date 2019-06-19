@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion tuned-instruments.lisp
+;;;; CYCO plugins ion emu procussion tuned-instruments.lisp
 ;;;;
 ;;;;  Instruments:
 ;;;;      vibrations

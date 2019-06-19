@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion latin-drums.lisp
+;;;; CYCO plugins ion emu procussion latin-drums.lisp
 ;;;;
 ;;;; Zone Stack               Key Range 
 ;;;; 01   398 Timbale 1A       36  38
@@ -26,16 +26,16 @@
 ;;;; 23   419 Shake It         78  78
 ;;;; 24   419 Shake It         66  66
 ;;;;
-;;;; latin-drums
+;;;; LATIN-DRUMS
 ;;;;    |
-;;;;    +-- timbal-1
-;;;;    +-- timbal-2
-;;;;    +-- tumba
-;;;;    +-- quinto
-;;;;    +-- hembra
-;;;;    +-- macho
-;;;;    +-- conga
-;;;;    +-- shakeit
+;;;;    +-- TIMBAL-1
+;;;;    +-- TIMBAL-2
+;;;;    +-- TUMBA
+;;;;    +-- QUINTO
+;;;;    +-- HEMBRA
+;;;;    +-- MACHO
+;;;;    +-- CONGA
+;;;;    +-- SHAKEIT
 ;;;;
 
 (param latin-drums nil)

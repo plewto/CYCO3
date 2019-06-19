@@ -1,4 +1,4 @@
-;;;; CYCO plugin sj emu procussion more-cymbals.lisp
+;;;; CYCO plugin ion emu procussion more-cymbals.lisp
 ;;;;
 ;;;; more-cymbals
 ;;;; Zone Stack

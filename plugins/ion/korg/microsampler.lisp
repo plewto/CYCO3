@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj korg micro-sampler.lisp
+;;;; CYCO plugins ion korg microsampler
 ;;;;
 
 (instrument microsampler
@@ -30,4 +30,3 @@
 						   (basic-keynumber-map :min ,minkey :max ,maxkey)))))
      (defparameter ,name inst)
      inst))
-				

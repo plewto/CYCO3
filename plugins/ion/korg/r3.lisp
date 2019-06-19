@@ -1,4 +1,10 @@
-;;;; CYCO plugins sj korg korg.lisp
+;;;; CYCO plugins ion korg r3
+;;;;
+;;;; The Korg R3 is mid-level subtractive synth.  It is a little brother to
+;;;; the Radius but a bit more powerful then the Micro Korg.
+;;;;
+;;;; Memory is divided into 16 banks of 8 programs each.   Banks are labeled
+;;;; 'A' through 'P' and programs numbered 1..8.
 ;;;;
 
 (let ((bank-alist '((A  0)(B  1)(C  2)(D  3)
@@ -11,7 +17,7 @@
 	      (1- bank)
 	    (or (second (assoc bank bank-alist))
 		(cyco-warning
-		 (sformat "IllegaL R3 Bank number: ~A" bank)
+		 (sformat "Illegal R3 Bank number: ~A" bank)
 		 nil))))
 	 (warnfn
 	  (bank program)
@@ -43,6 +49,7 @@
 		   keynumber-map
 		   articulation-map
 		   dynamic-map)
+  "Creates child instrument of KORG-R3 and binds it to symbol name."
   `(let* ((rem (or ,remarks
 		   (sformat "Korg R3  program ~A.~A" ',bank ,program)))
 	  (inst (make-instrument ',name

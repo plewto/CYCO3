@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion standard-kit.lisp
+;;;; CYCO plugins ion emu procussion standard-kit.lisp
 ;;;;
 ;;;; Within all "standard" Procussion kits, specific key numbers are 
 ;;;; assigned to the same type of instrument.  Thees sub instruments are:

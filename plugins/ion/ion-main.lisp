@@ -1,25 +1,5 @@
-;;;; CYCO plugins sj sj-main.lisp  05-June-2019
+;;;; CYCO Plugins ion
 ;;;;
-
-
-;; general      rhythm   pad
-;; 01 TXA       TXA      TXA
-;; 02 TXB       TXB      TXB
-;; 03 TXC       TXC      TXC
-;; 04 SY35      SY35     SY35
-;; 05 R3        R3       R3
-;; 06 BASS      BASS     BASS
-;; 07 GUITAR    GUITAR   GUITAR
-;; 08 ROMA      ROMA     ROMA 
-;; 09 VOP       SAMPLER  VOP
-;; 10 DRUMS     DRUMS    DRUMS
-;; 11 PROA      PROA     PROA
-;; 12 PROB      PROB     CASIO
-;; 13 SDA       SDA      ROMAB
-;; 14 SDB       SDB      VOPB
-;; 15 MU100R    SDC      MU100R
-;; 16 BEEP      SDD      OBX/SAMPLER
-
 
 ;; General assignments
 (meta-channel! :TXA    01 "Yamaha TX816 A")
@@ -55,10 +35,9 @@
 (prune-orchestra :force t)
 
 (sub-plugin 'general-midi)
-(load-plugin-file "emu/procussion/procussion")
 (load-plugin-file "yamaha/yamaha")
+(load-plugin-file "casio/ctk2400")
 (load-plugin-file "korg/korg")
-(load-plugin-file "oberheim/oberheim")
-(load-plugin-file "casio/casio")
+(load-plugin-file "oberheim/matrix1000")
+(load-plugin-file "emu/procussion/procussion")
 (load-plugin-file "eastwest/eastwest")
- 

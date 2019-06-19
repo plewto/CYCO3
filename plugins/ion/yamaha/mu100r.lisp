@@ -1,8 +1,15 @@
-;;;; CYCO plugins sj yamaha mu100r
+;;;; CYCO plugins ion yamaha mu100r
 ;;;;
-;;;; The Yamaha MU100R is a general MIDI "rompler"
-;;;; Regretfully it is missing the optional VL card which
-;;;; would thicken it's plot.
+;;;; The Yamaha MU100R is a general MIDI "rompler".  Unfortunately the unit
+;;;; I have is missing the "VL" physical modeling expansion card which would
+;;;; make it a hell of a lot more interesting.
+;;;;
+;;;; The module is 32-voice multi-timbrel with two separate MIDI inputs
+;;;; for 32-channel reception.
+;;;;
+;;;; A master MU100R instrument is created and a macro defined for creating
+;;;; general-midi instruments under it.  The macro's usage is the same as
+;;;; with GENERAL-MIDI-INSTRUMENT.
 ;;;;
 
 (instrument mu100r
@@ -12,6 +19,7 @@
 
 (defmacro mu100r (name &key (bank nil)(program nil)(parent mu100r)(channel nil)
 		       keynumber-map dynamic-map articulation-map remarks)
+  
   `(let* ((prg (general-midi-program (or ,program ',name)))
 	  (rem (or ,remarks (sformat "MU100R bank: ~A  program: ~A" ,bank prg)))
 	  (inst (make-instrument ',name

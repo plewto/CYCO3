@@ -1,4 +1,4 @@
-;;;; CYCO plugins sj emu procussion all-cymbals.lisp
+;;;; CYCO plugins ion emu procussion all-cymbals.lisp
 ;;;;
 ;;;;  zone/stack            range
 ;;;;  1 507 Gong Pow      : 036 037                                                               
@@ -26,13 +26,13 @@
 ;;;; 23 240 HihatB Open   : 090 091                                      
 ;;;; 24 241 HihatB stomp  : 092 093
 ;;;;
-;;;; all-cymbals
+;;;; ALL-CYMBALS
 ;;;;    | 
-;;;;    +-- acym-gong
-;;;;    +-- acym-ahat
-;;;;    +-- acym-bhat
-;;;;    +-- acym-cym
-;;;;    +-- acym-sfx
+;;;;    +-- ACYM-GONG
+;;;;    +-- ACYM-AHAT
+;;;;    +-- ACYM-BHAT
+;;;;    +-- ACYM-CYM
+;;;;    +-- ACYM-SFX
 ;;;;
 
 (let* ((gong-keys '((gong1  . (36))

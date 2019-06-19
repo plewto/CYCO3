@@ -83,7 +83,7 @@
        (manifest '(:verbose
 		   "src/constants"
 		   "src/globals"
-		   "src/api"
+		   "src/generics"
 		   "src/util/string-utilities"
 		   "src/util/banner"
 		   "src/util/notifications"

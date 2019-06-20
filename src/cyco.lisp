@@ -193,6 +193,25 @@
    (t
     (format t "WARNING: Using non-tested Lisp: ~A ~%" lit))))
 
+(defun ?version ()
+  "Displays current version (major minor revision))"
+  (format t "Version: ~A~%" +cyco-version+))
+
+(defun version (major &optional minor)
+  "Enforces version.
+If either major dose not match current major version number, 
+or minor is specified and it is less then current minor version number,
+a warning message is displayed and CYCO terminates."
+  (let ((mj (eq major (car +cyco-version+)))
+	(mn  (or (not minor)
+		 (>= minor (second +cyco-version+)))))
+    (if (not (and mj mn))
+	(progn 
+	  (cyco-warning "CYCO version mismatch"
+			(sformat "Current version   : ~A" +cyco-version+)
+			(sformat "Specified version : (~A ~A NIL)" major minor))
+	  (exit)))))
+
 (in-package :common-lisp-user)
 
 (defun cyco ()

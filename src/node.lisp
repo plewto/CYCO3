@@ -121,9 +121,8 @@ not."))
 (defmethod prune ((node cyco-node) &optional force)
   (dolist (c (children node))
     (if (or force (transientp c))
-	(progn
-	  (disconnect c)
-	  (prune c)))))
+	(disconnect c))
+    (prune c)))
 
 (defmethod has-property-p ((n null)(key symbol)) nil)
 

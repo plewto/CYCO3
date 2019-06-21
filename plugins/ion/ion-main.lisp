@@ -41,3 +41,8 @@
 (load-plugin-file "oberheim/matrix1000")
 (load-plugin-file "emu/procussion/procussion")
 (load-plugin-file "eastwest/eastwest")
+
+
+(defun snapshot (&optional (fname "~/bin/cyco3"))
+  "Saves CYCO snapshot to default location."
+  (save-snapshot fname))

@@ -13,7 +13,7 @@
 ;;;;
 
 (instrument mu100r
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :channel (meta-channel :mu100r)
 	    :transient nil)
 

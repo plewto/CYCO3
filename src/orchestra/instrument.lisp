@@ -29,7 +29,7 @@ The type-1 instruments should be non-transient while the type-2 instruments
 are transient.
 
 
-The constant +ROOT-INSTRUMENT+ serves as the common root node for all 
+The global *ROOT-INSTRUMENT* serves as the common root node for all 
 other instruments."))
 
 (defmethod instrument-p ((inst instrument)) t)
@@ -97,7 +97,7 @@ other instruments."))
 (defmethod channel-index ((inst instrument))
   (property inst :channel-index))
 
-(constant +root-instrument+
+(global *root-instrument*
 	  (let ((root (make-instance 'instrument
 				     :name 'root-instrument
 				     :properties +instrument-properties+
@@ -112,7 +112,7 @@ other instruments."))
 	    root))
 		
 (defun make-instrument (name &key
-			     (parent +root-instrument+)
+			     (parent *root-instrument*)
 			     (transient t)
 			     channel
 			     program
@@ -123,7 +123,7 @@ other instruments."))
 			     remarks)
   "Creates a new instance of INSTRUMENT.
 name - Symbol
-:parent     - Parent instrument, defaults to +ROOT-INSTRUMENT+
+:parent     - Parent instrument, defaults to *ROOT-INSTRUMENT*
 :transient  - bool, If this instrument is being created as part of a 
               project's orchestra, transient should be t.
               If the instrument is created by the configuration process
@@ -154,7 +154,7 @@ name - Symbol
     inst))
 
 (defmacro instrument (name &key
-			   (parent +root-instrument+)
+			   (parent *root-instrument*)
 			   (transient t)
 			   channel
 			   program
@@ -177,7 +177,7 @@ name - Symbol
      (param ,name inst)
      inst))
 
-(instrument null-instrument :parent +root-instrument+
+(instrument null-instrument :parent *root-instrument*
 	    :transient nil
 	    :channel 1
 	    :program 0
@@ -188,13 +188,13 @@ name - Symbol
 (program-map! null-instrument #'(lambda (&rest _)(dismiss _) nil))
 
 (setf *metronome* (make-instrument 'null-metronome
-				   :parent +root-instrument+
+				   :parent *root-instrument*
 				   :transient nil
 				   :keynumber-map (metronome-keynumber-map)
 				   :dynamic-map (metronome-dynamic-map)))
 
 
-(defun prune-orchestra (&key (force nil)(root +root-instrument+))
+(defun prune-orchestra (&key (force nil)(root *root-instrument*))
   "Removes all transient instruments from the orchestra (tree rooted at root).
 While composing a piece it is usual to reload the project repeatedly.   
 Projects typically define several instruments as their 'orchestra'.  
@@ -204,8 +204,8 @@ not effect by prune-orchestra unless the :force argument is true."
   (prune root force)
   (if force
       (progn 
-	(connect +root-instrument+ null-instrument)
-	(connect +root-instrument+ *metronome*))))
+	(connect *root-instrument* null-instrument)
+	(connect *root-instrument* *metronome*))))
 
 (defmethod note-events ((inst instrument)
 			(time number)

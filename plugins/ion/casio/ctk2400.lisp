@@ -6,7 +6,7 @@
 ;;;; live-action LCD image of hands showing you which keys you are
 ;;;; pressing (I just look at my hands). There is some kind of sampler
 ;;;; functionality I haven't had time to investigate.  On the plus side
-;;;; the vibes and organ sounds are not half bad and thereare  over 400
+;;;; the vibes and organ sounds are not half bad and there are  over 400
 ;;;; ROM presets.
 ;;;;
 ;;;;    |
@@ -16,7 +16,7 @@
 
 
 (instrument casio
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :channel (meta-channel :casio)
 	    :transient nil)
 

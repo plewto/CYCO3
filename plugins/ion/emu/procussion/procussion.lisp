@@ -90,7 +90,7 @@
 	    (metronome       . (127))))
 
 (instrument procussion
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :transient nil)
 
 (set-symbolic-program-map procussion +procussion-programs+ :offset 0)

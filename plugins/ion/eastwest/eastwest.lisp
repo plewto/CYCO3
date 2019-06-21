@@ -14,7 +14,7 @@
 
 
 (instrument eastwest
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :transient nil)
 
 ;; Minstry of Rock 2

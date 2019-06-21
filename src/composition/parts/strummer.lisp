@@ -684,8 +684,8 @@
 	      (progn 
 		(cyco-type-error 'make-strummer 'instrument instrument
 				 (sformat "Expected single instrument for Strummer: ~A" part-name)
-				 "Using +ROOT-INSTRUMENT+")
-		+root-instrument+)
+				 "Using *ROOT-INSTRUMENT*")
+		*root-instrument*)
 	    instrument)) )
 
   (defun make-strummer (name instrument &key

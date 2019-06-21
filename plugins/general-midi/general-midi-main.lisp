@@ -8,7 +8,7 @@
 ;;;; are created when the plugin is loaded.  The non-percussion instruments
 ;;;; are created by calling the GENERAL-MIDI-INSTRUMENT macro.
 ;;;;
-;;;;  +root-instrument+
+;;;;  *root-instrument*
 ;;;;     |
 ;;;;     +-- gm-percussion
 ;;;;            |
@@ -37,7 +37,7 @@
 
 (defun make-general-midi-instrument (name &key
 					  program 
-					  (parent +root-instrument+)
+					  (parent *root-instrument*)
 					  (transient t)
 					  channel
 					  keynumber-map
@@ -51,7 +51,7 @@ name       - Symbol
              If program is a symbol it must match an entry in 
              +GENERAL-MIDI-PROGRAMS+.  The function ?GENERAL-MIDI-PROGRAMS 
              displays a list of valid program symbols.
-:parent    - nil or instance of Instrument, defaults to +ROOT-INSTRUMENT+
+:parent    - nil or instance of Instrument, defaults to *ROOT-INSTRUMENT*
 :transient - bool, If true this instrument is purged form the orchestra
 	     tree by the (PRUNE-ORCHESTRA) function. Default t
 :channel   - MIDI channel, defaults to parent's channel.
@@ -76,7 +76,7 @@ name       - Symbol
 
 (defmacro general-midi-instrument (name &key
 					program 
-					(parent +root-instrument+)
+					(parent *root-instrument*)
 					(transient t)
 					channel
 					keynumber-map

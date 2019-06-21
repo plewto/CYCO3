@@ -29,7 +29,7 @@
 ;;;;
 
 (instrument sy35
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :channel (meta-channel :sy35)
 	    :transient nil)
 

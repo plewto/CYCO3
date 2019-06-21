@@ -2,7 +2,7 @@
 ;;;;
 
 (instrument microsampler
-	    :parent +ROOT-INSTRUMENT+
+	    :parent *ROOT-INSTRUMENT*
 	    :transient nil
 	    :channel (meta-channel :SAMPLER))
 

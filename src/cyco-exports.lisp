@@ -14,11 +14,11 @@
 	  *osc-receive-port*
 	  *osc-send-verbose*
 	  *project*
+	  *root-instrument*
 	  +REST+
 	  +default-articulation-map+
 	  +default-dynamic-map+
 	  +default-keynumber-map+
-	  +root-instrument+
 	  ->alist
 	  ->cycle
 	  ->list

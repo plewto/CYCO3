@@ -37,7 +37,7 @@
 	      (warnfn bank program))))))))
 
 (instrument korg-r3
-	    :parent +root-instrument+
+	    :parent *root-instrument*
 	    :transient nil
 	    :channel (meta-channel :R3)
 	    :remarks "Korg R3 parent instrument")

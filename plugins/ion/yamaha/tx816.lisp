@@ -28,7 +28,7 @@
 ;;;;
 
 
-(instrument tx816 :parent +root-instrument+ :transient nil)
+(instrument tx816 :parent *root-instrument* :transient nil)
 (instrument txa :parent tx816 :channel (meta-channel :txa) :transient nil)
 (instrument txb :parent tx816 :channel (meta-channel :txb) :transient nil)
 (instrument txc :parent tx816 :channel (meta-channel :txc) :transient nil)

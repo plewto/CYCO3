@@ -42,7 +42,7 @@ For all other types return (ptype :of obj)
 The default ptype is Cycle."))
 
 
-(defgeneric ->smf (contents &key filename offset repeat pad)
+(defgeneric ->midi (contents &key filename offset repeat pad)
   (:documentation
    "Creates new MIDI file from contents and write to file.
 :filename - Optional String, if not specified the filename is derived from

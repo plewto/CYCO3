@@ -24,7 +24,7 @@
 	  ->list
 	  ->markov-link
 	  ->pattern
-	  ->smf
+	  ->midi
 	  ->string
 	  ->symbol
 	  ->vector
@@ -236,6 +236,7 @@
 	  program-number
 	  program-number!
 	  project-p
+	  project->midi
 	  properties
 	  property
 	  property*

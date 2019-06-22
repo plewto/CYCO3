@@ -438,7 +438,7 @@ reloading a file while it is under development."
 	   (sformat t "Section ~A does not exists" section-name)))))
     (sort-midi-events acc)))
 
-(defun project->smf (&key (project *project*)
+(defun project->midi (&key (project *project*)
 			  (filename nil))
   "Saves project to a midi file in the projects output directory.
 The filename defaults to the projects name.  For project foo the default

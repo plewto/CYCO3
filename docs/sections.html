@@ -105,7 +105,7 @@ Only parts whose reservable property is true are effected.</p>
 <p class="synopsis">Render section to MIDI event list count times.
 Each repetition is aligned at the end of the previous one.
 Each event is shifted by offset seconds.</p>
-<b class="definition">(->SMF section &key filename offset repeat pad)</b><br>
+<b class="definition">(->MIDI section &key filename offset repeat pad)</b><br>
 <p class="synopsis">Save section events to Standard MIDI File.</p>
 <pre class="code">
 :filename - MIDI filename relative to the projects MIDI directory.
@@ -195,8 +195,8 @@ Keywords:
 ;;      ~/.cyco-projects/foo/MIDI/test-verse.mid
 ;;
 
-(->smf verse)
-(->smf verse :repeat 8 :filename "test-filename")
+(->midi verse)
+(->midi verse :repeat 8 :filename "test-filename")
 
 </pre>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a>

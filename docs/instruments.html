@@ -23,7 +23,7 @@
 <h2 class="section-head">Instruments</h2>
 <hr/>
 <p class="body">
-    An <i>Instrument</i>&nbsp; is a&nbsp;<a href="nodes.html">cyco-node</a>    &nbsp;which defines    the properties of an external MIDI device.  Essentially they are proxies for     external gear.  All Instruments are linked together in a tree rooted at     <br><b>+ROOT-INSTRUMENT+</b>.  CYCO does not define an 'orchestra' object perse,      instead the term 'orchestra' indicates the tree built on top of +ROOT-INSTRUMENT+.</p>
+    An <i>Instrument</i>&nbsp; is a&nbsp;<a href="nodes.html">cyco-node</a>    &nbsp;which defines    the properties of an external MIDI device.  Essentially they are proxies for     external gear.  All Instruments are linked together in a tree rooted at     <br><b>*ROOT-INSTRUMENT*</b>.  CYCO does not define an 'orchestra' object perse,      instead the term 'orchestra' indicates the tree built on top of *ROOT-INSTRUMENT*.</p>
 <p class="body">
     <a href='plugins.html'>Plugins</a>&nbsp; are useful for defining permanent    instruments, while <a href='projects.html'>projects</a> extend these for    specific requirements.&nbsp; For example an Oberheim synthesizer may be    available, this would best be defined as a permanent instrument.&nbsp; A    project may then define specific instruments, such as 'obx-bass' or    'obx-pad', as child instruments of the Oberheim.&nbsp; The Oberheim proper    would establish MIDI channel and any other common parameter.&nbsp; The    project level instruments would provide program-numbers and optional    mapping functions.</p>
 <p class="body">
@@ -80,9 +80,9 @@ The optional resolve flag indicates if the result should be converted
 to an actual MIDI channel.  See Meta channels.</p>
 <b class="definition">(CHANNEL-INDEX instrument)</b><br>
 <p class="synopsis">Returns the 'real' MIDI channel byte.</p>
-<b class="definition">+ROOT-INSTRUMENT+</b><br>
-<p class="synopsis">+root-instrument+ is at then root of the orchestra tree and defines 
-sane defaults.  All instruments ultimately inherit from +root-instrument+.</p>
+<b class="definition">*ROOT-INSTRUMENT*</b><br>
+<p class="synopsis">*root-instrument* is at then root of the orchestra tree and defines 
+sane defaults.  All instruments ultimately inherit from *root-instrument*.</p>
 <b class="definition">NULL-INSTRUMENT</b><br>
 <p class="synopsis">The null-instrument does not generate 
 MIDI events.  It may be used as a place holder instrument.</p>
@@ -97,7 +97,7 @@ new instance to a symbol with the same name.  The following two lines are equiva
 </pre>
 <p class="synopsis">Arguments to MAKE-INSTRUMENT and INSTRUMENT</p>
 <pre class="code">
-:parent - the parent instrument, default +ROOT-INSTRUMENT+
+:parent - the parent instrument, default *ROOT-INSTRUMENT*
 :transient - Boolean.  Indicates whether this instrument should be purged 
              from the orchestra when a project is loaded.  Permanent 
              instruments should set transient to nil, project-level

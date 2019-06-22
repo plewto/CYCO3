@@ -136,7 +136,7 @@ Keyword arguments:
 <hr/>
 <h4 class="section-head">Defining an Orchestra</h4>
 <p class="body">
-    CYCO does not have an 'orchestra' class perse, instead the term implies    the tree of instruments built on +ROOT-INSTRUMENT+ &nbsp;&nbsp;    Instruments fall in two general classes:</p>
+    CYCO does not have an 'orchestra' class perse, instead the term implies    the tree of instruments built on *ROOT-INSTRUMENT* &nbsp;&nbsp;    Instruments fall in two general classes:</p>
 <ol>
     <li>Permanent (no-transient) instruments, often defined by a <a href='plugins.html'>plugin</a>.</li>
     <li>Temporary (transient), defined by the project.</li>
@@ -146,7 +146,7 @@ Keyword arguments:
 <p class="body">
     Regardless of where the orchestra is defined, it is <b>very important to     call (PRUNE-ORCHESTRA)</b> before creating it.</p>
 <p class="body">
-    You may examine the orchestra tree with     <b>(PRINT-TREE +root-instrument+)</b></p>
+    You may examine the orchestra tree with <b>(?o)</b></p>
 <a id="load-sections"></a>
 <hr/>
 <h4 class="section-head">Loading Section Files</h4>
@@ -185,8 +185,8 @@ seq-order directives
 <hr/>
 <h4 class="section-head">Creating MIDI files</h4>
 <p class="body">
-    Finally the project may be <i>rendered</i>&nbsp; to a MIDI file     using the PROJECT->SMF function.</p>
-<b class="definition">(PROJECT->SMF &key (project *project*)(filename nil))</b><br>
+    Finally the project may be <i>rendered</i>&nbsp; to a MIDI file     using the PROJECT->MIDI function.</p>
+<b class="definition">(PROJECT->MIDI &key (project *project*)(filename nil))</b><br>
 <p class="synopsis">Saves project to a Standard MIDI File.</p>
 <pre class="code">
 :project - defaults to *PROJECT*
@@ -210,6 +210,8 @@ Try <b>(? *project*)</b>.</li>
 
 ;; ~/cyco-projects/foo/foo-main.lisp
 
+(version 3)                       ;; Enforce specific CYCO version
+
 (project foo :tempo 120 :bars 2)  ;; Create project object, bind it to *PROJECT*,
                                   ;;    sets default tempo and bar count.
 (prune-orchestra)                 ;; Clear orchestra of old instruments.
@@ -218,7 +220,7 @@ Try <b>(? *project*)</b>.</li>
 (lpf 'chorus)                    
 (lpf 'bridge)                     
 (seq-order '((verse :x 2) chorus bridge verse))  ;; Establish section sequence.
-(project->smf)                    ;; Create MIDI file
+(project->midi)                   ;; Create MIDI file
 
 ;; MIDI file saved to ~/cyco-projects/foo/MIDI/foo.mid
 </pre>

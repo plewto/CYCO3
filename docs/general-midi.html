@@ -45,7 +45,7 @@ object to the symbol name.&nbsp; The following two lines are equivalent:</p>
 name      - Instrument name
 :program   - MIDI program number. If name matches an entry in +GENERAL-MIDI-PROGRAMS+
              the corresponding program number is used. 
-:parent    - default +ROOT-INSTRUMENT+
+:parent    - default *ROOT-INSTRUMENT*
 :transient - boolean, default t
 :channel   - MIDI channel number, defaults to parent channel
 :keynumber-map    - <a href='keynumber-maps.html'>function</a>.
@@ -106,7 +106,7 @@ cabasa, guiro, maracas, tamburine, vibraslap, whistle</p>
 <hr/>
 <h4 class="section-head">Instrument tree structure:</h4>
 <pre class="code">
-+ROOT-INSTRUMENT+	 
+*ROOT-INSTRUMENT*	 
   |
   +-- gm-percussion
   |    |

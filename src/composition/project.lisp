@@ -490,6 +490,8 @@ is automatically created.   Existing files are not overwritten."
 				    :if-does-not-exist :create)))
 		  (format stream ";;;; CYCO Project ~A  File ~A.lisp~%" pname (format-name fn))
 		  (format stream ";;;;~%~%")
+		  (format stream (sformat "(version ~A)~%~%" (car +cyco-version+)))
+		  (format stream (sformat "(project ~A)~%" project-name))
 		  (close stream)))
   	    (format t "Project file already exists: ~A~%" fqn)))))))
 

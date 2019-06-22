@@ -49,14 +49,14 @@ but only one will be bound to *project* as the default."))
 
 (defmethod project-p ((p project)) t)
 
-(global *persistent--project-name-namestring* "current-project-name")
+(global *persistent-project-name-namestring* "current-project-name")
 
 (defun save-persistent-project-name (name)
   "Saves the current project name to a file in the config folder.
 This file may be used to reload the the project the next time CYCO is
 used."
   (let* ((filename (join-path *config-directory*
-			      *persistent--project-name-namestring*
+			      *persistent-project-name-namestring*
 			      :as-file))
 	 (stream (open filename
 		       :direction :output
@@ -71,7 +71,7 @@ used."
 save-persistent-project-name.  Returns nil if there is 
 no saved project."
   (let* ((filename (join-path *config-directory*
-			      *persistent--project-name-namestring*
+			      *persistent-project-name-namestring*
 			      :as-file))
 	 (stream (if (probe-file filename)
 		     (open filename
@@ -152,7 +152,7 @@ the cyco-projects/foo/ directory.
 There is no prescribed standard for naming other project files 
 but having a dedicated file for each section makes sense.
 
-See the functions load-project, load-project-file and their 
+See the functions load-project, load-project-file and the
 abbreviations lp and lpf."
   (banner1 (sformat "Project ~A" name))
   (save-persistent-project-name name)

@@ -13,7 +13,7 @@
 	    (concatenate 'string a0 a1 a2 a3 a4)))
 
 
-(constant +TICKS-PER-BEAT+ 480)
+(constant +TICKS-PER-BEAT+ 240)
 
 ;;; MIDI command bytes
 ;;;

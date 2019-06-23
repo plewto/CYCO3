@@ -9,8 +9,17 @@
   "A shortcut abbreviation for apropos"
   (apropos sym package))
 
+(defun ?kmap (instrument)
+  "Displays instrument's keymap documentation."
+  (funcall (keynumber-map instrument) :doc))
+
+(defun ?pmap (instrument)
+  "Displays instrument's program-map documentation"
+  (funcall (program-map instrument) 0 :program :doc))
+
 (defmethod ? ((n integer))
   (format t "INTEGER~%"))
+
 
 (let ((ary (->vector (copies 16 '()))))
   (labels ((walk (inst)
@@ -42,9 +51,11 @@
 
 (defun ?? ()
   "Displays list of available inspection functions."
-  (format t "(? object)   Displays info about object.~%")
-  (format t "(?a symbol)  Shortcut for (apropos symbal)~%")
-  (format t "(?d symbol)  Shortcut for (describe symbol)~%")
-  (format t "(?o)         Displays orchestra tree.~%")
-  (format t "(?p)         Displays current project structure.~%"))
+  (format t "(? object)    Displays info about object.~%")
+  (format t "(?a symbol)   Shortcut for (apropos symbal)~%")
+  (format t "(?d symbol)   Shortcut for (describe symbol)~%")
+  (format t "(?o)          Displays orchestra tree.~%")
+  (format t "(?p)          Displays current project structure.~%")
+  (format t "(?kmap inst)  Displays instrument's keynumber-map documentation.~%")
+  (format t "(?pmap inst)  Displays instrument's program map documentation.~%"))
 

@@ -188,40 +188,39 @@
     :initarg :unit)
    (tpq
     :type integer
-    :initform *TICKS-PER-BEAT*)
+    :initform 24)
    (met
     :type integer
     :initform 8)))
 
 (defmethod midi-time-signature-p ((obj midi-time-signature)) t)
 
-;; ISSUE: Use flet to hide .MAP-MIDI-TIMESIG-UNIT.
-(defun .map-midi-timesig-unit. (sym)
-  (cond ((eq sym 'q) 2)
-	((eq sym 'w) 0)
-	((eq sym 'h) 1)
-	((eq sym 'e) 3)
-	((eq sym 's) 4)
-	(t (cyco-value-error 'midi-time-signature sym) 2)))
 
-(defun midi-time-signature (num unit)
-  (.map-midi-timesig-unit. unit)	; validate unit
-  (make-instance 'midi-time-signature
-		 :num num
-		 :unit unit))
-
-(defmethod ->string ((evn midi-time-signature))
-  (str+ (call-next-method)
-	(sformat  "~A/~A"
-		(timesig-numerator evn)
-		(timesig-unit evn))))
-
-(defmethod render-midi-message ((evn midi-time-signature))
-  (list +META+ +TIME-SIGNATURE+ 4
-	(timesig-numerator evn)
-	(.map-midi-timesig-unit. (timesig-unit evn))
-	(slot-value evn 'tpq)
-	(slot-value evn 'met)))
+(flet ((map-timesig-unit (sym)
+			 (cond ((eq sym 'q) 2)
+			       ((eq sym 'w) 0)
+			       ((eq sym 'h) 1)
+			       ((eq sym 'e) 3)
+			       ((eq sym 's) 4)
+			       (t (cyco-value-error 'midi-time-signature sym) 2))))
+  (defun midi-time-signature (num unit)
+    (map-timesig-unit unit)	; validate unit
+    (make-instance 'midi-time-signature
+		   :num num
+		   :unit unit))
+  
+  (defmethod ->string ((evn midi-time-signature))
+    (str+ (call-next-method)
+	  (sformat  "~A/~A"
+		    (timesig-numerator evn)
+		    (timesig-unit evn))))
+  
+  (defmethod render-midi-message ((evn midi-time-signature))
+    (list +META+ +TIME-SIGNATURE+ 4
+	  (timesig-numerator evn)
+	  (map-timesig-unit (timesig-unit evn))
+	  (slot-value evn 'tpq)
+	  (slot-value evn 'met))))
 
 
 ;;; ---------------------------------------------------------------------- 

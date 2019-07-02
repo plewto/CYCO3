@@ -8,6 +8,7 @@
 
 ;; Default project
 ;;
+(global *ticks-per-beat* 240) 
 (global *default-project-directory* "~/cyco-projects")
 (global *project-main-filename-format* "~A-main")
 (global *default-project-output-directory* "MIDI")
@@ -15,6 +16,7 @@
 (global *metronome* nil)
 (global *countin* nil)
 (global *endpad* nil)  ;; ISSUE: should this be depreciated?
+
 
 ;; Plugins
 ;;

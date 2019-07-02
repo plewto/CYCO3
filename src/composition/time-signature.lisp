@@ -14,7 +14,8 @@ subbeats"))
 (constant +time-signature-properties+
 	  '(:tempo :unit :bars :beats :tbeats :subbeats :tsubbeats
 		   :phrase-duration :bar-duration :beat-duration :tbeat-duration
-		   :subbeat-duration :tsubbeat-duration :tick-duration))
+		   :subbeat-duration :tsubbeat-duration :tick-duration
+		   :ticks-per-beat))
 
 (defmethod init-time-signature ((node cyco-node))
   (dolist (c (children node))(init-time-signature c)))
@@ -22,8 +23,8 @@ subbeats"))
 (defmethod init-time-signature ((tsig time-signature))
   (let* ((tick-duration (/ (* 60.0 (metric (property tsig :unit)))
 			   (* (property tsig :tempo)
-			      +ticks-per-beat+)))
-	 (beat-duration (* tick-duration +ticks-per-beat+))
+			      *ticks-per-beat*)))
+	 (beat-duration (* tick-duration *ticks-per-beat*))
 	 (bar-duration (* beat-duration (property tsig :beats)))
 	 (phrase-duration (* bar-duration (property tsig :bars)))
 	 (subbeat-duration (/ beat-duration (property tsig :subbeats))))
@@ -36,6 +37,7 @@ subbeats"))
     (put tsig :tbeat-duration (float (* 2/3 beat-duration)))
     (put tsig :tsubbeats (* 3/2 (property tsig :subbeats)))
     (put tsig :tsubbeat-duration (float (* 2/3 subbeat-duration)))
+    (put tsig :ticks-per-beat *ticks-per-beat*)
     (dolist (c (children tsig))(init-time-signature c))
     tsig))
 
@@ -117,7 +119,7 @@ subbeats"))
   (property tsig :tick-duration))
 
 (defmethod ticks-per-beat ((tsig time-signature))
-  +ticks-per-beat+)
+  (property tsig :ticks-per-beat))
 
 (defmethod ticks-per-subbeat ((tsig time-signature))
   (truncate (/ (ticks-per-beat tsig)

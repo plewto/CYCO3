@@ -188,7 +188,7 @@
     :initarg :unit)
    (tpq
     :type integer
-    :initform +TICKS-PER-BEAT+)
+    :initform *TICKS-PER-BEAT*)
    (met
     :type integer
     :initform 8)))

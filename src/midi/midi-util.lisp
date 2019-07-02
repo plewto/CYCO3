@@ -166,7 +166,7 @@ Returns number."
 		     ((eq unit 's) 0.25)
 		     (t 1))))
     (/ (* scale 60.0)
-       (* bpm *TICKS-PER-BEAT*))))
+       (* bpm +TICKS-PER-BEAT+))))
 
 
 

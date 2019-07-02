@@ -13,6 +13,8 @@
 	    (concatenate 'string a0 a1 a2 a3 a4)))
 
 
+(constant +TICKS-PER-BEAT+ 480)
+
 ;;; MIDI command bytes
 ;;;
 (constant +ACTIVE-SENSING+ #xFE)

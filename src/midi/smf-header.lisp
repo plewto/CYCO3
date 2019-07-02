@@ -10,7 +10,7 @@
    (division
     :type integer
     :reader smf-division
-    :initform *TICKS-PER-BEAT*
+    :initform +TICKS-PER-BEAT+
     :initarg :division)))
 
 (defmethod render-smf-header ((header smf-header)(track-count integer))

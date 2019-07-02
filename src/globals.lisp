@@ -8,7 +8,6 @@
 
 ;; Default project
 ;;
-(global *ticks-per-beat* 480) 
 (global *default-project-directory* "~/cyco-projects")
 (global *project-main-filename-format* "~A-main")
 (global *default-project-output-directory* "MIDI")

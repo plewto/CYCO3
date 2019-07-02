@@ -271,17 +271,24 @@ is appended to the name if needed."
     (append-filename-extension fqn ".mid")))
 	       
 
+(defmethod section->smf ((s section) &key
+			 (offset 0.0)
+			 (repeat 1))
+  "Creates Standard MIDI File from Section contents."
+  (let* ((events (render-n s repeat :offset offset))
+	 (track (make-instance 'smf-track :events events))
+	 (smf (smf :format 1 :track-count 1)))
+    (setf (aref (smf-tracks smf) 0) track)
+    smf))
+
 (defmethod ->midi ((s section) &key
 		   (filename nil)
 		   (offset 0.0)
 		   (repeat 1)
 		   (pad 2.0))
   "Write section contents to Standard MIDI file."
-  (let* ((fname (section-filename :section s :fname filename))
-	 (events (render-n s repeat :offset offset))
-	 (track (make-instance 'smf-track :events events))
-	 (smf (smf :format 1 :track-count 1)))
-    (setf (aref (smf-tracks smf) 0) track)
+  (let* ((smf (section->smf s :offset offset :repeat repeat))
+	 (fname (section-filename :section s :fname filename)))
     (write-smf smf fname :pad pad)
     smf))
 

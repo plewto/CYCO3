@@ -5,51 +5,50 @@
 (constant +PITCH-CLASSES+ #(C CS D DS E F FS G GS A AS B))
 
 (global *KEYNUMBERS*
-	  (flet ((make-sym (a b)
-			   (intern (sformat "~A~A" a b))))
-	    (let* ((symlist #((C BF)(CS DF)(D D)(DS EF)
-			      (E FF)(F ES)(FS GF)(G G)
-			      (GS AF)(A A)(AS BF)(B CF)))
-		   (acc (make-hash-table :size 215)))
-	      (dotimes (keynum 128)
-		(let* ((pclass (rem keynum 12))
-		       (octave (truncate (/ keynum 12)))
-		       (syms (aref symlist pclass))
-		       (primary (make-sym (first syms) octave))
-		       (secondary (make-sym (second syms) octave)))
-		  (setf (gethash primary acc) keynum)
-		  (setf (gethash secondary acc) keynum)))
-	      (setf (gethash 'R acc) +REST+)
-	      ;; Simple keynumbers sans-octaves
-	      (dotimes (i (length +PITCH-CLASSES+))
-		(setf (gethash (aref +PITCH-CLASSES+ i) acc) i))
-	      acc)))
+	(flet ((make-key-symbol (a b)
+				(intern (sformat "~A~A" a b))))
+	  (let* ((alternate-key-names #((C BF)(CS DF)(D D)(DS EF)
+					(E FF)(F ES)(FS GF)(G G)
+					(GS AF)(A A)(AS BF)(B CF)))
+		 (key-table (make-hash-table :size 215)))
+	    (dotimes (key-number 128)
+	      (let* ((pitch-class (rem key-number 12))
+		     (octave (truncate (/ key-number 12)))
+		     (key-symbols (aref alternate-key-names pitch-class))
+		     (primary (make-key-symbol (first key-symbols) octave))
+		     (secondary (make-key-symbol (second key-symbols) octave)))
+		(setf (gethash primary key-table) key-number)
+		(setf (gethash secondary key-table) key-number)))
+	    (setf (gethash 'R key-table) +REST+)
+	    ;; Simple key numbers sans-octaves
+	    (dotimes (i (length +PITCH-CLASSES+))
+	      (setf (gethash (aref +PITCH-CLASSES+ i) key-table) i))
+	    key-table)))
 
 (constant +REVERSE-KEYNUMBERS+
-	  (let* ((symlist #(C CS D DS E F FS G GS A AS B))
-		 (ary (make-array 128 :element-type 'symbol :initial-element nil)))
-	    (dotimes (keynum 128)
-	      (let* ((pclass (rem keynum 12))
-		     (octave (truncate (/ keynum 12)))
-		     (sym (intern (format nil "~A~A" (aref symlist pclass) octave))))
-		(setf (aref ary keynum) sym)))
-	    ary))
+	  (let* ((base-key-symbols #(C CS D DS E F FS G GS A AS B))
+		 (key-name-array (make-array 128 :element-type 'symbol :initial-element nil)))
+	    (dotimes (key-number 128)
+	      (let* ((pitch-class (rem key-number 12))
+		     (octave (truncate (/ key-number 12)))
+		     (key-symbol (intern (format nil "~A~A" (aref base-key-symbols pitch-class) octave))))
+		(setf (aref key-name-array key-number) key-symbol)))
+	    key-name-array))
 
-(defun defkeynumber (sym value)
+(defun defkeynumber (key-symbol key-number)
   "Define new symbolic keynumber.
-sym - symbol
-value - an integer in interval (-1..127) inclusive."
-  (setf (gethash sym *keynumbers*) value))
+key-number - an integer in interval (-1..127) inclusive."
+  (setf (gethash key-symbol *keynumbers*) key-number))
   
 (defmethod keynumber-p ((n integer)) t)
 
- (defmethod rest-p ((obj t))
-      (and (keynumber-p obj)
-	   (or (eq obj 'r)
-	       (and (numberp obj)(minusp obj)))))
+ (defmethod rest-p ((object t))
+      (and (keynumber-p object)
+	   (or (eq object 'r)
+	       (and (numberp object)(minusp object)))))
 
-(defmethod keynumber ((obj t))
-  (cyco-type-error 'keynumber '(integer symbol list) obj))
+(defmethod keynumber ((object t))
+  (cyco-type-error 'keynumber '(integer symbol list) object))
 
 (defmethod keynumber ((n integer))
   (cond ((minusp n) +REST+)
@@ -70,132 +69,116 @@ value - an integer in interval (-1..127) inclusive."
     (defmethod keynumber-p ((s symbol))
       (gethash (resolve-symbol s) *keynumbers*))
     
-    (defmethod keynumber ((s symbol))
-      (let ((sym (resolve-symbol s)))
-	(or (gethash sym *keynumbers*)
-	    (cyco-value-error 'keynumber sym))))
+    (defmethod keynumber ((key-symbol symbol))
+      (let ((symbol (resolve-symbol key-symbol)))
+	(or (gethash symbol *keynumbers*)
+	    (cyco-value-error 'keynumber symbol))))
 
-    (defmethod rest-p ((s symbol))
-      (eq 'r (resolve-symbol s)))
-    ))
+    (defmethod rest-p ((key-symbol symbol))
+      (eq 'r (resolve-symbol key-symbol)))))
     
-(defmethod keynumber ((lst list))
-  (mapcar #'keynumber lst))
+(defmethod keynumber ((key-number-list list))
+  (mapcar #'keynumber key-number-list))
 
-(defmethod pitch-class ((obj t))
-  (cyco-type-error 'pitch-class '(integer symbol list) obj))
+(defmethod pitch-class ((object t))
+  (cyco-type-error 'pitch-class '(integer symbol list) object))
 
-(defmethod pitch-class ((n integer))
-  (if (minusp n)
+(defmethod pitch-class ((key-number integer))
+  (if (minusp key-number)
       +REST+
-    (rem n 12)))
+    (rem key-number 12)))
 
-(defmethod pitch-class ((s symbol))
-  (if (keynumber-p s)
-      (pitch-class (keynumber s))
-    (cyco-value-error 'pitch-class s)))
+(defmethod pitch-class ((key-symbol symbol))
+  (if (keynumber-p key-symbol)
+      (pitch-class (keynumber key-symbol))
+    (cyco-value-error 'pitch-class key-symbol)))
 
-(defmethod pitch-class ((lst list))
-  (mapcar #'pitch-class lst))
+(defmethod pitch-class ((key-number-list list))
+  (mapcar #'pitch-class key-number-list))
 
-(defmethod octave ((obj t))
-  (cyco-type-error 'octave '(number symbol list) obj))
+(defmethod octave ((object t))
+  (cyco-type-error 'octave '(number symbol list) object))
 
-(defmethod octave ((n number))
-  (if (minusp n)
+(defmethod octave ((key-number number))
+  (if (minusp key-number)
       +rest+
-    (truncate (/ n 12))))
+    (truncate (/ key-number 12))))
 
-(defmethod octave ((s symbol))
-  (if (keynumber-p s)
-      (octave (keynumber s))
-    (cyco-value-error 'octave s)))
+(defmethod octave ((key-symbol symbol))
+  (if (keynumber-p key-symbol)
+      (octave (keynumber key-symbol))
+    (cyco-value-error 'octave key-symbol)))
 
-(defmethod octave ((lst list))
-  (mapcar #'octave lst))
+(defmethod octave ((key-number-list list))
+  (mapcar #'octave key-number-list))
 
-(defmethod keyname ((obj t))
-  (cyco-type-error 'keyname '(integer symbol list) obj))
+(defmethod keyname ((object t))
+  (cyco-type-error 'keyname '(integer symbol list) object))
 
-(defmethod keyname ((s symbol))
-  (or (and (keynumber-p s) s)
-      (cyco-value-error 'keyname s)))
+(defmethod keyname ((key-symbol symbol))
+  (or (and (keynumber-p key-symbol) key-symbol)
+      (cyco-value-error 'keyname key-symbol)))
 
-(defmethod keyname ((n integer))
-  (let ((kn (keynumber n)))
+(defmethod keyname ((key-number integer))
+  (let ((kn (keynumber key-number)))
     (if (minusp kn)
 	'R
       (aref +reverse-keynumbers+ kn))))
 
-(defmethod keyname ((lst list))
-  (mapcar #'keyname lst))
+(defmethod keyname ((key-number-list list))
+  (mapcar #'keyname key-number-list))
 
-(defmethod transpose ((n integer)(x integer))
-  (if (rest-p n)
+(defmethod transpose ((key-number integer)(amount integer))
+  (if (rest-p key-number)
       +rest+
-    (let ((n2 (+ n x)))
+    (let ((n2 (+ key-number amount)))
       (while (< n2 0)(setf n2 (+ n2 12)))
       (while (> n2 127)(setf n2 (- n2 12)))
       n2)))
 
-(defmethod transpose ((sym symbol)(x integer))
-  (if (keynumber-p sym)
-      (keyname (transpose (keynumber sym) x))
-    sym))
+(defmethod transpose ((key-symbol symbol)(amount integer))
+  (if (keynumber-p key-symbol)
+      (keyname (transpose (keynumber key-symbol) amount))
+    key-symbol))
 
-(defmethod transpose ((lst list)(x integer))
-  (mapcar #'(lambda (q)(transpose q x)) lst))
+(defmethod transpose ((key-number-list list)(amount integer))
+  (mapcar #'(lambda (q)(transpose q amount)) key-number-list))
 
-(defmethod invert ((n integer)(pivot t))
-  (if pivot
-      (let ((pp (keynumber pivot)))
-	(if (minusp n)
+(defmethod invert ((key-number integer)(pivot-key t))
+  (if pivot-key
+      (let ((pivot-point (keynumber pivot-key)))
+	(if (minusp key-number)
 	    +rest+
-	  (let* ((diff (- pp n))
-		 (rs (+ pp diff)))
+	  (let* ((diff (- pivot-point key-number))
+		 (rs (+ pivot-point diff)))
 	    rs)))
-    n))
+    key-number))
 
-(defmethod invert ((s symbol)(pivot t))
-  (if (and pivot (keynumber-p s))
-      (invert (keynumber s) pivot)
-    s))
+(defmethod invert ((key-symbol symbol)(pivot-key t))
+  (if (and pivot-key (keynumber-p key-symbol))
+      (invert (keynumber key-symbol) pivot-key)
+    key-symbol))
 
-(defmethod invert ((lst list)(pivot t))
-  (mapcar #'(lambda (q)(invert q pivot)) lst))
-
-
-(defun white-keys (start end)
-  "Returns list of white-key numbers between start and end.
-If either start or end is not a white-key, it is coerced to be so."
-  (let ((pc (pitch-class start))
-	(s (keynumber start))
-	(e (keynumber end)))
-    (if (> s e)
-	nil
-      (cons (if (member pc '(1 3 6 8 10))
-		(1+ s)
-	      s)
-	    (cond ((or (= pc 4)(= pc 11)) ;; E or B
-		   (white-keys (1+ s) e))
-		  ((member pc '(0 2 5 7 9))
-		   (white-keys (+ 2 s) e))
-		  (t (white-keys (1+ s) e)))))))
+(defmethod invert ((key-number-list list)(pivot-key t))
+  (mapcar #'(lambda (q)(invert q pivot-key)) key-number-list))
 
 
-(defun black-keys (start end)
-  "Returns list of black key numbers between start and end.
-If either start or end is not a black-key, it is coerced to be so."
-  (let ((pc (pitch-class start))
-	(s (keynumber start))
-	(e (keynumber end)))
-    (if (> s e)
-	nil
-      (cons (if (member pc '(0 2 4 5 7 9 11))
-		(1+ s)
-	      s)
-	    (cond ((or (= pc 3)(= pc 10)) ;; DS or AS
-		   (black-keys (+ 3 s) e))
-		  ((member pc '(1 6 8 10))
-		   (black-keys (+ 2 s) e))
-		  (t (black-keys (1+ s) e)))))))
+(defun white-key-p (object)
+  "Predicate, returns true if object is a 'white' key-number."
+  (and (keynumber-p object)
+       (member (pitch-class object)
+	       '(0 2 4 5 7 9 11))))
+
+(defun black-key-p (object)
+  "Predicate, returns true if object is a 'black' key-number."
+  (and (keynumber-p object)
+       (member (pitch-class object)
+	       '(1 3 6 8 10))))
+
+(defun white-keys (start-key end-key)
+  "Returns list of all 'white' keys betweeen start and end (inclusive)."
+  (remove-if-not #'white-key-p (range (keynumber start-key)(1+ (keynumber end-key)))))
+
+(defun black-keys (start-key end-key)
+  "returns list of all 'black' keys between start and end (inclusive)."
+  (remove-if-not #'black-key-p (range (keynumber start-key)(1+ (keynumber end-key)))))

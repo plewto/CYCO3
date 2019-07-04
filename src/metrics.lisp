@@ -56,27 +56,27 @@
     (and base-value
 	 (every #'(lambda (q)(or (char= q #\.)(char= q #\T))) modifiers))))
     
-(defmethod metric ((obj t))
-  (cyco-type-error 'metric '(number symbol list) obj))
+(defmethod metric ((object t))
+  (cyco-type-error 'metric '(number symbol list) object))
 
-(defmethod metric ((n number))
-  (float (if (minusp n) -1 n)))
+(defmethod metric ((metric-value number))
+  (float (if (minusp metric-value) -1 metric-value)))
 
-(defmethod metric ((s symbol))
-  (let* ((name (string-upcase (->string s)))
+(defmethod metric ((metric-value symbol))
+  (let* ((name (string-upcase (->string metric-value)))
 	 (base (intern (subseq name 0 1)))
 	 (modifiers (if (> (length name) 1)(subseq name 1) ""))
 	 (value (or (gethash base +metric-units+)
-		    (return-from metric (progn (cyco-value-error 'metric s) +rest+)))))
+		    (return-from metric (progn (cyco-value-error 'metric metric-value) +rest+)))))
     (dotimes (i (length modifiers))
       (let ((c (char modifiers i)))
 	(cond ((char= c #\.)(setf value (* 3/2 value)))
 	      ((char= c #\T)(setf value (* 2/3 value)))
-	      (t (return-from metric (progn (cyco-value-error 'metric s) +rest+))))))
+	      (t (return-from metric (progn (cyco-value-error 'metric metric-value) +rest+))))))
     (if (minusp value) -1.0 value)))
 	  
-(defmethod metric ((lst list))
-  (mapcar #'metric lst))
+(defmethod metric ((metric-list list))
+  (mapcar #'metric metric-list))
 
 ;;;; ---------------------------------------------------------------------- 
 ;;;;			    Metric Expressions
@@ -153,18 +153,18 @@
 ;; Returns value of expression
 ;; If expression is invalid, generate cyco-composition-error and
 ;; returns nil.
-(defmethod metric-expression ((exp symbol))
-  (let ((value (metric-expression-p exp)))
+(defmethod metric-expression ((metric-expression symbol))
+  (let ((value (metric-expression-p metric-expression)))
     (or value
 	(cyco-composition-error
 	 'metric-expression
-	 (sformat "Invalid metric expression: ~A" exp)))))
+	 (sformat "Invalid metric expression: ~A" metric-expression)))))
 
-(defmethod metric-expression ((n number))
-  (metric-expression-p n))
+(defmethod metric-expression ((metric-value number))
+  (metric-expression-p metric-value))
 
-(defmethod metric-expression ((lst list))
-  (mapcar #'metric-expression lst))
+(defmethod metric-expression ((metric-expression-list list))
+  (mapcar #'metric-expression metric-expression-list))
 
 
 

@@ -506,6 +506,7 @@ to be created.
   	    (format t "Project file already exists: ~A~%" fqn)))))))
 
 (defun ?projects ()
+  "Displays contents of *DEFAULT-PROJECT-DIRECTORY*"
   (format t "Contents of project directory ~A~%" *default-project-directory*)
   (dolist (fqn (directory (sformat "~a/*" *default-project-directory*)))
     (let* ((nstr (namestring fqn))

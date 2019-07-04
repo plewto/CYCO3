@@ -2,9 +2,9 @@
 ;;;; Symbolic representation of MIDI key numbers.
 ;;;;
 
-(constant +PITCH-CLASSES+ #(C CS D DS E F FS G GS A AS B))
+(constant +pitch-classes+ #(C CS D DS E F FS G GS A AS B))
 
-(global *KEYNUMBERS*
+(global *KEYNUMBER-TABLE*
 	(flet ((make-key-symbol (a b)
 				(intern (sformat "~A~A" a b))))
 	  (let* ((alternate-key-names #((C BF)(CS DF)(D D)(DS EF)
@@ -21,24 +21,23 @@
 		(setf (gethash secondary key-table) key-number)))
 	    (setf (gethash 'R key-table) +REST+)
 	    ;; Simple key numbers sans-octaves
-	    (dotimes (i (length +PITCH-CLASSES+))
-	      (setf (gethash (aref +PITCH-CLASSES+ i) key-table) i))
+	    (dotimes (i (length +pitch-classes+))
+	      (setf (gethash (aref +pitch-classes+ i) key-table) i))
 	    key-table)))
 
-(constant +REVERSE-KEYNUMBERS+
-	  (let* ((base-key-symbols #(C CS D DS E F FS G GS A AS B))
-		 (key-name-array (make-array 128 :element-type 'symbol :initial-element nil)))
+(constant +reverse-keynumber-array+
+	  (let ((key-name-array (make-array 128 :element-type 'symbol :initial-element nil)))
 	    (dotimes (key-number 128)
 	      (let* ((pitch-class (rem key-number 12))
 		     (octave (truncate (/ key-number 12)))
-		     (key-symbol (intern (format nil "~A~A" (aref base-key-symbols pitch-class) octave))))
+		     (key-symbol (intern (format nil "~A~A" (aref +pitch-classes+ pitch-class) octave))))
 		(setf (aref key-name-array key-number) key-symbol)))
 	    key-name-array))
 
 (defun defkeynumber (key-symbol key-number)
   "Define new symbolic keynumber.
 key-number - an integer in interval (-1..127) inclusive."
-  (setf (gethash key-symbol *keynumbers*) key-number))
+  (setf (gethash key-symbol *keynumber-table*) key-number))
   
 (defmethod keynumber-p ((n integer)) t)
 
@@ -67,11 +66,11 @@ key-number - an integer in interval (-1..127) inclusive."
 			     (get-symbol-other-package sym))))
 
     (defmethod keynumber-p ((s symbol))
-      (gethash (resolve-symbol s) *keynumbers*))
+      (gethash (resolve-symbol s) *keynumber-table*))
     
     (defmethod keynumber ((key-symbol symbol))
       (let ((symbol (resolve-symbol key-symbol)))
-	(or (gethash symbol *keynumbers*)
+	(or (gethash symbol *keynumber-table*)
 	    (cyco-value-error 'keynumber symbol))))
 
     (defmethod rest-p ((key-symbol symbol))
@@ -123,7 +122,7 @@ key-number - an integer in interval (-1..127) inclusive."
   (let ((kn (keynumber key-number)))
     (if (minusp kn)
 	'R
-      (aref +reverse-keynumbers+ kn))))
+      (aref +reverse-keynumber-array+ kn))))
 
 (defmethod keyname ((key-number-list list))
   (mapcar #'keyname key-number-list))
@@ -180,5 +179,5 @@ key-number - an integer in interval (-1..127) inclusive."
   (remove-if-not #'white-key-p (range (keynumber start-key)(1+ (keynumber end-key)))))
 
 (defun black-keys (start-key end-key)
-  "returns list of all 'black' keys between start and end (inclusive)."
+  "Returns list of all 'black' keys between start and end (inclusive)."
   (remove-if-not #'black-key-p (range (keynumber start-key)(1+ (keynumber end-key)))))

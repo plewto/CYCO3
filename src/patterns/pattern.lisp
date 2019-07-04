@@ -121,12 +121,12 @@
 (defmethod ->string ((p pattern))
   (sformat "~A :of ~A" (type-of p)(elements p)))
 
-(defmethod ->pattern ((pat pattern) &key ptype)
-  (dismiss ptype)
+(defmethod ->pattern ((pat pattern) &key pattern-type)
+  (dismiss pattern-type)
   pat)
 
-(defmethod ->pattern ((obj t) &key (ptype 'cycle))
-  (make-instance ptype :of (->list obj)))
+(defmethod ->pattern ((obj t) &key (pattern-type 'cycle))
+  (make-instance pattern-type :of (->list obj)))
 
 (defmethod transpose ((pat pattern)(x integer))
   (setf (elements pat)(transpose (elements pat) x))

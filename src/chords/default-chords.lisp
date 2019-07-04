@@ -7,16 +7,16 @@
 				     :descriptions (make-hash-table :size 144))
 	"Default chord-model")
 
-(defun defchord (name template &optional description)
+(defun defchord (chord-name template-list &optional description)
   "Defines new chord for default *chord-table*"
-  (define-chord *chord-table* name template description))
+  (define-chord *chord-table* chord-name template-list description))
 
-(defun ?chords (&optional (obj *chord-table*))
+(defun ?chords (&optional (chord-model *chord-table*))
   "Displays list of defined chords in chord-model,
 By default *chord-table*"
-  (if (or (project-p obj)(section-p obj)(part-p obj))
-      (dump-chords (property obj :chord-model))
-    (dump-chords obj)))
+  (if (or (project-p chord-model)(section-p chord-model)(part-p chord-model))
+      (dump-chords (property chord-model :chord-model))
+    (dump-chords chord-model)))
 
 (defchord '[solo]      '(0) "")
 (defchord '[maj]       '(0 4 7) "Major")

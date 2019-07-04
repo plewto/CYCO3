@@ -11,41 +11,41 @@
    "Default implementation of ABSTRACT-CHORD-MODEL"))
    
 
-(defmethod define-chord ((model chord-table)
+(defmethod define-chord ((chord-table chord-table)
 			 (name symbol)
 			 (template list)
 			 &optional (description ""))
   (if (every #'keynumber-p template)
       (progn 
-	(setf (gethash name (chord-table-templates model)) template)
-	(setf (gethash name (chord-table-descriptions model)) (->string description))
+	(setf (gethash name (chord-table-templates chord-table)) template)
+	(setf (gethash name (chord-table-descriptions chord-table)) (->string description))
 	template)
     (cyco-type-error 'define-chord "List of keynumbers" template)))
 
-(defmethod defines-chord-p ((model chord-table)(name symbol))
-  (bool (gethash name (chord-table-templates model))))
+(defmethod defines-chord-p ((chord-table chord-table)(name symbol))
+  (bool (gethash name (chord-table-templates chord-table))))
 
-(defmethod chord-types ((model chord-table))
+(defmethod chord-types ((chord-table chord-table))
   (let ((acc '()))
     (maphash #'(lambda (a b)
 		 (dismiss b)
 		 (push a acc))
-	     (chord-table-templates model))
+	     (chord-table-templates chord-table))
     (sort acc #'(lambda (a b)
 		  (string< (->string a)(->string b))))))
 
-(defmethod dump-chords ((model chord-table))
-  (format t "~A Chords:~%" (name model))
-  (dolist (cname (chord-types model))
+(defmethod dump-chords ((chord-table chord-table))
+  (format t "~A Chords:~%" (name chord-table))
+  (dolist (cname (chord-types chord-table))
     (format t "  ~12A ~24A ~A~%"
 	    cname
-	    (gethash cname (chord-table-templates model))
-	    (gethash cname (chord-table-descriptions model)))))
+	    (gethash cname (chord-table-templates chord-table))
+	    (gethash cname (chord-table-descriptions chord-table)))))
 
-(defmethod chord-template ((cm chord-table)(name symbol)(keynumber t))
+(defmethod chord-template ((chord-table chord-table)(name symbol)(keynumber t))
   "keynumber argument is ignored."
   (dismiss keynumber)
-  (or (gethash name (chord-table-templates cm))
+  (or (gethash name (chord-table-templates chord-table))
       (and
        (progn 
 	 (cyco-warning

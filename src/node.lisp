@@ -76,9 +76,6 @@ The properties method returns a list of all prescribed property keys.
 Nodes are marked as 'transient' or 'non-transient'.  Transient nodes
 are removed from a tree by the prune method while non-transient nodes are
 not."))
-   
-
-
 
     
 (defmethod name! ((node cyco-node)(new-name symbol))
@@ -138,7 +135,6 @@ not."))
 	(if (has-property-p node key)
 	    t
 	  (progn 
-	    ;;(cyco-property-error node key)
 	    (cyco-error
 	     (sformat "CYCO-NODE ~A does not have ~A property" (name node) key))
 	    nil))))
@@ -179,12 +175,10 @@ not."))
   
 (defmethod clone ((node cyco-node) &key new-name new-parent)
   (dismiss new-name new-parent)
-  ;;(cyco-not-implemented-error 'clone node))
   (cyco-type-error 'clone '?cyco-node node))
   
 (defmethod ->string ((n cyco-node))
   (sformat "~A name: ~A" (type-of n)(name n)))
-
 
 (defmethod ? ((n cyco-node))
   (format t "~A~%" (type-of n))
@@ -205,7 +199,3 @@ not."))
   (format t "  properties :~%")
   (dolist (k (property-keys n))
     (format t "      [~24A] --> ~A~%" k (property n k))))
-  
-
-
-

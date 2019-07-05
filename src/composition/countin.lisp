@@ -55,7 +55,7 @@ name - Symbol, defaults to 'countin
 		     instruments
 		     (metronome t)
 		     remarks)
-  "Same as make-countin bu binds result to symbol named name."
+  "Same as make-countin but binds result *countin*"
   `(progn
      (banner2 "Countin")
      (let* ((cntin (make-countin :project ,project
@@ -70,17 +70,17 @@ name - Symbol, defaults to 'countin
        (setf *countin* cntin)
        cntin)))
 
-(defmethod clone ((src countin) &key new-name new-parent)
+(defmethod clone ((source countin) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
-	 (name (->symbol (sformat frmt (name src))))
+	 (name (->symbol (sformat frmt (name source))))
 	 (dst (make-countin :name name
-			    :project (or new-parent (parent src))
-			    :tempo (property src :tempo)
-			    :unit (property src :unit)
-			    :bars (property src :bars)
-			    :beats (property src :beats)
-			    :subbeats (property src :subbeats)
-			    :instruments (property src :instruments))))
+			    :project (or new-parent (parent source))
+			    :tempo (property source :tempo)
+			    :unit (property source :unit)
+			    :bars (property source :bars)
+			    :beats (property source :beats)
+			    :subbeats (property source :subbeats)
+			    :instruments (property source :instruments))))
     dst))
 
 

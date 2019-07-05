@@ -37,52 +37,51 @@ combine related parts.  Members of a group may be muted or soloed in
 tandem."))
 
 
-(defmethod group-p ((obj null)) nil)
-(defmethod group-p ((grp group)) t)
+(defmethod group-p ((object null)) nil)
+(defmethod group-p ((group group)) t)
 
-(defmethod mute ((grp group) &optional state)
+(defmethod mute ((group group) &optional state)
   "Change mute state of all group members."
   (cond ((eq state :mute)
-	 (setf (mute-state grp) :mute)
-	 (dolist (prt (group-members grp))
-	   (mute prt :mute)))
+	 (setf (mute-state group) :mute)
+	 (dolist (part (group-members group))
+	   (mute part :mute)))
 	((eq state :unmute)
-	 (setf (mute-state grp) :unmute)
-	 (dolist (prt (group-members grp))
-	   (unmute prt)))
-	
+	 (setf (mute-state group) :unmute)
+	 (dolist (part (group-members group))
+	   (unmute part)))
 	((eq state :solo)
-	 (setf (mute-state grp) :solo)
-	 (dolist (g (property (parent grp) :groups))
-	   (if (not (eq g grp))
+	 (setf (mute-state group) :solo)
+	 (dolist (g (property (parent group) :groups))
+	   (if (not (eq g group))
 	       (mute g :mute)))
-	 (dolist (prt (group-members grp))
-	   (unmute prt)))
+	 (dolist (part (group-members group))
+	   (unmute part)))
 	
 	(t nil)))
 
-(defmethod unmute ((grp group))
-  (mute grp :unmute))
+(defmethod unmute ((group group))
+  (mute group :unmute))
 
-(defmethod solo ((grp group))
-  (mute grp :solo))
+(defmethod solo ((group group))
+  (mute group :solo))
 
-(defmethod muted-p ((grp group))
-  (let ((s (mute-state grp)))
+(defmethod muted-p ((group group))
+  (let ((s (mute-state group)))
     (eq s :mute)))
 
 (flet ((find-parts (function-name group-name section part-name-list)
-		   (let ((acc '()))
+		   (let ((parts-list '()))
 		     (dolist (part-name part-name-list)
-		       (let ((prt (find-child section part-name)))
-			 (if prt
+		       (let ((part (find-child section part-name)))
+			 (if part
 			     (progn
-			       (push prt acc)
-			       (put prt :group group-name))
+			       (push part parts-list)
+			       (put part :group group-name))
 			   (cyco-composition-error function-name
 						   (sformat "Section Name : ~A" (name section))
 						   (sformat "Part ~A does not exists" part-name)))))
-		     acc)) )
+		     parts-list)) )
 
   (defun make-group (name &key member-names section)
     "Creates new instance of Group.  
@@ -99,18 +98,18 @@ within in the section.
 	   "No default section")
 	(let* ((members (find-parts 'make-group name sec
 				    (->list member-names)))
-	       (grp (make-instance 'group
+	       (group (make-instance 'group
 				  :name name
 				  :parent sec
 				  :members members)))
-	  (add-group sec grp)
-	  grp))))
+	  (add-group sec group)
+	  group))))
 
   (defmacro group (name member-names)
     "Same as make-group except binds the new group to the symbol name."
-   `(let ((grp (make-group ',name :member-names ,member-names)))
-      (defparameter ,name grp)
-      grp)) )
+   `(let ((group (make-group ',name :member-names ,member-names)))
+      (defparameter ,name group)
+      group)) )
 
 
 ;;; Group clone is handled by Section clone.

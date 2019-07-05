@@ -1,7 +1,7 @@
 ;;;; CYCO
 ;;;;
-;;;; ENDPAD provides a final section to pad-out the end of a MIDI track
-;;;; to allow for final note decays..
+;;;; ENDPAD provides a final section to "pad-out" the end of a MIDI track.
+;;;; It is used to provide time fopr any final decay tails.
 ;;;;
 
 (constant +endpad-properties+ (append
@@ -10,8 +10,7 @@
 
 (defclass endpad (section) nil
   (:documentation
-   "ENDPAD is a specialized type of Section used to extend the end time of a
-project."))
+   "ENDPAD is a specialized Section used to extend the end time of a project."))
 
 (defun make-endpad (&key (project *project*)(bars 2) beats )
   "Creates ENDPAD section"
@@ -44,19 +43,19 @@ project."))
 	 (setf *endpad* epad)
 	 epad)))
 
-(defmethod clone ((src endpad) &key new-name new-parent)
+(defmethod clone ((source endpad) &key new-name new-parent)
   (dismiss new-name)
-  (make-endpad :project (or new-parent (parent src))
-	       :bars (bars src)
-	       :beats (beats src)))
+  (make-endpad :project (or new-parent (parent source))
+	       :bars (bars source)
+	       :beats (beats source)))
   
-(defmethod render-once ((epad endpad) &key (offset 0.0))
-  (let ((period (phrase-duration epad)))
+(defmethod render-once ((endpad endpad) &key (offset 0.0))
+  (let ((period (phrase-duration endpad)))
     (list
      (cons offset (midi-meta-marker "Start ENDPAD"))
      (cons (+ offset period)(midi-note-off 0 0 0)))))
 
-(defmethod render-n ((epad endpad)(n integer) &key (offset))
-  (render-once epad :offset offset))
+(defmethod render-n ((endpad endpad)(n integer) &key (offset))
+  (render-once endpad :offset offset))
 
 

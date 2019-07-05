@@ -43,6 +43,27 @@
 (load-plugin-file "eastwest/eastwest")
 
 
+(channel! *metronome* :beep)
+(keynumber-map! *metronome* (metronome-keynumber-map
+			     :phrase 3
+			     :bar 1
+			     :beat 0))
+(program-number! *metronome* 127)
+
+
+(param rr-reset nil)
+(defun rr-reset ()
+  (let* ((event-list '())
+	 (controller-number 32))
+    (dotimes (channel-index 16)
+      (push (cons 0.0 (midi-control-change channel-index controller-number 0)) event-list)
+      (push (cons 0.0 (midi-control-change channel-index controller-number 127)) event-list))
+    (setf rr-reset
+	  (make-raw-part 'rr-reset
+			 :events event-list
+			 :remarks "Round-robin reset controler 32 on all MIDI channels."))))
+	 
+
 (defun snapshot (&optional (fname "~/bin/cyco3"))
   "Saves CYCO snapshot to default location."
   (save-snapshot fname))

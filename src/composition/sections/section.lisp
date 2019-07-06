@@ -204,7 +204,7 @@ and chord-model parameters from the project but may selectivly override them."))
 
 (defmethod render-once ((section section) &key (offset 0.0))
   (let* ((event-list (list (cons offset
-				 (midi-meta-marker (sformat "Start Section ~A" (name section))))
+				 (midi-meta-marker (name section)))
 			   (cons offset
 				 (midi-tempo-message (tempo section)))
 			   (cons offset

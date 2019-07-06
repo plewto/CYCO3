@@ -22,28 +22,26 @@
    :invert (section-render-mode-invert source)))
 
 
-
-(flet ((push-section-order (render-mode project)
-			   (let ((section-name (section-render-mode-section-name render-mode)))
-			     (if (find-child project section-name)
-				 (put project :section-order
-				      (reverse (cons render-mode (reverse (property project :section-order)))))
-			       (cyco-composition-error 'section-order
-						       (sformat "Section ~A does not exists" section-name))))))
-  
-  (defmethod section-order ((section-name symbol) &key (project *project*))
-    "Adds named section to the project section-order list.
-All modifiers have default values, shift=0.0, count=1, transpose=0, invert=nil, retrograde=nil."
+(defmethod section-order  ((render-mode section-render-mode) &key (project *project*))
+  (let ((section-name (section-render-mode-section-name render-mode)))
     (if (find-child project section-name)
-	(let ((render-mode (make-section-render-mode :section-name section-name
-						     :shift 0.0
-						     :count 1
-						     :transpose 0
-						     :invert nil
-						     :retrograde nil)))
-	  (push-section-order render-mode project))
+	(put project :section-order
+	     (reverse (cons render-mode (reverse (property project :section-order)))))
       (cyco-composition-error 'section-order
 			      (sformat "Section ~A does not exists" section-name)))))
+(defmethod section-order ((section-name symbol) &key (project *project*))
+  "Adds named section to the project section-order list.
+All modifiers have default values, shift=0.0, count=1, transpose=0, invert=nil, retrograde=nil."
+  (if (find-child project section-name)
+      (let ((render-mode (make-section-render-mode :section-name section-name
+						   :shift 0.0
+						   :count 1
+						   :transpose 0
+						   :invert nil
+						   :retrograde nil)))
+	(section-order render-mode project))
+    (cyco-composition-error 'section-order
+			    (sformat "Section ~A does not exists" section-name))))
   
 
 (labels ((type-error (spec expected offending)

@@ -806,7 +806,7 @@ error."))
    "Predicate, true if object is an instance of Section or one of it's
 subclasses.")
 
-(defgeneric seq-order (sections &key project)
+(defgeneric section-order (sections &key project)
   (:documentation
    "Sets the sequence order of Sections within a project."))
 

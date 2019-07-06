@@ -266,7 +266,7 @@
 	  root-p
 	  rotate
 	  section-p
-	  seq-order
+	  section-order
 	  set-basic-program-map
 	  set-cyco-prompt
 	  set-symbolic-program-map

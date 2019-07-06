@@ -126,9 +126,14 @@
 		   "src/chords/default-chords"
 		   "src/composition/time-signature"
 		   "src/composition/cueing-functions"
-		   
-		   "src/composition/project"
 
+		   "src/composition/project/framework"
+		   "src/composition/project/persistence"
+		   "src/composition/project/section-render-mode"
+		   "src/composition/project/project"
+		   "src/composition/project/project-render"
+		   "src/composition/project/loader"
+		   
 		   "src/composition/group"
 		   "src/composition/section"
 		   "src/composition/parts/part"
@@ -215,15 +220,15 @@ a warning message is displayed and CYCO terminates."
 	  (exit)))))
 
 
-;; (defmacro renamed-function-warning (old-name new-name)
-;;   `(defun ,old-name (&rest _)
-;;      (dismiss _)
-;;      (cyco-warning "Function Renamed"
-;; 		   (sformat "~A has been renamed to ~A"
-;; 			    ',old-name ',new-name))
-;;      (exit)))
+(defmacro renamed-function-warning (old-name new-name)
+  `(defun ,old-name (&rest _)
+     (dismiss _)
+     (cyco-warning "Function Renamed"
+		   (sformat "~A has been renamed to ~A"
+			    ',old-name ',new-name))
+     (exit)))
 
-;; (renamed-function-warning seq-order section-order)
+(renamed-function-warning seq-order section-order)
 
 
 (in-package :common-lisp-user)

@@ -126,7 +126,6 @@
 		   "src/chords/default-chords"
 		   "src/composition/time-signature"
 		   "src/composition/cueing-functions"
-
 		   "src/composition/project/framework"
 		   "src/composition/project/persistence"
 		   "src/composition/project/section-render-mode"
@@ -135,7 +134,8 @@
 		   "src/composition/project/loader"
 		   
 		   "src/composition/group"
-		   "src/composition/section"
+		   "src/composition/sections/section"
+		   
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
 		   "src/composition/parts/strummer-docs"

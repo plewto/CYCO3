@@ -17,8 +17,6 @@
   (let ((fname (resolve-user-home filename)))
     (format t "Creating CYCO executable, ~S~%" fname)
     (setf sb-int:*REPL-PROMPT-FUN* #'(lambda (s)(format s "~%* ")))
-    (sb-ext::save-lisp-and-die fname :executable t)))
-
-;; (defun exit ()
-;;   (sb-ext:exit))
+    (sb-ext::save-lisp-and-die fname :executable t :purify t)))
+									   
 

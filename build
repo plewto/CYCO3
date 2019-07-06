@@ -1,0 +1,5 @@
+#! /usr/bin/sh
+
+cd ~/dev/CYCO3
+
+sbcl --eval '(progn (load "src/cyco")(cyco))'

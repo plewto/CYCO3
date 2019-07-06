@@ -1,5 +1,7 @@
 ;;;; CYCO
 ;;;;
+;;;; Defines Standard MIDI File Track
+;;;;
 
 (defclass smf-track nil
   ((track-name
@@ -36,7 +38,6 @@
 	    (push p result))))
     (reverse result)))
 
-
 (defmethod dump-events ((track smf-track) &key range (filter #'false)(render nil))
   (let ((event-list (events track :range range :filter filter)))
     (dolist (event event-list)
@@ -52,7 +53,6 @@
 	      (format t "]")))
 	(format t "~%")))
     (length event-list)))
-
 
 (defmethod dump-events ((event-list list) &key range (filter #'false) render)
   (if (every #'(lambda (event)

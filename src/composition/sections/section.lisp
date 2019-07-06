@@ -12,13 +12,10 @@
 
 (defclass section (time-signature) nil
   (:Documentation
-   "A Section represents a major division of a composition, such as verse, 
-chorus, etc...  The parent of a Section is always a Project and it's 
-child nodes are always some type of Part.   A section inherits the default
-time-signature from the project but may override any of the time-signature
-parameters: tempo, unit, bars, beats, sub-beats and cueing-function.  
-Sections also inherit a chord-model from the project but may override it 
-with one another model."))
+   "A Section represents a major composition division, IE verse, chorus,
+bridge etc...  The parent of a Section is always a Project and it's 
+child nodes are always some type of Part.   A section inherits time-signature
+and chord-model parameters from the project but may selectivly override them."))
 
 (defmethod section-p ((s section)) t)
 
@@ -41,18 +38,18 @@ with one another model."))
 
 
 (let ((docstring
-        "Creates new Section named name.
+        "Creates new Section.
 :project - Parent project, defaults to *project*
-:cuefn - Cueing function, defaults project's value.
-:tempo - tempo in BPM, defaults to project's value.
-:unit - time signature beat unit, defaults to project's value.
-:bars - time signature bars per phrase, defaults to project's value.
-:beats - time signature beats per bar, defaults to project's value.
+:cuefn   - Cueing function, defaults project's value.
+:tempo   - tempo in BPM, defaults to project's value.
+:unit    - time signature beat unit, defaults to project's value.
+:bars    - time signature phrase length, defaults to project's value.
+:beats   - time signature beats per bar, defaults to project's value.
 :subbeats - time signature subbeats per beat, defaults to project's value.
-:transposable - bool, if nil this Section is immune to transpose and 
-and invert operations, default t.
-:reservable - bool, if nil this Section is immune to retrograde 
-operations, default t.
+:transposable - bool, if nil the Section is immune to transpose and 
+                and invert operations, default t.
+:reservable   - bool, if nil this Section is immune to retrograde 
+                operations, default t.
 :remarks - Optional remarks text."))
   (defun make-section (name &key
 			    (project *project*)
@@ -102,7 +99,7 @@ operations, default t.
 			(reversible t)
 			(transposable t)
 			(remarks ""))
-  "Same as make-section except binds new section to name symbol name."
+  "Same as make-section except binds new section to symbol name."
   `(progn
      (banner2 (sformat "Section ~A" ',name))
      (if (not (symbolp ',name))
@@ -122,50 +119,50 @@ operations, default t.
 	 (defparameter ,name section)
 	 section))))
 
-(defmethod groups ((s section))
-  (property s :groups))
+(defmethod groups ((section section))
+  (property section :groups))
 
-(defmethod has-group-p ((s section)(group-name symbol))
-  (car (member group-name (groups s)
+(defmethod has-group-p ((section section)(group-name symbol))
+  (car (member group-name (groups section)
 	       :test #'(lambda (a b)(eq a (name b))))))
 
-(defmethod add-group ((s section)(grp group))
-  (if (not (has-group-p s (name grp)))
-      (put s :groups
-	    (cons grp (property s :groups)))))
+(defmethod add-group ((section section)(group group))
+  (if (not (has-group-p section (name group)))
+      (put section :groups
+	   (cons group (property section :groups)))))
 
-(defmethod mute-all ((s section))
-  (dolist (grp (property s :groups))
-    (mute grp :mute))
-  (dolist (prt (children s))
-    (mute prt :mute)))
+(defmethod mute-all ((section section))
+  (dolist (group (property section :groups))
+    (mute group :mute))
+  (dolist (part (children section))
+    (mute part :mute)))
 
-(defmethod unmute-all ((s section))
-  (dolist (grp (property s :groups))
-    (mute grp :unmute))
-  (dolist (prt (children s))
-    (mute prt :unmute)))
+(defmethod unmute-all ((section section))
+  (dolist (group (property section :groups))
+    (mute group :unmute))
+  (dolist (part (children section))
+    (mute part :unmute)))
 
-(defmethod print-tree ((s section) &optional (depth 0))
+(defmethod print-tree ((section section) &optional (depth 0))
   (call-next-method)
-  (let ((gtab (spaces (* 4 (1+ depth)))))
-    (dolist (grp (groups s))
-      (format t "~AGroup ~16A State ~7A : " gtab (name grp)(mute-state grp))
-      (dolist (prt (group-members grp))
-	(format t "~A " (name prt)))
+  (let ((group-tab (spaces (* 4 (1+ depth)))))
+    (dolist (group (groups section))
+      (format t "~AGroup ~16A State ~7A : " group-tab (name group)(mute-state group))
+      (dolist (part (group-members group))
+	(format t "~A " (name part)))
       (format t "~%"))))
 
 (labels ((clone-groups (source-section destination-section)
-		       (dolist (grp (property source-section :groups))
-			 (clone-group destination-section grp)))
+		       (dolist (group (property source-section :groups))
+			 (clone-group destination-section group)))
 
 	 ;; ISSUE: member copy will not work if names differ
 	 ;;        between source and destination 
 	 ;;
 	 (clone-group (destination-group group)
 	  (let* ((member-names (let ((acc '()))
-				 (dolist (prt (group-members group))
-				   (push (name prt) acc))
+				 (dolist (part (group-members group))
+				   (push (name part) acc))
 				 (reverse acc)))
 		 (new-group (make-group (name group)
 					:member-names member-names
@@ -173,42 +170,45 @@ operations, default t.
 	    (setf (mute-state new-group)(mute-state group)))))
 
   (defmethod clone ((source-section section) &key new-name new-parent)
-    (let* ((frmt (or new-name "~A"))
-	   (name (->symbol (sformat frmt (name source-section))))
+    (let* ((name (->symbol (sformat (or new-name "~A") (name source-section))))
 	   (parent (or new-parent (parent source-section)))
 	   (new-section (make-section name
-			      :project parent
-			      :cuefn (property source-section :cue-function)
-			      :remarks (remarks source-section))))
+				      :project parent
+				      :cuefn (property source-section :cue-function)
+				      :remarks (remarks source-section))))
       (put new-section :chord-model (property source-section :chord-model))
       (copy-time-signature source-section new-section)
-      (dolist (c (children source-section))
-	(let ((prt (clone c :new-name "~A" :new-parent new-section)))
-	  (put prt :muted (property c :muted))))
+      (dolist (child (children source-section))
+	(let ((part (clone child :new-name "~A" :new-parent new-section)))
+	  (put part :muted (property child :muted))))
       (clone-groups source-section new-section)
       new-section)))
 
-(defmethod transpose ((s section)(n t))
-  (if (property s :transposable)
-      (dolist (prt (children s))
-	(transpose prt n)))
-  s)
+(defmethod transpose ((section section)(n t))
+  (if (property section :transposable)
+      (dolist (part (children section))
+	(transpose part n)))
+  section)
 
-(defmethod invert ((s section)(pivot t))
-  (if (and pivot (property s :transposable))
-      (dolist (prt (children s))
-	(invert prt pivot)))
-  s)
+(defmethod invert ((section section)(pivot t))
+  (if (and pivot (property section :transposable))
+      (dolist (part (children section))
+	(invert part pivot)))
+  section)
 
-(defmethod retrograde ((s section))
-  (if (property s :reversible)
-      (dolist (c (children s))
-	(retrograde c)))
-  s)
+(defmethod retrograde ((section section))
+  (if (property section :reversible)
+      (dolist (part (children section))
+	(retrograde part)))
+  section)
 
 (defmethod render-once ((section section) &key (offset 0.0))
   (let* ((event-list (list (cons offset
-				 (midi-meta-marker (sformat "Start Section ~A" (name section))))))
+				 (midi-meta-marker (sformat "Start Section ~A" (name section))))
+			   (cons offset
+				 (midi-tempo-message (tempo section)))
+			   (cons offset
+				 (midi-time-signature (beats section)(unit section)))))
 	 (period (phrase-duration section))
 	 (end-mask (+ offset period)))
     (dolist (part (reverse (children section)))
@@ -220,7 +220,6 @@ operations, default t.
 	    (if (or (< time end-mask)(not (midi-note-on-p message)))
 		(push (clone event) event-list))))))
     (sort-midi-events event-list)))
-
 
 (defmethod render-n ((section section)(n integer) &key (offset 0.0))
   (let ((event-list '())
@@ -269,7 +268,6 @@ is appended to the name if needed."   ))
 	   (fqn (join-path-list (list project-directory project-name output-directory section-name) :as-file)))
       (append-filename-extension fqn ".mid"))))
 	       
-
 (defmethod section->smf ((section section) &key (offset 0.0)(repeat 1))
   "Creates Standard MIDI File from Section contents."
   (let* ((events (render-n section repeat :offset offset))

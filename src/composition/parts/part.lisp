@@ -13,50 +13,51 @@
 		    
 (defclass part (time-signature) nil
   (:documentation
-   "Parts form the lowest element of a project,  they are where the bulk 
-of a composition is defined.   Parts take combine one or more instruments
-together with instructions on what they are to perform.  The parent of 
-a Part is always a Section, and a Part may have child nodes as sub-parts.
+   "Parts form the lowest element of a composition.  They combine a set of 
+instruments together with instructions for what the instruments are to
+play.  As such parts form the bulk of a compositons definition.  
 
-Parts inherit time-signature and other properties from their parent section
-but may override them if required.
+The parent of a Part is always a Section and a Part may have child nodes
+called 'sub-parts'.   Parts inherit time-signature and chord-model
+properties from their parent Section but may override these. 
 
-The Part class is the base class for several other part types.  It is not
+The Part class is the base class for several specific Part types and is not
 used directly."))
 
-(defmethod part-p ((obj part)) t)
+  
+(defmethod part-p ((object part)) t)
 
-(defmethod mute ((prt part) &optional state)
+(defmethod mute ((part part) &optional state)
   (cond ((eq state :mute)
-	 (put prt :muted :mute))
+	 (put part :muted :mute))
 	((eq state :unmute)
-	 (put prt :muted nil))
+	 (put part :muted nil))
 	((eq state :solo)
-	 (let ((section (parent prt)))
-	   (dolist (p (children prt))
-	     (mute p :mute))
-	   (dolist (g (property section :groups))
-	     (mute g :mute)))
-	 (mute prt :unmute))
+	 (let ((section (parent part)))
+	   (dolist (group (property section :groups))
+	     (mute group :mute))
+	   (dolist (other-part (children part))
+	     (mute other-part :mute))
+	   (put part :muted nil)))
 	(t nil)))
 
-(defmethod unmute ((prt part))
-  (mute prt :unmute))
+(defmethod unmute ((part part))
+  (mute part :unmute))
 
-(defmethod solo ((prt part))
-  (mute prt :solo))
+(defmethod solo ((part part))
+  (mute part :solo))
 
-(defmethod print-tree ((prt part) &optional (depth 0))
-  (let ((ptab (scopies (* 4 depth) #\space)))
+(defmethod print-tree ((part part) &optional (depth 0))
+  (let ((tab (scopies (* 4 depth) #\space)))
     (format t "~A~16A mute: ~6A  group: ~A~%"
-	    ptab (name prt)
-	    (property prt :muted)
-	    (property prt :group))
-    (dolist (c (children prt))
-      (print-tree c (1+ depth)))))
+	    tab (name part)
+	    (property part :muted)
+	    (property part :group))
+    (dolist (sub-part (children part))
+      (print-tree sub-part (1+ depth)))))
 
-(defmethod muted-p ((prt part))
-  (property prt :muted))
+(defmethod muted-p ((part part))
+  (property part :muted))
 
 (defmethod connect ((parent part)(child cyco-node))
   (call-next-method))
@@ -69,31 +70,27 @@ used directly."))
 ;;    Patterns are returned directly
 ;;    List and single instruments are converted to Instrument-Layer objects.
 ;;
-(flet ((validate
-	(ilist)
-	(if (every #'instrument-p ilist)
-	    t
-	  (progn
-	    (cyco-type-error 'init-part-instruments 'instrument ilist)
-	    nil))))
+(flet ((validate (instrument-list)
+		 (if (every #'instrument-p instrument-list)
+		     t
+		   (progn
+		     (cyco-type-error 'init-part-instruments 'instrument instrument-list)
+		     nil))))
 
   (defun init-part-instruments (instruments)
-    (let ((pat (cond ((pattern-p instruments)
-		     instruments)
-		    ((listp instruments)
-		     (instrument-layer :of instruments))
-		    (t (init-part-instruments (->list instruments))))))
-      (and (validate (elements pat)) pat))))
+    (let ((instrument-pattern (cond ((pattern-p instruments)
+		      instruments)
+		     ((listp instruments)
+		      (instrument-layer :of instruments))
+		     (t (init-part-instruments (->list instruments))))))
+      (and (validate (elements instrument-pattern)) instrument-pattern))))
 
 (defun part-banner (parent-name part-name)
   (banner3 (sformat "Section: ~A  Part: ~A" parent-name part-name)))
 
 
-(defmethod dump-events ((prt part) &key
-			(range (cons 0 1e9))
-			(filter #'false)
-			(render nil))
-  (dump-events (render-once prt) :range range :filter filter :render render))
+(defmethod dump-events ((part part) &key (range (cons 0 1e9))(filter #'false)(render nil))
+  (dump-events (render-once part) :range range :filter filter :render render))
 
 
 

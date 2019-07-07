@@ -4,7 +4,7 @@
 
 (defclass midi-system-common-message (midi-message) nil)
 
-(defmethod midi-system-common-message-p ((evn midi-system-common-message)) t)
+(defmethod midi-system-common-message-p ((message midi-system-common-message)) t)
 
 ;;; ---------------------------------------------------------------------- 
 ;;;                       MIDI-SYSTEM-EXCLUSIVE
@@ -20,43 +20,49 @@
     :reader data-array
     :initarg :data)))
 
-(defun midi-system-exclusive (arg)
-  "Creates instance of MIDI-SYSTEM-EXCLUSIVE message.
-arg may either be an integer, list or vector.
-If arg is a list or vector it should contain the sysex data bytes.
-If arg is an integer an empty (all 0) vector of that length is created."
-  (if (numberp arg)
-      (setf arg (make-array (truncate arg) 
-			    :element-type 'integer :fill-pointer t)))
-  (make-instance 'midi-system-exclusive :data (->vector arg)))
+(defgeneric midi-system-exclusive (argument)
+  (:documentation
+   "Makes new instance of MIDI-SYSTEM-EXCLUSIVE"))
 
-(defmethod midi-system-exclusive-p ((evn midi-system-exclusive)) t)
+(defmethod midi-system-exclusive ((data vector))
+  "Makes new instance of MIDI-SYSTEM-EXCLUSIVE from explicit data array."
+  (make-instance 'midi-system-exclusive :data data))
 
-(defmethod data-count ((evn midi-system-exclusive))
-  (length (data-array evn)))
+(defmethod midi-system-exclusive ((list list))
+  "Makes new instance of MIDI-SYSTEM-EXCLUSIVE from explicit data list."
+  (midi-system-exclusive (->vector list)))
 
-(defmethod data ((evn midi-system-exclusive)(index integer))
-  (aref (data-array evn) index))
+(defmethod midi-system-exclusive ((data-length integer))
+  "Makes new instance of MIDI-SYSTEM-EXCLUSIVE with initially zeroed data array of given length."
+  (midi-system-exclusive (make-array data-length :element-type 'integer :fill-pointer t)))
 
-(defmethod ->string ((evn midi-system-exclusive))
-  (let ((acc "")
+(defmethod midi-system-exclusive-p ((message midi-system-exclusive)) t)
+
+(defmethod data-count ((message midi-system-exclusive))
+  (length (data-array message)))
+
+(defmethod data ((message midi-system-exclusive)(index integer))
+  (aref (data-array message) index))
+
+(defmethod ->string ((message midi-system-exclusive))
+  (let ((result "")
 	(line-count 40))
-    (dotimes (i (data-count evn))
-      (setf acc (str+ acc (sformat  "~2X" (data evn i))))
+    (dotimes (i (data-count message))
+      (setf result (str+ result (sformat  "~2X" (data message i))))
       (setf line-count (1- line-count))
       (if (zerop line-count)
 	  (progn
-	    (setf acc (sformat  "~%"))
+	    (setf result (sformat  "~%"))
 	    (setf line-count 40))))
     (str+ (sformat  "~A " (gethash +SYSTEM-EXCLUSIVE+ +MNEMONICS+))
-	  (sformat  "~A~%" acc))))
+	  (sformat  "~A~%" result))))
 
-(defmethod render-midi-message ((evn midi-system-exclusive))
-  (let* ((data (data-array evn))
-	 (acc (list (command evn))))
+(defmethod render-midi-message ((message midi-system-exclusive))
+  (let* ((data (data-array message))
+	 (bytes (list (command message))))
     (dotimes (i (length data))
-      (push (aref data i) acc))
-    (reverse acc)))
+      (push (aref data i) bytes))
+    (reverse bytes)))
 
 
 ;;; ---------------------------------------------------------------------- 
@@ -68,17 +74,17 @@ If arg is an integer an empty (all 0) vector of that length is created."
    (priority
     :initform 6)))
 
-(defmethod midi-end-system-exclusive-p ((evn midi-end-system-exclusive)) t)
+(defmethod midi-end-system-exclusive-p ((message midi-end-system-exclusive)) t)
 
 (constant-function midi-end-system-exclusive
 		   (make-instance 'midi-end-system-exclusive))
 
-(defmethod data-count ((evn midi-end-system-exclusive)) 0)
+(defmethod data-count ((message midi-end-system-exclusive)) 0)
 
-(defmethod ->string ((evn midi-end-system-exclusive))
+(defmethod ->string ((message midi-end-system-exclusive))
   (sformat  "~A " (gethash +END-EXCLUSIVE+ +MNEMONICS+)))
 
-(defmethod render-midi-message ((evn midi-end-system-exclusive))
+(defmethod render-midi-message ((message midi-end-system-exclusive))
   (list +END-EXCLUSIVE+))
   
 

@@ -27,10 +27,10 @@
    (priority
     :initform 0)))
 
-(defmethod midi-meta-message-p ((evn midi-meta-message)) t)
+(defmethod midi-meta-message-p ((message midi-meta-message)) t)
 
-(defmethod ->string ((obj midi-meta-message))
-  (sformat  "META ~9A " (gethash (meta-type obj) +MNEMONICS+)))
+(defmethod ->string ((object midi-meta-message))
+  (sformat  "META ~9A " (gethash (meta-type object) +MNEMONICS+)))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			      MIDI-META-TEXT
@@ -70,53 +70,53 @@
   ((meta-type
     :initform +MARKER-TEXT+)))
 
-(defmethod midi-meta-text-p ((obj midi-meta-text)) t)
-(defmethod midi-meta-copyright-p ((obj midi-meta-copyright)) t)
-(defmethod midi-meta-track-name-p ((obj midi-meta-track-name)) t)
-(defmethod midi-meta-instrument-name-p ((obj midi-meta-instrument-name)) t)
-(defmethod midi-meta-lyric-p ((obj midi-meta-lyric)) t)
-(defmethod midi-meta-cue-p ((obj midi-meta-cue)) t)
-(defmethod midi-meta-marker-p ((obj midi-meta-marker)) t)
+(defmethod midi-meta-text-p ((object midi-meta-text)) t)
+(defmethod midi-meta-copyright-p ((object midi-meta-copyright)) t)
+(defmethod midi-meta-track-name-p ((object midi-meta-track-name)) t)
+(defmethod midi-meta-instrument-name-p ((object midi-meta-instrument-name)) t)
+(defmethod midi-meta-lyric-p ((object midi-meta-lyric)) t)
+(defmethod midi-meta-cue-p ((object midi-meta-cue)) t)
+(defmethod midi-meta-marker-p ((object midi-meta-marker)) t)
 
-(defun midi-meta-copyright (s)
-  (make-instance 'midi-meta-copyright :text (->string s)))
+(defun midi-meta-copyright (text)
+  (make-instance 'midi-meta-copyright :text (->string text)))
 
-(defun midi-meta-track-name (s)
-  (make-instance 'midi-meta-track-name :text (->string s)))
+(defun midi-meta-track-name (text)
+  (make-instance 'midi-meta-track-name :text (->string text)))
 
-(defun midi-meta-instrument-name (s)
-  (make-instance 'midi-meta-instrument-name :text (->string s)))
+(defun midi-meta-instrument-name (text)
+  (make-instance 'midi-meta-instrument-name :text (->string text)))
 
-(defun midi-meta-lyric (s)
-  (make-instance 'midi-meta-lyric :text (->string s)))
+(defun midi-meta-lyric (text)
+  (make-instance 'midi-meta-lyric :text (->string text)))
 
-(defun midi-meta-cue (s)
-  (make-instance 'midi-meta-cue :text (->string s)))
+(defun midi-meta-cue (text)
+  (make-instance 'midi-meta-cue :text (->string text)))
 
-(defun midi-meta-marker (s)
-  (make-instance 'midi-meta-marker :text (->string s)))
+(defun midi-meta-marker (text)
+  (make-instance 'midi-meta-marker :text (->string text)))
 
-(defmethod data-count ((evn midi-meta-text))
-  (length (text evn)))
+(defmethod data-count ((message midi-meta-text))
+  (length (text message)))
 
-(defmethod ->string ((evn midi-meta-text))
+(defmethod ->string ((message midi-meta-text))
   (str+ (call-next-method)
-	(sformat  "~s" (text evn))))
+	(sformat  "~s" (text message))))
 
-(defun midi-meta-text (txt)
+(defun midi-meta-text (text)
   (make-instance 'midi-meta-text
 		 :meta-type +TEXT-MESSAGE+
-		 :text (->string txt)))
+		 :text (->string text)))
 
-(defmethod render-midi-message ((evn midi-meta-text))
-  (let ((count (data-count evn))
-	(acc '()))
+(defmethod render-midi-message ((message midi-meta-text))
+  (let ((count (data-count message))
+	(bytes '()))
     (dotimes (i count)
-      (push (char-code (char (text evn) i)) acc))
+      (push (char-code (char (text message) i)) bytes))
     (append (list +META+
-		  (meta-type evn))
+		  (meta-type message))
 	    (int->midi-vlv count)
-	    (reverse acc))))
+	    (reverse bytes))))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			  MIDI-META-END-OF-TRACK (Singleton)
@@ -127,9 +127,9 @@
    (priority
     :initform 99)))
 
-(defmethod midi-end-of-track-p ((obj %midi-end-of-track%)) t)
+(defmethod midi-end-of-track-p ((object %midi-end-of-track%)) t)
 
-(defmethod render-midi-message ((evn %midi-end-of-track%))
+(defmethod render-midi-message ((message %midi-end-of-track%))
   '(#xFF #x2F 0))
 
 (constant-function midi-end-of-track
@@ -149,20 +149,20 @@
     :initform 120.0
     :initarg :bpm)))
 
-(defmethod midi-tempo-message-p ((obj midi-tempo-message)) t)
+(defmethod midi-tempo-message-p ((object midi-tempo-message)) t)
 
-(defun midi-tempo-message (bpm)
-  (make-instance 'midi-tempo-message :bpm (float bpm)))
+(defun midi-tempo-message (tempo-bpm)
+  (make-instance 'midi-tempo-message :bpm (float tempo-bpm)))
 
-(defmethod ->string ((evn midi-tempo-message))
+(defmethod ->string ((message midi-tempo-message))
   (str+ (call-next-method)
-	(sformat  "BPM: ~A" (slot-value evn 'tempo))))
+	(sformat  "BPM: ~A" (slot-value message 'tempo))))
 
-(defmethod tick-duration ((evn midi-tempo-message) &key (unit 'q))
-  (tick-duration (slot-value evn 'tempo) :unit unit))
+(defmethod tick-duration ((message midi-tempo-message) &key (unit 'q))
+  (tick-duration (slot-value message 'tempo) :unit unit))
 
-(defmethod render-midi-message ((evn midi-tempo-message))
-  (let* ((usec (bpm->microseconds (slot-value evn 'tempo)))
+(defmethod render-midi-message ((message midi-tempo-message))
+  (let* ((usec (bpm->microseconds (slot-value message 'tempo)))
 	 (d0 (logand (ash usec -16) #xFF))
 	 (d1 (logand (ash usec -8) #xFF))
 	 (d2 (logand usec #xFF)))
@@ -193,7 +193,7 @@
     :type integer
     :initform 8)))
 
-(defmethod midi-time-signature-p ((obj midi-time-signature)) t)
+(defmethod midi-time-signature-p ((object midi-time-signature)) t)
 
 
 (flet ((map-timesig-unit (sym)
@@ -203,24 +203,25 @@
 			       ((eq sym 'e) 3)
 			       ((eq sym 's) 4)
 			       (t (cyco-value-error 'midi-time-signature sym) 2))))
-  (defun midi-time-signature (num unit)
-    (map-timesig-unit unit)	; validate unit
-    (make-instance 'midi-time-signature
-		   :num num
-		   :unit unit))
   
-  (defmethod ->string ((evn midi-time-signature))
+  (defun midi-time-signature (beats-per-bar beat-unit)
+    (map-timesig-unit beat-unit)
+    (make-instance 'midi-time-signature
+		   :num beats-per-bar
+		   :unit beat-unit))
+  
+  (defmethod ->string ((message midi-time-signature))
     (str+ (call-next-method)
 	  (sformat  "~A/~A"
-		    (timesig-numerator evn)
-		    (timesig-unit evn))))
+		    (timesig-numerator message)
+		    (timesig-unit message))))
   
-  (defmethod render-midi-message ((evn midi-time-signature))
+  (defmethod render-midi-message ((message midi-time-signature))
     (list +META+ +TIME-SIGNATURE+ 4
-	  (timesig-numerator evn)
-	  (map-timesig-unit (timesig-unit evn))
-	  (slot-value evn 'tpq)
-	  (slot-value evn 'met))))
+	  (timesig-numerator message)
+	  (map-timesig-unit (timesig-unit message))
+	  (slot-value message 'tpq)
+	  (slot-value message 'met))))
 
 
 ;;; ---------------------------------------------------------------------- 
@@ -245,24 +246,26 @@
     :initform 0
     :initarg :min)))
 
-(defmethod midi-key-signature-p ((obj midi-key-signature)) nil)
+(defmethod midi-key-signature-p ((object midi-key-signature)) nil)
 
-(defun midi-key-signature (sf &optional (minor nil))
+
+(defun midi-key-signature (sharps-or-flats &optional (minor nil))
+  "sharps-or-flats positive 0..+7 for sharps, negative -7..-1 for flats."  
   (make-instance 'midi-key-signature
-		 :sf sf
+		 :sf sharps-or-flats
 		 :min (if minor 1 0)))
 
-(defmethod ->string ((evn midi-key-signature))
-  (let ((sf (slot-value evn 'sf))
-	(mi (slot-value evn 'mi)))
+(defmethod ->string ((message midi-key-signature))
+  (let ((sharps-or-flats (slot-value message 'sf))
+	(is-minor (slot-value message 'mi)))
     (str+ (call-next-method)
-	  (if (minusp sf)
-	      (sformat  "~A flats " (abs sf))
-	    (sformat  "~A sharps " sf))
-	  (if (zerop mi) "major" "minor"))))
+	  (if (minusp sharps-or-flats)
+	      (sformat  "~A flats " (abs sharps-or-flats))
+	    (sformat  "~A sharps " sharps-or-flats))
+	  (if (zerop is-minor) "major" "minor"))))
 
-(defmethod render-midi-message ((evn midi-key-signature))
-  (list +META+ +KEY-SIGNATURE+ 2 (slot-value evn 'sf)(slot-value evn 'mi))) 
+(defmethod render-midi-message ((message midi-key-signature))
+  (list +META+ +KEY-SIGNATURE+ 2 (slot-value message 'sf)(slot-value message 'mi))) 
 
 
 

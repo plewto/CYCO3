@@ -220,17 +220,6 @@ a warning message is displayed and CYCO terminates."
 	  (exit)))))
 
 
-(defmacro renamed-function-warning (old-name new-name)
-  `(defun ,old-name (&rest _)
-     (dismiss _)
-     (cyco-warning "Function Renamed"
-		   (sformat "~A has been renamed to ~A"
-			    ',old-name ',new-name))
-     (exit)))
-
-(renamed-function-warning seq-order section-order)
-
-
 (in-package :common-lisp-user)
 
 (defun cyco ()

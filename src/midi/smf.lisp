@@ -18,9 +18,9 @@
 		 (track-count 1)
 		 (division +TICKS-PER-BEAT+))
   "Creates instance of SMF (Standard MIDI File).
-format - file format (only type 1 currently supported).
+format      - file format (only type 1 currently supported).
 track-count - number of tracks (only single track currently supported).
-division - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
+division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
   (make-instance 'smf
 		 :header (make-instance 'smf-header
 					:format format
@@ -32,58 +32,58 @@ division - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
 				   acc))
 			   (->vector (reverse acc)))))
 
-(defmethod ->string ((obj smf))
+(defmethod ->string ((midi-file smf))
   (sformat "SMF format: ~A,  division: ~A,  tracks: ~A"
-	   (smf-format (smf-header obj))
-	   (smf-division (smf-header obj))
-	   (length (smf-tracks obj))))
+	   (smf-format (smf-header midi-file))
+	   (smf-division (smf-header midi-file))
+	   (length (smf-tracks midi-file))))
 
-(defmethod clone ((src smf) &key new-name new-parent)
+(defmethod clone ((source-midi-file smf) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (let* ((frm (smf-format (smf-header src)))
-	 (div (smf-division (smf-header src)))
-	 (tracks (clone (smf-tracks src)))
-	 (other (smf :format frm
+  (let* ((frm (smf-format (smf-header source-midi-file)))
+	 (div (smf-division (smf-header source-midi-file)))
+	 (tracks (clone (smf-tracks source-midi-file)))
+	 (new-midi-file (smf :format frm
 		     :track-count (length tracks)
 		     :division div)))
-    (setf (slot-value other 'tracks) tracks)
-    other))
+    (setf (slot-value new-midi-file 'tracks) tracks)
+    new-midi-file))
 
-(defmethod smf-track-count ((obj smf))
-  (length (smf-tracks obj)))
+(defmethod smf-track-count ((midi-file smf))
+  (length (smf-tracks midi-file)))
 
-(defmethod smf-track ((obj smf) &optional (index 0))
-  (aref (smf-tracks obj) index))
+(defmethod smf-track ((midi-file smf) &optional (index 0))
+  (aref (smf-tracks midi-file) index))
 
-(defmethod smf-track! ((obj smf)(trk smf-track) &optional (index 0))
-  (setf (aref (smf-tracks index)) trk))
+(defmethod smf-track! ((midi-file smf)(track smf-track) &optional (index 0))
+  (setf (aref (smf-tracks index)) track))
 
-(defmethod render-smf ((obj smf) &key (pad 1.0))
-  (let* ((tcount (smf-track-count obj))
-	 (acc (render-smf-header (smf-header obj) tcount))
-	 (tracks (smf-tracks obj)))
+(defmethod render-smf ((midi-file smf) &key (pad 1.0))
+  (let* ((tcount (smf-track-count midi-file))
+	 (bytes (render-smf-header (smf-header midi-file) tcount))
+	 (tracks (smf-tracks midi-file)))
     (dotimes (i tcount)
-      (setf acc (append acc (render-smf-track (aref tracks i) pad))))
-    acc))
+      (setf bytes (append bytes (render-smf-track (aref tracks i) pad))))
+    bytes))
 
-(defmethod write-smf ((obj smf)(filename string) &key (pad 1.0)(no-overwrite nil))
+(defmethod write-smf ((midi-file smf)(filename string) &key (pad 1.0)(no-overwrite nil))
   (format t "Writing SMF file ~S~%" filename)
-  (let ((data (render-smf obj :pad pad))
+  (let ((bytes (render-smf midi-file :pad pad))
 	(strm (open filename
 		    :direction :output
 		    :if-exists (if no-overwrite nil :supersede)
 		    :element-type '(unsigned-byte 8))))
-    (dolist (b data)
-      (write-byte b strm))
+    (dolist (byte bytes)
+      (write-byte byte strm))
     (close strm)
-    obj))
+    midi-file))
 
-(defmethod dump-events ((obj smf) &key range (filter #'false)(render nil))
-  (dotimes (i (smf-track-count obj))
-    (let ((trk (smf-track obj i)))
-      (format t "TRACK: ~s~%" (name trk))
-      (dump-events trk :range range :filter filter :render render)))
-  (smf-track-count obj))
+(defmethod dump-events ((midi-file smf) &key range (filter #'false)(render nil))
+  (dotimes (track-number (smf-track-count midi-file))
+    (let ((track (smf-track midi-file track-number)))
+      (format t "TRACK: ~s~%" (name track))
+      (dump-events track :range range :filter filter :render render)))
+  (smf-track-count midi-file))
 
 
 

@@ -47,13 +47,13 @@
 ;;;;       +-- MIDI-KEY-SIGNATURE
 
 
-(defun assert-midi-channel-index (ci)
+(defun assert-midi-channel-index (channel-index)
   "Throws error if value not valid MIDI channel index (0..15)."
-  (if (or (minusp ci)(> ci 15))
+  (if (or (minusp channel-index)(> channel-index 15))
       (progn 
-	(cyco-value-error 'assert-midi-channel-index ci)
+	(cyco-value-error 'assert-midi-channel-index channel-index)
 	0)
-    ci))
+    channel-index))
 
 (defun assert-midi-data-value (n)
   "Throws error if value out of range for MIDI data byte (0..127)."
@@ -77,21 +77,21 @@
     :initform 0				; before higher values.
     :initarg :priority)))
 
-(defmethod mnemonic ((evn midi-message))
-  (gethash (command evn) +MNEMONICS+))
+(defmethod mnemonic ((message midi-message))
+  (gethash (command message) +MNEMONICS+))
 
-(defmethod ->string ((evn midi-message))
-  (sformat "~A " (mnemonic evn)))
+(defmethod ->string ((message midi-message))
+  (sformat "~A " (mnemonic message)))
 
-(defmethod midi-message-p ((me midi-message)) t)
+(defmethod midi-message-p ((message midi-message)) t)
 
-(defmethod clone ((evn midi-message) &key new-name new-parent)
+(defmethod clone ((message midi-message) &key new-name new-parent)
   (dismiss new-name new-parent)
-  evn)
+  message)
 
-(defmethod transpose ((e midi-message)(n integer)) e)
+(defmethod transpose ((message midi-message)(n integer)) message)
 
-(defmethod invert ((e midi-message)(pivot integer)) e)
+(defmethod invert ((message midi-message)(pivot integer)) message)
 
 
 ;;; ---------------------------------------------------------------------- 
@@ -109,55 +109,55 @@
     :accessor data-array
     :initarg :data)))
 
-(defmethod midi-channel-message-p ((obj midi-channel-message)) t)
+(defmethod midi-channel-message-p ((object midi-channel-message)) t)
 
-(defmethod channel ((evn midi-channel-message) &optional _)
+(defmethod channel ((message midi-channel-message) &optional _)
   (dismiss _)
-  (1+ (channel-index evn)))
+  (1+ (channel-index message)))
 
-(defmethod data ((evn midi-channel-message)(index integer))
-  (aref (data-array evn) index))
+(defmethod data ((message midi-channel-message)(index integer))
+  (aref (data-array message) index))
 
-(defmethod data-count ((evn midi-channel-message)) 2)
+(defmethod data-count ((message midi-channel-message)) 2)
   
-(defmethod ->string ((evn midi-channel-message))
-  (let ((acc (str+ (call-next-method)
-		   (sformat "channel: ~2d  " (1+ (channel-index evn))))))
-    (dotimes (i (data-count evn))
-      (setf acc (str+ acc (sformat "data-~d: ~3d  " (1+ i) (data evn i)))))
-    acc))
+(defmethod ->string ((message midi-channel-message))
+  (let ((result (str+ (call-next-method)
+		      (sformat "channel: ~2d  " (1+ (channel-index message))))))
+    (dotimes (i (data-count message))
+      (setf result (str+ result (sformat "data-~d: ~3d  " (1+ i) (data message i)))))
+    result))
 
-(defmethod render-midi-message ((evn midi-channel-message))
-  (let ((acc (list (+ (command evn)(channel-index evn)))))
-    (dotimes (i (data-count evn))
-      (push (data evn i) acc))
-    (reverse acc)))
+(defmethod render-midi-message ((message midi-channel-message))
+  (let ((bytes (list (+ (command message)(channel-index message)))))
+    (dotimes (i (data-count message))
+      (push (data message i) bytes))
+    (reverse bytes)))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			MIDI-KEY-MESSAGE
 
 (defclass midi-key-message (midi-channel-message)  nil)
 
-(defmethod midi-key-message-p ((evn midi-key-message)) t)
+(defmethod midi-key-message-p ((message midi-key-message)) t)
 
-(defmethod keynumber ((mkm midi-key-message))
-  (data mkm 0))
+(defmethod keynumber ((key-message midi-key-message))
+  (data key-message 0))
 
-(defmethod transpose ((evn midi-key-message)(n integer))
-  (let ((kn (+ n (data evn 0))))
-    (while (> kn 128)(setf kn (- kn 12)))
-    (while (minusp kn)(setf kn (+ kn 12)))
-    (setf (aref (data-array evn) 0) kn)
-    evn))
+(defmethod transpose ((message midi-key-message)(n integer))
+  (let ((key-number (+ n (data message 0))))
+    (while (> key-number 128)(setf key-number (- key-number 12)))
+    (while (minusp key-number)(setf key-number (+ key-number 12)))
+    (setf (aref (data-array message) 0) key-number)
+    message))
 
-(defmethod invert ((evn midi-key-message)(pivot t))
+(defmethod invert ((message midi-key-message)(pivot t))
   (if pivot
-      (let* ((kn (invert (data evn 0)(keynumber pivot))))
-	(while (> kn 128)(setf kn (- kn 12)))
-	(while (minusp kn)(setf kn (+ kn 12)))
-	(setf (aref (data-array evn) 0) kn)
-	evn)
-    evn))
+      (let* ((key-number (invert (data message 0)(keynumber pivot))))
+	(while (> key-number 128)(setf key-number (- key-number 12)))
+	(while (minusp key-number)(setf key-number (+ key-number 12)))
+	(setf (aref (data-array message) 0) key-number)
+	message)
+    message))
 
 (defclass midi-note-off (midi-key-message)
   ((command
@@ -177,9 +177,9 @@
    (priority
     :initform 9)))
 
-(defmethod midi-note-off-p ((evn midi-note-off)) t)
-(defmethod midi-note-on-p ((evn midi-note-on)) t)
-(defmethod midi-poly-pressure-p ((evn midi-poly-pressure)) t)
+(defmethod midi-note-off-p ((message midi-note-off)) t)
+(defmethod midi-note-on-p ((message midi-note-on)) t)
+(defmethod midi-poly-pressure-p ((message midi-poly-pressure)) t)
 
 (defun midi-note-off (channel-index keynumber velocity)
   "Creates instance of MIDI-NOTE-OFF.
@@ -216,8 +216,8 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
    (priority
     :initform 9)))
 
-(defmethod midi-control-change-p ((obj t)) nil)
-(defmethod midi-control-change-p ((evn midi-control-change)) t)
+(defmethod midi-control-change-p ((object t)) nil)
+(defmethod midi-control-change-p ((message midi-control-change)) t)
 
 (defun midi-control-change (channel-index controller-number value)
   "Creates instance of MIDI-CONTROL-CHANGE."
@@ -235,9 +235,9 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
    (priority
     :initform 9)))
 
-(defmethod midi-channel-pressure-p ((evn midi-channel-pressure)) t)
+(defmethod midi-channel-pressure-p ((message midi-channel-pressure)) t)
 
-(defmethod data-count ((evn midi-channel-pressure)) 1)
+(defmethod data-count ((message midi-channel-pressure)) 1)
 
 (defun midi-channel-pressure (channel-index pressure)
   "Creates instance of MIDI-CHANNEL-PRESSURE."
@@ -254,9 +254,9 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
    (priority
     :initform 9)))
 
-(defmethod midi-program-change-p ((evn midi-program-change)) t)
+(defmethod midi-program-change-p ((message midi-program-change)) t)
 
-(defmethod data-count ((evn midi-program-change)) 1)
+(defmethod data-count ((message midi-program-change)) 1)
 
 (defun midi-program-change (channel-index program-number)
   "Creates instance of MIDI-PROGRAM-CHANGE."
@@ -274,14 +274,14 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
    (priority
     :initform 9)))
 
-(defmethod midi-pitch-bend-p ((evn midi-pitch-bend)) t)
+(defmethod midi-pitch-bend-p ((message midi-pitch-bend)) t)
 
-(defun midi-pitch-bend (channel-index lsb msb)
+(defun midi-pitch-bend (channel-index low-byte high-byte)
   "Creates instance of MIDI-PITCH-BEND."
   (make-instance 'midi-pitch-bend
 		 :channel-index (assert-midi-channel-index channel-index)
-		 :data (vector (assert-midi-data-value lsb)
-			       (assert-midi-data-value msb))))
+		 :data (vector (assert-midi-data-value low-byte)
+			       (assert-midi-data-value high-byte))))
 
 
 

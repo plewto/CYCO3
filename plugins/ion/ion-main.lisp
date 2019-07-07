@@ -67,3 +67,14 @@
 (defun snapshot (&optional (fname "~/bin/cyco3"))
   "Saves CYCO snapshot to default location."
   (save-snapshot fname))
+
+
+(defmacro renamed-function-warning (old-name new-name)
+  `(defun ,old-name (&rest _)
+     (dismiss _)
+     (cyco-warning "Function Renamed"
+		   (sformat "~A has been renamed to ~A"
+			    ',old-name ',new-name))
+     (exit)))
+
+(renamed-function-warning seq-order section-order)

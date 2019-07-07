@@ -11,7 +11,9 @@
     :type integer
     :reader smf-division
     :initform +TICKS-PER-BEAT+
-    :initarg :division)))
+    :initarg :division))
+  (:documentation
+   "Provides Standard MIDI File Header Chunck"))
 
 (defmethod render-smf-header ((header smf-header)(track-count integer))
   (flet ((msb (n)(logand (ash n -8) #xFF))

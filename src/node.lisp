@@ -140,11 +140,11 @@ not."))
 				  (cyco-error
 				   (sformat "CYCO-NODE ~A does not have ~A property" (name node) key))
 				  nil)))
-	 (_property (node key)
+	 (find-property-value (node key)
 		    (if node
 			(or (gethash key (property-table node))
 			    (and (not (root-p node))
-				 (_property (parent node) key)))
+				 (find-property-value (parent node) key)))
 		      nil)))
 
   (defmethod put ((node cyco-node)(key symbol)(value t))
@@ -153,15 +153,15 @@ not."))
   
   (defmethod property ((node cyco-node)(key symbol))
     (if (assert-valid-property node key)
-	(_property node key))))
+	(find-property-value node key))))
 
 (defmethod properties ((n null) &optional acc) acc)
 
-(defmethod properties ((node cyco-node) &optional acc)
+(defmethod properties ((node cyco-node) &optional _acc)
   (append
-   acc
+   _acc
    (property-keys node)
-   (properties (parent node) acc)))
+   (properties (parent node) _acc)))
 
 (defmethod local-properties ((node cyco-node))
   (let ((acc '()))

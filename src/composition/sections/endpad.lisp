@@ -1,8 +1,7 @@
 ;;;; CYCO
 ;;;;
 ;;;; ENDPAD provides a final section to "pad-out" the end of a MIDI track.
-;;;; It is used to provide time fopr any final decay tails.
-;;;;
+;;;; They are useful to provide space for final decay tails.
 
 (constant +endpad-properties+ (append
 			       +section-properties+
@@ -52,8 +51,8 @@
 (defmethod render-once ((endpad endpad) &key (offset 0.0))
   (let ((period (phrase-duration endpad)))
     (list
-     (cons offset (midi-meta-marker "Start ENDPAD"))
-     (cons (+ offset period)(midi-note-off 0 0 0)))))
+     (cons offset (midi-meta-marker "End Pad"))
+     (cons (+ offset period)(midi-end-of-track)))))
 
 (defmethod render-n ((endpad endpad)(n integer) &key (offset))
   (render-once endpad :offset offset))

@@ -8,16 +8,18 @@
 ;;;;    |     |
 ;;;;    |     +-- section
 ;;;;    |     |    |
-;;;;    |     |    +-- preroll
-;;;;    |     |    +-- final
+;;;;    |     |    +-- countin
+;;;;    |     |    +-- endpad
 ;;;;    |     |
 ;;;;    |     +-- part
 ;;;;    |          |
 ;;;;    |          +-- programs leaf
 ;;;;    |          +-- raw-part leaf
-;;;;    |          +-- epart 
+;;;;    |          +-- strummer 
 ;;;;    |          +-- controllers
 ;;;;    |          +-- qball
+;;;;    |          +-- ghost
+;;;;    |          +-- metronome
 ;;;;    |     
 ;;;;    +-- instrument
 ;;;;
@@ -116,10 +118,10 @@ not."))
 	      (cons child (children parent))))))
 
 (defmethod prune ((node cyco-node) &optional force)
-  (dolist (c (children node))
-    (if (or force (transientp c))
-	(disconnect c))
-    (prune c)))
+  (dolist (child (children node))
+    (if (or force (transientp child))
+	(disconnect child))
+    (prune child)))
 
 (defmethod has-property-p ((n null)(key symbol)) nil)
 
@@ -131,27 +133,27 @@ not."))
   (dismiss _)
   (cyco-type-error 'put 'symbol key))
 
-(flet ((assert-valid-property (node key)
-	(if (has-property-p node key)
-	    t
-	  (progn 
-	    (cyco-error
-	     (sformat "CYCO-NODE ~A does not have ~A property" (name node) key))
-	    nil))))
+(labels ((assert-valid-property (node key)
+			      (if (has-property-p node key)
+				  t
+				(progn 
+				  (cyco-error
+				   (sformat "CYCO-NODE ~A does not have ~A property" (name node) key))
+				  nil)))
+	 (_property (node key)
+		    (if node
+			(or (gethash key (property-table node))
+			    (and (not (root-p node))
+				 (_property (parent node) key)))
+		      nil)))
 
-    (defmethod put ((node cyco-node)(key symbol)(value t))
-      (if (assert-valid-property node key)
-	  (setf (gethash key (property-table node)) value)))
-   
-    (defmethod property* ((n null)(key symbol)) nil)
-
-    (defmethod property* ((node cyco-node)(key symbol))
-      (or (gethash key (property-table node))
-	  (property* (parent node) key)))
-
-    (defmethod property ((node cyco-node)(key symbol))
-      (if (assert-valid-property node key)
-	  (property* node key))))
+  (defmethod put ((node cyco-node)(key symbol)(value t))
+    (if (assert-valid-property node key)
+	(setf (gethash key (property-table node)) value)))
+  
+  (defmethod property ((node cyco-node)(key symbol))
+    (if (assert-valid-property node key)
+	(_property node key))))
 
 (defmethod properties ((n null) &optional acc) acc)
 

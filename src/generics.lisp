@@ -706,10 +706,6 @@ function."))
    "Returns object's property value assigned to key.
 It is an error if the object does not define key as a property."))
 
-(defgeneric property* (node key) 
-  (:documentation
-   "Private function for internal use."))
-
 (defgeneric prune (node &optional force)
   (:documentation
    "Starting at node recursively disconnect all child nodes for which the 

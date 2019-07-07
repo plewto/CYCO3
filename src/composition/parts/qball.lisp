@@ -9,7 +9,6 @@
 ;;;;        They may be producing note-on events but not corresponding
 ;;;;        note off events.
 
-
 (constant +qball-properties+
 	  (append +part-properties+
 		  '(:shift
@@ -22,59 +21,9 @@
 
 (defclass qball (part) nil)
 
-(labels ((validate-section
-	  (part-name section)
-	  (let ((s (cond ((section-p section)
-			  section)
-			 ((and section (not (section-p section)))
-			  (cyco-type-error 'make-qball '(section nil) section)
-			  nil)
-			 ((not (project-p *project*))
-			  (cyco-composition-error
-			   'make-qball
-			   (sformat "No default project while creating qball ~A" part-name))
-			  nil)
-			 (t (property *project* :current-section)))))
-	    s))
 
-	 ;; Checks that instruments argument is valid.
-	 ;;   1) A single instrument --> converted to list --> 2
-	 ;;   2) A list of instruments --> converted to INSTRUMENT-LAYER pattern.
-	 ;;   3) A Pattern of instruments.
-	 ;; Returns Pattern.
-	 (validate-instruments
-	  (part-name instruments)
-	  (cond
-	   ((pattern-p instruments)
-	    instruments) ;; does not check pattern elements
-	   ((listp instruments)
-	    (or (and (every #'instrument-p instruments)
-	 	     (instrument-layer :of instruments))
-	 	(cyco-type-error 'make-qball "List of instruments"
-				 instruments
-	 	       		 (sformat "part name is ~A" part-name))))
-	   ((instrument-p instruments)
-	    (instrument-layer :of (->list instruments)))
-	   (t (cyco-type-error 'make-qball
-	 		       "Instrument or list of instruments"
-	 		       instruments
-	 		       (sformat "part name is ~A" part-name))))) )
-
-  (defun make-qball (name instruments &key
-  			  section
-  			  (cuefn #'bar)
-  			  shift
-  			  tempo unit bars beats subbeats
-			  render-once
-  			  (transposable nil)
-			  (reversible nil)
-  			  cue
-  			  (key '(60))
-  			  (dur '(q))
-  			  (amp '(mf))
-  			  (reset-on-repeat nil)
-  			  remarks)
-    "Creates new QBALL instance.
+(let ((docstring 
+   "Creates new QBALL instance.
 Most keyname arguments default to the parent node values.
 name
 instruments - Pattern of instruments. A single instrument or list
@@ -111,47 +60,98 @@ instruments - Pattern of instruments. A single instrument or list
 
 Each :key :dur and :amp values are processed by the keynumber-map,
 articulation-map and dynamic-map respectively of each instrument as they are
-used."
-    (let ((parent (or (validate-section name section)
-    		      (return-from make-qball nil))))
-      (let* ((instrument-pattern (or (validate-instruments name instruments)
-    				     (return-from make-qball nil)))
-    	     (qball (make-instance 'qball
-    				   :properties +qball-properties+
-    				   :name name
-    				   :remarks (->string (or remarks ""))
-    				   :transient t)))
-    	(put qball :instruments instrument-pattern)
-    	(put qball :tempo tempo)
-    	(put qball :unit unit)
-    	(put qball :bars bars)
-    	(put qball :beats beats)
-    	(put qball :subbeats subbeats)
-    	(put qball :cue-function cuefn)
-	(put qball :render-once render-once)
-    	(put qball :transposable transposable)
-	(put qball :reversible reversible)
-    	(put qball :muted nil)
-    	(put qball :cue-cycle (->cycle cue))
-    	(put qball :key-pattern (->pattern (or key '(60))))
-    	(put qball :articulation-pattern (->pattern (or dur 1.0)))
-    	(put qball :dynamic-pattern (->pattern (or amp 0.5)))
-	(reset qball)
-    	(put qball :reset-on-repeat reset-on-repeat)
-    	(connect parent qball)
-    	(put qball :shift (if shift (float shift) 0.0))
-    	(set-cyco-prompt)
-    	qball))))
-
+used."))
+  
+  (labels ((validate-section (part-name section)
+			     (cond ((section-p section)
+				    section)
+				   ((and section (not (section-p section)))
+				    (cyco-type-error 'make-qball '(section nil) section)
+				    nil)
+				   ((not (project-p *project*))
+				    (cyco-composition-error
+				     'make-qball
+				     (sformat "No default project while creating qball ~A" part-name))
+				    nil)
+				   (t (property *project* :current-section))))
+	   
+	            ;; Checks that instruments argument is valid.
+	   ;;   1) A single instrument      --> converted to list --> 2
+	   ;;   2) A list of instruments    --> converted to INSTRUMENT-LAYER pattern.
+	   ;;   3) A Pattern of instruments --> Use as is.
+	   ;; Returns Pattern.
+	   (validate-instruments (part-name instruments)
+				 (cond
+				  ((pattern-p instruments)
+				   instruments) ;; does not check pattern elements
+				  ((listp instruments)
+				   (or (and (every #'instrument-p instruments)
+					    (instrument-layer :of instruments))
+				       (cyco-type-error 'make-qball "List of instruments"
+							instruments
+							(sformat "part name is ~A" part-name))))
+				  ((instrument-p instruments)
+				   (instrument-layer :of (->list instruments)))
+				  (t (cyco-type-error 'make-qball
+						      "Instrument or list of instruments"
+						      instruments
+						      (sformat "part name is ~A" part-name))))) )
+    
+    (defun make-qball (name instruments &key
+			    section
+			    (cuefn #'bar)
+			    shift
+			    tempo unit bars beats subbeats
+			    render-once
+			    (transposable nil)
+			    (reversible nil)
+			    cue
+			    (key '(60))
+			    (dur '(q))
+			    (amp '(mf))
+			    (reset-on-repeat nil)
+			    remarks)
+      docstring
+      (let* ((parent (or (validate-section name section)
+			 (return-from make-qball nil)))
+	     (instrument-pattern (or (validate-instruments name instruments)
+				     (return-from make-qball nil)))
+	     (new-qball (make-instance 'qball
+				   :properties +qball-properties+
+				   :name name
+				   :remarks (->string (or remarks ""))
+				   :transient t)))
+	  (put new-qball :instruments instrument-pattern)
+	  (put new-qball :tempo tempo)
+	  (put new-qball :unit unit)
+	  (put new-qball :bars bars)
+	  (put new-qball :beats beats)
+	  (put new-qball :subbeats subbeats)
+	  (put new-qball :cue-function cuefn)
+	  (put new-qball :render-once render-once)
+	  (put new-qball :transposable transposable)
+	  (put new-qball :reversible reversible)
+	  (put new-qball :muted nil)
+	  (put new-qball :cue-cycle (->cycle cue))
+	  (put new-qball :key-pattern (->pattern (or key '(60))))
+	  (put new-qball :articulation-pattern (->pattern (or dur 1.0)))
+	  (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
+	  (reset new-qball)
+	  (put new-qball :reset-on-repeat reset-on-repeat)
+	  (connect parent new-qball)
+	  (put new-qball :shift (if shift (float shift) 0.0))
+	  (set-cyco-prompt)
+	  new-qball)))) 
+  
 (defmacro qball (name instruments &key
-  		      section
-  		      (cuefn #'bar)
-  		      shift
-  		      tempo unit bars beats subbeats
+		      section
+		      (cuefn #'bar)
+		      shift
+		      tempo unit bars beats subbeats
 		      render-once
-  		      transposable
+		      transposable
 		      reversible
-  		      cue
+		      cue
   		      key 
   		      dur
   		      amp
@@ -161,7 +161,7 @@ used."
 named name."
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((qb (make-qball ',name ,instruments
+     (let ((new-qball (make-qball ',name ,instruments
 			   :section ,section
 			   :cuefn ,cuefn
 			   :shift ,shift
@@ -179,113 +179,109 @@ named name."
 			   :amp ,amp
 			   :reset-on-repeat ,reset-on-repeat
 			   :remarks ,remarks)))
-       (defparameter ,name qb)
-       qb)))
+       (defparameter ,name new-qball)
+       new-qball)))
 						
-(defmethod transpose ((qb qball)(n t))
-  (if (property qb :transposable)
-      (put qb :key-pattern
-	    (transpose (property qb :key-pattern) n)))
-  qb)
+(defmethod transpose ((qball qball)(n t))
+  (if (property qball :transposable)
+      (put qball :key-pattern
+	    (transpose (property qball :key-pattern) n)))
+  qball)
 
-(defmethod invert ((qb qball)(pivot t))
-  (if (and pivot (property qb :transposable))
-      (put qb :key-pattern
-	    (invert (property qb :key-pattern)
+(defmethod invert ((qball qball)(pivot t))
+  (if (and pivot (property qball :transposable))
+      (put qball :key-pattern
+	    (invert (property qball :key-pattern)
 		    (keynumber pivot))))
-  qb)
+  qball)
 
-(defmethod retrograde ((qb qball))
-  (if (property qb :reversible)
-	(retrograde (property qb :key-pattern)))
-  qb)
+(defmethod retrograde ((qball qball))
+  (if (property qball :reversible)
+	(retrograde (property qball :key-pattern)))
+  qball)
 
-(defmethod reset ((qb qball))
-  (reset (property qb :cue-cycle))
-  (reset (property qb :key-pattern))
-  (reset (property qb :articulation-pattern))
-  (reset (property qb :dynamic-pattern))
-  qb)
+(defmethod reset ((qball qball))
+  (reset (property qball :cue-cycle))
+  (reset (property qball :key-pattern))
+  (reset (property qball :articulation-pattern))
+  (reset (property qball :dynamic-pattern))
+  qball)
 
-(defmethod soft-reset ((qb qball))
-  (reset (property qb :cue-cycle)))
+(defmethod soft-reset ((qball qball))
+  (reset (property qball :cue-cycle)))
 
-(labels ((render-event
-	  (qball time ilist keylist art dyn)
-	  (let ((bcc '())
-		(ascale (if (numberp art)
-			    1.0
-			  (beat-duration qball))))
-	    (dolist (inst ilist)
-	      (let* ((ci (channel-index inst))
-		     (kmap (property inst :keynumber-map))
-		     (dmap (property inst :articulation-map))
-		     (amap (property inst :dynamic-map))
-		     (dur (* (funcall dmap art) ascale))
-		     (end-time (+ time dur))
-		     (amp (funcall amap dyn)))
-		(dolist (k keylist)
-		  (let* ((keyspec (funcall kmap k))
-			 (keynumber (if (listp keyspec)(car keyspec) keyspec)))
-		    (if (not (or (rest-p keynumber)
-				 (rest-p dur)
-				 (rest-p amp)))
-			(let ((vel (norm->midi-data amp))) 
-			  (push (cons time (midi-note-on ci keynumber vel)) bcc)
-			  (push (cons end-time (midi-note-off ci keynumber 0)) bcc)))))))
-	    bcc)))
+(labels ((render-event (qball time instrument-list key-list articulation dynamic)
+		       (let ((midi-events '())
+			     (articulation-scale (if (numberp articulation)
+						     1.0
+						   (beat-duration qball))))
+			 (dolist (instrument instrument-list)
+			   (let* ((channel-index (channel-index instrument))
+				  (keynumber-map (property instrument :keynumber-map))
+				  (articulation-map (property instrument :articulation-map))
+				  (dynamic-map (property instrument :dynamic-map))
+				  (duration (* (funcall articulation-map articulation) articulation-scale))
+				  (end-time (+ time duration))
+				  (amp (funcall dynamic-map dynamic)))
+			     (dolist (k key-list)
+			       (let* ((keyspec (funcall keynumber-map k))
+				      (keynumber (if (listp keyspec)(car keyspec) keyspec)))
+				 (if (not (or (rest-p keynumber)
+					      (rest-p duration)
+					      (rest-p amp)))
+				     (let ((velocity (norm->midi-data amp))) 
+				       (push (cons time (midi-note-on channel-index keynumber velocity)) midi-events)
+				       (push (cons end-time (midi-note-off channel-index keynumber 0)) midi-events)))))))
+			 midi-events)))
 
-  (defmethod render-once ((qb qball) &key (offset 0.0))
-    (if (not (muted-p qb))
+  (defmethod render-once ((qball qball) &key (offset 0.0))
+    (if (not (muted-p qball))
 	(progn
-	  (if (property qb :reset-on-repeat)
-	      (reset qb)
-	    (soft-reset qb))
-	  (let ((acc '())
-		(cuefn (property qb :cue-function)))
-	    (dolist (tspec (next (property qb :cue-cycle) :all))
-	      (let ((time (+ offset (funcall cuefn qb tspec)))
-		    (keylist (->list (next (property qb :key-pattern))))
-		    (art (next (property qb :articulation-pattern)))
-		    (dyn (next (property qb :dynamic-pattern)))
-		    (ilist (->list (next (property qb :instruments)))) )
-		(setf acc (append acc (render-event qb time ilist keylist art dyn)))))
-	    (dolist (c (reverse (children qb)))
-	      (setf acc (append acc (render-once c :offset offset))))
-	    (sort-midi-events acc))))))
+	  (if (property qball :reset-on-repeat)
+	      (reset qball)
+	    (soft-reset qball))
+	  (let ((midi-events '())
+		(cuefn (property qball :cue-function)))
+	    (dolist (time-spec (next (property qball :cue-cycle) :all))
+	      (let ((time (+ offset (funcall cuefn qball time-spec)))
+		    (keylist (->list (next (property qball :key-pattern))))
+		    (articulation (next (property qball :articulation-pattern)))
+		    (dynamic (next (property qball :dynamic-pattern)))
+		    (instrument-list (->list (next (property qball :instruments)))) )
+		(setf midi-events (append midi-events (render-event qball time instrument-list keylist articulation dynamic)))))
+	    (dolist (sub-parts (reverse (children qball)))
+	      (setf midi-events (append midi-events (render-once sub-parts :offset offset))))
+	    (sort-midi-events midi-events))))))
 
-(defmethod render-n ((qb qball)(n integer) &key (offset 0.0))
-  (reset qb)
-  (let ((period (phrase-duration qb))
-	(acc '()))
-    (dotimes (i (if (property qb :render-once) 1 n))
-      (dolist (evn (render-once qb))
-	(let ((reltime (car evn))
-	      (msg (cdr evn)))
-	  (push (cons (+ offset (* i period) reltime) (clone msg)) acc))))
-    (sort-midi-events acc)))
+(defmethod render-n ((qball qball)(n integer) &key (offset 0.0))
+  (reset qball)
+  (let ((period (phrase-duration qball))
+	(midi-events '()))
+    (dotimes (i (if (property qball :render-once) 1 n))
+      (dolist (event (render-once qball))
+	(let ((relative-time (car event))
+	      (message (cdr event)))
+	  (push (cons (+ offset (* i period) relative-time) (clone message)) midi-events))))
+    (sort-midi-events midi-events)))
 
 
-(defmethod clone ((src qball) &key new-name new-parent)
+(defmethod clone ((source qball) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
-	 (name (->symbol (sformat frmt (name src))))
-	 (parent (or new-parent (parent src)))
-	 (prt (make-qball name (clone (property src :instruments))
+	 (name (->symbol (sformat frmt (name source))))
+	 (parent (or new-parent (parent source)))
+	 (new-qball (make-qball name (clone (property source :instruments))
 			  :section parent
-			  :cuefn (property src :cue-function)
-			  :transposable (property src :transposable)
-			  :cue (clone (property src :cue-cycle))
-			  :key (clone (property src :key-pattern))
-			  :dur (clone (property src :articulation-pattern))
-			  :amp (clone (property src :dynamic-pattern))
-			  :reset-on-repeat (property src :reset-on-repeat)
-			  :remarks (remarks src)
+			  :cuefn (property source :cue-function)
+			  :transposable (property source :transposable)
+			  :cue (clone (property source :cue-cycle))
+			  :key (clone (property source :key-pattern))
+			  :dur (clone (property source :articulation-pattern))
+			  :amp (clone (property source :dynamic-pattern))
+			  :reset-on-repeat (property source :reset-on-repeat)
+			  :remarks (remarks source)
 			  )))
-    (copy-time-signature src prt)
-    (put prt :shift (property src :shift))
-    (dolist (c (children src))
-      (clone c :new-name frmt :new-parent prt))
-    prt))
-
-
-
+    (copy-time-signature source new-qball)
+    (put new-qball :shift (property source :shift))
+    (dolist (sub-part (children source))
+      (clone sub-part :new-name frmt :new-parent new-qball))
+    new-qball))

@@ -1,6 +1,6 @@
 ;;;; CYCO
 ;;;;
-;;; raw-part is always a leaf node.
+
 
 (constant +raw-part-properties+
 	  (append +part-properties+
@@ -20,34 +20,10 @@ type.  Raw-parts are intended as a fallback where some odd combination
 of MIDI events not addressed by the other part types is required.
 
 Raw-parts can not have sub-parts."))
-	  
-(labels ((validate-event
-	  (event)
-	  (and (consp event)
-	       (numberp (car event))
-	       (midi-message-p (cdr event))))
-	 
-	 (validate-event-list
-	  (part events)
-	  (dolist (evnt events)
-	    (if (not (validate-event evnt))
-	 	(progn 
-		  (cyco-composition-error
-		   'make-raw-part
-		   (sformat "RAW-PART ~A" (name part))
-		   (sformat "Malformed part event: ~A" evnt))
-	 	  (return-from validate-event-list nil))))
-	  t))
-  
-  (defun make-raw-part (name &key
-			     events
-			     bars
-			     beats
-			     render-once
-			     (transposable t)
-			     section
-			     (remarks ""))
-    "Creates new instance of RAW-PART named name.
+
+
+(let ((docstring
+       "Creates new instance of RAW-PART named name.
 :events - event list, see below for format.
 :bars - number of bars per phrase, defaults to parent section value.
 :beats - number of beats per bar, defaults to parent section value.
@@ -67,32 +43,59 @@ Raw-part events are specified as a nested list of MIDI events.
      .......................
     (time-n . midi-message-n))
 
-The time values are offsets in seconds from the start of the part, they are not
-subject to the Section cueing function."
-    (let ((sec (or section
-  		   (and (project-p *project*)
-  			(property *project* :current-section)))))
-      (if (not sec)
-	  (cyco-composition-error
-	   'make-raw-part
-	   (sformat "part name : ~A" name)
-	   "No current Section")
-  	(let ((part (make-instance 'raw-part
-				   :name name
-				   :properties +raw-part-properties+
-				   :remarks (->string remarks))))
-  	  (setf (event-list part) (->list events))
-  	  (put part :transposable transposable)
-	  (put part :bars bars)
-	  (put part :beats beats)
-	  (put part :render-once render-once)
-	  (put part :shift 0.0) ;; constant 0
-	  (put part :reversible nil)
-  	  (connect sec part)
-  	  (set-cyco-prompt)
-  	  (if (validate-event-list part events)
-  	      (setf (event-list part) events))
-  	  part)))))
+The time values are offsets in seconds from the start of the part and are not
+subject to the Section cueing function."))   
+
+  (labels ((validate-event (event)
+			   (and (consp event)
+				(numberp (car event))
+				(midi-message-p (cdr event))))
+	   
+	   (validate-event-list (part events)
+				(dolist (event events)
+				  (if (not (validate-event event))
+				      (progn 
+					(cyco-composition-error
+					 'make-raw-part
+					 (sformat "RAW-PART ~A" (name part))
+					 (sformat "Malformed part event: ~A" event))
+					(return-from validate-event-list nil))))
+				t)
+
+	   (validate-section (section)
+			     (or (and (section-p section) section)
+				 (and (project-p *project*)
+				      (or (property *project* :current-section))))))
+    
+    (defun make-raw-part (name &key
+			       events
+			       bars
+			       beats
+			       render-once
+			       (transposable t)
+			       section
+			       (remarks ""))
+      docstring
+      (let ((parent-section (or (validate-section section)
+				(progn 
+				  (cyco-composition-error 'make-raw-part "No current project")
+				  (return-from make-raw-part))))
+	    (new-raw-part (make-instance 'raw-part
+				 :name name
+				 :properties +raw-part-properties+
+				 :remarks (->string remarks))))
+	(setf (event-list new-raw-part) (->list events))
+	(put new-raw-part :transposable transposable)
+	(put new-raw-part :bars bars)
+	(put new-raw-part :beats beats)
+	(put new-raw-part :render-once render-once)
+	(put new-raw-part :shift 0.0) ;; constant 0
+	(put new-raw-part :reversible nil)
+	(connect parent-section new-raw-part)
+	(set-cyco-prompt)
+	(if (validate-event-list new-raw-part events)
+	    (setf (event-list new-raw-part) events))
+	new-raw-part))))
 	
 (defmacro raw-part (name &key
 			 events
@@ -105,60 +108,51 @@ subject to the Section cueing function."
   "Same as make-raw-part except binds the part to a symbol named name."
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((prt (make-raw-part ',name
-			       :events ,events
-			       :bars ,bars
-			       :beats ,beats
-			       :render-once ,render-once
-			       :transposable ,transposable
-			       :section ,section
-			       :remarks (->string (or ,remarks "")))))
-       (defparameter ,name prt)
-       prt)))
+     (let ((new-raw-part (make-raw-part ',name
+					:events ,events
+					:bars ,bars
+					:beats ,beats
+					:render-once ,render-once
+					:transposable ,transposable
+					:section ,section
+					:remarks (->string (or ,remarks "")))))
+       (defparameter ,name new-raw-part)
+       new-raw-part)))
 
-(defmethod clone ((src raw-part) &key new-name new-parent)
+(defmethod clone ((source raw-part) &key new-name new-parent)
   (let* ((name (->symbol (string-upcase (sformat (or new-name "CLONE-OF-~A")
-						 (name src)))))
-	 (parent (or new-parent (parent src)))
-	 (prt (make-raw-part name
+						 (name source)))))
+	 (parent (or new-parent (parent source)))
+	 (new-raw-part (make-raw-part name
 			     :events '()
-			     :bars (bars src)
-			     :beats (beats src)
-			     :transposable (property src :transposable)
+			     :bars (bars source)
+			     :beats (beats source)
+			     :transposable (property source :transposable)
 			     :section parent
-			     :remarks (remarks src))))
-    (copy-time-signature src prt)
-    (setf (event-list prt) (clone (event-list src)))
-    prt))
+			     :remarks (remarks source))))
+    (copy-time-signature source new-raw-part)
+    (setf (event-list new-raw-part) (clone (event-list source)))
+    new-raw-part))
 
-(defmethod render-once ((part raw-part) &key (offset 0.0))
-  (let ((acc '()))
-    (if (not (muted-p part))
+(defmethod render-once ((raw-part raw-part) &key (offset 0.0))
+  (let ((midi-events '()))
+    (if (not (muted-p raw-part))
 	(progn 
-	  (dolist (event (event-list part))
-	    (push (cons (+ offset (car event)) (cdr event)) acc))
-	  (setf acc (sort acc #'(lambda (a b)
-				  (let ((time-a (car a))
-					(time-b (car b)))
-				    (cond ((= time-a time-b)
-					   (let ((pa (priority (cdr a)))
-						 (pb (priority (cdr b))))
-					     (< pa pb)))
-					  (t (< time-a time-b)))))))))
-    acc))
+	  (dolist (event (event-list raw-part))
+	    (push (cons (+ offset (car event)) (cdr event)) midi-events))
+	  (sort-midi-events midi-events)))))
 
-
-(defmethod render-n ((part raw-part)(n integer) &key (offset 0.0))
-  (let ((period (phrase-duration part))
-	(template (render-once part))
-	(acc '()))
-    (dotimes (i (if (property part :render-once) 1 n))
-      (let ((tshift (+ (* i period) offset)))
-	(dolist (evn template)
-	  (let ((reltime (car evn))
-		(msg (cdr evn)))
-	    (push (cons (+ tshift reltime) msg) acc)))))
-    (sort-midi-events acc)))
+(defmethod render-n ((raw-part raw-part)(n integer) &key (offset 0.0))
+  (let ((period (phrase-duration raw-part))
+	(template (render-once raw-part))
+	(midi-events '()))
+    (dotimes (i (if (property raw-part :render-once) 1 n))
+      (let ((time-shift (+ (* i period) offset)))
+	(dolist (event template)
+	  (let ((relative-time (car event))
+		(message (cdr event)))
+	    (push (cons (+ time-shift relative-time) message) midi-events)))))
+    (sort-midi-events midi-events)))
 
 (defmethod connect ((parent raw-part)(child cyco-node))
   (cyco-type-error

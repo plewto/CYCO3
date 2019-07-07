@@ -9,7 +9,7 @@
 		    :shift)))
 
 ;; If render-once property is true, the program events are only
-;; renderd one-time by the render-n method.
+;; rendered one-time by the render-n method.
 
 (defclass programs (part)
   ((events
@@ -17,8 +17,8 @@
     :accessor programs-events
     :initform '())))
 
-(defun make-programs (name instruments &key time section remarks render-once)
-  "Creates new PROGRMS instance.
+(let ((docstring 
+       "Creates new PROGRMS instance.
 name - Symbol
 instruments - List of instruments
    For default programs add only the instrument to the list.
@@ -39,92 +39,98 @@ instruments - List of instruments
 :remarks - text
 :render-once - If true program events are only rendered once by render-n
 
-Programs are always a leaf node."
-
-  (let* ((parent (cond ((section-p section)
-			section)
-		       ((project-p *project*)
-			(property *project* :current-section))
-		       (t (cyco-composition-error 'make-programs
-						  "No default project"))))
-	 (obj (make-instance 'programs
-			     :properties +programs-properties+
-			     :name name
-			     :remarks (->string (or remarks "")))))   
-    (connect parent obj)
-    (let ((event-time (funcall (property obj :cue-function) obj time))
-	  (acc '()))
-      (dolist (inst (->list instruments))
-	(let* ((plist (->list inst))
-	       (count (length plist))
-	       (inst (first plist))
-	       (prognum nil)
-	       (bank nil))
-	  (cond ((= count 1)		; (instrument)
-		 nil)
-		((= count 2)		; (instrument program)
-		 (setf prognum (second plist)))
-		((>= count 3)		; (instrument bank program)
-		 (setf prognum (second plist))
-		 (setf bank (third plist))) )
-	  (put obj :render-once render-once)
-	  (put obj :shift 0.0) ;; constant
-	  (put obj :reversible nil)
-	  (setf prognum (or prognum :default))
-	  (setf bank (or bank :default))
-	  (setf acc (append acc (program-change-events inst event-time :bank bank :program prognum)))
-	  ))
-      (setf (programs-events obj) (sort-midi-events acc))
-      obj)))
+Programs are always a leaf node."))
+  (flet ((validate-parent-section (parent)
+				  (cond ((section-p parent)
+					 parent)
+					((project-p *project*)
+					 (property *project* :current-section))
+					(t (cyco-composition-error 'make-programs
+								   "No default project")))))		  
+       
+    (defun make-programs (name instruments &key time section remarks render-once)
+      docstring
+      (let* ((parent (validate-parent-section section))
+	     (new-programs-part (make-instance 'programs
+				 :properties +programs-properties+
+				 :name name
+				 :remarks (->string (or remarks "")))))   
+	(connect parent new-programs-part)
+	(let ((event-time (funcall (property new-programs-part :cue-function) new-programs-part time))
+	      (midi-events '()))
+	  ;; ISSUE: A confused mess~
+	  (dolist (instrument (->list instruments))
+	    (let* ((program-specification-list (->list instrument))
+		   (count (length program-specification-list))
+		   (instrument (first program-specification-list))
+		   (prognum nil)
+		   (bank nil))
+	      (cond ((= count 1)		; (instrument)
+		     nil)			;     use implicit program-number
+		    ((= count 2)		; (instrument program)
+		                                ;     use explicit program-number
+		     (setf prognum (second program-specification-list)))
+		    ((>= count 3)		; (instrument bank program)
+		                                ;     add bank change
+		     (setf prognum (second program-specification-list))
+		     (setf bank (third program-specification-list))) )
+	      (put new-programs-part :render-once render-once)
+	      (put new-programs-part :shift 0.0) ;; constant
+	      (put new-programs-part :reversible nil)
+	      (setf prognum (or prognum :default))
+	      (setf bank (or bank :default))
+	      (setf midi-events (append midi-events 
+					(program-change-events instrument event-time 
+							       :bank bank :program prognum))) ))
+	  (setf (programs-events new-programs-part) (sort-midi-events midi-events))
+	  new-programs-part)))))
 	  
 
 (defmacro programs (name instruments &key time section remarks render-once)
   "Same as make-programs but binds the programs object to name symbol."
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((obj (make-programs ',name ,instruments
+     (let ((new-programs-part (make-programs ',name ,instruments
 			       :time ,time
 			       :section ,section
 			       :render-once ,render-once
 			       :remarks ,remarks)))
-       (defparameter ,name obj)
-       obj)))
+       (defparameter ,name new-programs-part)
+       new-programs-part)))
 
-(defmethod clone ((src programs) &key new-name new-parent)
-  (let* ((frmt (or new-name "~A"))
-	 (name (->symbol (string-upcase (sformat frmt (name src)))))
-	 (parent (or new-parent (parent src)))
-	 (prt (make-programs name (property src :instruments)
+(defmethod clone ((source programs) &key new-name new-parent)
+  (let* ((name (->symbol (string-upcase (sformat (or new-name "~A") (name source)))))
+	 (parent (or new-parent (parent source)))
+	 (new-programs-part (make-programs name (property source :instruments)
 			     :section parent
-			     :render-once (property src :render-once)
-			     :remarks (remarks src))))
-    (copy-time-signature src prt)
-    (setf (programs-events prt)
-	  (clone (programs-events src)))
-    prt))
+			     :render-once (property source :render-once)
+			     :remarks (remarks source))))
+    (copy-time-signature source new-programs-part)
+    (setf (programs-events new-programs-part)
+	  (clone (programs-events source)))
+    new-programs-part))
 
-(defmethod render-once ((obj programs) &key (offset 0))
-  (if (not (muted-p obj))
-      (let ((acc '()))
-	(dolist (evn (programs-events obj))
-	  (let ((st (car evn))
-		(msg (cdr evn)))
-	    (push (cons (+ st offset) msg) acc)))
-	(sort-midi-events acc))))
 
-(defmethod render-n ((obj programs)(n integer) &key (offset 0.0))
-  (let ((period (duration obj))
-	(template (render-once obj))
-	(acc '()))
-    (dotimes (i (if (property obj :render-once) 1 n))
-      (let ((tshift (+ offset (* i period))))
-	(dolist (p template)
-	  (let ((reltime (car p))
-		(msg (cdr p)))
-	    (push (cons (+ tshift reltime) msg) acc)))))
-    (sort-midi-events acc)))
-	
-    
+(defmethod render-once ((programs-part programs) &key (offset 0))
+  (if (not (muted-p programs-part))
+      (let ((midi-events '()))
+	(dolist (event (programs-events programs-part))
+	  (let ((event-time (car event))
+		(message (cdr event)))
+	    (push (cons (+ event-time offset) message) midi-events)))
+	(sort-midi-events midi-events))))
+
+(defmethod render-n ((programs-part programs)(n integer) &key (offset 0.0))
+  (let ((period (duration programs-part))
+	(template (render-once programs-part))
+	(midi-events '()))
+    (dotimes (i (if (property programs-part :render-once) 1 n))
+      (let ((time-shift (+ offset (* i period))))
+	(dolist (event template)
+	  (let ((relative-time (car event))
+		(message (cdr event)))
+	    (push (cons (+ time-shift relative-time) message) midi-events)))))
+    (sort-midi-events midi-events)))
 
 (defmethod connect ((parent programs)(child cyco-node))
   (cyco-type-error

@@ -1,19 +1,21 @@
 ;;;; CYCO
 
 (constant +controllers-documentation+
-" Creates new CONTROLLERS instance.
+"Creates new CONTROLLERS instance.
 
- A Controllers generates MIDI bend, channel-pressure and controller signals.
- Single-point or control curves may be produced.
- Controllerss do not directly have instruments or mute status, instead they 
+ A Controllers generates MIDI bend, channel-pressure and controller events
+either as single-point or multi-point curve.
+ 
+Controllers do not directly have instruments or mute status, instead they 
  depend on their parent node to provide these parameters.  
 
  name         - Symbol
  parent       - Parent node, most likely another part.
  :render-once - flag
  :remarks     - String 
- :events      - see below
+ :events      - Events are specified as a nested list of 'clauses'
 
+event clauses:
 
  :time t1 t2
     Sets time range, arguments t1 and t2 must be in format required by
@@ -140,6 +142,7 @@
 	      (let ((frmt "TRACE: ~A.~A event: ~A~%"))
 		(format t "~A~%" +banner-bar2+)
 		(format t frmt (name (parent part))(name part) event))))
+
 	 (trace-state
 	  (state)
 	  (if *trace-controllers-states*
@@ -349,10 +352,7 @@
 		      (trace-state state)))))
 	    acc)))
 
-  (defun make-controllers (name parent &key
-			  remarks
-			  events)
- 
+  (defun make-controllers (name parent-part &key remarks events)
     (let* ((controllers (make-instance 'controllers
 				 :name name
 				 :remarks (->string (or remarks ""))
@@ -360,7 +360,7 @@
       (put controllers :transposable nil)
       (put controllers :reversible nil)
       (put controllers :muted nil)
-      (connect parent controllers)
+      (connect parent-part controllers)
       (init-time-signature controllers)
       (setf (controllers-events controllers)
       	    (reverse (process-events controllers (->list events))))
@@ -368,24 +368,23 @@
 
 (setf (documentation 'make-controllers 'function) +controllers-documentation+)
 
-(defmacro controllers (name parent &key remarks events)
+(defmacro controllers (name parent-part &key remarks events)
   "Identical to make-controllers but binds part object to symbol name."
   `(progn
-     (part-banner (name ,parent) ',name)
-     (let ((prt (make-controllers ',name ,parent :remarks ,remarks :events ,events)))
-       (defparameter ,name prt)
-       prt)))
+     (part-banner (name ,parent-part) ',name)
+     (let ((new-controllers-part (make-controllers ',name ,parent-part :remarks ,remarks :events ,events)))
+       (defparameter ,name new-controllers-part)
+       new-controllers-part)))
 
-(defmethod clone ((src controllers) &key new-name new-parent)
-  (let* ((frmt (or new-name "~A"))
-	 (name (->symbol (sformat frmt (name src))))
-	 (parent (or new-parent (parent src)))
-	 (prt (make-controllers name parent :remarks (remarks src)))
-	 (acc '()))
-    (setf (controllers-state prt)(clone (controllers-state src)))
-    (dolist (q (controllers-events src))
-      (push (clone q) acc))
-    (setf (controllers-events prt)(reverse acc))
-    prt))
+(defmethod clone ((source controllers) &key new-name new-parent)
+  (let* ((name (->symbol (sformat (or new-name "~A") (name source))))
+	 (parent-part (or new-parent (parent source)))
+	 (new-controllers-part (make-controllers name parent-part :remarks (remarks source)))
+	 (events '()))
+    (setf (controllers-state new-controllers-part)(clone (controllers-state source)))
+    (dolist (event (controllers-events source))
+      (push (clone event) events))
+    (setf (controllers-events new-controllers-part)(reverse events))
+    new-controllers-part))
 
 

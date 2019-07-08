@@ -6,9 +6,10 @@
    "A LINE is a PATTERN which continues to return it's final value
 once all previous values have been returned."))
 
-(defmethod line-p ((obj line)) obj)
+(defmethod line-p ((object line)) object)
 
 (defun line (&key (of '()))
+  "Creates new instance of LINE pattern."
   (let ((q (make-instance 'line :of (->list of))))
     (reset q)
     q))

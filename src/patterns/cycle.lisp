@@ -7,9 +7,10 @@
 cyclical manner.  Once all elements have been extracted the
 cycle repeats."))
 
-(defmethod cycle-p ((obj cycle)) obj)
+(defmethod cycle-p ((object cycle)) object)
 
 (defun cycle (&key (of '()))
+  "Cre4ates new instance of cycle pattern."
   (let ((q (make-instance 'cycle :of (->list of))))
     (reset q)
     q))
@@ -22,7 +23,7 @@ cycle repeats."))
     (setf (slot-value q 'value) val)
     val))
 
-(defmethod ->cycle ((obj cycle)) obj)
+(defmethod ->cycle ((object cycle)) object)
 
 (defmethod ->cycle ((lst list))
   (cycle :of lst))
@@ -30,8 +31,8 @@ cycle repeats."))
 (defmethod ->cycle ((v vector))
   (cycle :of (->list v)))
 
-(defmethod ->cycle ((obj t))
-  (cycle :of (->list obj)))
+(defmethod ->cycle ((object t))
+  (cycle :of (->list object)))
 
 
 

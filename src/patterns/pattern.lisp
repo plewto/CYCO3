@@ -10,12 +10,11 @@
 ;;;; (line :of '(A B C)) --> A B C C C C ...
 ;;;;
 ;;;; A Cycle also returns elements in sequence.  Unlike a line, once the
-;;;; final cycle element is reached, the cycle begins again from the
-;;;; beginning.
+;;;; final element is reached, the cycle begins again from the beginning.
 ;;;;
 ;;;; (cycle :of '(A B C)) --> A B C A B C A B ...
 ;;;;
-;;;; Cycles and lines (and most all of the other pattern types) may be embedded
+;;;; Cycles and lines (and most other pattern types) may be embedded
 ;;;; into each other.
 ;;;;
 ;;;; (cycle :of (list (cycle :of '(1 2))(cycle :of '(A B C))))

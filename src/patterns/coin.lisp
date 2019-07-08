@@ -27,6 +27,7 @@ Note: (retrograde coin) flips head/tail probability."))
 (defmethod coin-p ((c coin)) t)
 
 (defun coin (&key (p 0.5)(head #'true)(tail #'false)(period 16))
+  "Creates new instance of coin pattern."
   (let ((c (make-instance 'coin
 			  :p p
 			  :of (list head tail)

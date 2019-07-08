@@ -9,6 +9,7 @@ replacement."))
 (defmethod dice-p ((obj dice)) obj)
 
 (defun dice (&key (of '()))
+  "Creates new instance of dice pattern."
   (let ((d (reset (make-instance 'dice :of (->list of)))))
     (setf (value d)(value (pick of)))
     d))

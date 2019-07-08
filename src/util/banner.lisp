@@ -14,7 +14,6 @@
   (format t "~%~A~%" +BANNER+)
   (format t "Version ~A~%" +CYCO-VERSION+))
 
-
 (flet ((banner-bar (q)
 		   (format t "~A~%" q))
        (banner-headline (text header width)
@@ -47,6 +46,3 @@ BANNER3 is less bold then BANNER2."
     (dolist (q more)
       (format t "~A   ~A~%" +banner-header2+ q))
     (format t "~%")))
-
-
-

@@ -4,7 +4,7 @@
 
 (defclass instrument-layer (pattern) nil
   (:documentation 
-"A Instrument-Layer is a highly specialized Pattern which always returns
+"A INSTRUMENT-LAYER is a specialized Pattern which always returns
 a list of all of it's elements.
 
 Use Case:
@@ -13,6 +13,7 @@ Use Case:
    respond to the same events in parallel."))
    
 (defun instrument-layer (&key (of '()))
+  "Creates new instance of instrument-layer pattern."
   (make-instance 'instrument-layer :of (->list of)))
 
 (defmethod next-1 ((q instrument-layer))
@@ -26,10 +27,10 @@ Use Case:
   (dismiss _)
   (next-1 q))
 		 
-(defmethod instrument-layer-p ((obj instrument-layer)) t)
+(defmethod instrument-layer-p ((object instrument-layer)) t)
 
-(defmethod remaining ((obj instrument-layer))
-  (length (elements obj)))
+(defmethod remaining ((object instrument-layer))
+  (length (elements object)))
 
 
 

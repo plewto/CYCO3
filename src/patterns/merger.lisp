@@ -23,13 +23,13 @@ Upon calling NEXT-1 the next values of patterns a and b are generated.
 These are processed by the a-function and b-function functions respectively.  a-function
 and b-function take a single argument and have an undefined return type.  The
 results of a-function and b-function are combined by the mixer function.
-mixer takes tow arguments and has an undefined return type."))
+mixer takes two arguments and has an undefined return type."))
 
-(defun merger (a b &key
+(defun merger (a-pattern b-pattern &key
 		 (a-function #'identity)
 		 (b-function #'identity)
 		 (mixer-function #'(lambda (a b)(cons a b))))
-  (reset (make-instance 'merger :of (list a b)
+  (reset (make-instance 'merger :of (list a-pattern b-pattern)
 			:a-function a-function
 			:b-function b-function
 			:mixer-function mixer-function)))

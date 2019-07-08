@@ -13,7 +13,7 @@
     :type integer
     :initarg :delay))
   (:documentation
-   "A Slew is a type of Pattern which delays calls to next-1 for an
+   "A Slew is a type of Pattern which delays next-1 calss of an
 embedded pattern.
 
 (slew (cycle :of '(A B C) 3)) produces the same results as 

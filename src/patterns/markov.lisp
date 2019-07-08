@@ -28,12 +28,12 @@ The links field is a list of potential next-values. Each element is also a
 markov-link and the relative number of occurrences determines the probability 
 of each potential value."))
 
-(defmethod markov-link-p ((obj markov-link)) t)
+(defmethod markov-link-p ((object markov-link)) t)
 
-(defmethod ->markov-link ((mkv markov-link)) mkv)
+(defmethod ->markov-link ((object markov-link)) object)
 
-(defmethod ->markov-link ((obj t))
-  (make-instance '(markov-link :value obj)))
+(defmethod ->markov-link ((object t))
+  (make-instance '(markov-link :value object)))
   
 
 (defmethod markov-add-link ((source markov-link)
@@ -53,7 +53,7 @@ of each potential value."))
 
 (defun markov-link (value &rest ilinks)
   "Constructs new markov-link
-value - The links 'value', may be any type.
+value - The links 'value', may be of any type.
 ilinks - potential destinationS, elements must have the form (value weight)"
   (let ((node (make-instance 'markov-link :value value)))
     (dolist (lnk ilinks)
@@ -116,7 +116,7 @@ ilinks - potential destinationS, elements must have the form (value weight)"
   (:documentation
    "Wraps graph of markov-link objects in a Pattern."))
 
-(defmethod markov-chain-p ((obj markov-chain)) t)
+(defmethod markov-chain-p ((object markov-chain)) t)
 
 (defmethod reset ((chain markov-chain))
   (setf (markov-current chain)

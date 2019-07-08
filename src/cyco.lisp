@@ -231,7 +231,7 @@ a warning message is displayed and CYCO terminates."
 
 (in-package :cyco)
 
-;;(plugin 'ion)  ;; ISSUE FOR TESTING ONLY, REMOVE IN PRODUCTION CODE
+(plugin 'ion)  ;; ISSUE FOR TESTING ONLY, REMOVE IN PRODUCTION CODE
 
 
 (defun cyco ()

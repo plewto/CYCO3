@@ -110,15 +110,6 @@ If n > 0, rotate right."
 	(setf i (+ 2 i))))
     (reverse acc)))
 
-;; (defun alist->hash-table (alst &optional size)
-;;   "Create hash-table from association list."
-;;   (if (alist-p alst)
-;;       (let ((htab (make-hash-table :size (or size (length alst)))))
-;; 	(dolist (a alst)
-;; 	  (setf (gethash (car a) htab) (cdr a)))
-;; 	htab)
-;;     (cyco-type-error 'alist->hash-table 'alist alst)))
-
 
 (defun alist->hash-table (alst &optional size)
   "Create hash-table from association list."

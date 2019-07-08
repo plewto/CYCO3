@@ -81,7 +81,7 @@ seed    - initial state 0 < seed <= #xffff.  The register consist of 16
           set to the feedback value.
 taps    - Selects feedback taps.  The binary representation directly 
           indicates which stages are fed-back. 0 <= taps <= #xffff.
-:mask   - mask logically anded to register value. 0 <= mask <= #xffff
+:mask   - mask bit-wise anded to register value. 0 <= mask <= #xffff
 :base   - register value is modulo base, default 2 <= base <= #xffff
           The modulo operation is applied after the mask.
 :bias   - value added to register.  Bias addition is applied after 

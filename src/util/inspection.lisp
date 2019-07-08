@@ -20,7 +20,6 @@
 (defmethod ? ((n integer))
   (format t "INTEGER~%"))
 
-
 (let ((ary (->vector (copies 16 '()))))
   (labels ((walk (inst)
 		 (let* ((ci (channel-index inst))

@@ -22,7 +22,7 @@ it's value."))
   "Creates new WRAPPER pattern.
 :of     - function (lambda n).
           On each call to NEXT-1 the function is called with the internal 
-          pointer as an argument, and then the pointer is increment.
+          pointer as an argument, the pointer is then incremented.
           The default function is #'identity
 :period - Sets maximum value for internal pointer"
   (let ((w (make-instance 'wrapper

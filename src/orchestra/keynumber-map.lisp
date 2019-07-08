@@ -27,43 +27,40 @@
 ;;;;   Highly specialized symbolic map for use with metronomes.
 ;;;;
 
-(defun basic-keynumber-map (&key (min 0)(max 127)(transpose 0)(instrument-name nil))
+(defun basic-keynumber-map (&key (min 0)(max 127)(transpose 0))
   "Creates a basic keynumber-map
-Keynumbers out side the range (min max) are ignored.  
+Keynumbers outside range (min max) return +REST+ 
 The transpose amount is applied after the key range test."
-  (dismiss instrument-name)
   (flet ((docfn ()
 		(format t "Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+)
 	 (warnfn (kn)
-		 (let ((msg (sformat "Unknown keynumber ~A passed to instrument ~A"
-				     kn instrument-name)))
-		       (cyco-warning msg))
-		 +rest+))
-    (let ((fn #'(lambda (kn)
-		  (cond ((eq kn :doc)
-			 (docfn))
-			((keynumber-p kn)
-			 (let ((kn2 (keynumber kn)))
-			   (if (minusp kn2)
-			       +rest+
-			     (progn
-			       (setf kn2 (transpose kn2 transpose))
-			       (or (and (<= min kn2)(<= kn2 max) kn2)
-				   +rest+)))))
-			(t (warnfn kn))))))
-      fn)))
+		 (progn 
+		   (cyco-warning (sformat "BASIC-KEYNUMBER-MAP  unknown keynumber ~A" kn))
+		   +rest+)))
+    #'(lambda (kn)
+	(cond ((eq kn :doc)
+	       (docfn))
+	      ((keynumber-p kn)
+	       (let ((kn2 (keynumber kn)))
+		 (if (minusp kn2)
+		     +rest+
+		   (progn
+		     (setf kn2 (transpose kn2 transpose))
+		     (or (and (<= min kn2)(<= kn2 max) kn2)
+			 +rest+)))))
+	      (t (warnfn kn))))))
+
 
 (constant +default-keynumber-map+ (basic-keynumber-map))
 
 
-(defun wrapping-keynumber-map (&key (min 0)(max 127)(transpose 0)(instrument-name nil))
-  "Similar to basic-keynumber-map but transpose out of bounds values as needed.
-The transpose parameter is applied prior to range-test transposition."
-  (dismiss instrument-name)
+(defun wrapping-keynumber-map (&key (min 0)(max 127)(transpose 0))
+  "Similar to basic-keynumber-map but transposes out of bounds values as needed.
+The transpose parameter is applied prior to the range-test."
   (flet ((docfn ()
-		(format t "Wrapping keynumber map, Range [~3D,~3D] transpose ~D.~%"
+		(format t "WRAPPING-KEYNUMBER-MAP Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+))
     #'(lambda (kn)
@@ -80,13 +77,11 @@ The transpose parameter is applied prior to range-test transposition."
 		     kn2))))))))
 
 
-(defun circular-keynumber-map (start end &key instrument-name)
+(defun circular-keynumber-map (start end)
   "Creates a circular keynumber map.
-Keynumbers out side the range (start end) are reflected back into the range."
+Keynumbers outside range (start end) are reflected back into the range."
   (flet ((docfn ()
-		(format t "Circular-keynumber-map ~A range (~A ~A)~%"
-			(if instrument-name instrument-name "")
-			start end)
+		(format t "CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
 		+rest+))
     (let* ((kn1 (keynumber start))
 	   (kn2 (keynumber end))
@@ -101,12 +96,10 @@ Keynumbers out side the range (start end) are reflected back into the range."
 			      (+ offset (rem k delta))))))))
       fn)))
 
-(defun circular-list-keynumber-map (key-list &key instrument-name)
+(defun circular-list-keynumber-map (key-list)
   "Creates circular keynumber map over list of keynumbers."
   (flet ((docfn ()
-		(format t "Circular-list-keynumber-map ~A : ~A~%"
-			(if instrument-name instrument-name "")
-			key-list)
+		(format t "CIRCULAR-LIST-KEYNUMBER-MAP ~A~%" key-list)
 		+rest+))
     #'(lambda (kn)
 	(cond ((eq kn :doc)
@@ -115,13 +108,11 @@ Keynumbers out side the range (start end) are reflected back into the range."
 	       +rest+)
 	      (t (cnth kn key-list))))))
 
-(defun finite-list-keynumber-map (key-list &key instrument-name)
+(defun finite-list-keynumber-map (key-list)
   "Indexes into list for keynumber.
-Out of bounds indexes return a rest."
+Out of bounds indexes return a +REST+"
   (flet ((docfn ()
-		(format t "finite-list-keynumber-map ~A : ~A~%"
-			(if instrument-name instrument-name "")
-			key-list)
+		(format t "FINITE-LIST-KEYNUMBER-MAP ~A~%" key-list)
 		+rest+))
     (let ((key-vector (->vector key-list))
 	  (limit (length key-list)))
@@ -133,20 +124,22 @@ Out of bounds indexes return a rest."
 		(t +rest+))))))
 
 
-(defun symbolic-keynumber-map (assignments &key instrument-name)
+(defun symbolic-keynumber-map (assignments)
   "Creates a symbolic keynumber-map.
 Symbolic maps are most useful with percussion instruments.
 The assignments list has the form  ((sym1 . keynumber1)
                                     (sym2 . keynumber2)
-                                     ..................)"
+                                     ..................)
+
+For integer arguments the map functions as with circular-list-keynumber-map
+The spcial symbol 'x returns the first keynumber in the list."
   (flet ((docfn ()
 		(format t "Symbolic keynumber map~%")
 		(dolist (p assignments)
 		  (format t "    [~16A] --> ~3D~%" (car p)(cdr p)))
 		+rest+)
 	 (warnfn (kn)
-		 (cyco-warning (sformat "Unknown keynumber ~A, instrument ~A"
-					kn instrument-name))
+		 (cyco-warning (sformat "Unknown keynumber ~A" kn))
 		 +rest+))
     (let* ((htab (alist->hash-table assignments (length assignments)))
 	   (fn #'(lambda (kn)
@@ -155,6 +148,8 @@ The assignments list has the form  ((sym1 . keynumber1)
 			  +rest+)
 			 ((rest-p kn)
 			  +rest+)
+			 ((eq kn 'x)
+			  (keynumber (cdr (car assignments))))
 			 ((integerp kn)
 			  (keynumber (cdr (cnth kn assignments))))
 			 (t (or (gethash kn htab)
@@ -183,6 +178,3 @@ beat - all other beats."
 			(docfn)
 		      (or (gethash kn ktab) +rest+)))))
 	fn))))
-
-
-

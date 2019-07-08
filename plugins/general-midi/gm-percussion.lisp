@@ -64,8 +64,7 @@
 	     (cuica-mute . 78)
 	     (cuica-open . 79)
 	     (triangle-mute . 80)
-	     (triangle . 81))
-	   :instrument-name 'gm-percussion)) 
+	     (triangle . 81))))
 
 (instrument gm-percussion
 	    :parent *root-instrument*
@@ -81,8 +80,7 @@
 				 (hi-agogo . 67)
 				 (low-agogo . 68)
 				 (triangle . 81)
-				 (mute-triangle . 80))
-			       :instrument-name 'gm-cowbell))
+				 (mute-triangle . 80))))
 
 (instrument gm-cowbell
 	    :parent gm-percussion
@@ -92,8 +90,7 @@
 (constant +gm-woodblock-keymap+ (symbolic-keynumber-map
 				 '((hi . 76)
 				   (low . 77)
-				   (clave . 75))
-				:instrument-name 'gm-woodblock))
+				   (clave . 75))))
 
 (instrument gm-woodblock
 	    :parent gm-percussion
@@ -108,8 +105,7 @@
 				(crash1 . 49)
 				(crash2 . 57)
 				(chinese . 52)
-				(splash . 55))
-			      :instrument-name 'gm-cymbal))
+				(splash . 55))))
 (instrument gm-cymbal
 	    :parent gm-percussion
 	    :transient nil
@@ -120,8 +116,7 @@
  			      (conga-hi . 62)
 			      (conga-open . 63)
 			      (bongo-low . 61)
-			      (bongo-hi . 60))
-			    :instrument-name 'gm-drum))
+			      (bongo-hi . 60))))
 
 (instrument gm-drum
 	    :parent gm-percussion
@@ -132,8 +127,7 @@
 (constant +gm-hihat-keymap+ (symbolic-keynumber-map
 			     '((closed . 42)
 			       (open . 46)
-			       (ped . 44))
-			     :instrument-name 'gm-hihat))
+			       (ped . 44))))
 
 (instrument gm-hihat
 	    :parent gm-percussion
@@ -148,8 +142,7 @@
 				(tambourine . 54)
 				(vibraslap . 58)
 				(whistle1  . 71)
-				(whistle2  . 72))
-			      :instrument-name 'gm-shaker))
+				(whistle2  . 72))))
 
 (instrument gm-shaker
 	    :parent gm-percussion
@@ -161,8 +154,7 @@
 			     '((x1 . 38)
 			       (x2 . 40)
 			       (stick . 37)
-			       (clap . 39))
-			     :instrument-name 'gm-snare))
+			       (clap . 39))))
 
 (instrument gm-snare
 	    :parent gm-percussion
@@ -171,8 +163,7 @@
 
 (constant +gm-kick-keymap+ (symbolic-keynumber-map
 			    '((x1 . 35)
-			      (x2 . 36))
-			    :instrument-name 'gm-kick))
+			      (x2 . 36))))
 
 (instrument gm-kick
 	    :parent gm-percussion
@@ -181,8 +172,7 @@
 
 (constant +gm-cuica-keymap+ (symbolic-keynumber-map
 			     '((open . 79)
-			       (mute . 78))
-			     :instrument-name 'gm-cuica))
+			       (mute . 78))))
 
 (instrument gm-cuica
 	    :parent gm-percussion
@@ -191,8 +181,7 @@
 
 (constant +gm-timbale-keymap+ (symbolic-keynumber-map
 			       '((low . 66)
-				 (high . 65))
-			       :instrument-name 'gm-timbale))
+				 (high . 65))))
 
 (instrument gm-timbale
 	    :parent gm-percussion
@@ -205,8 +194,7 @@
 			     (x3 . 45)
 			     (x4 . 47)
 			     (x5 . 48)
-			     (x6 . 50))
-			   :instrument-name 'gm-tom))
+			     (x6 . 50))))
 
 (instrument gm-tom
 	    :parent gm-percussion

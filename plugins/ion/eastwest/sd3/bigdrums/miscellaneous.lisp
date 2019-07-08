@@ -19,8 +19,7 @@
 				      :keynumber-map (circular-list-keynumber-map
 						      (white-keys
 						       (ew-keynumber 'c1)
-						       (ew-keynumber 'd2))
-						      :instrument-name 'lord-of-toms))))
+						       (ew-keynumber 'd2))))))
 
 (param rosebowl nil)
 (defun rosebowl (&key (parent ew-sd3-bigdrums)
@@ -34,8 +33,7 @@
 				  :remarks (or remarks "SD3 Remo Rose Bowl 10-foot *** CAUTION SUBSONICS ***")
 				  :keynumber-map (circular-list-keynumber-map
 						  (white-keys (ew-keynumber 'c1)
-							      (ew-keynumber 'b2))
-						  :instrument-name 'rosebowl))))
+							      (ew-keynumber 'b2))))))
 (param dohn nil)
 (defun dohn (&key (parent ew-sd3-bigdrums)
 		  channel dynamic-map remarks)

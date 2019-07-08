@@ -1,17 +1,17 @@
 ;;;; CYCO
 ;;;;
-;;;; An articulation map is a function of form  (lambda (dy &key time-scale))
+;;;; An articulation map is a function of form  (lambda (dur &key time-scale))
 ;;;; which returns float for key-down duration.
 ;;;; A negative result indicates a rest
 ;;;;
-;;;; If dy argument has the value :doc the function prints
+;;;; If dur argument has the value :doc the function prints
 ;;;; documentation and returns +rest+
 ;;;; 
 ;;;; ISSUE: Results on unrecognized values are poorly defined.
 ;;;;   There are at least 3 possible outcomes:
 ;;;;      1) Produce an error
-;;;;      2) generate warning and return rest.
-;;;;      3) ignore and return rest.
+;;;;      2) Generate warning and return rest.
+;;;;      3) Ignore and return rest.
 
 
 (defun basic-articulation-map (&key (scale 1.0)(min 0)(max 1e6))
@@ -19,20 +19,20 @@
 		(format t "BASIC-ARTICULATION-MAP   ")
 		(format t "scale: ~A  min: ~A  max: ~A~%" scale min max)
 		+rest+))
-    #'(lambda (m &key (time-scale 1.0))
-	(cond ((eq m :doc)
+    #'(lambda (metric-expression &key (time-scale 1.0))
+	(cond ((eq metric-expression :doc)
 	       (docfn))
-	      ((rest-p m)
+	      ((rest-p metric-expression)
 	       +rest+)
-	      (t (limit (* time-scale scale (metric-expression m)) min max))))))
+	      (t (limit (* time-scale scale (metric-expression metric-expression)) min max))))))
 
 (constant +default-articulation-map+ (basic-articulation-map))
 
 
-(defun constant-articulation-map (mxp)
-  (let ((dur (metric-expression mxp)))
+(defun constant-articulation-map (metric-expression)
+  (let ((dur (metric-expression metric-expression)))
     (flet ((docfn ()
-		  (format t "CONSTANT-ARTICULATION-MAP  ~A~%" mxp)
+		  (format t "CONSTANT-ARTICULATION-MAP  ~A~%" metric-expression)
 		  +rest+))
       #'(lambda (m &key time-scale)
 	  (dismiss time-scale)
@@ -43,15 +43,18 @@
 		(t dur))))))
 
 (defun metronome-articulation-map (&key (phrase 'e)(bar 'x)(beat 'x))
+  "Creates articulation map for metronome instruments.
+The map returns appropriate durations for the following 
+symbols:  PHRASE, BAR and BEAT.  Unrecognized symbols are as rest." 
   (flet ((docfn ()
 		(format t "METRONOME-ARTICULATION-MAP~%")
 		(format t "    phrase: ~A~%" phrase)
 		(format t "    bar   : ~A~%" bar)
 		(format t "    beat  : ~A~%" beat)
 		+rest+))
-    (let ((dphrase (metric phrase))
-	  (dbar (metric bar))
-	  (dbeat (metric beat)))
+    (let ((phrase-beep-duration (metric phrase))
+	  (bar-beep-duration (metric bar))
+	  (default-beep-duration (metric beat)))
       #'(lambda (m &key time-scale)
 	  (dismiss time-scale)
 	  (cond ((eq m :doc)
@@ -59,12 +62,9 @@
 		((rest-p m)
 		 +rest+)
 		((eq m 'phrase)
-		 dphrase)
+		 phrase-beep-duration)
 		((eq m 'bar)
-		 dbar)
+		 bar-beep-duration)
 		((eq m 'beat)
-		 dbeat)
-		(t dbeat))))))
-
-
-
+		 default-beep-duration)
+		(t +rest+))))))

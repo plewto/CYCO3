@@ -41,13 +41,14 @@ remarks - optional explanation."
   	  (setf (aref reverse-assignments (1- value)) mchan))
       mchan))
 
-  (defmethod meta-channel ((chan integer) &optional resolve)
+  (defmethod meta-channel ((channel integer) &optional resolve)
+    "In range integer channel numbers map to themselves."
     (dismiss resolve)
-    (if (and (plusp chan)(<= chan 16))
-	chan
-      (cyco-value-error 'meta-channel chan)))
+    (if (and (plusp channel)(<= channel 16))
+	channel
+      (cyco-value-error 'meta-channel channel)))
 
-  (defmethod meta-channel ((chan null) &optional resolve)
+  (defmethod meta-channel ((channel null) &optional resolve)
     (if resolve 0 nil))
 
  
@@ -69,16 +70,16 @@ remarks - optional explanation."
 	  (resolve-channel name name 10)
 	(resolve-channel-once name)))
     
-    (defun channel-name (c)
+    (defun channel-name (channel)
       "Returns primary symbolic name for MIDI channel c."
-      (let ((ci (1- c)))
-	(if (and (>= ci 0)(<= ci 15))
-	    (let ((mc (aref reverse-assignments ci)))
+      (let ((channel-index (1- channel)))
+	(if (and (>= channel-index 0)(<= channel-index 15))
+	    (let ((mc (aref reverse-assignments channel-index)))
 	      (meta-channel-name mc))
 	  nil)))
     
     (defun ?meta-channels ()
-      "print list of defined meta channels."
+      "Prints list of defined meta channels."
       (let ((acc '()))
 	(dolist (p assignments)
 	  (push (cons (->string (car p))
@@ -86,18 +87,16 @@ remarks - optional explanation."
 	(dolist (p (sort acc #'(lambda (a b)(string< (car a)(car b)))))
 	  (format t "[~16A] --> ~A~%" (car p)(cdr p)))
 	(format t "~%")
-	(dotimes (ci 16)
-	  (let* ((chan (1+ ci))
+	(dotimes (channel-index 16)
+	  (let* ((chan (1+ channel-index))
 		 (primary (channel-name chan)))
 	    (format t "[~02D] --> ~A~%" chan primary)))))
     
-    
-    
-    (defun meta-channel-assignment-p (obj)
-      "Predicate, true if obj is either a numeric MIDI channel 
+    (defun meta-channel-assignment-p (object)
+      "Predicate, true if object is either a numeric MIDI channel 
 or a defined symbolic meta channel."
-      (or (and (integerp obj)(plusp obj)(<= obj 16))
-	  (assoc obj assignments))))) 
+      (or (and (integerp object)(plusp object)(<= object 16))
+	  (assoc object assignments))))) 
   
 
 

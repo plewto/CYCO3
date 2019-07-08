@@ -170,8 +170,7 @@
 				'((A . (34))
 				  (B . (33))
 				  (C . (35))
-				  (D . (36)))
-				:instrument-name 'pkick)
+				  (D . (36))))
 	      :articulation-map hold4
 	      :dynamic-map dynamic-map))
 
@@ -198,8 +197,7 @@
 				  (X2      . (38 "MOR2 Compatibility --> A"))
 				  (RIM2    . (46 "MOR2 Compatibility --> D"))
 				  (CRACK2  . (46 "MOR2 Compatibility --> D"))
-				  (EDGE2   . (37 "MOR2 Compatibility --> B")))
-				:instrument-name 'psnare)
+				  (EDGE2   . (37 "MOR2 Compatibility --> B"))))
 		:articulation-map hold4
 		:dynamic-map dynamic-map))
 
@@ -226,8 +224,7 @@
 				  (C-BOUNCE  . (43 "MOR2 Compatibility"))
 				  (D-BOUNCE  . (45 "MOR2 Compatibility"))
 				  (E-BOUNCE  . (47 "MOR2 Compatibility"))
-				  (F-BOUNCE  . (47 "MOR2 Compatibility")))
-				:instrument-name 'ptom)
+				  (F-BOUNCE  . (47 "MOR2 Compatibility"))))
 		:articulation-map hold4
 		:dynamic-map dynamic-map))
   
@@ -246,8 +243,7 @@
 				  (PED2     . (66))
 				  (OPN2     . (69))
 				  (OPEN2    . (70))
-				  (OPEN3    . (71)))
-				:instrument-name 'phat)
+				  (OPEN3    . (71))))
 		:articulation-map hold4
 		:dynamic-map dynamic-map))
 
@@ -260,8 +256,7 @@
 				'((RIDE    . (50))
 				  (A       . (49))
 				  (B       . (51))
-				  (C       . (48 "Sometimes Choke")))
-				:instrument-name 'pcym)
+				  (C       . (48 "Sometimes Choke"))))
 		:articulation-map hold8
 		:dynamic-map dynamic-map))
 
@@ -270,8 +265,7 @@
 		:parent parent
 		:remarks "Standard Emu Procussion Tuned instrument."
 		:transient t
-		:keynumber-map (basic-keynumber-map
-				:min 72 :max 98 :instrument-name 'ptuned)
+		:keynumber-map (basic-keynumber-map :min 72 :max 98)
 		:articulation-map (or articulation-map
 				      +default-articulation-map+)
 		:dynamic-map dynamic-map)) )

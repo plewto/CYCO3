@@ -121,7 +121,7 @@ not."))
   (dolist (child (children node))
     (if (or force (transientp child))
 	(disconnect child))
-    (prune child)))
+    (prune child force)))
 
 (defmethod has-property-p ((n null)(key symbol)) nil)
 

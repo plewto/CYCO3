@@ -179,21 +179,24 @@ each resulting item is a unique object."
 	(-range start end (- (abs by)))
       (+range start end (abs by)))))
 
-(defun fill-list (srclist template)
-  "Creates new list by merging srclist and template list.
-The resulting list contains the non-null elements of srclist.
-All nil and missing elements of srclist are replaced by corresponding 
-values from template list."
-  (cons (or (car srclist)(car template))
-	(if (or srclist template)
-	    (fill-list (cdr srclist)(cdr template)))))
+(defun fill-list (source-list template)
+  "Creates new list by merging source-list and template list.
+The resulting list contains the non-null elements of source-list.
+All nil and missing elements of source-list are replaced by corresponding 
+values from template list.
+
+ISSUE: Fails test by having extra nil at end of result"
+
+  (cons (or (car source-list)(car template))
+	(if (or source-list template)
+	    (fill-list (cdr source-list)(cdr template)))))
 
 
   
 
 (defun split-list (lst &key (test #'keywordp)(start 1))
   "Split list into head and tail sections at first position after start
-that that predicate is true.
+for which predicate is true.
 By default splits list on presence of keywords
 
 (split-list '(:ape 1 2 :bat 3 4 :cat 5 6)) --> (:ape 1 2) (:bat 3 4 :cat 5 6)

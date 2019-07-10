@@ -132,11 +132,14 @@ centered.
 str - String
 width - positive integer
 shift - optional number of spaces to shift text right."
+  (if (plusp shift)
+      (setf text (str+ (scopies shift #\space) text)))
   (let* ((lens (length text))
-	 (diff (- width lens)))
+	 (diff (- width lens))
+	 (pad (scopies (/ diff 2) #\space)))
     (if (minusp diff)
 	text
-      (str+ (scopies (+ (/ diff 2) shift) #\space) text))))
+      (str+ pad text pad))))
 
 
 

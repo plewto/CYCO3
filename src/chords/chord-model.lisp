@@ -64,10 +64,10 @@
 	  (cons tail head))))
 
   ;; add-octave <-- integer 
-  (defun chord-inversion (template degree &key add-octave)
+  (defun chord-inversion (template degree &key (add-octave 0))
     "Apply inversion to chord template.
 template - A list of keynumber offsets.
-degree - inversion degree.
+degree   - inversion degree.
 :add-octave - flag, if true repeat initial note (after inversion)
 one octave higher at the end the template list.
 

@@ -31,9 +31,9 @@
        ((not ,test))
      ,@body))
 
-(defun bool (obj)
+(defun bool (object)
   "Returns canonical boolean t or nil."
-  (if obj t nil))
+  (if object t nil))
 
 (defmacro constant-function (name value)
   `(defun ,name (&rest args)
@@ -132,10 +132,8 @@
 		   "src/composition/project/project"
 		   "src/composition/project/project-render"
 		   "src/composition/project/loader"
-		   
 		   "src/composition/group"
 		   "src/composition/sections/section"
-		   
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
 		   "src/composition/parts/strummer-docs"

@@ -152,8 +152,6 @@ bpm - tempo in beats per minute.
 Returns number."
   (/ 60 tempo-bpm))
 
-;; (defmethod bpm->microseconds ((bpm number))
-;;   (truncate (* 1e6 (bpm->beat-period bpm))))
 
 (defun bpm->microseconds (tempo-bpm)
   (truncate (* 1e6 (bpm->beat-period tempo-bpm))))

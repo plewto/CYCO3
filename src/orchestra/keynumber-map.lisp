@@ -141,22 +141,23 @@ The spcial symbol 'x returns the first keynumber in the list."
 	 (warnfn (kn)
 		 (cyco-warning (sformat "Unknown keynumber ~A" kn))
 		 +rest+))
-    (let* ((htab (alist->hash-table assignments (length assignments)))
-	   (fn #'(lambda (kn)
-		   (cond ((eq kn :doc)
-			  (docfn)
-			  +rest+)
-			 ((rest-p kn)
-			  +rest+)
-			 ((eq kn 'x)
-			  (keynumber (cdr (car assignments))))
-			 ((integerp kn)
-			  (keynumber (cdr (cnth kn assignments))))
-			 (t (or (gethash kn htab)
-				(warnfn kn)))))))
-      fn)))
+    (let* ((htab (alist->hash-table assignments (length assignments))))
+      #'(lambda (kn)
+	  (cond ((eq kn :doc)
+		 (docfn)
+		 +rest+)
+		((rest-p kn)
+		 +rest+)
+		((eq kn 'x)
+		 (keynumber (second (car assignments))))
+		((integerp kn)
+		 (keynumber (second (cnth kn assignments))))
+		(t (let ((assignment (gethash kn htab)))
+		     (if assignment
+			 (keynumber (car assignment))
+		       (warnfn kn)))))))))
 
-
+		
 (defun metronome-keynumber-map (&key (phrase 72)(bar 67)(beat 60))
   "Creates specialized symbolic keynumber-map for metronomes.
 The map defines three event types:

@@ -652,7 +652,7 @@
 
   (defun make-strummer (name instrument &key
 			     section
-			     (cuefn #'bar)
+			     cuefn
 			     shift 
 			     tempo unit bars beats subbeats
 			     render-once
@@ -693,7 +693,7 @@
 			 section
 			 shift
 			 tempo unit bars beats subbeats
-			 (cuefn #'bar)
+			 cuefn
 			 render-once
 			 transposable
 			 reversible

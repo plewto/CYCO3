@@ -5,6 +5,7 @@
 	  (append +time-signature-properties+
 		  '(:current-part
 		    :cue-function
+		    :shuffle-function
 		    :chord-model
 		    :groups
 		    :reversible
@@ -54,6 +55,7 @@ and chord-model parameters from the project but may selectivly override them."))
   (defun make-section (name &key
 			    (project *project*)
 			    (cuefn nil)
+			    (shuffle nil)
 			    (tempo nil)
 			    (unit nil)
 			    (bars nil)
@@ -73,6 +75,7 @@ and chord-model parameters from the project but may selectivly override them."))
 				    :remarks remarks
 				    :transient t)))
 	(put section :cue-function cuefn)
+	(put section :shuffle-function shuffle)
 	(put section :tempo tempo)
 	(put section :unit unit)
 	(put section :bars bars)
@@ -91,6 +94,7 @@ and chord-model parameters from the project but may selectivly override them."))
 (defmacro section (name &key
 			(project *project*)
 			(cuefn nil)
+			(shuffle nil)
 			(tempo nil)
 			(unit nil)
 			(bars nil)
@@ -108,6 +112,7 @@ and chord-model parameters from the project but may selectivly override them."))
        (let ((section (make-section ',name
 			      :project ,project
 			      :cuefn ,cuefn
+			      :shuffle ,shuffle
 			      :tempo ,tempo 
 			      :unit ,unit 
 			      :bars ,bars 

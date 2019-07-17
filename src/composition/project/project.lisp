@@ -6,6 +6,7 @@
 		  '(:title 
 		    :catalog-number
 		    :cue-function
+		    :shuffle-function
 		    :project-directory
 		    :main-file
 		    :output-directory
@@ -44,6 +45,7 @@ name  - Symbol, the project's name.
         project's directories relative to project-directory.
 :title - Composition title, defaults to name.
 :cuefn - Default cueing function, default #'bar
+:shuffle - Default shuffle function, defaults to #'no-shuffle
 :tempo - Default tempo in BPM, default 60.
 :unit  - Default time-signature unit, default 'Q
 :bars  - Default number of bars per phrase, default 4.
@@ -99,6 +101,7 @@ abbreviations lp and lpf."))
 			    main-file
 			    (output-directory *default-project-output-directory*)
 			    (cuefn #'bar)
+			    (shuffle #'no-shuffle)
 			    (tempo 60.0)
 			    unit
 			    (bars 4)
@@ -120,6 +123,7 @@ abbreviations lp and lpf."))
       (put project :output-directory output-directory)
       (put project :chord-model *chord-table*)
       (put project :cue-function cuefn)
+      (put project :shuffle-function shuffle)
       (put project :tempo (float tempo))
       (put project :unit (or unit 'q))
       (put project :bars (truncate bars))
@@ -142,6 +146,7 @@ abbreviations lp and lpf."))
 			main-file
 			(output-directory *default-project-output-directory*)
 			(cuefn #'bar)
+			(shuffle #'no-shuffle)
 			(tempo 60.0)
 			unit
 			(bars 4)
@@ -161,6 +166,7 @@ a symbol named name."
 		     :main-file ,main-file
 		     :output-directory ,output-directory
 		     :cuefn ,cuefn
+		     :shuffle ,shuffle
 		     :tempo ,tempo
 		     :unit ,unit
 		     :bars ,bars

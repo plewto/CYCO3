@@ -14,6 +14,7 @@
 		  '(:shift
 		    :render-once
 		    :cue-cycle
+		    :shuffle-function
 		    :key-pattern
 		    :articulation-pattern
 		    :dynamic-pattern
@@ -30,6 +31,7 @@ instruments - Pattern of instruments. A single instrument or list
               of instruments is converted to a Cycle pattern.
 :section  - Parent section, defaults to current-section of *project*
 :cuefn    - Cueing function
+:shuffle  - Shuffle function
 :shift    - Fixed offset in seconds added to initial time.
 :tempo    - Tempo, beats per minute, defaults to parent tempo
 :unit     - Time signature beat unit
@@ -42,6 +44,7 @@ instruments - Pattern of instruments. A single instrument or list
         For the default #'bar cuefn, times are specified as a list
         (bar beat subbeat).  Assuming 4/4 time, the first four beats
         of the first bar is specified by ((1 1 1)(1 2 1)(1 3 1)(1 4 1)).
+:shuffle - ISSUE add documentation
 :key  - Pattern of keynumbers. A single key or list of keys is converted
         to a Cycle pattern.  Nested list are treated as chords.
         A C major arpeggio, followed by a G major chord is specified by 
@@ -75,7 +78,7 @@ used."))
 				    nil)
 				   (t (property *project* :current-section))))
 	   
-	            ;; Checks that instruments argument is valid.
+	   ;; Checks that instruments argument is valid.
 	   ;;   1) A single instrument      --> converted to list --> 2
 	   ;;   2) A list of instruments    --> converted to INSTRUMENT-LAYER pattern.
 	   ;;   3) A Pattern of instruments --> Use as is.
@@ -99,7 +102,8 @@ used."))
     
     (defun make-qball (name instruments &key
 			    section
-			    (cuefn #'bar)
+			    cuefn
+			    shuffle 
 			    shift
 			    tempo unit bars beats subbeats
 			    render-once
@@ -128,6 +132,7 @@ used."))
 	  (put new-qball :beats beats)
 	  (put new-qball :subbeats subbeats)
 	  (put new-qball :cue-function cuefn)
+	  (put new-qball :shuffle-function shuffle)
 	  (put new-qball :render-once render-once)
 	  (put new-qball :transposable transposable)
 	  (put new-qball :reversible reversible)
@@ -145,7 +150,8 @@ used."))
   
 (defmacro qball (name instruments &key
 		      section
-		      (cuefn #'bar)
+		      cuefn
+		      shuffle
 		      shift
 		      tempo unit bars beats subbeats
 		      render-once
@@ -164,6 +170,7 @@ named name."
      (let ((new-qball (make-qball ',name ,instruments
 			   :section ,section
 			   :cuefn ,cuefn
+			   :shuffle ,shuffle
 			   :shift ,shift
 			   :render-once ,render-once
 			   :transposable ,transposable
@@ -241,9 +248,12 @@ named name."
 	      (reset qball)
 	    (soft-reset qball))
 	  (let ((midi-events '())
+		(shuffle-function (property qball :shuffle-function))
 		(cuefn (property qball :cue-function)))
 	    (dolist (time-spec (next (property qball :cue-cycle) :all))
-	      (let ((time (+ offset (funcall cuefn qball time-spec)))
+	      (let ((time (+ offset
+			     (funcall cuefn qball time-spec)
+			     (funcall shuffle-function time-spec)))
 		    (keylist (->list (next (property qball :key-pattern))))
 		    (articulation (next (property qball :articulation-pattern)))
 		    (dynamic (next (property qball :dynamic-pattern)))

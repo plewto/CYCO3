@@ -6,6 +6,7 @@
 		  '(:chord-model
 		    :instruments
 		    :cue-function
+		    :shuffle-function
 		    :muted
 		    :transposable
 		    :reversible

@@ -201,6 +201,7 @@
 (constant +strummer-properties+
 	  (append +part-properties+
 		  '(:shift
+		    :shuffle-function
 		    :render-once)))
 
 (defclass strummer (part)
@@ -309,6 +310,7 @@
 			   (let* ((cuefn (property part :cue-function))
 				  (args (second clause))
 				  (time (funcall cuefn part args)))
+			     (setf (strummer-state-time-specification state) args)
 			     (setf (strummer-state-time state)(float time)))))
 
 	 ;; :chord name
@@ -653,6 +655,7 @@
   (defun make-strummer (name instrument &key
 			     section
 			     cuefn
+			     shuffle
 			     shift 
 			     tempo unit bars beats subbeats
 			     render-once
@@ -675,6 +678,7 @@
 	(put new-strummer :beats beats)
 	(put new-strummer :subbeats subbeats)
 	(put new-strummer :cue-function cuefn)
+	(put new-strummer :shuffle-function shuffle)
 	(put new-strummer :render-once render-once)
 	(put new-strummer :transposable transposable)
 	(put new-strummer :reversible reversible)
@@ -694,6 +698,7 @@
 			 shift
 			 tempo unit bars beats subbeats
 			 cuefn
+			 shuffle
 			 render-once
 			 transposable
 			 reversible
@@ -712,6 +717,7 @@
 					:beats ,beats
 					:subbeats ,subbeats
 					:cuefn ,cuefn
+					:shuffle ,shuffle
 					:render-once ,render-once
 					:transposable ,transposable
 					:reversible ,reversible

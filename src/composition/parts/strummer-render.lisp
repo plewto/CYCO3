@@ -180,12 +180,17 @@
   (defmethod render-once ((part strummer) &key (offset 0))
     (if (not (muted-p part))
 	(let* ((midi-events '())
+	       (shuffle-function (property part :shuffle-function))
 	       (chord-model (property part :chord-model))
 	       (instrument (property part :instruments))
 	       (channel-index (channel-index instrument)))
 	  (dolist (state (strummer-events part))
 	    (trace-events state)
-	    (let ((time (+ offset (or (strummer-state-time state) 0))))
+	    (let* ((state-time (strummer-state-time state))
+		   (time (+ offset (if state-time
+				       (+ state-time
+					  (funcall shuffle-function (strummer-state-time-specification state)))
+				     0))))
 	      (setf midi-events (process-bend midi-events time state channel-index))
 	      (setf midi-events (process-controller midi-events time state channel-index))
 	      (setf midi-events (process-program midi-events time state instrument))

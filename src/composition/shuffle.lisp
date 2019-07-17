@@ -11,8 +11,8 @@ the cue function currently in use.
 
 The default no-shuffle function always returns 0.0
 
-Currently shuffle only applies to QBALL parts, but may be set
-at either the QBall, Section or Project level."))
+Shuffle applies to either QBALL or Strummer part events and may 
+be set at any level in project tree."
        
   (defun no-shuffle (time-specification)
     (dismiss time-specification)

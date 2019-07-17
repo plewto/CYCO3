@@ -5,6 +5,7 @@
 
 (defstruct strummer-state
   (source "")	                     ; CYCO event source text
+  (time-specification nil)            
   (time nil)		             ; nil | float >= 0
   ;;(time-increment 0)	             ; **DEPRECIATED**
   (key nil)		             ; nil | -1 | keynumber
@@ -42,6 +43,7 @@
 
 (defmethod reset ((state strummer-state))
   (soft-reset state)
+  (setf (strummer-state-time-specification state) nil)
   (setf (strummer-state-time state) nil)
   (setf (strummer-state-chord-type state) '(0))
   (setf (strummer-state-chord-inversion state) 0)
@@ -65,6 +67,7 @@
   (dismiss new-name new-parent)
   (make-strummer-state
    :source (strummer-state-source state)
+   :time-specification (strummer-state-time-specification state)
    :time (strummer-state-time state)
    :key (strummer-state-key state)
    :chord-type (strummer-state-chord-type state)

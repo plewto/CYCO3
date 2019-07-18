@@ -18,6 +18,33 @@
   `(if (not (boundp ',name))
        (defconstant ,name ,value ,docstring)))
 
+(constant +build-time+ (get-universal-time))
+
+(defun build-time ()
+  "Returns association list of CYCO build time."
+  (multiple-value-bind
+      (second minute hour date month year day-of-week dst-p tz)
+      (decode-universal-time (get-universal-time))
+    (dismiss day-of-week dst-p tz)
+    (list (cons :year year)
+	  (cons :month month)
+	  (cons :date date)
+	  (cons :hour hour)
+	  (cons :minute minute)
+	  (cons :second second))))
+
+(defun format-build-time ()
+  "Formats CYCO build time"
+  (let ((time (build-time)))
+    (format nil "BUILD ~A/~A/~A  ~A:~A:~A"
+	    (cdr (assoc :year time))
+	    (cdr (assoc :month time))
+	    (cdr (assoc :date time))
+	    (cdr (assoc :hour time))
+	    (cdr (assoc :minute time))
+	    (cdr (assoc :second time)))))
+
+
 (defmacro param (name &optional (value nil)(docstring ""))
   "An alias for defparameter."
   `(defparameter ,name ,value ,docstring))
@@ -25,6 +52,7 @@
 (defmacro global (name &optional (value nil)(docstring ""))
   "An alias for defparameter."
   `(defparameter ,name ,value ,docstring))
+
 
 (defmacro while (test &rest body)
   `(do ()
@@ -187,7 +215,8 @@
 	     (setf print-flag t))
 	    ((eq file :print-off)
 	     (setf print-flag nil))
-	    (t (ld file :verbose verbose :print print))))) )
+	    (t (ld file :verbose verbose :print print))))))
+
   
 (build-cyco)
 
@@ -226,6 +255,7 @@ a warning message is displayed and CYCO terminates."
   (in-package :cyco)
   (cyco::set-cyco-prompt)
   (cyco::cyco-banner)
+  (format t "~A~%" (cyco::format-build-time))
   nil)
 
 (in-package :cyco)
@@ -234,4 +264,5 @@ a warning message is displayed and CYCO terminates."
 
 
 (defun cyco ()
-  (cyco-banner))
+  (cyco-banner)
+  (format t "~A~%" (format-build-time)))

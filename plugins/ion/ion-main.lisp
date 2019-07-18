@@ -42,7 +42,6 @@
 (load-plugin-file "emu/procussion/procussion")
 (load-plugin-file "eastwest/eastwest")
 
-
 (channel! *metronome* :beep)
 (keynumber-map! *metronome* (metronome-keynumber-map
 			     :phrase 3
@@ -69,12 +68,4 @@
   (save-snapshot fname))
 
 
-(defmacro renamed-function-warning (old-name new-name)
-  `(defun ,old-name (&rest _)
-     (dismiss _)
-     (cyco-warning "Function Renamed"
-		   (sformat "~A has been renamed to ~A"
-			    ',old-name ',new-name))
-     (exit)))
-
-(renamed-function-warning seq-order section-order)
+(load-plugin-file "legacy")

@@ -140,7 +140,7 @@ Key number manipulation function is the ccomposition:
 			   :ampscale (property source-ghost :ampscale)
 			   :keytable (property source-ghost :keytable)
 			   :outchan (property source-ghost :output-channel)
-			   :remarks (property source-ghost :remarks))))
+			   :remarks (remarks source-ghost))))
     (copy-time-signature source-ghost new-ghost)
     new-ghost))
 

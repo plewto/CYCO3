@@ -117,6 +117,7 @@
     (let ((ps (instrument proshake
 			  :parent parent
 			  :remarks "Procussion proshake parent instrument"
+			  :program (procussion-program 'proshake)
 			  :transient t
 			  :keynumber-map (symbolic-keynumber-map
 					  (append tam-keys cabasa-keys shaker-keys

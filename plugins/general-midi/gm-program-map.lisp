@@ -154,3 +154,6 @@ Use (?GENEAL-MIDI-PROGRAMS) for a list of valid programs."
 	 "Using default program 0."
 	 "Try (?GENERAL-MIDI-PROGRAMS) for list of options.")
 	0)))
+
+(defun general-midi-program-p (program-name)
+  (assoc program-name +general-midi-programs+))

@@ -8,7 +8,7 @@
 	  (let ((a0 (format nil "  ___  _  _  ___  _____ ~%"))
 		(a1 (format nil " / __)( \\/ )/ __)(  _  )~%"))
 		(a2 (format nil "( (__  \\  /( (__  )(_)( ~%"))
-		(a3 (format nil " \\___) (__) \\___)(_____)  3~%"))
+		(a3 (format nil " \\___) (__) \\___)(_____)~%"))
 		(a4 (format nil "~%")))
 	    (concatenate 'string a0 a1 a2 a3 a4)))
 

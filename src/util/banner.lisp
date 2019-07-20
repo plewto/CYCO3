@@ -9,10 +9,31 @@
 (constant +BANNER-ERROR+ (sformat "ERROR ~A" (scopies 30 #\*)))
 (constant +BANNER-WARNING+ (sformat "WARNING ~A" (scopies 30 #\*)))
 
-(defun cyco-banner ()
-  "Prints CYCO logo"
-  (format t "~%~A~%" +BANNER+)
-  (format t "Version ~A~%" +CYCO-VERSION+))
+
+(labels ((build-time ()
+		     (multiple-value-bind
+			 (second minute hour date month year day-of-week dst-p tz)
+			 (decode-universal-time (get-universal-time))
+		       (dismiss second day-of-week dst-p tz)
+		       (list (cons :year year)
+			     (cons :month month)
+			     (cons :date date)
+			     (cons :hour hour)
+			     (cons :minute minute))))
+	 (format-build-time ()
+			    "Formats CYCO build time"
+			    (let ((time (build-time)))
+			      (format nil "Build ~A/~A/~A  ~A:~A"
+				      (cdr (assoc :year time))
+				      (cdr (assoc :month time))
+				      (cdr (assoc :date time))
+				      (cdr (assoc :hour time))
+				      (cdr (assoc :minute time))))))
+
+  (defun cyco-banner ()
+    "Prints CYCO logo"
+    (format t "~%~A~%" +BANNER+)
+    (format t "Version ~A ~A~%" +CYCO-VERSION+ (format-build-time))))
 
 (flet ((banner-bar (q)
 		   (format t "~A~%" q))

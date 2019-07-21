@@ -48,6 +48,11 @@
 			     :bar 1
 			     :beat 0))
 (program-number! *metronome* 127)
+(articulation-map! *metronome*
+		   #'(lambda (d)
+		       (dismiss d)
+		       0.01))
+
 
 
 (param rr-reset nil)

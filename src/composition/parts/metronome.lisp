@@ -39,14 +39,12 @@ Default values are generally acceptable for a generic metronome pattern.
 				  (property *project* :current-section))
 				 (t (cyco-composition-error 'make-metronome
 							    "No default Project"))))
-
 	 (make-cue-list (bars beats)
 			(let ((cue-list '()))
 			  (dotimes (bar bars)
 			    (dotimes (beat beats)
 			      (push (list (1+ bar)(1+ beat) 1) cue-list)))
 			  (reverse cue-list)))
-
 	 (make-key-pattern (bars beats)
 			   (let ((key-list '()))
 			     (dotimes (bar bars)
@@ -92,6 +90,7 @@ Default values are generally acceptable for a generic metronome pattern.
 			  section
 			  tempo unit bars beats
 			  cue key amp
+			  cuefn
 			  (instrument *metronome*))
   "Same as make-metronome except the metronome part is bound to the 
 symbol name."
@@ -102,6 +101,7 @@ symbol name."
 		:unit ,unit
 		:bars ,bars
 		:beats ,beats
+		:cuefn ,cuefn
 		:cue ,cue
 		:key ,key
 		:amp ,amp

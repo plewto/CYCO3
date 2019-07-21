@@ -81,9 +81,9 @@
   (macrolet ((def-docfn
 	      (fname iname plist)
 	      `(defun ,fname ()
-		 (format t "~A Programs:~%" ',iname)
+		 (format t ";; ~A Programs:~%" ',iname)
 		 (dolist (q ,plist)
-		   (format t "[~2D] ~13A  Remarks ~S~%"
+		   (format t ";; [~2D] ~13A  Remarks ~S~%"
 			   (second q)(first q)(third q)))))
 
 	     (def-program-function

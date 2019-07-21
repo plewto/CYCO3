@@ -42,8 +42,8 @@ property of the instrument."))
   (defun set-basic-program-map (instrument &key (offset 0)(min 0)(max 127))
     docstring
     (flet ((docfn ()
-		  (format t "Instrument ~A Basic Program Map~%" (name instrument))
-		  (format t "    offset: ~A   min: ~A   :max: ~A" offset min max)
+		  (format t ";; Instrument ~A Basic Program Map~%" (name instrument))
+		  (format t ";;    offset: ~A   min: ~A   :max: ~A" offset min max)
 		  nil)
 	   (warnfn (pnum)	
 		   (cyco-warning
@@ -85,14 +85,14 @@ Map entry format has the form
     docstring
     (let ((assignment-table (alist->hash-table program-assignments (length program-assignments))))
       (flet ((docfn ()
-		    (format t "Instrument ~A Symbolic Program Map~%" (name instrument))
+		    (format t ";; Instrument ~A Symbolic Program Map~%" (name instrument))
 		    (let ((acc '()))
 		      (maphash #'(lambda (a b)
 				   (push (cons (->string a) b) acc))
 			       assignment-table)
 		      (dolist (v (sort acc #'(lambda (a b)
 					       (< (car (cdr a))(car (cdr b))))))
-			(format t "    [~16A] -> ~3D ~A~%"
+			(format t ";;    [~16A] -> ~3D ~A~%"
 				(car v)
 				(car (cdr v))
 				(or (third (cdr v)) ""))))

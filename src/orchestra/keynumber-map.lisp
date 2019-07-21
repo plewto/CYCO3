@@ -32,7 +32,7 @@
 Keynumbers outside range (min max) return +REST+ 
 The transpose amount is applied after the key range test."
   (flet ((docfn ()
-		(format t "Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
+		(format t ";; Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+)
 	 (warnfn (kn)
@@ -60,7 +60,7 @@ The transpose amount is applied after the key range test."
   "Similar to basic-keynumber-map but transposes out of bounds values as needed.
 The transpose parameter is applied prior to the range-test."
   (flet ((docfn ()
-		(format t "WRAPPING-KEYNUMBER-MAP Range [~3D,~3D] transpose ~D.~%"
+		(format t ";; WRAPPING-KEYNUMBER-MAP Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+))
     #'(lambda (kn)
@@ -81,7 +81,7 @@ The transpose parameter is applied prior to the range-test."
   "Creates a circular keynumber map.
 Keynumbers outside range (start end) are reflected back into the range."
   (flet ((docfn ()
-		(format t "CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
+		(format t ";; CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
 		+rest+))
     (let* ((kn1 (keynumber start))
 	   (kn2 (keynumber end))
@@ -99,7 +99,7 @@ Keynumbers outside range (start end) are reflected back into the range."
 (defun circular-list-keynumber-map (key-list)
   "Creates circular keynumber map over list of keynumbers."
   (flet ((docfn ()
-		(format t "CIRCULAR-LIST-KEYNUMBER-MAP ~A~%" key-list)
+		(format t ";; CIRCULAR-LIST-KEYNUMBER-MAP ~A~%" key-list)
 		+rest+))
     #'(lambda (kn)
 	(cond ((eq kn :doc)
@@ -112,7 +112,7 @@ Keynumbers outside range (start end) are reflected back into the range."
   "Indexes into list for keynumber.
 Out of bounds indexes return a +REST+"
   (flet ((docfn ()
-		(format t "FINITE-LIST-KEYNUMBER-MAP ~A~%" key-list)
+		(format t ";; FINITE-LIST-KEYNUMBER-MAP ~A~%" key-list)
 		+rest+))
     (let ((key-vector (->vector key-list))
 	  (limit (length key-list)))
@@ -134,9 +134,9 @@ The assignments list has the form  ((sym1 . keynumber1)
 For integer arguments the map functions as with circular-list-keynumber-map
 The spcial symbol 'x returns the first keynumber in the list."
   (flet ((docfn ()
-		(format t "Symbolic keynumber map~%")
+		(format t ";; Symbolic keynumber map~%")
 		(dolist (p assignments)
-		  (format t "    [~16A] --> ~3D~%" (car p)(cdr p)))
+		  (format t ";;   [~16A] --> ~3D~%" (car p)(cdr p)))
 		+rest+)
 	 (warnfn (kn)
 		 (cyco-warning (sformat "Unknown keynumber ~A" kn))
@@ -169,10 +169,10 @@ beat - all other beats."
     (setf (gethash 'bar ktab)(keynumber bar))
     (setf (gethash 'beat ktab)(keynumber beat))
     (flet ((docfn ()
-		  (format t "Metronome keynumber map~%")
-		  (format t "   phrase  -> ~3D~%" (gethash 'phrase ktab))
-		  (format t "   bar     -> ~3D~%" (gethash 'bar ktab))
-		  (format t "   beat    -> ~3D~%" (gethash 'beat ktab))
+		  (format t ";; Metronome keynumber map~%")
+		  (format t ";;   phrase  -> ~3D~%" (gethash 'phrase ktab))
+		  (format t ";;   bar     -> ~3D~%" (gethash 'bar ktab))
+		  (format t ";;   beat    -> ~3D~%" (gethash 'beat ktab))
 		  +rest+))
       (let ((fn #'(lambda (kn)
 		    (if (eq kn :doc)

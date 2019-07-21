@@ -106,8 +106,8 @@
 	     (piano7   . (1 7 "Blend piano"))
 	     (piano8   . (1 8 "Bell piano"))
 	     (etine    . (2 1 "EPiano tine"))
-	     (epiano1  . (2 2 "Light electric piano"))
-	     (epiano2  . (2 3 "Old electric piano"))
+	     (epiano1  . (2 2 "Light electric"))
+	     (epiano2  . (2 3 "Old electric"))
 	     (epiano3  . (2 4 "Mallet+EPiano"))
 	     (clav1    . (2 5 ""))
 	     (clav2    . (2 6 ""))
@@ -124,7 +124,7 @@
 	     (arco1   . (4 1 "Strings"))
 	     (arco2   . (4 2 "Strings"))
 	     (cello   . (4 3 "Strings"))
-	     (slwstr  . (4 4 "Slow attack strings"))
+	     (slwstr  . (4 4 "Slow strings"))
 	     (pizz    . (4 5 "Pizzicato"))
 	     (trem    . (4 6 "Tremolo strings"))
 	     (storch1 . (4 7 "String orchestra 1"))
@@ -164,17 +164,17 @@
 
   (defun ?sy35 (&optional (memory :ram))
     (let* ((membank (cond ((eq memory :rom)
-			   (format t "SY35 ROM (Preset) Programs:~%")
+			   (format t ";; SY35 ROM (Preset) Programs:~%")
 			   rom)
 			  ((eq memory :ram)
-			   (format t "SY35 RAM (Internal) Programs:~%")
+			   (format t ";; SY35 RAM (Internal) Programs:~%")
 			   ram)
 			  (t
 			   (cyco-warning
 			    "Expected :RAM or :ROM as memory argument to ?SY35"
 			    (sformat "Encounterd ~A" memory))
 			   (return-from ?sy35))))
-	   (frmt "[~3D]  ~D.~D  ~12A ~20S ")
+	   (frmt ";; [~3D]  ~D.~D  ~8A ~20S ")
 	   (pary (->vector membank)))
       (dotimes (i 32)
 	(let* ((j (+ i 32))
@@ -190,7 +190,7 @@
 	      (format t frmt program-number bank pnum name rem)))
 	  (format t "~%")
 	  (if (= (rem i 8) 7)
-	      (format t "~%"))))))    
+	      (format t ";;~%"))))))    
 
   ;; prg integer  --> MIDI program number
   ;; prg (bank p) --> use SY bank/program 1..8, 1..8

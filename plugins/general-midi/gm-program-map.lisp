@@ -131,13 +131,13 @@
             (APPLAUSE          . (126 "Applause"))))
             
 (flet ((format-assignment (index)
-	 (let ((frmt "[~3D] '~25A ~15s~%")
+	 (let ((frmt ";; [~3D] '~25A ~15s~%")
 	       (q (nth index +general-midi-programs+)))
 	   (format t frmt (second q)(first q)(third q)))))
 
   (defun ?general-midi-programs ()
     "Displays list of general MIDI programs."
-    (format t "General MIDI Programs~%")
+    (format t ";; General MIDI Programs~%")
     (dotimes (i 128)
       (format-assignment i))))
 

@@ -37,8 +37,6 @@
 (load-plugin-file "eastwest/mor2/guitars")
 (load-plugin-file "eastwest/mor2/drums")
 
-
-
 ;; Gypsy ~ renamed Roma
 ;;
 (instrument ew-roma
@@ -48,9 +46,6 @@
 (load-plugin-file "eastwest/roma/roma")
 (load-plugin-file "eastwest/roma/accordians")
 (load-plugin-file "eastwest/roma/guitars")
-
-
-
 
 ;; Voices of Passion (VOP)
 ;;
@@ -63,8 +58,6 @@
 (load-plugin-file "eastwest/vop/indian")
 (load-plugin-file "eastwest/vop/syrian")
 (load-plugin-file "eastwest/vop/welsh")
-
-
 
 
 ;; Stormdrum3 (sd3)

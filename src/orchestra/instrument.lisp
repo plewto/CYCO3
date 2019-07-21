@@ -285,8 +285,8 @@ Child nodes of an instrument must also be instruments."
 	  ((string= option "P")
 	   (funcall (program-map n) 0.0 :program :doc)))))
   
-	  
-  
-
-
-
+(defmethod print-tree ((instrument instrument) &optional (depth 0))
+  (format t "[~2D] ~A" (channel instrument :resolve) (spaces (* 4 depth)))
+  (format t "~A~%" (name instrument))
+  (dolist (c (children instrument))
+    (print-tree c (1+ depth))))

@@ -38,58 +38,44 @@ and chord-model parameters from the project but may selectivly override them."))
 	child-part))))
 
 
-(let ((docstring
-        "Creates new Section.
-:project - Parent project, defaults to *project*
-:cuefn   - Cueing function, defaults project's value.
-:tempo   - tempo in BPM, defaults to project's value.
-:unit    - time signature beat unit, defaults to project's value.
-:bars    - time signature phrase length, defaults to project's value.
-:beats   - time signature beats per bar, defaults to project's value.
-:subbeats - time signature subbeats per beat, defaults to project's value.
-:transposable - bool, if nil the Section is immune to transpose and 
-                and invert operations, default t.
-:reservable   - bool, if nil this Section is immune to retrograde 
-                operations, default t.
-:remarks - Optional remarks text."))
-  (defun make-section (name &key
-			    (project *project*)
-			    (cuefn nil)
-			    (shuffle nil)
-			    (tempo nil)
-			    (unit nil)
-			    (bars nil)
-			    (beats nil)
-			    (subbeats nil)
-			    (transposable t)
-			    (reversible t)
-			    (remarks ""))
-    docstring
-    (if (not (project-p project))
-	(cyco-value-error 'make-section project
-			  "project = nil"
-			  "No current project")
-      (let ((section (make-instance 'section
-				    :properties +section-properties+
-				    :name (->symbol name)
-				    :remarks remarks
-				    :transient t)))
-	(put section :cue-function cuefn)
-	(put section :shuffle-function shuffle)
-	(put section :tempo tempo)
-	(put section :unit unit)
-	(put section :bars bars)
-	(put section :beats beats)
-	(put section :subbeats subbeats)
-	(put section :current-part nil)
-	(put section :groups '())
-	(put section :transposable transposable)
-	(put section :reversible reversible)
-	(connect project section)
-	(init-time-signature section)
-	(put project :current-section section)
-	(set-cyco-prompt)
-	section))))
+
+(defun make-section (name &key
+			  (project *project*)
+			  (cuefn nil)
+			  (shuffle nil)
+			  (tempo nil)
+			  (unit nil)
+			  (bars nil)
+			  (beats nil)
+			  (subbeats nil)
+			  (transposable t)
+			  (reversible t)
+			  (remarks ""))
+  (if (not (project-p project))
+      (cyco-value-error 'make-section project
+			"project = nil"
+			"No current project")
+    (let ((section (make-instance 'section
+				  :properties +section-properties+
+				  :name (->symbol name)
+				  :remarks remarks
+				  :transient t)))
+      (put section :cue-function cuefn)
+      (put section :shuffle-function shuffle)
+      (put section :tempo tempo)
+      (put section :unit unit)
+      (put section :bars bars)
+      (put section :beats beats)
+      (put section :subbeats subbeats)
+      (put section :current-part nil)
+      (put section :groups '())
+      (put section :transposable transposable)
+      (put section :reversible reversible)
+      (connect project section)
+      (init-time-signature section)
+      (put project :current-section section)
+      (set-cyco-prompt)
+      section)))
 
 (defmacro section (name &key
 			(project *project*)
@@ -102,27 +88,55 @@ and chord-model parameters from the project but may selectivly override them."))
 			(subbeats nil)
 			(reversible t)
 			(transposable t)
-			(remarks ""))
-  "Same as make-section except binds new section to symbol name."
+			(remarks "")
+			(auto-prune t))
   `(progn
      (banner2 (sformat "Section ~A" ',name))
      (if (not (symbolp ',name))
 	 (cyco-type-error 'section 'symbol ',name
 			  "Do not quote section name.")
-       (let ((section (make-section ',name
-			      :project ,project
-			      :cuefn ,cuefn
-			      :shuffle ,shuffle
-			      :tempo ,tempo 
-			      :unit ,unit 
-			      :bars ,bars 
-			      :beats ,beats 
-			      :subbeats ,subbeats
-			      :transposable ,transposable
-			      :reversible ,reversible
-			      :remarks ,remarks)))
-	 (defparameter ,name section)
-	 section))))
+       (progn
+	 (if ,auto-prune (prune-project ',name :project ,project))
+	 (let ((section (make-section ',name
+				      :project ,project
+				      :cuefn ,cuefn
+				      :shuffle ,shuffle
+				      :tempo ,tempo 
+				      :unit ,unit 
+				      :bars ,bars 
+				      :beats ,beats 
+				      :subbeats ,subbeats
+				      :transposable ,transposable
+				      :reversible ,reversible
+				      :remarks ,remarks)))
+	   (defparameter ,name section)
+	   section)))))
+
+(let* ((function-docstring
+        "Creates new Section.
+MAKE-SECTION (function) and SECTION (macro) are nearly identical.  The
+primary differences is the macro binds the new section to a symbol with the
+same name.
+
+:project - Parent project, defaults to *project*
+:cuefn   - Cueing function, defaults project's value.
+:shuffle - Shuffle function, defaults to project's value.
+:tempo   - tempo in BPM, defaults to project's value.
+:unit    - time signature beat unit, defaults to project's value.
+:bars    - time signature phrase length, defaults to project's value.
+:beats   - time signature beats per bar, defaults to project's value.
+:subbeats - time signature subbeats per beat, defaults to project's value.
+:transposable - bool, if nil the Section is immune to transpose and 
+                and invert operations, default t.
+:reservable   - bool, if nil this Section is immune to retrograde 
+                operations, default t.
+:remarks - Optional remarks text.")
+      (macro-docstring (str+ function-docstring "
+:auto-prune  - bool, if true removes any existing section with the same
+               name from the project.")))
+  (setf (documentation 'make-section 'function) function-docstring)
+  (setf (documentation 'section 'function) macro-docstring))
+
 
 (defmethod groups ((section section))
   (property section :groups))

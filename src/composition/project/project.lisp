@@ -211,3 +211,10 @@ a symbol named name."
       (clone c :new-name "~A" :new-parent cloned-project))
     (put cloned-project :section-order (clone (property source-project :section-order)))
     cloned-project))
+
+(defun prune-project (section-name &key (project *project*))
+  "prune-project removes named section from project."
+  (dolist (child (children project))
+    (if (eq (name child) section-name)
+	(disconnect child))))
+  

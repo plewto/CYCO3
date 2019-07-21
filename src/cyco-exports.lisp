@@ -242,6 +242,7 @@
 	  property*
 	  prune
 	  prune-orchestra
+	  prune-project
 	  push-event
 	  put
 	  read-midi-bend

@@ -13,7 +13,6 @@
 (global *default-project-output-directory* "MIDI")
 (global *project* nil)
 (global *metronome* nil)
-(global *countin* nil)
 (global *endpad* nil)  ;; ISSUE: should this be depreciated?
 
 

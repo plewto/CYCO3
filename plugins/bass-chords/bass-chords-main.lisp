@@ -6,7 +6,7 @@
 (sub-plugin 'oud)
 (in-package :cyco-oud)
 
-(param *bass-chord-model* (make-polychord 'guitar 24 '(e3 a3 d3 g4)))
+(param *bass-chord-model* (make-polychord 'bass-guitar-chord-model 24 '(e3 a3 d3 g4)))
 
 ;; Solo notes
 (define-movable-chord *bass-chord-model* '[solo] 0 (pitch-class 'e) '(0 x x x))

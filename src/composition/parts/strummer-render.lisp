@@ -57,11 +57,11 @@
 	 (expand-chord-template (state chord-model base-key instrument)
 				(let ((key-number (funcall (keynumber-map instrument) base-key)))
 				  (if (rest-p key-number)(return-from expand-chord-template '(r)))
-				  (let* ((chrod-type (strummer-state-chord-type state))
-					 (template (if (listp chrod-type)
-						       chrod-type
-						     (chord-template chord-model chrod-type key-number))))
-				    (if (or (listp chrod-type)(not (absolute-chords-p chord-model)))
+				  (let* ((chord-type (strummer-state-chord-type state))
+					 (template (if (listp chord-type)
+						       chord-type
+						     (chord-template chord-model chord-type key-number))))
+				    (if (or (listp chord-type)(not (absolute-chords-p chord-model)))
 					(let ((acc '()))
 					  (dolist (offset template)
 					    (if (not (rest-p offset))
@@ -155,10 +155,10 @@
 	 
 	 (process-key-events (midi-event-list time state chord-model instrument)
 			     (let* ((channel-index (channel-index instrument))
-				    (base-key (let ((bk (strummer-state-key state)))
-						(if (or (null bk)(rest-p bk))
+				    (base-key (let ((basekey (strummer-state-key state)))
+						(if (or (null basekey)(rest-p basekey))
 						    (return-from process-key-events midi-event-list))
-						bk))
+						basekey))
 				    (chord-template (expand-chord-template state chord-model base-key instrument))
 				    (base-amp (funcall (dynamic-map instrument)
 						       (approximate

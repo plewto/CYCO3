@@ -57,6 +57,9 @@ tuning - list of open string tunings as absolute key-numbers."
 							     (nth i frets))))))
     (sformat "~A~%~A~%~A~%" acc bcc ccc)))
 
+(defmethod ->string ((plychrd polychord))
+  (sformat "~A~%~A" (name plychrd)(polychord->string plychrd)))
+
 (defmethod string-count ((plychrd polychord))
   (length (polychord-strings plychrd)))
 
@@ -249,3 +252,11 @@ from each list below.
   (dolist (ctype (chord-types plychrd))
     (let ((family (gethash ctype (chord-table plychrd))))
       (remove-duplicate-chords family))))
+
+(defmethod chord-template ((plychrd polychord)(chord-type t)(keynumber t))
+  (let* ((family (or (gethash chord-type (chord-table plychrd))
+		     (let ((message (sformat "chord-model ~A does not define chord type: ~A"
+					     (name plychrd) chord-type)))
+		       (cyco-error message)))))
+    (chord-variant family keynumber)))
+

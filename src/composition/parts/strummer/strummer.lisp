@@ -758,9 +758,11 @@
 				      :section parent
 				      :cuefn (property source :cue-function)
 				      :shuffle (property source :shuffle-function)
+				      :shift (property source :shift)
 				      :transposable (property source :transposable)
 				      :reversible (property source :reversible)
 				      :chord-model (property source :chord-model)
+				      :render-once (property source :render-once)
 				      :remarks (remarks source)
 				      :events '())))
     (copy-time-signature source new-strummer)

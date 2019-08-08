@@ -282,7 +282,10 @@ named name."
 	 (new-qball (make-qball name (clone (property source :instruments))
 			  :section parent
 			  :cuefn (property source :cue-function)
+			  :shuffle (property source :shuffle-function)
+			  :shift (property source :shift)
 			  :transposable (property source :transposable)
+			  :reversible (property source :reversible)
 			  :cue (clone (property source :cue-cycle))
 			  :key (clone (property source :key-pattern))
 			  :dur (clone (property source :articulation-pattern))

@@ -311,6 +311,8 @@
 				     :transposable (property source :transposable)
 				     :reversible (property source :reversible)
 				     :chord-model (property source :chord-model)
+				     :render-once (property source :render-once)
+				     :shift (property source :shift)
 				     :remarks (property source :remarks)
 				     :events '())))
     (copy-time-signature source new-part)

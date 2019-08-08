@@ -272,8 +272,8 @@
 	  set-cyco-prompt
 	  set-symbolic-program-map
 	  signed-norm->midi-data
-	  shift-register-p
-	  shift-register
+	  ;;shift-register-p
+	  ;;shift-register
 	  slew
 	  slew-p
 	  slice

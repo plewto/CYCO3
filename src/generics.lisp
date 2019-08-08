@@ -806,7 +806,7 @@ subclasses.")
   (:documentation
    "Sets the sequence order of Sections within a project."))
 
-(def-type-predicate shift-register-p)
+;; (def-type-predicate shift-register-p)
 (def-type-predicate slew-p)
 
 (defgeneric slice (sequence start &optional end)

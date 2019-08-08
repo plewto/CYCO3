@@ -131,7 +131,7 @@
 		   "src/patterns/slewpat"
 		   "src/patterns/walker"
 		   "src/patterns/markov"
-		   "src/patterns/shift-register"
+		   ;; "src/patterns/shift-register" ; converted to plugin
 		   "src/patterns/merger"
 		   "src/patterns/instrument-layer"
 		   "src/node"
@@ -269,7 +269,8 @@ a warning message is displayed and CYCO terminates."
 
 (in-package :cyco)
 
-(plugin 'ion)  ;; ISSUE FOR TESTING ONLY, REMOVE IN PRODUCTION CODE
+(plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
+(defun lsr ()(plugin 'shift-register :t))  ;; ISSUE FOR TESTING ONLY
 
 
 (defun cyco ()

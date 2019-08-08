@@ -1,0 +1,92 @@
+;;;; CYCO
+;;;; simple-part helper
+
+(defstruct simple-state
+  (source "")
+  (time-specification nil)
+  (time nil)
+  (chord-type '(0))
+  (chord-inversion 0)
+  (chord-octave 0)
+  (articulation 0.0)
+  (dynamic 0.5)
+  (key nil)
+  (pressure nil)
+  (controller-number nil)
+  (controller-value nil)
+  (bend nil)
+  (program-number nil)
+  (program-bank nil))
+
+(defmethod soft-reset ((state simple-state))
+  (setf (simple-state-key state) nil)
+  (setf (simple-state-pressure state) nil) 
+  (setf (simple-state-controller-number state) nil) 
+  (setf (simple-state-controller-value state) nil) 
+  (setf (simple-state-bend state) nil) 
+  (setf (simple-state-program-number state) nil) 
+  (setf (simple-state-program-bank state) nil)
+  state)
+
+(defmethod reset ((state simple-state))
+  (soft-reset state)
+  (setf (simple-state-source state) "")
+  (setf (simple-state-time-specification state) nil)
+  (setf (simple-state-time state) nil)
+  (setf (simple-state-chord-type state) '(0))
+  (setf (simple-state-chord-inversion state) 0)
+  (setf (simple-state-chord-octave state) 0)
+  (setf (simple-state-articulation state) 0.0)
+  (setf (simple-state-dynamic state) 0.5)
+  state)
+
+(defmethod clone ((state simple-state) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (make-simple-state
+    :source (simple-state-source state)
+    :time-specification (simple-state-time-specification state)
+    :time (simple-state-time state)
+    :chord-type (simple-state-chord-type state)
+    :chord-inversion (simple-state-chord-inversion state)
+    :chord-octave (simple-state-chord-octave state)
+    :articulation (simple-state-articulation state)
+    :dynamic (simple-state-dynamic state)
+    :key (simple-state-key state)
+    :pressure (simple-state-pressure state)
+    :controller-number (simple-state-controller-number state)
+    :controller-value (simple-state-controller-value state)
+    :bend (simple-state-bend state)
+    :program-number (simple-state-program-number state)
+    :program-bank (simple-state-program-bank state)))
+
+(defmethod ->string ((state simple-state))
+  (sformat "SS :time ~A ~A :chord ~A :inv ~A :oct ~A :dur ~A :amp ~A :key ~A :prs ~A  :cc ~A ~A  :bend ~A  :prog ~A ~A"
+	   (simple-state-time-specification state)
+	   (simple-state-time state)
+	   (simple-state-chord-type state)
+	   (simple-state-chord-inverseion state)
+	   (simple-state-chord-octave state)
+	   (simple-state-articulation state)
+	   (simple-state-dynamic state)
+	   (simple-state-key state)
+	   (simple-state-pressure state)
+	   (simple-state-controller-number state)
+	   (simple-state-controller-value state)
+	   (simple-state-bend state)
+	   (simple-state-program-number state)
+	   (simple-state-program-bank state)))
+	   
+	   
+
+
+(defmethod transpose ((state simple-state)(x number))
+  (setf (simple-state-key state)
+	(transpose (simple-state-key state) x))
+  state)
+  
+(defmethod invert ((state simple-state)(pivot t))
+  (if pivot
+      (setf (simple-state-key state)
+	    (invert (simple-state-key state) pivot)))
+  state)
+  

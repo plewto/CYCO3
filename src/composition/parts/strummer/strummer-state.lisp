@@ -1,5 +1,5 @@
 ;;;; CYCO
-;;;; Strummer hellper object.
+;;;; Strummer helper object.
 
 (constant +strum-directions+ '(:up :down :dice :random))
 

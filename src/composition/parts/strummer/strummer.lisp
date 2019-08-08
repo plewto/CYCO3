@@ -664,6 +664,7 @@
 			     chord-model
 			     remarks
 			     events)
+    ;; ISSUE  UMMM let let... fix this
     (let* ((parent (or (validate-section name section)
 		       (return-from make-strummer nil))))
       (let* ((new-strummer (make-instance 'strummer
@@ -756,7 +757,9 @@
 	 (new-strummer (make-strummer name (clone (property source :instruments))
 				      :section parent
 				      :cuefn (property source :cue-function)
+				      :shuffle (property source :shuffle-function)
 				      :transposable (property source :transposable)
+				      :reversible (property source :reversible)
 				      :chord-model (property source :chord-model)
 				      :remarks (remarks source)
 				      :events '())))

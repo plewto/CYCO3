@@ -80,8 +80,8 @@
       (->cyco-symbol b)))
 
 (load "src/composition/parts/simple/docs")
-(load "src/composition/parts/simple/state")
-(load "src/composition/parts/simple/part")
+(load "src/composition/parts/simple/simple-state")
+(load "src/composition/parts/simple/simple-part")
 (load "src/composition/parts/simple/midi-render")
 
 (export '(make-simple-part +docs+ +macro-docs+ dump) :cyco-simple)

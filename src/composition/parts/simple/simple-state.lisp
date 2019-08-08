@@ -59,26 +59,6 @@
     :program-number (simple-state-program-number state)
     :program-bank (simple-state-program-bank state)))
 
-(defmethod ->string ((state simple-state))
-  (sformat "SS :time ~A ~A :chord ~A :inv ~A :oct ~A :dur ~A :amp ~A :key ~A :prs ~A  :cc ~A ~A  :bend ~A  :prog ~A ~A"
-	   (simple-state-time-specification state)
-	   (simple-state-time state)
-	   (simple-state-chord-type state)
-	   (simple-state-chord-inverseion state)
-	   (simple-state-chord-octave state)
-	   (simple-state-articulation state)
-	   (simple-state-dynamic state)
-	   (simple-state-key state)
-	   (simple-state-pressure state)
-	   (simple-state-controller-number state)
-	   (simple-state-controller-value state)
-	   (simple-state-bend state)
-	   (simple-state-program-number state)
-	   (simple-state-program-bank state)))
-	   
-	   
-
-
 (defmethod transpose ((state simple-state)(x number))
   (setf (simple-state-key state)
 	(transpose (simple-state-key state) x))

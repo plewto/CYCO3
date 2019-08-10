@@ -131,7 +131,6 @@
 		   "src/patterns/slewpat"
 		   "src/patterns/walker"
 		   "src/patterns/markov"
-		   ;; "src/patterns/shift-register" ; converted to plugin
 		   "src/patterns/merger"
 		   "src/patterns/instrument-layer"
 		   "src/node"
@@ -164,23 +163,11 @@
 		   "src/composition/sections/section"
 		   "src/composition/parts/part"
 		   "src/composition/parts/raw-part"
-
-		   "src/composition/parts/strummer/strummer-docs"
-		   "src/composition/parts/strummer/strummer-state"
-          	   "src/composition/parts/strummer/strummer"
-		   "src/composition/parts/strummer/strummer-render"
-
+		   "src/composition/parts/strummer/header"
 		   "src/composition/parts/simple/header"
-
-		  
-
-
 		   "src/composition/parts/controllers"
 		   "src/composition/parts/controllers-render"
 		   "src/composition/parts/qball"
-
-		   
-		   
 		   "src/composition/parts/ghost"
 		   "src/composition/parts/programs"
 		   "src/composition/parts/metronome"
@@ -270,8 +257,6 @@ a warning message is displayed and CYCO terminates."
 (in-package :cyco)
 
 (plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
-(defun lsr ()(plugin 'shift-register :t))  ;; ISSUE FOR TESTING ONLY
-
 
 (defun cyco ()
   (cyco-banner)

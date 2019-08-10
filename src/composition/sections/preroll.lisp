@@ -4,16 +4,16 @@
 ;;;; metronome count-in.
 ;;;;
 
-(constant +countin-properties+
+(constant +preroll-properties+
 	  (append +section-properties+
 		  '(:instruments)))
 
-(defclass countin (section) nil)
+(defclass preroll (section) nil)
 
 
 
   
-(defun make-countin (&key
+(defun make-preroll (&key
 		     name
 		     (project *project*)
 		     tempo unit bars beats subbeats
@@ -21,42 +21,42 @@
 		     (metronome t)
 		     remarks)
   (if (not (project-p project))
-      (cyco-value-error 'make-countin project
+      (cyco-value-error 'make-preroll project
 			"project = nil"
 			"No current project")
-    (let ((countin (make-instance 'countin
-				  :name (->symbol (or name "countin"))
-				  :properties +countin-properties+
+    (let ((preroll (make-instance 'preroll
+				  :name (->symbol (or name "preroll"))
+				  :properties +preroll-properties+
 				  :remarks (->string (or remarks ""))
 				  :transient t)))
-      (put countin :tempo tempo)
-      (put countin :unit unit)
-      (put countin :bars bars)
-      (put countin :beats beats)
-      (put countin :subbeats subbeats)
-      (put countin :current-part nil)
-      (put countin :groups '())
-      (put countin :instruments instruments)
-      (connect project countin)
-      (make-programs 'countin-programs instruments :section countin)
+      (put preroll :tempo tempo)
+      (put preroll :unit unit)
+      (put preroll :bars bars)
+      (put preroll :beats beats)
+      (put preroll :subbeats subbeats)
+      (put preroll :current-part nil)
+      (put preroll :groups '())
+      (put preroll :instruments instruments)
+      (connect project preroll)
+      (make-programs 'preroll-programs instruments :section preroll)
       (if metronome
-	  (make-metronome :name 'countin-metronome
-			  :section countin))
+	  (make-metronome :name 'preroll-metronome
+			  :section preroll))
       (if instruments
-	  (make-programs 'countin-programs (->list instruments) :time '(1 1 1)
-			 :section countin))
-      countin)))
+	  (make-programs 'preroll-programs (->list instruments) :time '(1 1 1)
+			 :section preroll))
+      preroll)))
 
-(defmacro countin (&key (project *project*)
+(defmacro preroll (&key (project *project*)
 			tempo unit bars beats subbeats
 			instruments
 			(metronome t)
 			remarks
 			(auto-prune t))
   `(progn
-     (banner2 "Countin")
-     (if ,auto-prune (prune-project 'countin :project ,project))
-     (let* ((new-countin (make-countin :project ,project
+     (banner2 "Preroll")
+     (if ,auto-prune (prune-project 'preroll :project ,project))
+     (let* ((new-preroll (make-preroll :project ,project
 				       :tempo ,tempo
 				       :unit ,unit
 				       :bars ,bars
@@ -65,13 +65,13 @@
 				       :instruments ,instruments
 				       :metronome ,metronome
 				       :remarks ,remarks)))
-       (param countin new-countin)
-       new-countin)))
+       (param preroll new-preroll)
+       new-preroll)))
 
 
-(defmethod clone ((source countin) &key new-name new-parent)
+(defmethod clone ((source preroll) &key new-name new-parent)
   (let ((name (->symbol (sformat (or new-name "~A") (name source)))))
-    (make-countin :name name
+    (make-preroll :name name
 		  :project (or new-parent (parent source))
 		  :tempo (property source :tempo)
 		  :unit (property source :unit)
@@ -83,13 +83,13 @@
 
 
 (let* ((function-docstring
-       "MAKE-COUNTIN & COUNTIN  Creates new countin section.
+       "MAKE-PREROLL & PREROLL  Creates new preroll section.
 
-MAKE-COUNTIN (function) and COUNTIN (macro) have nearly identical usage.
-The main difference is that countin binds the new section to the symbol 
-'COUNTIN while MAKE-COUNTIN does not.
+MAKE-PREROLL (function) and PREROLL (macro) have nearly identical usage.
+The main difference is that preroll binds the new section to the symbol 
+'PREROLL while MAKE-PREROLL does not.
 
-:name        - Symbol, defaults to 'countin
+:name        - Symbol, defaults to 'preroll
 :project     - Defaults to *project*
 :tempo       - Defaults to project tempo
 :unit        - Defaults to project time-signature unit
@@ -102,6 +102,6 @@ The main difference is that countin binds the new section to the symbol
 :remarks     - optional remarks text.")
 
        (macro-docstring (str+ function-docstring "
-:auto-prune  - bool, if true, first remove and existing countin from the project.")))
-   (setf (documentation 'make-countin 'function) function-docstring)
-   (setf (documentation 'countin 'function) macro-docstring))
+:auto-prune  - bool, if true, first remove and existing preroll from the project.")))
+   (setf (documentation 'make-preroll 'function) function-docstring)
+   (setf (documentation 'preroll 'function) macro-docstring))

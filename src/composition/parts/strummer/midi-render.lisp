@@ -149,7 +149,11 @@
 	(channel-index instrument))
     (push? (render-bend time state channel-index) midi-events)
     (push? (render-control-change time state channel-index) midi-events)
-    (push? (render-program-change time state instrument) midi-events)
+    (let ((program-events (render-program-change time state channel-index)))
+      (if program-events
+	  (setf midi-events (append midi-events program-events))))
+
+    
     (let ((note-events (render-note-events time strummer state instrument)))
       (if note-events
 	  (setf midi-events (append midi-events note-events))))
@@ -162,3 +166,14 @@
 	(dolist  (state (strummer-states strummer))
 	  (setf midi-events (append midi-events (render-state strummer state instrument offset))))
 	midi-events)))
+
+(defmethod render-n ((part strummer)(n integer) &key (offset 0.0))
+  (let ((period (phrase-duration part))
+	(template (render-once part))
+	(midi-events '()))
+    (dotimes (i (if (property part :render-once) 1 n))
+      (dolist (event template)
+	(let ((reltime (car event))
+	      (message (cdr event)))
+	  (push (cons (+ offset (* i period) reltime) message) midi-events))))
+    (sort-midi-events midi-events)))

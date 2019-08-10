@@ -57,6 +57,7 @@
 		:property
 		:put
 		:range
+		:remarks
 		:render-once
 		:render-n
                 :reset

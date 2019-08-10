@@ -111,10 +111,10 @@
 	    (setf midi-events (append midi-events (render-controller-events state-time state instrument-list)))
 	    (setf midi-events (append midi-events (render-program-events state-time state instrument-list)))
 	    (setf midi-events (append midi-events (render-pressure-events state-time state instrument-list)))
-	    (setf midi-events (append midi-events (render-note-events state-time state chord-model instrument-list)))
-	    ))
+	    (setf midi-events (append midi-events (render-note-events state-time state chord-model instrument-list)))))
+	(dolist (c (children part))
+	  (setf midi-events (append midi-events (render-once c))))
 	(sort-midi-events midi-events))))
-		 
 		 
 (defmethod render-n ((part simple-part)(n integer) &key (offset 0.0))
   (let ((period (phrase-duration part))

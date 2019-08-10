@@ -165,6 +165,8 @@
 	     (instrument (property strummer :instruments)))
 	(dolist  (state (strummer-states strummer))
 	  (setf midi-events (append midi-events (render-state strummer state instrument offset))))
+	(dolist (c (children strummer))
+	  (setf midi-events (append midi-events (render-once c))))
 	midi-events)))
 
 (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))

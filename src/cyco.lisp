@@ -172,7 +172,7 @@
 		   "src/composition/parts/programs"
 		   "src/composition/parts/metronome"
 		   "src/composition/sections/preroll"
-		   "src/composition/sections/endpad"
+		   ;;"src/composition/sections/endpad"
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/cyco-exports"

@@ -1,5 +1,4 @@
-;;;; CYCO
-;;;; simple-part simple-part
+;;;; CYCO simple-part part.lisp
 ;;;;
 
 (defclass simple-part (part)

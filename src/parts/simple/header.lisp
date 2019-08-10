@@ -79,10 +79,10 @@
   (eq (->cyco-symbol a)
       (->cyco-symbol b)))
 
-(load "src/composition/parts/simple/docs")
-(load "src/composition/parts/simple/simple-state")
-(load "src/composition/parts/simple/simple-part")
-(load "src/composition/parts/simple/midi-render")
+(load "src/parts/simple/docs")
+(load "src/parts/simple/state")
+(load "src/parts/simple/part")
+(load "src/parts/simple/midi-render")
 
 (export '(make-simple-part +docs+ +macro-docs+ dump) :cyco-simple)
 (import '(cyco-simple:make-simple-part) :cyco)

@@ -78,10 +78,10 @@
 (defun ->cyco-symbol (sym)
   (->symbol (string-upcase (->string sym)) :cyco))
 
-(load "src/composition/parts/strummer/docs")
-(load "src/composition/parts/strummer/state")
-(load "src/composition/parts/strummer/part")
-(load "src/composition/parts/strummer/midi-render")
+(load "src/parts/strummer/docs")
+(load "src/parts/strummer/state")
+(load "src/parts/strummer/part")
+(load "src/parts/strummer/midi-render")
 
 
 (export '(make-strummer +macro-docs+ ) :cyco-strummer)

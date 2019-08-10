@@ -1,4 +1,4 @@
-;;;; cyco-strum docs
+;;;; cyco-strummer docs
 ;;;;
 ;;;; STRUMMER is a type of part which produces strummed chords.  It has a
 ;;;; similar structure to SIMPLE-PART but provides much more flexibility.

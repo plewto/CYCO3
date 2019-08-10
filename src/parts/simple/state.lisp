@@ -1,5 +1,4 @@
-;;;; CYCO
-;;;; simple-part helper
+;;;; CYCO simple-part state.lisp
 
 (defstruct simple-state
   (source "")

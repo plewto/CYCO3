@@ -468,3 +468,4 @@
       (clone c :new-parent new-part))
     new-part))
   
+(setf (documentation 'make-strummer 'function) +docs+)

@@ -49,4 +49,7 @@
 
 (export '(*bass-chord-model*) :cyco-oud)
 (import '(cyco-oud:*bass-chord-model*) :cyco)
+
+(format t "BASE-CHORDS exports *BASS-CHORD-MODEL*~%")
+
 (in-package :cyco)

@@ -20,30 +20,6 @@
 
 (constant +build-time+ (get-universal-time))
 
-;; (defun build-time ()
-;;   "Returns association list of CYCO build time."
-;;   (multiple-value-bind
-;;       (second minute hour date month year day-of-week dst-p tz)
-;;       (decode-universal-time (get-universal-time))
-;;     (dismiss second day-of-week dst-p tz)
-;;     (list (cons :year year)
-;; 	  (cons :month month)
-;; 	  (cons :date date)
-;; 	  (cons :hour hour)
-;; 	  (cons :minute minute))))
-	  
-	  
-
-;; (defun format-build-time ()
-;;   "Formats CYCO build time"
-;;   (let ((time (build-time)))
-;;     (format nil "Build ~A/~A/~A  ~A:~A"
-;; 	    (cdr (assoc :year time))
-;; 	    (cdr (assoc :month time))
-;; 	    (cdr (assoc :date time))
-;; 	    (cdr (assoc :hour time))
-;; 	    (cdr (assoc :minute time)))))
-
 (defmacro param (name &optional (value nil)(docstring ""))
   "An alias for defparameter."
   `(defparameter ,name ,value ,docstring))
@@ -121,6 +97,7 @@
 		   "src/keytables"
 		   "src/dynamics"
 		   "src/metrics"
+		   "src/controller-number-table"
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
@@ -161,16 +138,11 @@
 		   "src/composition/project/loader"
 		   "src/composition/group"
 		   "src/composition/sections/section"
-		   "src/composition/parts/part"
-		   "src/composition/parts/raw-part"
-		   "src/composition/parts/strummer/header"
-		   "src/composition/parts/simple/header"
-		   "src/composition/parts/controllers"
-		   "src/composition/parts/controllers-render"
-		   "src/composition/parts/qball"
-		   "src/composition/parts/ghost"
-		   "src/composition/parts/programs"
-		   "src/composition/parts/metronome"
+
+		   "src/parts/parts-header"
+		
+
+		   
 		   "src/composition/sections/preroll"
 		   ;;"src/composition/sections/endpad"
 		   "src/util/inspection"
@@ -257,6 +229,8 @@ a warning message is displayed and CYCO terminates."
 (in-package :cyco)
 
 (plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
+(defun cc ()(load "src/parts/parts-header")) ;; FOR TESTING ONLY ~ REMOVE
+
 
 (defun cyco ()
   (cyco-banner)

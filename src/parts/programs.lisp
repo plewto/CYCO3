@@ -10,12 +10,9 @@
 		  '(:render-once
 		    :shift)))
 
-;; If render-once property is true, the program events are only
-;; rendered one-time by the render-n method.
-
 (defclass programs (part)
   ((events
-    :type list ; of MIDI events
+    :type list
     :accessor programs-events
     :initform '())))
 

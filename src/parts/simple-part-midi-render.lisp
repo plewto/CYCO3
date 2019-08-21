@@ -1,6 +1,8 @@
 ;;;; cyco-simple midi-render
 ;;;; MIDI rendering functions for simple-part
 
+(in-package :cyco-part)
+
 (labels ((render-bend-events
 	  (time state instrument-list)
 	  (let ((acc '())

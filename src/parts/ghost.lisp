@@ -43,19 +43,19 @@ A Ghost may not have child nodes."))
 name       - Symbol
 source     - Part to be tracked.
 track      - Instrument or MIDI channel to track.
-             A part may contain multible channels, a Ghost however only
+             A part may contain multiple channels, a Ghost however only
 	     tracks a single channel from the part.
 :delay     - Ghosted events delay time.  The delay is specified in terms
              of the parent Section's time-signature and cue-function.
-:transpose - Transpositino of ghosrted notes.
+:transpose - Transposition of ghosted notes.
 :pivot     - Pivot for key inversion
 :keytable  - A vector of length 128 which maps keynumbers.  A value of -1 
              produces a rest.  Defaults to +DEFAULT-KEYTABLE+
 :ampscale  - Amplitude scaling factor, default 1.0
 :outchan   - Ghosted note MIDI channel, defaults to the track channel.
-:remakrs   - 
+:remarks   - 
 
-Key number manipulation function is the ccomposition:
+Key number manipulation function is the composition:
 
     keytable[invert(transpose(key))]"))
 

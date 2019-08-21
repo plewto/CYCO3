@@ -3,7 +3,7 @@
 ;; event-type may be one of following
 ;;    :bend      --> pitch bend
 ;;    :presasure --> channel poressure
-;;    integer    --> control change, where event-type is cxontroller-number.
+;;    integer    --> control change, where event-type is controller-number.
 ;;
 
 (labels ((convert-to-midi-data

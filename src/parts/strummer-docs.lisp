@@ -113,7 +113,7 @@ The available clause types are detailed below.
                   1) By name.  If a name is supplied it must be defined by
                      the part's chord-model.   Typical examples are [solo], 
                      [maj] and [min]  for single note, major and minor
-                     chords respectivly.  See ?chords function for list of
+                     chords respectively.  See ?chords function for list of
                      available chords.
 
                   2) By list.

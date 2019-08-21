@@ -5,9 +5,6 @@
 ;;;; dynamic patterns.  These are recombined according to their
 ;;;; individual pattern types to produce MIDI note events.
 ;;;;
-;;;; ISSUE: Check that 'REST' articulations are properly ignored.
-;;;;        They may be producing note-on events but not corresponding
-;;;;        note off events.
 
 (in-package :cyco-part)
 

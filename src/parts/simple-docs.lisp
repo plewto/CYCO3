@@ -1,20 +1,20 @@
 ;;;; cyco-simple documentation
 ;;;;
-;;;; SIMPLE-PART provides a straight forward event specifications,
+;;;; SIMPLE-PART provides a straight forward event specifications
 ;;;; comparable to a stripped down STRUMMER part.  A SIMPLE-PART may
 ;;;; produce note (including chords), channel-pressure, controller, bend
 ;;;; and program-change events.  
 ;;;; 
 ;;;; Mechanics.
 ;;;;
-;;;;   The SIMPLE-PART class extends PART with a list of "events" in the
-;;;;   form of instances of SIMPLE-STATE.   The SIMPLE-STATE struct
-;;;;   contains fields for both "real" events,  and several support values
-;;;;   which do not directly correspond to MIDI events.
+;;;;   The SIMPLE-PART class extends PART with a list of SIMPLE-STATE
+;;;;   objects.   The simple-state struct contains fields for both "real"
+;;;;   events, and several support values which do not directly correspond
+;;;;   to MIDI events.
 ;;;;   
 ;;;;    source             : The user supplied source, for debugging only
 ;;;;    time-specification : Event time specification in whatever format
-;;;;                         the part cuefunction expects.
+;;;;                         the part cue-function expects.
 ;;;;    time               : floating point time corresponding to the
 ;;;;                         time-specification.  This value may be modified
 ;;;;                         by the parts shuffle function.
@@ -26,14 +26,14 @@
 ;;;;    articulation       : metric-expression sets note duration.
 ;;;;    dynamic            : sets note velocity.
 ;;;;
-;;;;  Changing made to any of the above fields remain in effect until they
+;;;;  Changes made to any of the above fields remain in effect until they
 ;;;;  are explicitly updated.
 ;;;;
 ;;;;  The following fields generate one or more MIDI events.  After the
 ;;;;  events are generated the field is immediately cleared.
 ;;;;
 ;;;;    key               : Note event keynumber, this value is proceeded
-;;;;                        by each instrument's keynnumber-map prior to use.
+;;;;                        by each instrument's keynumber-map prior to use.
 ;;;;    pressure          : normalized float, channel-pressure event
 ;;;;    controller-number : int MIDI controller number 0..127
 ;;;;    controller-value  : normalized float, only used with controller-number
@@ -208,5 +208,5 @@ Commands fall into two general classes;
 (constant +simple-part-docstring+
        (sformat "~A~%~%~A"
 		"The SIMPLE-PART macro has the same usage as the MAKE-SIMPLE-PART
-function excpet it binds the new part to the symbol name."
+function except it binds the new part to the symbol name."
 		+make-simple-part-docstring+))

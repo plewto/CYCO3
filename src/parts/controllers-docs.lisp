@@ -16,7 +16,7 @@ It may generate MIDI control-change, channel-pressure and pitch-bend events.
 NAME         - Symbol
 INSTRUMENTS  - List of instruments or single instrument.
 :SECTION     - Parent instrument, defaults to current section of *PROJECT*
-:CUEFN       - Cueing function, defaults to section value
+:CUEFN       - Cuing function, defaults to section value
 :SHIFT       - Float, time offset in seconds
 :TEMPO       - Float, tempo in BPM, defaults to section value
 :UNIT        - Symbol, time-signature unit, defaults to section value.

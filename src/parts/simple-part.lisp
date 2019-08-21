@@ -201,7 +201,6 @@
 				       
 (setf (documentation 'simple-part 'function) +simple-part-docstring+)
 
-
 (defmethod transpose ((part simple-part)(x t))
   (if (property part :transposable)
       (dolist (state (simple-part-states part))

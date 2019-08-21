@@ -4,52 +4,37 @@
 (defpackage :cyco-part
   (:use :cl)
   (:import-from :cyco
-		:+rest+
-  		:+time-signature-properties+
-		:+default-keytable+
 		:*metronome*
-  		:*project*
+		:*project*
+		:+default-keytable+
+		:+rest+
+		:+time-signature-properties+
 		:->cycle
-  		:->list
 		:->pattern
+		:->list
   		:->string
   		:->symbol
 		:absolute-chords-p
 		:approximate
 		:articulation-map
-  		:banner3
-  		:bars
-  		:beats
 		:beat-duration
 		:bend->midi-data
 		:channel
 		:channel-index
-  		:children
 		:chord-inversion
 		:chord-template
-  		:connect
-  		:constant
 		:copies
-  		:clone
-  		:copy-time-signature
 		:cycle
 		:cyco-composition-error
-  		:cyco-node
-  		:cyco-type-error
 		:data
 		:defines-chord-p
 		:dismiss
-  		:dump-events
 		:duration
 		:dynamic
 		:dynamic-map
 		:dynamic-p
-  		:elements
-  		:false
 		:get-controller-number
 		:global
-  		:instrument-layer
-  		:instrument-p
 		:invert
 		:keynumber
 		:keynumber-map
@@ -59,50 +44,64 @@
 		:metric-expression-p
 		:midi-channel-pressure
 		:midi-control-change
-  		:midi-message-p
 		:midi-note-off
 		:midi-note-off-p
 		:midi-note-on
 		:midi-note-on-p
 		:midi-pitch-bend
-  		:mute
-  		:muted-p
 		:name
 		:next
 		:next-1
 		:next-n
 		:norm->midi-data
-  		:part-p
-  		:parent
 		:partition-list
-  		:pattern-p
 		:permute
 		:phrase-duration
-  		:print-tree
 		:program-change-events
 		:program-map
-  		:property
-  		:project-p
-  		:put
 		:range
-  		:remarks
-  		:render-once
-  		:render-n
 		:reset
 		:rest-p
 		:retrograde
+		:signed-norm->midi-data
+		:tempo
+		:transpose
+		:value
+  		:banner3
+  		:bars
+  		:beats
+  		:children
+  		:clone
+  		:connect
+  		:constant
+  		:copy-time-signature
+  		:cyco-node
+  		:cyco-type-error
+  		:dump-events
+  		:elements
+  		:false
+  		:instrument-layer
+  		:instrument-p
+  		:midi-message-p
+  		:mute
+  		:muted-p
+  		:parent
+  		:part-p
+  		:pattern-p
+  		:print-tree
+  		:project-p
+  		:property
+  		:put
+  		:remarks
+  		:render-n
+  		:render-once
   		:scopies
   		:section-p
   		:sformat
-		:signed-norm->midi-data
   		:solo
   		:sort-midi-events
-		:tempo
   		:time-signature
-		:transpose
-		:value
-  		:unmute
-  		))
+  		:unmute))
 
 (in-package :cyco-part)
 
@@ -139,20 +138,18 @@
 (src-load "controllers")
 (src-load "controllers-midi-render")
 
-
-
-(export '(make-controllers
+(export '(controllers
+	  controllers-p
+	  ghost
+	  ghost-p
+	  make-controllers
 	  make-ghost
 	  make-metronome
 	  make-programs
 	  make-qball
-	  make-simple-part
 	  make-raw-part
+	  make-simple-part
 	  make-strummer
-	  controllers
-	  controllers-p
-	  ghost
-	  ghost-p
 	  metronome
 	  programs
 	  qball
@@ -162,22 +159,21 @@
 	  simple-part
 	  simple-part-p
 	  strummer
-	  strummer-p
-	  ) :cyco-part)
+	  strummer-p) :cyco-part)
 
-(import '(cyco-part:make-controllers
+(import '(cyco-part:controllers
+	  cyco-part:controllers-p
+	  cyco-part:ghost
+	  cyco-part:ghost-p
+	  cyco-part:make-controllers
 	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs
 	  cyco-part:make-qball
+	  cyco-part:make-raw-part
 	  cyco-part:make-simple-part
 	  cyco-part:make-strummer
-	  cyco-part:make-raw-part
 	  cyco-part:metronome
-	  cyco-part:ghost
-	  cyco-part:ghost-p
-	  cyco-part:controllers
-	  cyco-part:controllers-p
 	  cyco-part:programs
 	  cyco-part:qball
 	  cyco-part:qball-p
@@ -186,9 +182,7 @@
 	  cyco-part:simple-part
 	  cyco-part:simple-part-p
 	  cyco-part:strummer
-	  cyco-part:strummer-p
-	  ) :cyco)
-
+	  cyco-part:strummer-p) :cyco)
 
 (in-package :cyco)
 

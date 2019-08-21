@@ -90,7 +90,6 @@ used directly."))
 (defun part-banner (parent-name part-name)
   (banner3 (sformat "Section: ~A  Part: ~A" parent-name part-name)))
 
-
 (defmethod dump-events ((part part) &key (range (cons 0 1e9))(filter #'false)(render nil))
   (dump-events (render-once part) :range range :filter filter :render render))
 

@@ -107,7 +107,6 @@
 	  (metric-expression default))
       expression)))
 	   
-	   
 (defun expect-dynamic (part event clause &key (position 1)(default 0.5))
   (let ((values (->list (nth position clause))))
     (if (not (every #'dynamic-p values))

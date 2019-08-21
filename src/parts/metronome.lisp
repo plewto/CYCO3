@@ -6,6 +6,8 @@
 ;;;;   'beat   - all other beats.
 ;;;;
 
+(in-package :cyco-part)
+
 (let ((docstring
    "Creates METRONOME part.  
 

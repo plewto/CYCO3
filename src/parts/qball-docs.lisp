@@ -9,8 +9,9 @@
 ;;;;        They may be producing note-on events but not corresponding
 ;;;;        note off events.
 
+(in-package :cyco-part)
 
-(param +qball-docstring+
+(constant +qball-docstring+
        "Creates new QBALL instance.
 Most keyname arguments default to the parent node values.
 name

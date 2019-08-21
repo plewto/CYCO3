@@ -1,6 +1,8 @@
 ;;;; CYCO qball midi-render
 ;;;;
 
+(in-package :cyco-part)
+
 (labels ((render-event (qball time instrument-list key-list articulation dynamic)
 		       (let ((midi-events '())
 			     (articulation-scale (if (numberp articulation)

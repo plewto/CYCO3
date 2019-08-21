@@ -83,6 +83,8 @@
 	  define-chord
 	  defines-chord-p
 	  defkeynumber
+	  define-controller
+	  defined-controllers
 	  dice
 	  dice-p
 	  disconnect
@@ -105,6 +107,7 @@
 	  flatten
 	  flatten1
 	  float-bar
+	  get-controller-number
 	  global
 	  ghost
 	  ghost-p

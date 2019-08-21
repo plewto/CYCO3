@@ -1,5 +1,7 @@
 ;;;; CYCO simple-part state.lisp
 
+(in-package :cyco-part)
+
 (defstruct simple-state
   (source "")
   (time-specification nil)

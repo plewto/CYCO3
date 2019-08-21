@@ -60,7 +60,9 @@
 ;;;;  one or two values, depending on the specific keyword.
 
 
-(param +docs+
+(in-package :cyco-part)
+
+(constant +make-simple-part-docstring+
 "Creates an instance of SIMPLE-PART, a part type for generating explicit
 MIDI events  
 
@@ -203,8 +205,8 @@ Commands fall into two general classes;
             Generates bank and program change events for each instrument.")
 
 
-(param +macro-docs+
+(constant +simple-part-docstring+
        (sformat "~A~%~%~A"
 		"The SIMPLE-PART macro has the same usage as the MAKE-SIMPLE-PART
 function excpet it binds the new part to the symbol name."
-		+docs+))
+		+make-simple-part-docstring+))

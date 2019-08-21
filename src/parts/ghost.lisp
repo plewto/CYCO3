@@ -1,7 +1,7 @@
 ;;;; CYCO Ghost
 ;;;;
 
-(def-type-predicate ghost-p)
+(in-package :cyco-part)
 
 (constant +ghost-properties+
 	  (append +part-properties+
@@ -36,7 +36,6 @@ and -not- the normally expected value of the nominal time-signature.
 A Ghost may not have child nodes."))
 
 
-(defmethod ghost-p ((obj ghost)) t)
 
 
 (let ((docstring
@@ -201,3 +200,7 @@ Key number manipulation function is the ccomposition:
     
 (defmethod phrase-duration ((ghost ghost))
   (phrase-duration (property ghost :source)))
+
+(defgeneric ghost-p (object))
+(defmethod ghost-p ((object t)) nil)
+(defmethod ghost-p ((ghost ghost)) t)

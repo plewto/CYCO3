@@ -57,7 +57,10 @@
 ;;;; 
 ;;;;
 
-(param +docs+
+
+(in-package :cyco-part)
+
+(constant +make-strummer-docstring+
 "Creates an instance of STRUMMER, a type of PART for producing strummed chords. 
 
 name          - Part name.
@@ -228,10 +231,10 @@ The available clause types are detailed below.
 
 
 
-(param +macro-docs+
+(constant +strummer-docstring+
        (sformat "~A~%~%~A"
 		"The STRUMMER macro has the same usage as MAKE-STRUMMER
        except it binds the result to a symbol with the same name as the
        strummer."
-		+docs+))
+		+make-strummer-docstring+))
 		

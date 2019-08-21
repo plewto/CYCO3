@@ -1,5 +1,6 @@
 ;;;; CYCO   part.lisp
 
+(in-package :cyco-part)
 
 (constant +qball-properties+
 	  (append +part-properties+
@@ -14,9 +15,11 @@
 
 (defclass qball (part) nil)
 
+(defgeneric qball-p (object))
+(defmethod qball-p ((object t)) nil)
+(defmethod qball-p ((object qball)) t)
 
 
-  
 (labels ((validate-section (part-name section)
 			   (cond ((section-p section)
 				  section)
@@ -96,7 +99,6 @@
       (put new-qball :reset-on-repeat reset-on-repeat)
       (connect parent new-qball)
       (put new-qball :shift (if shift (float shift) 0.0))
-      (set-cyco-prompt)
       new-qball))) 
 
 (setf (documentation 'make-qball 'function) +qball-docstring+)

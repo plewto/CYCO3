@@ -3,6 +3,8 @@
 ;;;;
 ;;;; Programs are always leaf nodes
 
+(in-package :cyco-part)
+
 (constant +programs-properties+
 	  (append +part-properties+
 		  '(:render-once

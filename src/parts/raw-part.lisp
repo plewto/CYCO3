@@ -1,6 +1,7 @@
 ;;;; CYCO
 ;;;;
 
+(in-package :cyco-part)
 
 (constant +raw-part-properties+
 	  (append +part-properties+
@@ -21,6 +22,10 @@ of MIDI events not addressed by the other part types is required.
 
 Raw-parts can not have sub-parts."))
 
+
+(defgeneric raw-part-p (object))
+(defmethod raw-part-p ((object t)) nil)
+(defmethod raw-part-p ((object raw-part)) t)
 
 (let ((docstring
        "Creates new instance of RAW-PART named name.
@@ -92,7 +97,6 @@ subject to the Section cueing function."))
 	(put new-raw-part :shift 0.0) ;; constant 0
 	(put new-raw-part :reversible nil)
 	(connect parent-section new-raw-part)
-	(set-cyco-prompt)
 	(if (validate-event-list new-raw-part events)
 	    (setf (event-list new-raw-part) events))
 	new-raw-part))))

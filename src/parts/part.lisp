@@ -1,6 +1,8 @@
 ;;;; CYCO
 ;;;;
 
+(in-package :cyco-part)
+
 (constant +part-properties+
 	  (append +time-signature-properties+
 		  '(:chord-model

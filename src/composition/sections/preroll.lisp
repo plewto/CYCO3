@@ -9,9 +9,6 @@
 		  '(:instruments)))
 
 (defclass preroll (section) nil)
-
-
-
   
 (defun make-preroll (&key
 		     name
@@ -38,7 +35,6 @@
       (put preroll :groups '())
       (put preroll :instruments instruments)
       (connect project preroll)
-      (make-programs 'preroll-programs instruments :section preroll)
       (if metronome
 	  (make-metronome :name 'preroll-metronome
 			  :section preroll))

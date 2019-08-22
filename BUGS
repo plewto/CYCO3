@@ -1,14 +1,47 @@
 CYCO Bugs
 
 --------------------------------------------------------------------
-BUG 0001 2018.11.17 Status Indeterminate.
+BUG 0001 2018.11.17 Status CLOSED
     QBAll may not be processing articulation +REST+ events properly.
     Brief observations show QBALL may be producing note-on events when
     the articulation is supposed to be a rest.  Worse the corresponding
     note-off event may not be generated causing a stuck note on what
     should be a rest.
 
+    FIXED
+    Added explicit check to qball render-once method.
+
 --------------------------------------------------------------------
-BUG 0002 2018.12.05 Status Open
+BUG 0002 2018.12.05 Status CLOSED
     general-midi plugin program-map does not recognize symbolic
     program names.
+
+--------------------------------------------------------------------
+BUG 0003 2019.08.22 Status CLOSED
+    PREROLL section contains 2 PROGRAMS parts.
+
+--------------------------------------------------------------------
+BUG 0004 2019.08.22 Status OPEN
+    METRONOME part not producing events on *METRONOME* channel.
+
+    The above sentence is true while using the GENERAL-MIDI plugin.
+    After the ION plugins have been loaded metronome events appear
+    on the proper channel.   This suggest the default *METRONOME*
+    instrument is not properly defined.
+    
+    Problem traced to instrument class having both a channel and
+    channel-index properties.   When the channel is changed via the put
+    method the channel-index is not updated accordingly.  There is the
+    channel! method defined on instrument which properly updates both the
+    channel and the channel-index.  However there is nothing to prevent
+    someone from using put.     
+
+    It is desirable to maintain both channel and channel-index values.
+    The former may be symbolic while the later is strictly numeric.
+    If channel-index is removed as a distinct value then the channel may have
+    to be resolved for each event.
+
+    The solution is to change channel-index to an actual field of the instrument
+    class instead of a property.   Put can be modified to recognize when the
+    channel-index needs to be updated. 
+     

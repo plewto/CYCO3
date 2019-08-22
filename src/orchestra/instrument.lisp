@@ -9,10 +9,13 @@
 	    :keynumber-map 
 	    :dynamic-map 
 	    :articulation-map
-	    :channel 
-	    :channel-index))
+	    :channel))
 
-(defclass instrument (cyco-node) nil
+(defclass instrument (cyco-node)
+  ((channel-index
+    :type integer
+    :accessor channel-index
+    :initform 0))
   (:documentation
    "An INSTRUMENT is a type of NODE used to represent an external MIDI 
 device.  They are essentially proxies for real-world synthesizers.
@@ -85,19 +88,30 @@ other instruments."))
 (defmethod articulation-map ((instrument instrument))
   (property instrument :articulation-map))
 
-(defmethod channel! ((instrument instrument)(channel t))
-  (put instrument :channel channel)
-  (if (not (meta-channel-assignment-p channel))
-      (progn 
-	(cyco-value-error 'instrument.channel! channel)
-	(put instrument :channel-index 0))
-    (put instrument :channel-index (1- (meta-channel channel)))))
-      
+(labels ((set-channel-index
+	  (instrument channel)
+	  (setf (channel-index instrument)
+		(if (meta-channel-assignment-p channel)
+		    (1- (meta-channel channel))
+		  (progn
+		    (cyco-value-error
+		     'instrument.channel!
+		     (sformat "Undefined channel ~A" channel))
+		    0)))))
+
+  (defmethod channel! ((instrument instrument)(channel t))
+    (setf (gethash :channel (property-table instrument)) channel)
+    (set-channel-index instrument channel)
+    channel)
+
+  (defmethod put ((instrument instrument)(key symbol)(value t))
+    (if (eq key :channel)
+	(channel! instrument value)
+      (call-next-method))
+    value))
+
 (defmethod channel ((instrument instrument) &optional resolve)
   (meta-channel (property instrument :channel) resolve))
-
-(defmethod channel-index ((instrument instrument))
-  (property instrument :channel-index))
 
 (global *root-instrument*
 	(let ((root (make-instance 'instrument

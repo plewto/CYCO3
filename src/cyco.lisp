@@ -228,8 +228,7 @@ a warning message is displayed and CYCO terminates."
 
 (in-package :cyco)
 
-(plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
-(defun cc ()(load "src/parts/parts-header")) ;; FOR TESTING ONLY ~ REMOVE
+;; (plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
 
 
 (defun cyco ()

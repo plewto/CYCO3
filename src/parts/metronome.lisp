@@ -51,9 +51,9 @@ Default values are generally acceptable for a generic metronome pattern.
 			   (let ((key-list '()))
 			     (dotimes (bar bars)
 			       (dotimes (beat beats)
-				 (push (cond ((and (zerop bar)(zerop beat)) 'phrase)
-					     ((zerop beat) 'bar)
-					     (t 'beat))
+				 (push (cond ((and (zerop bar)(zerop beat)) (->cyco-symbol 'phrase))
+					     ((zerop beat) (->cyco-symbol 'bar))
+					     (t (->cyco-symbol 'beat)))
 				       key-list)))
 			     (reverse key-list))))
   

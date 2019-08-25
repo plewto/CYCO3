@@ -62,9 +62,9 @@
 						 (let ((msb (if (> bank #x7F) #x30 0))
 						       (lsb (logand bank #x7f)))
 						   (setf event-list (list (cons time (midi-control-change ci 0 msb))
-									  (cons (+ time 0.001) (midi-control-change ci 32 lsb))
-									  (cons (+ time 0.002) (midi-program-change ci (or pnum 0))))))
-					       (setf event-list (list (cons time (midi-program-change ci (or program (program-number new-instrument)))))))
+									  (cons (+ time 0.00001) (midi-control-change ci 32 lsb))
+									  (cons (+ time 0.00002) (midi-program-change ci (or pnum 0))))))
+					       (setf event-list (list (cons time (midi-program-change ci (or pnum (program-number new-instrument)))))))
 					     event-list)))))
       new-instrument)))
 

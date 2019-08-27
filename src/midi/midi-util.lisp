@@ -166,6 +166,54 @@ Returns number."
     (/ (* scale 60.0)
        (* tempo-bpm +TICKS-PER-BEAT+))))
 
+;;; **********************************************************************
+;;;                  MIDI message/event predicates
+;;;
 
+(defun midi-message-match-p (message-1 message-2)
+  "Predicate, true if MIDI messages are identical."
+  (and (midi-message-p message-1)
+       (midi-message-p message-2)
+       (= (command message-1)
+	  (command message-2))
+       (if (midi-channel-message-p message-1)
+	   (= (channel-index message-1)
+	      (channel-index message-2))
+	 t)
+       (let ((data-match-flag t))
+	 (dotimes (index (data-count message-1))
+	   (setf data-match-flag (and data-match-flag (= (data message-1 index)
+							 (data message-2 index)))))
+	 data-match-flag)))
 
+(defun midi-event-match-p (event-1 event-2 &key (time-fuzz 0.00001))
+  "Predicate, true if MIDI events are identical.
 
+An 'event' is defined as (cons time midi-message).
+Event times are considered identical if their difference is less then time-fuzz."
+  (and (consp event-1)
+       (consp event-2)
+       (let ((t1 (car event-1))
+	     (t2 (car event-2)))
+	 (and (numberp t1)
+	      (numberp t2)
+	      (<= (abs (- t1 t2)) time-fuzz)))
+       (midi-message-match-p (cdr event-1)(cdr event-2))))
+       
+(labels ((compare-event-list
+	  (event-list-1 event-list-2 time-fuzz)
+	  (if (not event-list-1)
+	      t
+	    (and (midi-event-match-p (car event-list-1)
+				     (car event-list-2) :time-fuzz time-fuzz)
+		 (compare-event-list (cdr event-list-1)
+				     (cdr event-list-2) time-fuzz)))))
+
+  (defun midi-event-list-match-p (event-list-1 event-list-2 &key (time-fuzz 0.00001))
+    "Predicate, true if two midi event-list are identical.
+Event times are considered identical if their difference is less then time-fuzz."
+    (and (listp event-list-1)
+	 (listp event-list-2)
+	 (= (length event-list-1)
+	    (length event-list-2))
+	 (compare-event-list event-list-1 event-list-2 time-fuzz))))

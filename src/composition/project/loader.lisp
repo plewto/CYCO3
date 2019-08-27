@@ -51,7 +51,8 @@ it reloads the most recent project-file."))
 				      (format-project-main-filename project-name))
 				  :as-file)))
 	      (setf current-project-main-file fqn)
-	      (format t frmt fqn)
+	      (if *enable-banners*
+		  (format t frmt fqn))
 	      (load fqn))
 	  (cyco-composition-error
 	   'load-project
@@ -73,7 +74,8 @@ it reloads the most recent project-file."))
 	    (let* ((project-path (path-parent current-project-main-file))
 		   (fqn (join-path project-path project-file-name :as-file)))
 	      (setf current-filename fqn)
-	      (format t frmt fqn)
+	      (if *enable-banners*
+		  (format t frmt fqn))
 	      (load fqn)))))
     
     (defun lpf (&optional name)

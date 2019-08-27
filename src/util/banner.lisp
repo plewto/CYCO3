@@ -8,6 +8,7 @@
 (constant +BANNER-HEADER2+ "--- ")
 (constant +BANNER-ERROR+ (sformat "ERROR ~A" (scopies 30 #\*)))
 (constant +BANNER-WARNING+ (sformat "WARNING ~A" (scopies 30 #\*)))
+(global *enable-banners* nil)
 
 
 (labels ((build-time ()
@@ -45,25 +46,31 @@
 		      (dolist (q text-list)
 			(format t "~A~A~%" header q))))
   (defun banner1 (headline &rest more)
-    "Prints text between banner bars."
-    (banner-bar +banner-bar1+)
-    (banner-headline headline +banner-header1+ 75)
-    (banner-more more +banner-header1+)
-    (banner-bar +banner-bar1+)
-    (format t "~%"))
+    (if *enable-banners*
+	(progn 
+	  "Prints text between banner bars."
+	  (banner-bar +banner-bar1+)
+	  (banner-headline headline +banner-header1+ 75)
+	  (banner-more more +banner-header1+)
+	  (banner-bar +banner-bar1+)
+	  (format t "~%"))))
 
   (defun banner2 (headline &rest more)
     "Prints text between banner bars.
 BANNER2 is less bold then BANNER1."
-    (banner-bar +banner-bar2+)
-    (banner-headline headline +banner-header2+ 75)
-    (banner-more more +banner-header2+)
-    (format t "~%"))
+    (if *enable-banners*
+	(progn 
+	  (banner-bar +banner-bar2+)
+	  (banner-headline headline +banner-header2+ 75)
+	  (banner-more more +banner-header2+)
+	  (format t "~%"))))
 
   (defun banner3 (headline &rest more)
     "Prints text between banner bars.
 BANNER3 is less bold then BANNER2."
-    (format t "~A~A~%" +banner-header2+ headline)
-    (dolist (q more)
-      (format t "~A   ~A~%" +banner-header2+ q))
-    (format t "~%")))
+    (if *enable-banners*
+	(progn 
+	  (format t "~A~A~%" +banner-header2+ headline)
+	  (dolist (q more)
+	    (format t "~A   ~A~%" +banner-header2+ q))
+	  (format t "~%"))))) 

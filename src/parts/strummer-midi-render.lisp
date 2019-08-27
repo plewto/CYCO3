@@ -36,6 +36,11 @@
 	  (note-list)
 	  (remove-if #'rest-p note-list))
 
+	 (invert-chord
+	  (note-list degree octave)
+	  (let ((result (chord-inversion (reverse note-list) degree :add-octave octave)))
+	    (reverse result)))
+	 
 	 (prepare-note-list 
 	  (strummer state root-key)
 	  (let* ((chord-model (property strummer :chord-model))
@@ -43,22 +48,22 @@
 		 (octave (strummer-state-chord-octave state))
 		 (direction (next-1 (strummer-state-strum-direction state)))
 		 (chord-type (strummer-state-chord-type state))
-		 (note-list (if (listp chord-type)
-				chord-type
-			      (chord-template chord-model chord-type root-key))))
+		 (note-list (remove-if #'rest-p (if (listp chord-type)
+						    chord-type
+						  (chord-template chord-model chord-type root-key)))))
 	    (setf note-list (if (absolute-chords-p chord-model)
 				note-list
 			      (mapcar #'(lambda (q)(+ q root-key)) note-list)))
 	    (setf note-list (cond ((eq direction :up)
-				   (reverse note-list))
+				   note-list)
 				  ((eq direction :dice)
 				   (if (< (random 1000) 500)
 				       (reverse note-list)
 				     note-list))
 				  ((eq direction :random)
 				   (permute note-list))
-				  (t note-list)))
-	    (chord-inversion note-list degree :add-octave octave)))
+				  (t (reverse note-list))))
+	    (invert-chord note-list degree octave)))
 	 
 	 (prepare-note-start-times 
 	  (state note-count)
@@ -70,7 +75,7 @@
 	      (push time acc)
 	      (setf time (+ time delay))
 	      (setf delay (* delay acceleration)))
-	    (reverse acc)))
+	    acc))
 
 	 (prepare-note-end-times 
 	  (state start-times instrument)
@@ -91,10 +96,12 @@
 	    (dotimes (i note-count)
 	      (push (truncate (limit velocity 1 127)) acc)
 	      (setf velocity (* velocity scale)))
-	    (reverse acc))) 
-
+	    acc))
+	 
 	 (strum-chord 
 	  (strummer state instrument root-velocity)
+	  (if (not (strummer-state-key state))
+	      (return-from strum-chord nil))
 	  (let ((root-key (funcall (keynumber-map instrument)(strummer-state-key state))))
 	    (if (not (rest-p root-key))
 		(let* ((note-list (prepare-note-list strummer state root-key))
@@ -115,8 +122,9 @@
 	  (state instrument)
 	  (let* ((dynamic-1 (approximate
 			     (if (strummer-state-key state)              ;; Only step for 'real' note
-				 (next-1 (strummer-state-dynamic state)) ;; events
-			       (value (strummer-state-dynamic state))))) ;; Use current value for grace note
+				 (next-1 (strummer-state-dynamic state)) ;; events Use current value for grace note
+			       (value (strummer-state-dynamic state)))
+			     :scale (strummer-state-dynamic-blur state)))
 		 (dynamic-2 (limit (funcall (dynamic-map instrument) dynamic-1)
 				   (strummer-state-dynamic-min state)
 				   (strummer-state-dynamic-max state))))
@@ -149,22 +157,24 @@
 		(duration (get-duration state instrument)))
 	    (if (or (zerop velocity)(rest-p duration))
 		(return-from render-note-events nil))
-	    (append (render-grace-note time state instrument velocity)
-		    (strum-chord strummer state instrument velocity))))  
+	    (append
+	     (render-grace-note time state instrument velocity)
+	     (strum-chord strummer state instrument velocity))))
 
 	 (render-state 
 	  (strummer state instrument time-offset)
-	  (let ((midi-events '())
-		(time (+ time-offset (strummer-state-time state)))
-		(channel-index instrument))
+	  (let* ((midi-events '())
+		 (time (+ time-offset (strummer-state-time state)))
+		 (channel-index (channel-index instrument))
+		 (program-events (render-program-change time state instrument))
+		 (note-events (render-note-events time strummer state instrument))
+		 )
 	    (push? (render-bend time state channel-index) midi-events)
 	    (push? (render-control-change time state channel-index) midi-events)
-	    (let ((program-events (render-program-change time state channel-index)))
-	      (if program-events
-		  (setf midi-events (append midi-events program-events))
-		(let ((note-events (render-note-events time strummer state instrument)))
-		  (if note-events
-		      (setf midi-events (append midi-events note-events))))))
+	    (if program-events
+	    	(setf midi-events (append midi-events program-events)))
+	    (if note-events
+	    	(setf midi-events (append midi-events note-events)))
 	    (sort-midi-events midi-events))) )
 
   (defmethod render-once ((strummer strummer) &key (offset 0))

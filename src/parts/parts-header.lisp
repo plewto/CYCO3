@@ -80,6 +80,7 @@
   		:dump-events
   		:elements
   		:false
+		:final
   		:instrument-layer
   		:instrument-p
   		:midi-message-p

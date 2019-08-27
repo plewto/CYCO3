@@ -21,7 +21,7 @@ BUG 0003 2019.08.22 Status CLOSED
     PREROLL section contains 2 PROGRAMS parts.
 
 --------------------------------------------------------------------
-BUG 0004 2019.08.22 Status OPEN
+BUG 0004 2019.08.22 Status	CLOSED
     METRONOME part not producing events on *METRONOME* channel.
 
     The above sentence is true while using the GENERAL-MIDI plugin.
@@ -44,4 +44,5 @@ BUG 0004 2019.08.22 Status OPEN
     The solution is to change channel-index to an actual field of the instrument
     class instead of a property.   Put can be modified to recognize when the
     channel-index needs to be updated. 
-     
+
+    Redefined put, channel! and channel-index on instrument class.

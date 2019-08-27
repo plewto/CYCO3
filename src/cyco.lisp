@@ -111,8 +111,8 @@
 		   "src/patterns/merger"
 		   "src/patterns/instrument-layer"
 		   "src/node"
-		   "src/midi/midi-util"
 		   "src/midi/midi-message"
+		   "src/midi/midi-util"
 		   "src/midi/syscommon"
 		   "src/midi/meta"
 		   "src/midi/smf-header"
@@ -228,7 +228,7 @@ a warning message is displayed and CYCO terminates."
 
 (in-package :cyco)
 
-;; (plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
+(plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
 
 
 (defun cyco ()

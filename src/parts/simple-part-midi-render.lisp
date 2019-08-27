@@ -34,9 +34,14 @@
 		(program (simple-state-program-number state))
 		(bank (simple-state-program-bank state)))
 	    (if program
-		(dolist (instrument instrument-list)
-		  (let ((program-map (property instrument :program-map)))
-		    (setf acc (append acc (funcall program-map time :bank bank :program program))))))
+		(progn
+		  (if (eq program (->cyco-symbol 'default))
+		      (setf program :default))
+		  (if (eq bank (->cyco-symbol 'default))
+		      (setf bank :default))
+		  (dolist (instrument instrument-list)
+		    (let ((program-map (property instrument :program-map)))
+		      (setf acc (append acc (funcall program-map time :bank bank :program program)))))))
 	    acc))
 
 	 (render-pressure-events

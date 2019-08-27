@@ -93,6 +93,10 @@
 
 (defmethod invert ((message midi-message)(pivot integer)) message)
 
+(defmethod data-count ((message midi-message)) -1)
+
+(defmethod data ((message midi-message)(index integer)) -1)
+
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			       MIDI-CHANNEL-MESSAGE
@@ -282,6 +286,3 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value low-byte)
 			       (assert-midi-data-value high-byte))))
-
-
-

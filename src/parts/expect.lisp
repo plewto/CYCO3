@@ -44,8 +44,8 @@
 	  nil)
       command)))
 
-(let ((false (->symbol 'no :cyco))
-      (true (->symbol 'yes :cyco)))
+(let ((false (->cyco-symbol 'no))
+      (true (->cyco-symbol 'yes)))
   (defun expect-yes-no (part event clause &key (position 1)(default false))
     (let ((value (nth position clause)))
       (cond ((or (eq value false)(eq value nil))

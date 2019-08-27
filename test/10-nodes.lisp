@@ -1,3 +1,5 @@
+;;;; test 10-nodes
+;;;;
 
 (let* ((properties '(diet environment limbs sound))
        (animal (make-instance 'cyco-node
@@ -36,7 +38,6 @@
   (connect animal fish)
   (connect fish trout)
   (connect fish shark)
-  (print-tree animal)
 
   (put animal 'diet 'food)
   (put animal 'environment 'earth)
@@ -52,70 +53,67 @@
   (put fish 'sound 'none)
   (put trout 'diet 'hooks)
   (put shark 'diet 'trout)
-  
-  (pass? (eq (name animal) 'animal) "name")
-  (pass? (string= (remarks animal) "Animal is the root test node.") "remarks")
-  (pass? (and (root-p animal)
-	      (not (root-p bird))) "root-p")
-  (pass? (and (child-of-p bird crow)
-	      (not (child-of-p bird shark)))
-	 "child-of-p")
 
-  (pass? (and (eq (find-child bird crow) crow)
+  (pass? "name" (eq (name animal) 'animal))
+  (pass? "remarks" (string= (remarks animal) "Animal is the root test node."))
+  (pass? "root-p"
+	 (and (root-p animal)
+	      (not (root-p bird))))
+  (pass? "child-of-p"
+	 (and (child-of-p bird crow)
+	      (not (child-of-p bird shark))))
+  (pass? "find-child"
+	 (and (eq (find-child bird crow) crow)
 	      (eq (find-child fish 'trout) trout)
 	      (not (find-child bird fish))
-	      (not (find-child bird 'fish)))
-	 "find-child")
-  
-  (pass? (same-thing-p (path-to-root shark)(list shark fish animal))
-	 "path-to-root")
+	      (not (find-child bird 'fish))))
+  (pass? "path-to-root"
+	 (equal (path-to-root shark) (list shark fish animal)))
+
 
   (progn
     (disconnect crow)
-    (pass? (not (child-of-p bird crow)) "disconnect")
+    (pass? "disconnect" (not (child-of-p bird crow)))
     (connect bird crow)
-    (pass? (child-of-p bird crow) "connect"))
+    (pass? "connect" (child-of-p bird crow)))
 
   (let ((alice (make-instance 'cyco-node :name 'alice :transient t))
 	(bob (make-instance 'cyco-node :name 'bob :transient t)))
     (connect crow alice)
     (connect trout bob)
     (prune animal)
-    (pass? (and (root-p alice)
+    (pass? "prune"
+	   (and (root-p alice)
 		(root-p bob)
-		(not (root-p crow)))
-	   "prune (:force nil)"))
+		(not (root-p crow)))))
 
   (prune animal :force)
-  (pass? (every #'root-p (list animal bird crow hawk fish trout shark)) "prune (:force t)")
+  (pass? "force prune"
+	 (every #'root-p (list animal bird crow hawk fish trout shark)))
 
-  ;; rebuid tree
+  ;; rebuild tree
   (connect animal bird)
   (connect bird crow)
   (connect bird hawk)
   (connect animal fish)
   (connect fish trout)
   (connect fish shark)
-
-  (pass? (and (has-property-p bird 'diet)
+  
+  (pass? "has-property-p"
+	 (and (has-property-p animal 'diet)
 	      (not (has-property-p bird 'foo))
-	      (not (has-property-p nil nil)))
-	 "has-property-p")
+	      (not (has-property-p nil nil))))
+	      
 
-  (pass? (and (eq (property animal 'diet) 'food)
-	      (eq (property bird 'diet) 'food)
-	      (eq (property crow 'diet) 'worms))
-	 "property")
+  (pass? "property"
+	 (and (eq (property animal 'diet) 'food)
+  	      (eq (property bird 'diet) 'food)    ;; inherited
+  	      (eq (property crow 'diet) 'worms))) ;; shadow
 
-  (fail "(properties node)" "Repeated property keys.")
-  (format t "(properties crow)       --> ~A~%~%" (properties crow))
 
-  (fail "(local-properties node)" "Weird list format.")
-  (format t "*** Would changing format have 'down-stream' consequences ?~%")
-  (format t "(local-properties crow) --> ~A~%~%" (local-properties crow)))
-
-(not-tested "(clone cyco-node)")
-(not-tested "(->string cyco-node)")
-
+  (fail "(properties node)" "Properties list has duplicates")
+  (format t "(properties crow) --> ~A~%" (properties crow))
   
-  
+  (not-tested 'local-properties)
+  (not-tested "(CLONE node)")
+  (not-tested "(->STRING node)") )

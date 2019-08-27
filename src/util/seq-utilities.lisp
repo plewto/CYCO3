@@ -180,17 +180,13 @@ each resulting item is a unique object."
       (+range start end (abs by)))))
 
 (defun fill-list (source-list template)
-  "Creates new list by merging source-list and template list.
+    "Creates new list by merging source-list and template list.
 The resulting list contains the non-null elements of source-list.
 All nil and missing elements of source-list are replaced by corresponding 
-values from template list.
-
-ISSUE: Fails test by having extra nil at end of result"
-
-  (cons (or (car source-list)(car template))
-	(if (or source-list template)
+values from template list."
+  (if (or source-list template)
+      (cons (or (car source-list)(car template))
 	    (fill-list (cdr source-list)(cdr template)))))
-
 
   
 

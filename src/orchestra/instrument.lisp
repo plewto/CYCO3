@@ -14,8 +14,8 @@
 (defclass instrument (cyco-node)
   ((channel-index
     :type integer
-    :accessor channel-index
-    :initform 0))
+    :accessor instrument-channel-index
+    :initform nil))
   (:documentation
    "An INSTRUMENT is a type of NODE used to represent an external MIDI 
 device.  They are essentially proxies for real-world synthesizers.
@@ -90,7 +90,7 @@ other instruments."))
 
 (labels ((set-channel-index
 	  (instrument channel)
-	  (setf (channel-index instrument)
+	  (setf (instrument-channel-index instrument)
 		(if (meta-channel-assignment-p channel)
 		    (1- (meta-channel channel))
 		  (progn
@@ -112,6 +112,10 @@ other instruments."))
 
 (defmethod channel ((instrument instrument) &optional resolve)
   (meta-channel (property instrument :channel) resolve))
+
+(defmethod channel-index ((instrument instrument))
+  (or (instrument-channel-index instrument)
+      (1- (channel instrument :resolve))))
 
 (global *root-instrument*
 	(let ((root (make-instance 'instrument

@@ -4,7 +4,7 @@
 ;;;; 
 
 
-(global *cyco-error-as-warning* t
+(global *cyco-error-as-warning* nil
 	"If true treat errors as warnings.")
 
 (global *enable-warnings* t
@@ -46,7 +46,8 @@ a warning and CYCO does not terminate."
 	(error-banner (car msg))
 	(dolist (m msg)(format t "ERROR: ~A~%" m))
 	(format t "~%")
-	(error (->string (car msg))))))
+	(format t "~A~%" (->string (car msg)))
+	(abort))))
 
   (defun cyco-type-error (function-name expected encounterd &rest more)
     "Error indicating wrong type was passed to a function."

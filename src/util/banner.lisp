@@ -8,7 +8,7 @@
 (constant +BANNER-HEADER2+ "--- ")
 (constant +BANNER-ERROR+ (sformat "ERROR ~A" (scopies 30 #\*)))
 (constant +BANNER-WARNING+ (sformat "WARNING ~A" (scopies 30 #\*)))
-(global *enable-banners* nil)
+(global *enable-banners* t)
 
 
 (labels ((build-time ()

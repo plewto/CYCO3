@@ -46,3 +46,20 @@ BUG 0004 2019.08.22 Status	CLOSED
     channel-index needs to be updated. 
 
     Redefined put, channel! and channel-index on instrument class.
+
+--------------------------------------------------------------------
+BUG 0005 2019.08.31 Status CLOSED
+    STRUMMER part crescendo feature producing wrong velocities.
+
+    The first time a strummer part was rendered crescendo velocities were
+    created as specified.  On subsequent rendering the velocities continued
+    from the final value of the initial render.
+
+    This was traced to a persistent dynamic pattern object used across 
+    instances of strummer-state.
+
+    Solution: Defined new PATTERN-RESET	method specifically to clear all
+    patterns in the strummer's states list.
+
+    
+    

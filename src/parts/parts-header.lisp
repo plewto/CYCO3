@@ -117,6 +117,8 @@
     (format t "    ~A~%" fqn)
     (load fqn)))
 
+(defgeneric pattern-reset (part-or-state))
+
 (src-load "expect")
 (src-load "part")
 (src-load "raw-part")
@@ -139,7 +141,8 @@
 (src-load "controllers")
 (src-load "controllers-midi-render")
 
-(export '(controllers
+(export '(*strummer-render-trace*
+	  controllers
 	  controllers-p
 	  ghost
 	  ghost-p
@@ -162,7 +165,8 @@
 	  strummer
 	  strummer-p) :cyco-part)
 
-(import '(cyco-part:controllers
+(import '(cyco-part:*strummer-render-trace*
+	  cyco-part:controllers
 	  cyco-part:controllers-p
 	  cyco-part:ghost
 	  cyco-part:ghost-p

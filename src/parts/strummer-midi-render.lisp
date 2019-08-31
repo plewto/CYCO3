@@ -1,6 +1,8 @@
 
 (in-package :cyco-part)
 
+(global *strummer-render-trace* nil)
+
 (labels ((render-bend 
 	  (time state channel-index)
 	  (let ((normalized-bend (strummer-state-bend state)))
@@ -177,15 +179,26 @@
 	    	(setf midi-events (append midi-events note-events)))
 	    (sort-midi-events midi-events))) )
 
+  
+  (defmethod pattern-reset ((strummer strummer))
+    (dolist (state (strummer-states strummer))
+      (pattern-reset state)))
+  
   (defmethod render-once ((strummer strummer) &key (offset 0))
     (if (not (muted-p strummer))
-	(let* ((midi-events '())
-	       (instrument (property strummer :instruments)))
-	  (dolist  (state (strummer-states strummer))
-	    (setf midi-events (append midi-events (render-state strummer state instrument offset))))
-	  (dolist (c (children strummer))
-	    (setf midi-events (append midi-events (render-once c))))
-	  midi-events)))
+  	(let* ((midi-events '())
+  	       (instrument (property strummer :instruments)))
+	  (pattern-reset strummer)
+  	  (dolist  (state (strummer-states strummer))
+	    (let ((state-events (render-state strummer state instrument offset)))
+	      (setf midi-events (append midi-events state-events))
+	      (if *strummer-render-trace*
+		  (progn 
+		    (format t "~A~%" state)
+		    (dump-events state-events)))))
+  	  (dolist (c (children strummer))
+  	    (setf midi-events (append midi-events (render-once c))))
+  	  midi-events)))
 
   (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))
     (let ((period (phrase-duration part))

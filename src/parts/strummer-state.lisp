@@ -29,6 +29,11 @@
   (program-number nil)	             ; nil | keyword | int
   (program-bank nil))                ; nil | keyword | int
 
+
+(defmethod pattern-reset ((state strummer-state))
+  (reset (strummer-state-strum-direction state))
+  (reset (strummer-state-dynamic state)))
+
 (defmethod soft-reset ((state strummer-state))
   (setf (strummer-state-key state) nil)
   (setf (strummer-state-controller-value state) nil)

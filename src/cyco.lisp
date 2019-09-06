@@ -18,8 +18,6 @@
   `(if (not (boundp ',name))
        (defconstant ,name ,value ,docstring)))
 
-(constant +build-time+ (get-universal-time))
-
 (defmacro param (name &optional (value nil)(docstring ""))
   "An alias for defparameter."
   `(defparameter ,name ,value ,docstring))
@@ -138,7 +136,6 @@
 		   "src/composition/project/loader"
 		   "src/composition/group"
 		   "src/composition/sections/section"
-
 		   "src/parts/parts-header"
 		
 
@@ -147,6 +144,7 @@
 		   ;;"src/composition/sections/endpad"
 		   "src/util/inspection"
 		   "src/plugins"
+		   "src/local-config"
 		   "src/cyco-exports"
 		   )))
  
@@ -226,10 +224,6 @@ a warning message is displayed and CYCO terminates."
   nil)
 
 (in-package :cyco)
-
-(setf *config-directory* (join-path (user-home) ".config/cyco" :as-file))
-(push-plugin-search-path "~/dev/cyco3/plugins")       ;; customize
-(push-plugin-search-path (join-path *config-directory* "plugins"))
 
 (defun cyco ()
   (cyco-banner)

@@ -223,13 +223,13 @@ a warning message is displayed and CYCO terminates."
   (in-package :cyco)
   (cyco::set-cyco-prompt)
   (cyco::cyco-banner)
-  ;;(format t "~A~%" (cyco::format-build-time))
   nil)
 
 (in-package :cyco)
 
-(plugin 'ion)  ;; ISSUE FOR personal use ONLY, REMOVE IN PRODUCTION CODE
-
+(setf *config-directory* (join-path (user-home) ".config/cyco" :as-file))
+(push-plugin-search-path "~/dev/cyco3/plugins")       ;; customize
+(push-plugin-search-path (join-path *config-directory* "plugins"))
 
 (defun cyco ()
   (cyco-banner)

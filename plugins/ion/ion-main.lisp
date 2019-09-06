@@ -15,7 +15,7 @@
 (meta-channel! :PROA   11 "Procussion standard kits")
 (meta-channel! :PROB   12 "Procussion cymbals")
 (meta-channel! :SDA    13 "Stormdrum")
-(meta-channel! :SDB    14 "Stormdrum")
+(meta-channel! :WAVESTATION 14 "Korg Wavestation")
 (meta-channel! :MU100R 15 "Yamaha MU100")
 (meta-channel! :BEEP   16 "Metronome")
 
@@ -34,7 +34,7 @@
 
 (prune-orchestra :force t)
 
-(sub-plugin 'general-midi)
+(plugin general-midi)
 (load-plugin-file "yamaha/yamaha")
 (load-plugin-file "casio/ctk2400")
 (load-plugin-file "korg/korg")

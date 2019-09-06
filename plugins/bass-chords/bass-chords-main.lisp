@@ -3,7 +3,7 @@
 ;;;; Defines bass guitar chords using Oud plugin
 ;;;; Exports *bass-chord-model*
 
-(sub-plugin 'oud)
+(plugin oud)
 (in-package :cyco-oud)
 
 (param *bass-chord-model* (make-polychord 'bass-guitar-chord-model 24 '(e3 a3 d3 g4)))

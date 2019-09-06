@@ -13,11 +13,5 @@
 (global *default-project-output-directory* "MIDI")
 (global *project* nil)
 (global *metronome* nil)
-(global *endpad* nil)  ;; ISSUE: should this be depreciated?
 
-
-;; Plugins
-;;
 (global *config-directory* nil)
-(global *plugin-directory* nil)
-(global *current-plugin* nil)

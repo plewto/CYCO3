@@ -3,7 +3,7 @@
 ;;;; Defines a guitar chord-model using the Oud Plugin.
 ;;;; Exports a single object: *GUITAR-CHORD-MODEL* 
 
-(sub-plugin 'oud)
+(plugin oud)
 (in-package :cyco-oud)
 
 (param *guitar-chord-model* (make-polychord 'guitar 24 '(e4 a4 d4 g5 b5 e5)))

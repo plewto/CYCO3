@@ -8,7 +8,7 @@
 ;;;; Exports *UKULELE-CHORD-MODEL*
 ;;;;
 
-(sub-plugin 'oud)
+(plugin oud)
 (in-package :cyco-oud)
 
 (param *ukulele-chord-model* (make-polychord 'ukulele 16 '(g5 c5 e5 a5)))

@@ -4,7 +4,7 @@
 ;;;; Exports *MANDOLIN-CHORD-MODEL*
 ;;;;
 
-(sub-plugin 'oud)
+(plugin oud)
 (in-package :cyco-oud)
 
 (param *mandolin-chord-model* (make-polychord 'mandolin 20 '(g4 d4 a4 e5)))

@@ -1,7 +1,6 @@
 ;;;; cyco3/local-config
 ;;;;
 
-
 (setf *cyco-location* "~/dev/cyco3")
 (setf *config-directory* "~/.config/cyco3")
 (setf *default-project-directory* "~/cyco-projects")

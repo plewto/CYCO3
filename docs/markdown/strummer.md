@@ -1,0 +1,270 @@
+# CYCO Strummer Part
+
+A *STRUMMER* is a type of PART useful for producing strummed chord
+effects.  Unlike a QBALL, with a STRUMMER each event is explicitly
+stated. <br>
+
+#### Features:
+
+- Alternate chord models
+- Chord inversion
+- Strum acceleration
+- Scale amplitudes across strummed notes.
+- Strum direction patterns
+- Grace notes
+- Amplitude patterns including crescendos
+- Simple events for bend, controller and program change.
+
+**(STRUMMER name instrument &key ...)** <br>
+**(MAKE-STRUMMER name instrument &key ...)** <br>
+
+
+    Creates new STRUMNMER part.   STRUMMER and MAKE-STRUMMER are identical
+    except the later binds the new part to the symbol name while the former
+    does not.  The name argument should be quoted for MAKE-STRUMMER and
+	unquoted for STRUMMER.
+	
+	
+	name          - symbol
+	instrument    - instrument
+    :section      - parent section, defaults to current section of *PROJECT*.
+    :cuefn        - cue-function, defaults to section value.
+    :shuffle      - shuffle-function, defaults to section-value.
+    :shift        - time offset in seconds, default 0.0.
+    :tempo        - tempo in BPS, defaults to section value.
+    :unit         - time-signature unit, defaults to section value.
+    :bars         - bar count, defaults to section value.
+    :beats        - beats per bar, defaults to section value.
+    :subbeats     - subbeats per beat, defaults to section value.
+    :render-once  - boolean, if true render events one time only, otherwise
+                    repeat events every bars as needed to fill parent section.
+    :transposable - boolean, if true part is subject to transpose and
+                    invert transformations.
+    :reversible   - boolean, if true part is subject to retrograde
+                    transformations. 
+    :chord-model  - sets chord-model, defaults to section value.
+    :remarks      - optional remarks text.
+    :events       - List of events, see below.
+    
+    
+    
+    Events are specified as a nested list of event 'clauses' where each clause
+    begins with a keyword followed by a specific number of arguments.
+    Clauses fall into two general classes:
+    
+       1) Those that set some persistent values which remain in
+          effect until explicitly changed.  These include:
+		  
+		  :RESET :TIME :CHORD :INVERSION :OCTAVE :STRUM :STRUM* :DIRECTION
+		  :END-TOGETHER :AMP* :GRACE-AMP :GRACE-DURATION :GRACE-DELAY
+		  :AMP CRES :AMP-BLUR and :AMP-LIMIT
+    
+       2) Those which generate events.  Once the events are generated these
+          clauses are cleared.  These include:
+		  
+		  :KEY :GRACE :BEND :CC :PROGRAM and :BANK
+    
+    Available clauses
+	
+	:RESET
+	      
+		  Resets all persistent values to defaults.
+		  
+	:TIME time-specification
+	
+	      Sets event time.  time-specification must be in a format excepted
+	      by the cue and shuffle functions.  For the default BAR cue
+	      function the time format is (BAR BEAT SUBBEAT)
+	
+	:CHORD chord-type
+	
+	      Designates which chord to play.   Chords are either specified by
+	      name or as a list of keynumbers or keynumber offsets.
+		  
+		  1. By name.
+		  
+		     If a name is supplied it must be defined by the
+		     part's chord-model.   Typical examples are [SOLO], [MAJ] and [MIN]
+             Executing (?CHORDS strummer-name) displays list of defined
+		     chords.
+			 
+		  2. By List. 
+		  
+		     A chord list may either be a list of keynumbers or a list of
+			 keynumber-offsets, depending on whether the chord-model is 
+			 ABSOLUTE or not.
+			 
+			 A. For Absolute chord-models.
+			 
+			    Some chord-models, particularly for fretted instrument
+				simulations, are designated as 'absolute'.  When using an
+				absolute chord-model, a list provided to the :CHORD
+				keyword is taken as a literal list of keynumbers.  The
+				keynumber specified by the :KEY clause is ignored.
+				
+			B. Non-Absolute chord-models.
+			
+			    For non-absolute chord models, such as the default
+				*CHORD-TABLE*, a list provided to the :CHORD keyword is
+				used as keynumber offsets relative to the value of the :KEY
+				clause    The following line produces a c-major chord
+				
+				(:key c5 :chord (0 4 7))
+	
+	:INVERSION degree        -12 <= degree <= +12
+	
+	      Sets chord inversion degree.  See CHORD-INVERSION function.
+	
+	:OCTAVE n                -3 <= n <= +3
+	
+	      Adds octave to chord template.  See CHORD-INVERSION function.
+	
+	:STRUM delay
+	
+	      Sets delay time between successive chord notes.  Delay may either
+	      be in seconds or a metric-expression.
+		  
+		  Example, strum c-major chord with 0.01 seconds between each note
+		  
+		  (:key c5 :chord [maj] :strum 0.01)
+	
+	:STRUM* acceleration    0.1 <= acceleration <= 8.0
+	
+	     Adds an acceleration factor to successive strummed notes.  A value
+		 of 1.0 produces a uniform time between strummed notes.
+		 
+		 (:key c5 :chord (0 4 7 12) :strum 0.01 :strum* 1.0)
+		 
+		       c5 time 0.00     times relative to start of chord
+			   e5 time 0.01
+			   g5 time 0.02
+	           c6 time 0.03
+	
+	     Accelerations greater then 1 decrease successive times
+		 
+		 (:Key c5 :chord (0 4 7 12) :strum 0.01 :strum 1.1)
+		 
+		      c5 time 0.000
+			  e5 time 0.010
+	          g5 time 0.019
+			  c6 time 0.027
+	
+	:DIRECTION direction
+	:DIRECTION pattern-list
+	
+	     Chords notes may be played up, down or in random order.
+	     
+		 down   - play notes in order.
+		 up     - reverse order
+		 dice   - select up or down randomly
+		 random - select notes in random order.
+		 
+		 If a pattern-list is specified, it is applied as a cycle over
+		 succeeding chord events
+		 
+		 (:chord [maj] :strum 0.01 :direction (up up down dice))
+		 (:key c3)   ;; chord direction up
+		 (:key c4)   ;; chord direction up
+		 (:key c5)   ;; chord direction down
+		 (:key c6)   ;; random up or down direction
+		 (:key c7)   ;; repeat cycle, chord direction up
+		 
+	
+	:END-TOGETHER boolean
+	
+	    Specifies if strummed note off events should occur at the same time
+    	or be staggered in the order they are played.  
+	
+	:AMP* scale            0.25 <= scale <= 4.0
+
+	    Sets an amp-scaling factor for successive strummed notes.  A scale
+	    value of 1.0 produces all notes with the same amplitude.  Scales
+    	less then 1 decrease successive amplitude
+		
+		(:key c5 :chord (0 4 7 12) :strum 0.01 :amp* 0.90)
+		
+		c5 time 0.00 amp A      ~ time relative to chord start, 
+		e5 time 0.01 amp 0.90A    A is the nominal amplitude.
+		g5 time 0.02 amp 0.81A
+		c6 time 0.03 amp 0.73A
+
+	:GRACE-AMP* scale         0.1 <= scale <= 4.0
+	
+	    Sets grace note amplitude relative to the nominal amplitude.
+	
+
+    :GRACE-DURATION metric-expression
+	
+	    Sets grace-note duration, either as a metric-expression or in seconds.
+
+	
+	:GRACE-DELAY metric-expression
+	
+	    Sets delay between nominal event time and grace note, either as a
+	    metric-expression or in seconds.
+	
+	:DUR metric-expression
+	
+	    Sets note duration either as a metric-expression or in seconds.
+	
+	:AMP dynamic
+	:AMP pattern-list
+	
+	    Sets dynamic level or pattern of dynamic levels.   A list of
+     	dynamic values are converted to a cycle.
+		
+		(:amp (f ff mf))
+		(:key c4)     ;; amp f
+		(:key c4)     ;; amp ff
+		(:key c4)     ;; amp mf
+		(:key c4)     ;; amp f, repeat cycle
+	
+	:CRES start end count
+	
+	    Sets up a crescendo or decrescendo pattern.
+		start - initial amplitude
+		end   - final amplitude
+		count - number of events
+		
+        An amplitude gradient is applied over the next count key-events.
+		After count events the amplitude holds at the end value until
+    	explicitly changed.
+	
+	:AMP-BLUR factor    0.0 <= n <= 1.0 
+	  
+	    Apply dynamic randomization 
+	
+	:AMP-LIMITS min max
+	
+	    Sets absolute limits to allowed dynamic levels.
+	
+	:KEY keynumber
+	
+	    Generate key events.
+	
+	:GRACE keynumber
+	
+	    Generate grace note event.
+	
+	:BEND amount
+	
+	    Generate single pitch-bend event.
+	
+	:CC controller-number amount
+	
+	    Generate single controller event.
+	
+	:PROGRAM program
+	
+	    Generate program-change events.  If the program argument is 'default
+		then use the instrument's default program-number.
+	
+	:BANK bank program
+	
+	    Generate bank and program change events.  If either the program or
+		bank arguments are 'default use the instrument's default values.
+		For instruments which do not support program-banks, generate
+		identical events as the :PROGRAM clause.
+    
+    
+ 

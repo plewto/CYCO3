@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>About</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/logo.png" alt="logo"/>
+  <h1 class="banner">About</h1>
+  <p class="body">
+    CYCO is an expressive music composition language using Lisp.  Scores are
+    prepared in Lisp and then <i>rendered</i> to standard MIDI files.  CYCO is 
+    project-centric with a rich set of pattern types for algorithmic
+    compositions and takes a functional approach to event-time specification.
+  </p>
+  <H2 class="heading">History</H2>
+  <p class=body>
+  Around 2008 I developed a set of extensions for <a href=http://commonmusic.sourceforge.net/ class="link">Common Music</a> called CMU (Common Music Utility).  CMU primarily added a project level
+  framework and an extended notion for time-signatures.  Eventually Common Music
+  moved to version 3 which invalidated CMU and it became increasingly
+  difficult to maintain the legacy code.  As I was only using a small subset
+  of Common Music's features (namely the patterns and the MIDI file
+  utilities), I decided to sever dependency on Common Music and start from
+  scratch.  The name CYCO is a mutation of a common pattern type: the Cycle.</p>
+  <p class=body>
+  CYCO is written in 100% Lisp and was developed and tested with <a href=http://www.sbcl.org/ class="link">SBCL</a> </p>
+  <H2 class="heading">Features</H2>
+  <ul>
+    <li>Project centric design.</li>
+    <li>Flexible functional time signature support.</li>
+    <li>A rich set of algorithmic pattern generators.</li>
+    <li>Symbolic names for common music parameters.</li>
+    <li>Chord tables.</li>
+    <li>Hierarchical instrument definitions, IE a snare may be a sub-instrument of a drum-machine. </li>
+    <li>Plugins</li>
+    <li>Under SBCL CYCO's state may be saved as an executable.</li>
+  </ul>
+  <a id="instalation"></a>
+  <H2 class="heading">Instalation</H2>
+  <p class="body">
+    Other then a functional Lisp the basic CYCO installation has no external
+    dependencies.  A planned OSC plugin will require an external library but
+    this is optional.
+  </p>
+  <ol>
+  <li>
+  Place cyco3 distribution folder in a convenient location. <br>
+  <pre>The default location is ~/dev/cyco3</pre></li>
+  <li>
+  Create the following directories:<br>
+  <pre>
+   ~/.config/cyco/
+   ~/.config/cyco/plugins/
+   ~/cyco-projects/
+</pre>
+  
+  If you elect to use alternate locations modify the file
+         cyco3/src/local-config.lisp accordingly.<br><br></li>
+  <li>
+  In a terminal navigate to the cyco3 directory and fire up your favorite Lisp.<br><br></li>
+  <li>
+  At the Lisp prompt enter<br>
+  <br><strong>(LOAD "src/cyco")</strong>
+  <br><br></li>
+  <li>
+  After the source files load enter the command <br>
+  <br><strong>(CYCO)</strong>
+<br><br><p class='footnote'>At this point you may run the test suite by entering 
+  (LOAD&nbsp;"test/cyco-test")<br>
+  
+  If you run the test, restart CYCO before proceeding.</footnote><br><br>
+  </li>
+  <li>
+  CYCO is now ready for use.  However you may wish to customize it to
+     match the available MIDI equipment.  You do this by creating plugins
+     in the ~/.config/cyco/plugins/ directory as detailed elsewhere.  <br><br></li>
+  <li>
+  If you are using SBCL you have the option of saving the current state of
+     CYCO to an executable.  <br><br>
+  <strong>(SAVE-SNAPSHOT <i>executable-name</i>)</strong><br><br>
+  Snapshots are considerably faster then running from source.  After
+     starting CYCO from a snapshot you must first enter <strong>(CYCO)</strong> at the initial
+     Lisp prompt.</li>
+  </ol>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Sections</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=project-anatomy.html class="navigation">Previous: project-anatomy </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/section.png" alt="section"/>
+  <h1 class="banner">CYCO Sections</h1>
+  <p class="body">
+    The <strong>SECTION</strong> class extends 
+    <a href='time-signature.html'>TIME-SIGNATURE</a> and represents a major
+    composition division.<br>
+    
+    Sections are the middle layer, they are always a child of a 
+    <a href='projects.html'>project</a> and
+    only have <a href='parts.html'>parts</a> as child nodes.
+    The primary job of a section is to be a container for it's parts.  Sections
+    often override the project time-signature and may mute or solo individual
+    parts or groups of parts.
+  </p>
+  <a id="section"></a>
+  
+  <!-- (SECTION name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SECTION name &key ...)</b><br>
+  
+  <!-- (MAKE-SECTION name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-SECTION name &key ...)</b><br>
+  <p class="summery">Creates new SECTION object.</p>
+  <pre class="description">
+    SECTION and MAKE-SECTION are identical except the later
+    binds the new section object to the symbol name while the later does not.
+    The name argument to MAKE-SECTION should be a quoted symbol and unquoted
+    for SECTION.
+    
+        :tempo        - float, tempo in BPM, defaults to project value.
+        :unit         - symbol, time-signature beat-unit, defaults to project value.
+        :bars         - int, length of section in bars, defaults to project value.
+        :beats        - int, number of beats per bar, defaults to project value.
+        :subbeats     - int, number of subbeats per beat, defaults to project value.
+        :cuefn        - function, defaults to project value.
+        :shuffle      - function, defaults to project value.
+        :transposable - Boolean, if nil the section is not effected by transpose
+                        and key-inversion operations. May be overridden by individual
+                        parts.
+        :reversible   - Boolean, if true the section is not effected by retrograde 
+                        operations. May be overridden by individual parts.
+        :remarks      - Optional remarks text solely for the users use.
+        :project      - The parent project, defaults to *PROJECT*
+    
+    By default the new Section is designated the <i>current</i> section of it's
+    parent project.   Most section related functions default to the current
+    section of *PROJECT*.
+  </pre>
+  <p class="body">
+    See <a href='cue-functions.html'>cue and shuffle</a> functions.
+  </p>
+  <a id="group"></a>
+  
+  <!-- (GROUP name members) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(GROUP name members)</b><br>
+  <p class="summery">Creates new group in the current section.</p>
+  <pre class="description">
+    Groups combine related sets of parts for mute and solo operations.
+    The group object is bound to the symbol name.
+            
+    name    - Unquoted symbol. 
+    members - List of member part names.  All parts must currently exist
+              within the section.
+                      
+    Example:
+    
+    (group percussion '(kick snare toms))
+  </pre>
+  <a id="mute"></a>
+  
+  <!-- (MUTE-ALL section) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MUTE-ALL section)</b><br>
+  
+  <!-- (UNMUTE-ALL section) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(UNMUTE-ALL section)</b><br>
+  <p class="summery">Mute or unmute all parts in section.</p>
+  
+  <!-- (MUTE group-or-part &optional state) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MUTE group-or-part &optional state)</b><br>
+  <p class="summery">Changes mute status of group or part.</p>
+  <pre class="description">
+    Possible states are:
+            
+    :mute   - mute part or all members of a group. 
+    :unmute - unmute part or all members of a part.
+    :solo   - unmute this group or part, mute all sibling groups and parts.
+    nil     - maintain current mute status.
+  </pre>
+  <a id="clone"></a>
+  
+  <!-- (CLONE section &key new-name new-parent) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CLONE section &key new-name new-parent)</b><br>
+  <p class="summery">Creates deep-copy of section.</p>
+  <pre class="description">
+    Clone is a generic function defined for many different types.
+    
+    :new-name   - Specifies format string for renaming the clone.
+                  The default format is '~A' where ~A is replaced by the
+                  source section's name.
+    :new-parent - Sets the parent of the clone.  By default the clone has
+                  the same parent as the original.
+  </pre>
+  <a id="transformations"></a>
+  
+  <!-- (TRANSPOSE section n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TRANSPOSE section n)</b><br>
+  
+  <!-- (INVERT section pivot) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(INVERT section pivot)</b><br>
+  
+  <!-- (RETROGRADE section) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RETROGRADE section)</b><br>
+  <p class="summery">Applies indicated operation to all member parts.</p>
+  <pre class="description">
+    Transpose and invert are applied only if the section/part TRANSPOSABLE
+    property is true.
+    
+    Retrograde is applied only if the section/part REVERSABLE property
+    is true.
+  </pre>
+  <a id="render-once"></a>
+  
+  <!-- (RENDER-ONCE section &key (offset 0)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RENDER-ONCE section &key (offset 0))</b><br>
+  <p class="summery">Generates MIDI event-list from section.</p>
+  <pre class="description">
+    The optional offset arguments shifts all event times by
+    offset seconds.
+  </pre>
+  
+  <!-- (RENDER-N section count &key (offset 0.0)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RENDER-N section count &key (offset 0.0))</b><br>
+  <p class="summery">Generates MIDI event-list from section.</p>
+  <pre class="description">
+    count  - positive integer, number of time to repeat section.
+    offset - time, add offset seconds to all event times.
+  </pre>
+  <a id="midi"></a>
+  
+  <!-- (->MIDI section &key filename repeat pad) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(->MIDI section &key filename repeat pad)</b><br>
+  <p class="summery">Writes MIDI file from section events.</p>
+  <pre class="description">
+    :filename - output filename, defaults projects MIDI directory with the
+                same name as section.    For verse section in project foo,
+                the default name is
+                             
+                   ~/cyco-projects/foo/MIDI/verse.mid
+                                    
+    :repeat   - Number of repeats, default 1
+    :pad      - Time in seconds added at the end to allow for final decay
+                tails. Default 0.0
+  </pre>
+  <H3 class="heading">Anatomy of a Section File</H3>
+  <pre class="code">
+    
+        ;; ~/cyco-projects/foo/verse.lisp
+        
+        
+        ;; Create section object and bind to symbol VERSE
+        ;;     The section becomes the 'current' section in *PROJECT*
+        ;;     The CYCO prompt is updated to indicate the current section.
+        ;;
+        
+        (section verse :bars 4) 
+        
+        ;; Optional metronome part.
+        ;; 
+        
+        (metronome)
+        
+        ;; Create parts here...
+        ;;    For illustration assume the parts verse-kick,
+        ;;    verse-snare, verse-bass and verse-piano have
+        ;;    been created.
+        
+        ;; Create part groups.  Groups are used for the purpose of 
+        ;;     muting or soloing collections of parts.  These group 
+        ;;     objects are bound to PERCUSSION and INSTRUMENTS respectively.
+        
+        (group percussion '(verse-kick verse-snare))
+        (group instruments '(verse-bass verse-piano))
+        
+        ;; Set mute state of groups and individual parts.
+        ;;    Possible states are :mute :unmute :solo and nil
+        ;;    A nil value does not alter the current status.
+        ;;
+        
+        (mute percussion  :unmute)
+        (mute instruments :unmute)
+        (mute metronome   :mute)
+        (mute verse-kick  nil)
+        (mute verse-snare nil)
+        (mute verse-bass  nil)
+        (mute verse-piano nil)
+        
+        ;; Create two section MIDI files.
+        ;; The files are saved as: 
+        ;;    ~/cyco-projects/foo/MIDI/verse.mid
+        ;;    ~/.cyco-projects/foo/MIDI/test-verse.mid
+        ;;
+        
+        (->midi verse)
+        (->midi verse :repeat 8 :filename "test-filename")
+    
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=project-anatomy.html class="navigation">Previous: project-anatomy </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>General MIDI Plugin</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=plugins.html class="navigation">Previous: plugins </a> &nbsp;<a href=pdf.html class="navigation">Next: pdf </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/general-midi.png" alt="general-midi"/>
+  <h1 class="banner">General MIDI Plugin</h1>
+  <p class="body">
+    The general-midi plugin creates CYCO
+    <a href='instruments.html'>instruments<a> with 
+    <a href='https://en.wikipedia.org/wiki/General_MIDI'>general-midi</a>
+    program names.
+  </p>
+  
+  <!-- (GENERAL-MIDI-INSTRUMENT name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(GENERAL-MIDI-INSTRUMENT name &key ...)</b><br>
+  
+  <!-- (MAKE-GENERAL-MIDI-INSTRUMENT name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-GENERAL-MIDI-INSTRUMENT name &key ...)</b><br>
+  <p class="summery">Creates new general-midi instrument.</p>
+  <pre class="description">
+    GENERAL-MIDI-INSTRUMENT and MAKE-GENERAL-MIDI-INSTRUMENT are
+    identical except the former binds the new instrument to the
+    symbol name while the later does not.  The name argument 
+    should be a quoted string for MAKE-GENERAL-MIDI-INSTRUMENT
+    and unquoted for GENERAL-MIDI-INSTRUMENT.
+    
+        name       - Symbol
+        :program   - Symbol or integer program-number, defaults to name.
+                     If an integer is used it must be in range 0,127 inclusive.
+                     If program is a symbol it must match an entry in 
+                     +GENERAL-MIDI-PROGRAMS+.  The function ?GENERAL-MIDI-PROGRAMS 
+                     displays a list of valid program symbols.
+        :parent    - nil or instance of Instrument, defaults to *ROOT-INSTRUMENT*
+        :transient - bool, If true this instrument is purged form the orchestra
+                     tree by the (PRUNE-ORCHESTRA) function. Default t
+        :channel   - MIDI channel, defaults to parent's channel.
+        :remarks   - Optional remarks text
+        :keynumber-map    - See orchestra/keynumber-map.lisp
+        :dynamic-map      - See orchestra/dynamic-map.lisp
+        :articulation-map - See orchestra/articulation-map.lisp
+  </pre>
+  
+  <!-- (?general-midi-programs) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(?general-midi-programs)</b><br>
+  <p class="summery">Displays list of general MIDI program names.</p>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=plugins.html class="navigation">Previous: plugins </a> &nbsp;<a href=pdf.html class="navigation">Next: pdf </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Dynamics</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Previous: keynumbers </a> &nbsp;<a href=metrics.html class="navigation">Next: metrics </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/dynamics.png" alt="dynamics"/>
+  <h1 class="banner">CYCO Dynamics</h1>
+  <p class="body">
+    Numerically CYCO dynamic values are floats less then or equal to 1.0.
+    All non-positive values are treated as rest.
+  </p>
+  <H2 class="heading">Symbolic Dynamic Values</H2>
+  <p class="body">
+    CYCO symbolic dynamic values are an extension of the common music symbols
+    P, MF, FF, etc.   These symbols are extended with '-' and '+' suffixes for
+    higher resolution.   A partial list of dynamic values follows:
+  </p>
+  <pre class="code">
+     R     = -1.0  Rest
+     PPPP- ~ 0.016
+     PPPP  ~ 0.047
+     PPPP+ ~ 0.079
+     PPP-  ~ 0.110
+     ...
+     MP-   ~ 0.417
+     MP    ~ 0.457
+     MP+   ~ 0.489
+     MF-   ~ 0.520
+     MF    ~ 0.560
+     MF+   ~ 0.590
+     ...
+     FFFF- ~ 0.292
+     FFFF  ~ 0.969
+     FFFF+ = 1.000
+  </pre>
+  <H2 class="heading">Dynamic Functions</H2>
+  <p class="body">
+    Most dynamic functions may take a single value or a list of values.
+  </p>
+  <a id="dynamic-function"></a>
+  
+  <!-- (DYNAMIC object) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DYNAMIC object)</b><br>
+  <p class="summery">Returns numeric dynamic value of object.</p>
+  <pre class="description">
+    (DYNAMIC -100)  --> -1   a rest
+    (DYNAMIC 0.5))  --> 0.5
+    (DYNAMIC 1.4)   --> 1.0  automatically limited to valid dynamic range.
+    (DYNAMIC 'MP)   --> ~0.417
+    (DYNAMIC '(0.1 0.2 (MP MF))) --> (0.1 0.2 (0.417 0.560))
+  </pre>
+  <a id="dynamic-p"></a>
+  
+  <!-- (DYNAMIC-P object) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DYNAMIC-P object)</b><br>
+  <p class="summery">Predicate, true is object is a valid dynamic value.</p>
+  <a id="dynamic-name"></a>
+  
+  <!-- (DYNAMIC-NAME object) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DYNAMIC-NAME object)</b><br>
+  <p class="summery">Returns symbolic dynamic name for object.</p>
+  <pre class="description">
+    Note there may be slight rounding errors and this function horribly inefficient.
+  </pre>
+  <a id="defdynamic"></a>
+  
+  <!-- (DEFDYNAMIC symbol value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DEFDYNAMIC symbol value)</b><br>
+  <p class="summery">Defines a user dynamic value.</p>
+  <a id="dynamic-velocity"></a>
+  
+  <!-- (DYNAMIC->VELOCITY n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DYNAMIC->VELOCITY n)</b><br>
+  <p class="summery">Converts dynamic value to integer MIDI velocity.</p>
+  <pre class="description">
+    0 &lt;= velocity &lt;= 127
+  </pre>
+  <a id="velocity-dynamic"></a>
+  
+  <!-- (VELOCITY->DYNAMIC velocity) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(VELOCITY->DYNAMIC velocity)</b><br>
+  <p class="summery">Converts MIDI velocity to dynamic value.</p>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Previous: keynumbers </a> &nbsp;<a href=metrics.html class="navigation">Next: metrics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

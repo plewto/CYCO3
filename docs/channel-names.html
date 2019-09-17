@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Channel/Controller Names</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=midi-events.html class="navigation">Previous: midi-events </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/channels.png" alt="channels"/>
+  <h1 class="banner">MIDI Channel & Controller Names</h1>
+  <a id="meta-channel!"></a>
+  
+  <!-- (META-CHANNEL! name channel &optional remarks) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(META-CHANNEL! name channel &optional remarks)</b><br>
+  <p class="summery">Makes symbolic assignment to a MIDI channel.</p>
+  <pre class="description">
+        A meta-channel may be defined in terms of another channel 
+        so long as they ultimately resolve to a 'real' channel number.
+    	
+    	name    - symbol
+    	channel - integer 1 &lt;= channel &lt;= 16
+    	          symbol, an indirect channel assignment.
+    	remarks - optional remarks text.
+    	
+    	Examples:
+    	
+    	(META-CHANNEL! 'oberheim 1)
+    	(META-CHANNEL! 'drum-machine 10)
+    	(META-CHANNEL! 'snare 'drum-machine)
+  </pre>
+  <a id="meta-channel"></a>
+  
+  <!-- (META-CHANNEL channel &optional (resolve nil)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(META-CHANNEL channel &optional (resolve nil))</b><br>
+  <p class="summery">Returns value of meta-channel.</p>
+  <pre class="description">
+        By default returns one-level of
+        indirection.  If resolve is true, returns actual MIDI channel.  
+    	
+    	Using examples above:
+    	
+    	(META-CHANNEL 'snare)   --> drum-machine
+    	(META-CHANNEL 'snare t) --> 10
+  </pre>
+  <a id="channel-name"></a>
+  
+  <!-- (CHANNEL-NAME channel) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CHANNEL-NAME channel)</b><br>
+  <p class="summery">Returns the primary name for MIDI channel.</p>
+  <pre class="description">
+        (CHANNEL-NAME 10) --> drum-machine
+        (CHANNEL-NAME 6)  --> 6, unassigned channels return their integer value.
+  </pre>
+  <a id="meta-channel-assignment-p"></a>
+  
+  <!-- (META-CHANNEL-ASSIGNMENT-P object) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(META-CHANNEL-ASSIGNMENT-P object)</b><br>
+  <p class="summery">Predicate, true if object is a channel assignment.</p>
+  <a id="?meta-channels"></a>
+  
+  <!-- (?META-CHANNELS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(?META-CHANNELS)</b><br>
+  <p class="summery">Displays list of channel assignments.</p>
+  <hr/>
+  <H2 class="heading">Controller Names</H2>
+  <p class="body">
+    MIDI Controller Names
+  </p>
+  <a id="define-controller"></a>
+  
+  <!-- (DEFINE-CONTROLLER name controller-number) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DEFINE-CONTROLLER name controller-number)</b><br>
+  <p class="summery">Assign name to MIDI controller number.</p>
+  <a id="defined-controllers"></a>
+  
+  <!-- (DEFINED-CONTROLLERS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DEFINED-CONTROLLERS)</b><br>
+  <p class="summery">Returns list of assigned controller names.</p>
+  <a id="get-controller-number"></a>
+  
+  <!-- (GET-CONTROLLER-NUMBER name &key (default nil)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(GET-CONTROLLER-NUMBER name &key (default nil))</b><br>
+  <p class="summery">Returns controller number assigned to name.</p>
+  <pre class="description">
+    If name is not an assigned controller, return default.
+  </pre>
+  <H6 class="heading">Default Controller Names</H6>
+  <pre class="code">
+        BANK-SELECT   0
+        WHEEL         1
+        BREATH        2
+        FOOT          4
+        PORT-TIME     5
+        VOLUME        7
+        PAN          10
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=midi-events.html class="navigation">Previous: midi-events </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

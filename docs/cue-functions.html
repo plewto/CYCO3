@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Cue & Shuffle Functions</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=time-signature.html class="navigation">Previous: time-signature </a> &nbsp;<a href=projects.html class="navigation">Next: projects </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/function.png" alt="function"/>
+  <h1 class="banner">Cue & Shuffle Functions</h1>
+  <p class="body">
+    CYCO takes a functional approach for event time specifications.   
+    A <i>cue function</i> converts time-specifications, provided by a score, to offset-times in 
+    seconds.  Cuing functions may be set at any level: Project, Section or Part, and must 
+    have the following signature:
+  </p>
+  <pre class="code">
+    
+    (lambda time-signature time-specification) --> float
+    
+  </pre>
+  <p class="body">
+    The <i>TIME-SIGNATURE</i> argument correspond to the 
+    <a href='parts.html'>part</a> currently being evaluated.<br><br>
+    
+    <i>TIME-SPECIFICATION</i> has no pre-defined format.  This allows great flexibility 
+    for setting event times.  Of course acceptable time-specifications must be supplied
+    to whatever cue-function is currently in in use.
+  </p>
+  <p class="body">
+    The default cue-function, <b>BAR</b>, converts bar-number, beat and 
+    subbeat to an appropriate time offset. Provisions are made for triplets and other 
+    odd timing divisions.  It is general enough for most popular music styles.
+  </p>
+  <a id="bar"></a>
+  
+  <!-- (BAR time-signature time-specification) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BAR time-signature time-specification)</b><br>
+  <p class="summery">Default cuing function.</p>
+  <pre class="description">
+    The time-specification is a list of form 
+    	
+    	      (BR BT SB TK)
+    
+        Where:
+    	
+    	BR - bar number   1, 2, 3, ... &lt;= (bars time-signature), default 1
+    	BT - beat number  1, 2, 3, ... &lt;= (beats time-signature), default 1
+    	SB - subbeat      1, 2, 3, ... &lt;= (subbeats time-signature), default 1
+    	TK - tick         -/+ n, default 0
+    		
+    	All values are optional, the following calls are identical:
+    	
+    	    (BAR timesig nil) &lt;-&gt; (BAR timesig '(1)) &lt;-&gt; (BAR timesig '(1 1 1 0))
+    		
+    		
+    	()          - Bar 1 Beat 1.
+    	(1 2)       - Bar 1 Beat 2.
+    	(1 2 3)     - Bar 1 Beat 2 third sixteenth note. 
+    	(1 2 3 -17) - 17 ticks before the 3rd sixteenth note of beat 2,
+    	
+    	Triplets are specified by prefixing beat or subbeat values with a 'T'.
+    	
+    	(1 T1)   - First beat of bar 1, 'T1' and '1' are equivalent.
+    	(1 T2)   - Second quarter-note triplet of bar 1.
+    	(1 2 T3) - Third sixteenth-note triplet after beat 2.
+    	 
+    	
+    	Out of bounds values elicit a warning and are treated as 1.   Other
+    	cue-functions may treat out of bounds values differently.
+    	
+    	The 'T' modifier scales the nominal value by 2/3.  For default
+    	time-signatures with 4 subbeats per beat a 'T' corresponds to a
+    	sixteenth note triplet.  However a time-signature may have an unusual
+    	number of subbeats per beat, such as 5.  I'm not sure what such
+    	subbeats should be called (perhaps 1/20th notes?)  In any case a T
+    	modifier whene there are 5-subbeats to the beat would result in
+    	1/30th of a beat. 
+  </pre>
+  <a id="float-bar"></a>
+  
+  <!-- (FLOAT-BAR time-signature time-specification) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(FLOAT-BAR time-signature time-specification)</b><br>
+  <p class="summery">Alternate cue-function</p>
+  <pre class="description">
+    FLOAT-BAR is an alternative to BAR where time is specified as fractional 
+    beat values.  The time-specification has the form:
+    	
+      (BR BT)
+        
+      Where:
+    	   
+      BR - bar number   1, 2, 3, ... &lt;= (bars time-signature), default 1
+      BT - beat number, float or rational,  BT &gt;= 1.0
+  </pre>
+  <a id="shuffle"></a>
+  <H2 class="heading">Shuffle Functions</H2>
+  <p class="body">
+    A shuffle-function provides a conditional time-shift for 
+    specific time-specifications.  It may be set at the Project, Section or Part level and
+    has the general form
+  </p>
+  <pre class="code">
+    
+    (lambda time-specification) --&gt; float
+    
+  </pre>
+  <p class="body">
+    The time-specification argument <b>must</b> be compatible with the 
+    current cue-function.
+  </p>
+  
+  <!-- (NO-SHUFFLE time-specification) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NO-SHUFFLE time-specification)</b><br>
+  <p class="summery">Default shuffle function.</p>
+  <pre class="description">
+    The default NO-SHUFFLE function ignores all arguments and returns a constant
+    value of 0.0
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=time-signature.html class="navigation">Previous: time-signature </a> &nbsp;<a href=projects.html class="navigation">Next: projects </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

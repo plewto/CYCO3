@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Raw Parts</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=parts.html class="navigation">Previous: parts </a> &nbsp;<a href=qball.html class="navigation">Next: qball </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <h1 class="banner">Raw Part</h1>
+  <p class="body">
+    A <i>RAW-PART</i> is a primitive type of PART intended as a fall-back when
+    no other part type does the job.  They are for edge-cases and generally you'll want to 
+    use some more advanced part type.
+  </p>
+  
+  <!-- (RAW-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RAW-PART name &key ...)</b><br>
+  
+  <!-- (MAKE-RAW-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-RAW-PART name &key ...)</b><br>
+  <p class="summery">Creates new RAW-PART instance.</p>
+  <pre class="description">
+    The only difference bewteen RAW-PART and MAKE-RAW-PART is that the former binds
+    the new part object to the symbol name while the later does not.  The name argument
+    should be a quoted symbol for MAKE-RAW-PART and unquoted for RAW-PART.
+    
+        Keyword arguments:
+      	
+        :section      - defaults to current section of *PROJECT*
+        :bars         - bars per phrase, inherits from section.
+        :beats        - beats per bar, inherits from section
+        :render-once  - boolean, if true do not repeat.
+        :transposable - boolean if true this part is subject to transpose and
+                        key invert operations.  Raw-parts may not be reversed
+                        by retrograde operations.
+        :remarks      - Optional remarks text.
+        :events       - Nested list of events.
+  </pre>
+  <p class="body">
+    Event times are specified in seconds relative to the start of the section.
+    A RAW-PART does not use time-signature or cue-function to determine event
+    times, you are on your own.
+  </p>
+  <p class="body">
+    Events are specified as a nested list of 
+    <a href='midi-events.html'>MIDI events</a>.
+  </p>
+  <pre class="code">
+    
+         ((time-1 message-1)
+          (time-2 message-2)
+           ................
+          (time-n message-n))
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=parts.html class="navigation">Previous: parts </a> &nbsp;<a href=qball.html class="navigation">Next: qball </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

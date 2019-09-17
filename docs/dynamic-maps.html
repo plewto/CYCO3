@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Dynamic Maps</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=articulation-maps.html class="navigation">Previous: articulation-maps </a> &nbsp;<a href=program-maps.html class="navigation">Next: program-maps </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/dynamic-map.png" alt="dynamic-map"/>
+  <h1 class="banner">Dynamic Maps</h1>
+  <p class="body">
+    A <i>dynamic-map</i> is a function which defines an instrument's dynamic
+    response.  The general form is:
+  </p>
+  <pre class="code">
+    (lambda dynamic-value) --> float
+  </pre>
+  <a id="basic-dynamic-map"></a>
+  
+  <!-- (BASIC-DYNAMIC-MAP &key scale min max) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BASIC-DYNAMIC-MAP &key scale min max)</b><br>
+  <p class="summery">Returns simple dynamic-map.</p>
+  <pre class="description">
+    	:scale - float, scaling factor, default 1.0 
+    	:min   - float, minimum value, default 0.0
+    	:max   - float, maximum value, default 1.0
+    	
+    	The scaling factor is applied prior to the range test.
+  </pre>
+  <a id="metronome-dynamic-map"></a>
+  
+  <!-- (METRONOME-DYNAMIC-MAP &key phrase bar beat) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(METRONOME-DYNAMIC-MAP &key phrase bar beat)</b><br>
+  <p class="summery">Returns a dynamic-map for use with metronomes.</p>
+  <pre class="description">
+           The map recognizes
+    	three event types.
+    	
+    	  'PHRASE - first beat of bar 1.
+    	  'BAR    - first beat of all bars, except the first bar.
+    	  'BEAT   - all other beats.
+  </pre>
+  <a id="default-map"></a>
+  
+  <!-- +DEFAULT-DYNAMIC-MAP+ -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">+DEFAULT-DYNAMIC-MAP+</b><br>
+  <p class="summery">The dynamic map used by default for all new instruments.</p>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=articulation-maps.html class="navigation">Previous: articulation-maps </a> &nbsp;<a href=program-maps.html class="navigation">Next: program-maps </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

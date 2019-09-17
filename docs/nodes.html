@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Nodes</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=instruments.html class="navigation">Next: instruments </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/nodes.png" alt="nodes"/>
+  <h1 class="banner">CYCO Nodes</h1>
+  <p class="body">
+    A <i>CYCO-NODE</i> is an object used in the construction of various trees.  A
+    node has at most one parent and any number of child nodes.
+    
+    Each node type defines a pre-established set of <i>properties</i>, and a node may
+    either directly set a property value or inherit the value from it's
+    parent.  It is not possible for a node to define a property which has not
+    been established at the time it was constructed.
+  </p>
+  <p class="body">
+    CYCO maintains two major trees.
+  </p>
+  <ul>
+    <li>Orchestra - a tree of instruments rooted at <strong>*ROOT-INSTRUMENT*</strong></li>
+    <li>Project trees.  The current project is rooted at <strong>*PROJECT*</strong></li>
+  </ul>
+  <H2 class="heading">Node Functions</H2>
+  <a id="name"></a>
+  
+  <!-- (NAME! node new-name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NAME! node new-name)</b><br>
+  
+  <!-- (NAME node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NAME node)</b><br>
+  <p class="summery">Sets/retrieves node name.</p>
+  <a id="remarks"></a>
+  
+  <!-- (REMARKS! node text) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(REMARKS! node text)</b><br>
+  
+  <!-- (REMARKS node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(REMARKS node)</b><br>
+  <p class="summery">Sets/retrieves optional remarks text.</p>
+  <a id="root-p"></a>
+  
+  <!-- (ROOT-P node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(ROOT-P node)</b><br>
+  <p class="summery">Predicate, true if node has no parent.</p>
+  <a id="find-child"></a>
+  
+  <!-- (FIND-CHILD parent child) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(FIND-CHILD parent child)</b><br>
+  
+  <!-- (FIND-CHILD parent child-name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(FIND-CHILD parent child-name)</b><br>
+  <p class="summery">Returns child node of parent.</p>
+  <pre class="description">
+    A nil result indicates parent does not have indicated child.
+  </pre>
+  <a id="path-to-root"></a>
+  
+  <!-- (PATH-TO-ROOT node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PATH-TO-ROOT node)</b><br>
+  <p class="summery">Returns a list of nodes, in order, starting with node back to the root node. </p>
+  <a id="disconnect"></a>
+  
+  <!-- (DISCONNECT node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DISCONNECT node)</b><br>
+  <p class="summery">Sever the connection between node and it's parent.</p>
+  <a id="connect"></a>
+  
+  <!-- (CONNECT parent child) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CONNECT parent child)</b><br>
+  <p class="summery">Make child a child node of parent.</p>
+  <pre class="description">
+    The connection between child and it's previous parent is severed.
+  </pre>
+  <a id="prune"></a>
+  
+  <!-- (PRUNE node &optional (force nil)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PRUNE node &optional (force nil))</b><br>
+  <p class="summery">Deconstruct tree starting with node.</p>
+  <pre class="description">
+            Each instance of CYCO-NODE has a Boolean field named TRANSIENT.  
+            By default PRUNE only disconnects those nodes with a true transient 
+            value.  If the optional force argument is true, then all nodes are 
+            disconnected regardless of their transient value.
+  </pre>
+  <p class="footnote">
+    An aside: why all this transient nonsense?<br><br>
+    	
+    	    Typically CYCO is customized by defining a default orchestra tree
+    		matching the available local equipment.  These are more or less
+    		permanent instruments corresponding to physical hardware or virtual
+    		synthesizers and are defined in configuration 
+                    <a href='plugins.html'>plugins</a> file. <br><br>
+    		
+    		During the composition phase child instruments are defined under
+    		these permanent instruments.  IE a bass instrument may be
+    		allocated to a specific hardware synth.   As the composition is
+    		developed it is usual to repeatedly reload the various project
+    		files.  These in turn define specific instruments.  If the
+    		orchestra tree is not pruned each reload would add
+    		needless duplicate instruments to the tree.  On the other hand it
+    		is desirable to keep the permanent instruments in place.   The
+    		transient flag is used to distinguish these two classes of
+    		instruments.   Non-transient instruments are established by
+    		configuration.  Transient instruments are created each time a
+    		project is loaded.  The project is responsible for pruning the
+    		orchestra tree prior to creating new instruments.
+  </p>
+  <a id="has-property-p"></a>
+  
+  <!-- (HAS-PROPERTY-P node key) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(HAS-PROPERTY-P node key)</b><br>
+  <p class="summery">Predicate, true if node defines key as a property.</p>
+  <a id="put"></a>
+  
+  <!-- (PUT node key value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PUT node key value)</b><br>
+  <p class="summery">Sets node property key to value.</p>
+  <pre class="description">
+        Is is an error if node does not define key as a property.  The new value 
+        will shadow the parent nodes value for key.
+  </pre>
+  <a id="property"></a>
+  
+  <!-- (PROPERTY node key) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PROPERTY node key)</b><br>
+  <p class="summery">Returns the value of property key.</p>
+  <pre class="description">
+        If node does not define a value for key, use the parent node value.  It is an 
+        error if key is not an established property for node.
+  </pre>
+  <a id="local-properties"></a>
+  
+  <!-- (LOCAL-PROPERTIES node) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LOCAL-PROPERTIES node)</b><br>
+  <p class="summery">Returns list of property keys explicitly defined by node</p>
+  <pre class="description">
+        Parent properties are not included.
+  </pre>
+  <a id="print-tree"></a>
+  
+  <!-- (PRINT-TREE node &optional (depth 0)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PRINT-TREE node &optional (depth 0))</b><br>
+  <p class="summery">Prints tree structure starting at node.</p>
+  <pre class="description">
+        The optional depth argument is used internally.
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=instruments.html class="navigation">Next: instruments </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

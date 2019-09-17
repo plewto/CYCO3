@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Time Signatures</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=program-maps.html class="navigation">Previous: program-maps </a> &nbsp;<a href=cue-functions.html class="navigation">Next: cue-functions </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/timesig.png" alt="timesig"/>
+  <h1 class="banner">CYCO Time Signatures</h1>
+  <p class="body">
+    A <i>TIME-SIGNATURE</i> is a type of 
+    <a href='nodes.html'>CYCO-NODE</a> which sets basic timing
+    parameters.  All composition related classes inherit from TIME-SIGNATURE.
+  </p>
+  <pre class="code">
+        CYCO-NODE
+    	 |
+    	 +-- TIME-SIGNATURE
+    	      |
+    	      +-- PROJECT
+    	      +-- SECTION
+    	      |    |
+    	      |    + ...
+    	      |
+    	      +-- PART
+    	           |
+    	           + ...
+  </pre>
+  <p class="body">
+    Briefly a PROJECT is composed of sequential SECTIONs, which are themselves
+    composed of various PARTs.  This is described in more detail elsewhere.
+  </p>
+  <p class="body">
+    A project sets the default time signature which is automatically
+    inherited by the sections it contains.  The parts in turn inherit the time
+    signature from their parent sections.   Any section or part may override
+    the default time parameters.
+  </p>
+  <H6 class="heading">Time Signature Parameters</H6>
+  <p class="body">
+    The TIME-SIGNATURE class extends the normal concept of a time-signature
+    by including the following parameters:
+  </p>
+  <ul>
+    <li>Tempo - in BPM.</li>
+    <li>Beat unit, quarter note by default.</li>
+    <li>Bar count, number of bars to a phrase.</li>
+    <li>Beat count, number of beats per bar.</li>
+    <li>Subbeat count, number of 'sub' beats per beat.  The default value of 4
+    sets 4 sixteenth notes per beat.:</li>
+    <li>Tsubbeat count, number of alternate subbeats per beat.  The default value
+    of 3/2 sets 6 sixteenth note triplets per beat.</li>
+  </ul>
+  <a id="getters"></a>
+  <p class="body">
+    The following <i>getter</i> methods return various time-signature values.
+  </p>
+  
+  <!-- (TEMPO time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TEMPO time-signature)</b><br>
+   <br>
+  
+  <!-- (UNIT time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(UNIT time-signature)</b><br>
+   <br>
+  
+  <!-- (BARS time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BARS time-signature)</b><br>
+   <br>
+  
+  <!-- (BEATS time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BEATS time-signature)</b><br>
+   <br>
+  
+  <!-- (SUBBEATS time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SUBBEATS time-signature)</b><br>
+   <br>
+  
+  <!-- (TSUBBEATS time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TSUBBEATS time-signature)</b><br>
+   <br>
+  
+  <!-- (TICKS-PER-BEAT time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TICKS-PER-BEAT time-signature)</b><br>
+   <br>
+  
+  <!-- (TICKS-PER-SUBBEAT time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TICKS-PER-SUBBEAT time-signature)</b><br>
+   <br>
+  
+  <!-- (PHRASE-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PHRASE-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (BAR-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BAR-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (BEAT-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BEAT-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (SUBBEAT-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SUBBEAT-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (TBEAT-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TBEAT-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (TSUBBEAT-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TSUBBEAT-DURATION time-signature)</b><br>
+   <br>
+  
+  <!-- (TICK-DURATION time-signature) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TICK-DURATION time-signature)</b><br>
+   <br>
+  <a id="setters"></a>
+  <p class="body">
+    The following <i>setter</i> functions update the appropriate parameters.
+  </p>
+  
+  <!-- (TEMPO! time-signature value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TEMPO! time-signature value)</b><br>
+   <br>
+  
+  <!-- (UNIT! time-signature value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(UNIT! time-signature value)</b><br>
+   <br>
+  
+  <!-- (BARS! time-signature value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BARS! time-signature value)</b><br>
+   <br>
+  
+  <!-- (BEATS! time-signature value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BEATS! time-signature value)</b><br>
+   <br>
+  
+  <!-- (SUBBEATS! time-signature value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SUBBEATS! time-signature value)</b><br>
+   <br>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=program-maps.html class="navigation">Previous: program-maps </a> &nbsp;<a href=cue-functions.html class="navigation">Next: cue-functions </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

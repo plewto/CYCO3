@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Specialized Parts</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=plugins.html class="navigation">Next: plugins </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/pendulum.png" alt="pendulum"/>
+  <h1 class="banner">Specialized Parts</h1>
+  <a id="metronome"></a>
+  <H2 class="heading">Metronome Parts</H2>
+  <p class="body">
+    <i>Metronome</i> is a special case of
+    <a href='qball.html'>QBall</a>.
+  </p>
+  
+  <!-- (METRONOME name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(METRONOME name &key ...)</b><br>
+  <p class="summery">Creates new METRONOME Part.</p>
+  <pre class="description">
+    
+    name       - part name, the new part is bound to the symbol name.
+    section    - parent section, defaults to current-section of *PROJECT*
+    tempo      - defaults to section tempo
+    unit       - default to section unit
+    bars       - default to section bars
+    beats      - default to section beats
+    cue        - cue pattern, produces an event on every beat.
+    key        - key number pattern.  
+                 The *METRONOME* instrument uses special key-number mapping and
+                 which recognizes 'phrase 'bar and 'beat keys.  phrase is the first
+                 beat of the first bar.  bar appears on the first beat of every
+                 bar, except for the first bar.  beat appears on all other beats.
+    amp        - dynamic pattern.  
+    cuefn      - default to section cue function
+    instrument - defaults to *METRONOME*
+  </pre>
+  <hr/>
+  <a id="programs"></a>
+  <H2 class="heading">Programs Part</H2>
+  <p class="body">
+    A <i>PROGRAMS</i> part is a specialized part for generating instrument program
+    changes.  Typically they are timed to occur at the start of a section.
+  </p>
+  
+  <!-- (PROGRAMS name instruments &key time section remarks render-once) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PROGRAMS name instruments &key time section remarks render-once)</b><br>
+  
+  <!-- (MAKE-PROGRAMS name instruments &key time section remarks render-once) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-PROGRAMS name instruments &key time section remarks render-once)</b><br>
+  <p class="summery">Creates new PROGRAMS part.</p>
+  <pre class="description">
+    
+    Creates new PROGRAMS part.  PROGRAMS and MAKE-PROGRAMS are identical
+    except the former binds the new part to the symbol name while the later
+    does not.  The name argument to MAKE-PROGRAMS should be quoted and
+    unquoted for PROGRAMS.
+        
+        name         - Symbol
+        instruments  - List if instruments.
+        :time        - Event time, defaults to start of section.
+        :section     - Parent section, defaults to current-section of *PROJECT*
+        :remarks     - Optional remarks text.
+        :render-once - Boolean, if true do not repeat events within the section.
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=plugins.html class="navigation">Next: plugins </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

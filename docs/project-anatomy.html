@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Project Anatomy</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=projects.html class="navigation">Previous: projects </a> &nbsp;<a href=sections.html class="navigation">Next: sections </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/project.png" alt="project"/>
+  <h1 class="banner">Anatomy of a CYCO Project</h1>
+  <p class="body">
+    Briefly the primary tasks of the main project file are:
+  </p>
+  <ul>
+    <li>Create a PROJECT object.</li>
+    <li>Define an orchestra.</li>
+    <li>Load section files.</li>
+    <li>Set section play order.</li>
+    <li>Generate MIDI files.</li>
+  </ul>
+  <H3 class="heading">Creating the Project Object</H3>
+  <p class="body">
+    The project object is in general responsible for holding everything together
+    and for establishing default values.
+  </p>
+  
+  <!-- (PROJECT name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PROJECT name &key ...)</b><br>
+  
+  <!-- (MAKE-PROJECT name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-PROJECT name &key ...)</b><br>
+  <p class="summery">Creates main project object.</p>
+  <pre class="description">
+    PROJECT and MAKE-PROJECT are identical except the former binds the new project
+    object to the symbol name while the later does not.  The name argument should be 
+    a quoted symbol for MAKE-PROJECT and unquoted for PROJECT.
+    
+    By default the new project object is bound to the global variable *PROJECT*.  
+    The PROJECT macro also updates the CYCO prompt to reflect the current project name.
+    
+    Keyword arguments:
+    
+        :tempo             - Float, project tempo in BPM, default 60.
+        :bars              - Int, number of bars per phrase, default 4.
+        :beats             - Int, number of beats per bar, default 4.
+        :subbeats          - Int, number of subbeats per beat, default 4.
+        :unit              - Symbol, project time-signature unit, default 'Q
+        :cuefn             - Function used for time specifications, default #'BAR
+        :shuffle           - Function determines shuffle amount, default #'NO-SHUFFLE
+        :title             - String, optional title, defaults to name.
+        :catalog-number    - String, optional solely for user's use.
+        :remarks           - String, optional solely for user's use.
+        :main-file         - String, specify an alternate project main file.
+        :make-current      - Boolean, if true bind project object to *PROJECT*, default t.
+        :project-directory - String, defaults to *DEFAULT-PROJECT-DIRECTORY*
+        :output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
+  </pre>
+  <H3 class="heading">Defining an Orchestra</H3>
+  <p class="body">
+    CYCO does not have an 'orchestra' object perse, instead the term implies
+    the tree of <a href='instruments.html'>instruments</a> rooted at 
+    <strong>*ROOT-INSTRUMENT*</strong>. <br>  
+    Instruments fall into two general categories:
+  </p>
+  <ol>
+    <li>Permanent (non-transient). <br>
+  Permanent instruments are usually established via a configuration 
+  <a href='plugins.html'>plugin</a>, and are consistently available across 
+  all projects.<br><br></li>
+    <li>Temporary (transient). <br>
+  Temporary instruments are defined by each project.</li>
+  </ol>
+  <p class="body">
+    If the orchestra is simple, it may be defined directly in the main 
+    project file.<br>  
+    
+    Otherwise consider using a dedicated orchestra file and load it
+    with <nobr>(LPF 'orchestra)</nobr>
+  </p>
+  <p class="body">
+    <strong>Regardless of where the orchestra is defined, it is important
+    to call (PRUNE-ORCHESTRA) prior to creating it.</strong>
+  </p>
+  <p class="body">
+    An orchestra definition mostly consit of a series of INSTRUMENT
+    statements.
+  </p>
+  
+  <!-- (?O) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(?O)</b><br>
+  <p class="summery">Displays orchestra tree.</p>
+  <H3 class="heading">Loading Section Files</H3>
+  <p class="body">
+    Sections represent major divisions of a composition.  In all but the simplist case, 
+    sections should be defined in their own file and loaded with LPF.
+  </p>
+  <p class="body">
+    When a SECTION oibject is created it is designated the <i>current-section</i> 
+    within it's parent project.  Most section-related functions default to the current-section
+    of *PROJECT*.
+  </p>
+  <H3 class="heading">Seting Section Order</H3>
+  <p class="body">
+    Prior to creating a MIDI file the section-order must be established with 
+    the SECTION-ORDER function.
+  </p>
+  
+  <!-- (SECTIONI-ORDER sections &key (project *project*)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SECTIONI-ORDER sections &key (project *project*))</b><br>
+  <p class="summery">Sets section order for project.</p>
+  <pre class="description">
+    The sections argument is a list of section names (as symbols) in the
+    order they are to be played.  
+            
+    (SECTION-ORDER '(intro verse chorus verse ...))
+    
+    How a section is played may be modified by embedding it in a sub-list
+    with any of the following keyword values.
+    
+        :x n          - Repeat n times.
+        :trans n      - Transpose by n half-steps.  
+                        Sections and Parts whose :TRANSPOSABLE property 
+                        is nil are not effected.
+        :invert pivot - Applies key inversion around pivot key.
+                        Sections and Parts whose :TRANSPOSABLE property 
+                        is nil are not effected.
+        :retro flag   - If flag is true play the section in reverse.
+                        Sections and Parts whose :REVERSABLE property 
+                        is nil are not effected.
+        :shift time   - Shift start by time seconds.   
+                        Normally each section begins immediately after the
+                        previous section ends.  The shift option may be 
+                        used to overlap two sections or to create a gap 
+                        between them.  Overlapping two section should be
+                        used with caution, particularly if they contain
+                        events on the same MIDI channel.
+                                        
+    (SECTION-ORDER '(intro (verse :x 2) chorus (verse :x 2 :trans 3) ...))
+  </pre>
+  <H3 class="heading">Rendering Project to MIDI file</H3>
+  
+  <!-- (PROJECT->MIDI &key (project *PROJECT*)(filename nil)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PROJECT->MIDI &key (project *PROJECT*)(filename nil))</b><br>
+  <p class="summery">Writes project events to MIDI file.</p>
+  <pre class="description">
+    :project  - Sets project to render, defaults to *PROJECT* 
+    :filename - Sets filename relative to the project's output directory. 
+                Defaults to the project's name.
+                            
+    For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
+  </pre>
+  <H2 class="heading">Example Project File</H2>
+  <pre class="code">
+    ;; ~/cyco-projects/foo/foo-main.lisp
+        
+    (version 3)                       ;; Enforce specific CYCO version
+    (project foo :tempo 120 :bars 2)  ;; Create project object, bind it to *PROJECT*,
+                                      ;; sets default tempo and bar count.
+    (prune-orchestra)                 ;; Clear orchestra of old instruments.
+    (lpf 'orchestra)                  ;; Load project file defining orchestra
+    (lpf 'verse)                      ;; Load section files...
+    (lpf 'chorus) 
+    (lpf 'bridge)
+    (section-order '((verse :x 2) chorus bridge verse)) 
+    (project->midi) 
+  </pre>
+  <H4 class="heading">Miscellaneous Comments</H4>
+  <ul>
+    <li>Additional rendering targets, such as music-xml, may be implemented in the future.</li>
+    <li>Individual sections may also be rendered to MIDI files.
+   These are often more useful then a full project render.</li>
+    <li>The <strong>(?P)</strong> and <strong>(?O)</strong> functions print the current project and 
+   orchestra trees respectively.</li>
+    <li><strong>(?)</strong> is a general help function, try <strong>(? *PROJECT*)</strong> to see 
+   more details about the current project structure.</li>
+  </ul>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=projects.html class="navigation">Previous: projects </a> &nbsp;<a href=sections.html class="navigation">Next: sections </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

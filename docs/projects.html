@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Projects</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=cue-functions.html class="navigation">Previous: cue-functions </a> &nbsp;<a href=project-anatomy.html class="navigation">Next: project-anatomy </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <h1 class="banner">CYCO Projects</h1>
+  <p class="body">
+    A <i>Project</i> is the top level composition object and is composed of one or
+    more sequential <i>sections</i>. Each section is composed of one or more
+    parallel <i>parts</i>.
+  </p>
+  <ul>
+    <li>Project - represents the piece as a whole.</li>
+    <li><a href='sections.html'>Section</a> - a major division, i.e. verse, chorus, etc...</li>
+    <li><a href='parts.html'>Part</a> - individual instrument part within a section.</li>
+  </ul>
+  <p class="body">
+    The PROJECT, SECTION and PART classes are all extensions of 
+    <a href='time-signature.html'>TIME-SIGNATURE</a>,
+    which is itself an extension of 
+    <a href='nodes.html'>CYCO-NODE</a>.   This allows the project to
+    define composition-level defaults.  Each section and part inherit these
+    values but are free to override them.
+  </p>
+  <H2 class="heading">Project File Structure</H2>
+  <p class="body">
+    Each project has it's own directory in <strong>~/cyco-projects/</strong>  The project
+    directory has the same name as the project converted to lower case.  For a
+    project named 'Foo' the directory structure is:
+  </p>
+  <pre class="code">
+        ~/cyco-projects/
+    	   |
+    	   +-- foo/
+    	        |
+    		+-- foo-main.lisp 
+    		+-- additional-project-files
+    		+-- 
+    		+-- MIDI/
+    		     |
+    		     +-- foo.mid
+    		     +-- additional-MIDI-files
+    		     +--
+  </pre>
+  <p class="body">
+    The following global variables set the location and names for project
+    files.
+  </p>
+  <ul>
+    <li>*DEFAULT-PROJECT-DIRECTORY*<br><br></li>
+    <li>*PROJECT-MAIN-FILENAME-FORMAT*<br><br></li>
+    <li>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</li>
+  </ul>
+  <H2 class="heading">Project Files</H2>
+  <a id="?projects"></a>
+  
+  <!-- (?PROJECTS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(?PROJECTS)</b><br>
+  <p class="summery">Displays list of all sub-directories under ~/cyco-projects/</p>
+  <a id="create-project-framework"></a>
+  
+  <!-- (CREATE-PROJECT-FRAMEWORK files) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CREATE-PROJECT-FRAMEWORK files)</b><br>
+  <p class="summery">Creates an empty project directory</p>
+  <pre class="description">
+        The files argument is either a single project name (as symbol) or a
+        list of the name followed by additional file names.
+            
+        An empty file is created for each specified filename.   If a project 
+        by the same name already exists, the function prints a warning and
+        returns without creating anything.
+            
+            (create-project-framework 'foo)
+            
+            ~/cyco-projects/
+                |
+                +-- foo/
+                     |
+                     +-- foo-main.lisp		 
+                     +-- MIDI/
+    				 
+            (create-project-framework '(foo alpha beta))
+    	
+            ~/cyco-projects/
+                |
+                +-- foo/
+                     |
+                     +-- foo-main.lisp
+                     +-- alpha.lisp
+                     +-- beta.lisp
+                     +-- MIDI/
+  </pre>
+  <a id="load-project"></a>
+  
+  <!-- (LOAD-PROJECT name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LOAD-PROJECT name)</b><br>
+  <p class="summery">Loads project's main file</p>
+  <pre class="description">
+    It is the main files responsibility to load the remaining project files.
+            
+    (LOAD-PROJECT 'foo)
+    
+    loads file ~/cyco-projects/foo/foo-main.lisp
+               
+    After loading the project object is bound to the global variable
+    *PROJECT*.  Most composition related functions use *PROJECT* 
+    by default.
+  </pre>
+  <a id="lp"></a>
+  
+  <!-- (LP &optional name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LP &optional name)</b><br>
+  <p class="summery">Convenience version of LOAD-PROJECT with a few additional tricks.</p>
+  <pre class="description">
+     The optional name argument defaults to the last project loaded.
+     LP remembers the last project even after CYCO has been exited and restarted.
+  </pre>
+  <a id="load-project-file"></a>
+  
+  <!-- (LOAD-PROJECT-FILE name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LOAD-PROJECT-FILE name)</b><br>
+  <p class="summery">Loads a Lisp file relative to the current project directory.</p>
+  <pre class="description">
+    All project filenames are converted to lower-case.
+  </pre>
+  <a id="lpf"></a>
+  
+  <!-- (LPF &optional name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LPF &optional name)</b><br>
+  <p class="summery">Convenience version of LOAD-PROJECT-FILE</p>
+  <pre class="description">
+     name defaults to the most recently loaded project file.  This is useful 
+     while working interactively to quickly reload a file currently under
+     development.
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=cue-functions.html class="navigation">Previous: cue-functions </a> &nbsp;<a href=project-anatomy.html class="navigation">Next: project-anatomy </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

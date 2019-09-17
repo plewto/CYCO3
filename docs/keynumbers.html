@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Key Numbers</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Previous: patterns </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr/>
+  <img class="center" src="images/keynumbers.png" alt="keynumbers"/>
+  <h1 class="banner">CYCO Key-Numbers</h1>
+  <p class="body">
+    Within CYCO all integers are valid key-numbers, however the effective range is
+    between 0 and 127 inclusive.  Values above 127 are transposed down by
+    octaves as needed to be less then 128.  All negative values are treated as
+    rest with the canonical constant <strong>+REST+</strong> equal to -1.
+  </p>
+  <H2 class="heading">Symbolic Key Numbers</H2>
+  <p class="body">
+    Symbolic key-numbers have the form: <strong>ROOT[accidental][octave]</strong>
+  </p>
+  <pre class="code">
+    Where ROOT is a 'white key', one of: 
+    
+       C D E F G A or B
+    
+    The accidental is optional F or S for flat and sharp respectively.
+    
+    The octave is an optional integer between 0 and 10.  If not specified,
+    octave defaults to 0.
+  </pre>
+  <H4 class="heading">Examples</H4>
+  <pre class="code">
+    C5  - middle-c, MIDI key-number 60.
+    AS4 - a-sharp below middle-c, MIDI key-number 58.
+    BF4 - b-flat below middle-c, identical to AS4, key-number 58.
+      
+    D - D in octave 0, MIDI key-number 2.
+    	
+    Enharmonic values are defined for b-sharp, c-flat, e-sharp and f-flat.
+    
+    B4  = CF5  key-number 59
+    BS4 = C5   key-number 60
+    	
+    E5  = FF5  key-number 64
+    ES5 = F5   key-number 65
+    	
+    A rest is indicated by the symbol R.
+    
+    R = -1
+  </pre>
+  <p class="body">
+    All negative key-numbers are rest.  Functions which manipulate
+    key-numbers handle negative values properly and in most cases convert them
+    to the canonical <strong>+REST+</strong>.
+  </p>
+  <H2 class="heading">Key-Number Functions</H2>
+  <p class="body">
+    Most key-number related functions may be applied to a single key-number or
+    a list of key-numbers.  When applied to a list the result is also a list.   Where possible
+    these functions return the same type as their argument.
+  </p>
+  <a id="keynumber-function"></a>
+  
+  <!-- (KEYNUMBER item) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(KEYNUMBER item)</b><br>
+  <p class="summery">Returns MIDI key-number of item</p>
+  <pre class="description">
+    The item argument may be an integer, symbolic key-number or list of key-numbers.
+    
+    (KEYNUMBER -100) --> -1  a rest
+    (KEYNUMBER 'r)   --> -1 
+    (KEYNUMBER 60)   --> 60
+    (KEYNUMBER 'c4)  --> 48 
+    (KEYNUMBER '(20 30 40 r (c4 c5 c6))) --> (20 30 40 -1 (48 60 72))
+  </pre>
+  <a id="keynumber-p"></a>
+  
+  <!-- (KEYNUMBER-P item) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(KEYNUMBER-P item)</b><br>
+  <p class="summery">Predicate, true if item is a valid key-number.</p>
+  <a id="rest-p"></a>
+  
+  <!-- (REST-P item) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(REST-P item)</b><br>
+  <p class="summery">Predicate, true if item is a valid key-number with a negative value.</p>
+  <a id="pitch-class"></a>
+  
+  <!-- (PITCH-CLASS key-number) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PITCH-CLASS key-number)</b><br>
+  <p class="summery">Returns integer pitch-class of key-number.</p>
+  <pre class="code">
+    
+    The pitch-class is the key-number mod 12.  All negative values have
+    pitch-class of -1.
+                                     
+    (PITCH-CLASS 60)   --> 0
+    (PITCH-CLASS 'cs7) --> 1
+    (PITCH-CLASS -15)  --> -1
+                              
+    (PITCH-CLASS may be applied to a list of key-numbers.
+                                                    
+    (PITCH-CLASS '(20 30 40 r (c4 cs5 d7))) --> (8 6 4 -1 (0 1 2))
+  </pre>
+  <a id="octave"></a>
+  
+  <!-- (OCTAVE key-number) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(OCTAVE key-number)</b><br>
+  <p class="summery">Returns octave value of key-number.</p>
+  <pre class="code">
+    
+    All negative key-numbers have  octave -1.
+                                    
+    (OCTAVE 60)  --> 5
+    (OCTAVE 'c7) --> 7
+    (OCTAVE -9)  --> -1
+                                
+    OCTAVE may be applied to list of key-numbers.
+                                     
+    (OCTAVE '(60 cs5 (r ds6))) --> (5 5 (-1 6))
+  </pre>
+  <a id="keyname"></a>
+  
+  <!-- (KEYNAME key-number) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(KEYNAME key-number)</b><br>
+  <p class="summery">Returns the symbolic name of key-number.</p>
+  <pre class="code">
+     
+    All negative values have name 'R.
+    Numeric values above 127 are transposed down by octaves.
+    For key-numbers with two enharmonic names, IE CS5 and DF5, the sharp 
+    version is returned.
+                               
+    (KEYNAME 'c4)  --> C4
+    (KEYNAME -100) --> R
+    (KEYNAME 800)  --> GS9, transposed to valid range.
+                                 
+    KEYNAME may be applied to list.
+                                     
+    (KEYNAME '(C4 -100 800)) --> (C4 R GS9)
+  </pre>
+  <a id="transpose"></a>
+  
+  <!-- (TRANSPOSE object n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TRANSPOSE object n)</b><br>
+  <p class="summery">Transposes object by n half-steps.</p>
+  <pre class="code">
+     
+    TRANSPOSE is a generic-function which may be applied to a wide range
+    of types.   For key-numbers TRANSPOSE adds n half-steps.
+                                         
+    The return value has the same type as the object argument.
+                                         
+    (TRANSPOSE 60 12)   -->  72
+    (TRANSPOSE 'C5 12)  -->  C6
+    (TRANSPOSE 126 12)  --> 126, automatically transposed back to valid range.
+    (TRANSPOSE -100 32) --> -1
+                                   
+    (TRANSPOSE '(60 61 62 (C5 CS5 D5)) 12) --> (72 73 74 (C6 CS6 D6))
+                                    
+    If the n argument is nil, it is treated 0.
+                                      
+    (TRANSPOSE whatever nil) --> whatever
+  </pre>
+  <a id="invert"></a>
+  
+  <!-- (INVERT object pivot) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(INVERT object pivot)</b><br>
+  <p class="summery">Applies key inversion to object around the pivot-key.</p>
+  <pre class="code">
+     
+    INVERT is a generic-function which may be applied to a wide range
+    of types.  
+                                    
+    (INVERT 59 60) --> 61
+    (INVERT 60 60) --> 60
+    (INVERT 61 60) --> 59
+                                
+    (INVERT 'C4 'C5) --> CS5 
+                             
+    (INVERT '(48 59 60 67 (A3 B4 C7)) 'C5) --> (72 61 60 53 (75 61 36))
+                                        
+    A nil pivot value is treated as an identity.
+                                        
+    (INVERT whatever nil) --> whatever
+  </pre>
+  <a id="defkeynumber"></a>
+  
+  <!-- (DEFKEYNUMBER symbol value) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DEFKEYNUMBER symbol value)</b><br>
+  <p class="summery">Defines user key-number.</p>
+  <pre class="code">
+    
+    The value should be an integer between -1 and 127 inclusive.
+    The KEYNAME function does not recognize user-defined key-numbers.
+                                 
+    (DEFKEYNUMBER 'MY-REST -1)
+    (DEFKEYNUMBER 'ALPHA 34)
+                                        
+    (KEYNUMBER 'MY-REST) --> -1
+    (KEYNUMBER 'ALPHA)   --> 34
+    (KEYNAME 'ALPHA)     --> ALPHA
+    (KEYNAME 34)         --> AS2
+  </pre>
+  <hr/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Previous: patterns </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -158,10 +158,10 @@ not."))
 (defmethod properties ((n null) &optional acc) acc)
 
 (defmethod properties ((node cyco-node) &optional _acc)
-  (append
-   _acc
-   (property-keys node)
-   (properties (parent node) _acc)))
+  (remove-duplicates (append
+		      _acc
+		      (property-keys node)
+		      (properties (parent node) _acc))))
 
 (defmethod local-properties ((node cyco-node))
   (let ((acc '()))

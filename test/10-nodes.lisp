@@ -110,10 +110,7 @@
   	      (eq (property bird 'diet) 'food)    ;; inherited
   	      (eq (property crow 'diet) 'worms))) ;; shadow
 
-
-  (fail "(properties node)" "Properties list has duplicates")
-  (format t "(properties crow) --> ~A~%" (properties crow))
-  
   (not-tested 'local-properties)
   (not-tested "(CLONE node)")
-  (not-tested "(->STRING node)") )
+  (not-tested "(->STRING node)")
+  )

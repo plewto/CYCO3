@@ -55,7 +55,7 @@
     :initform '()
     :initarg :properties)
    (property-table
-    :type hashtable
+    :type hash-table
     :accessor property-table
     :initform (make-hash-table)))
   (:documentation

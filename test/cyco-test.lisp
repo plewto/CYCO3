@@ -47,5 +47,4 @@
 (load-test "08-metrics")
 (load-test "09-midi-utilities")
 (load-test "10-nodes")
-
-;; (load "test/projects/load-test-projects")
+(load "test/load-mock-projects")

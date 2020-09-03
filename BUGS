@@ -61,5 +61,9 @@ BUG 0005 2019.08.31 Status CLOSED
     Solution: Defined new PATTERN-RESET	method specifically to clear all
     patterns in the strummer's states list.
 
+--------------------------------------------------------------------
+BUG 0006 2020.09.03 Status OPEN
+
+    Enharmonic 'B-sharp' keynumbers not recognized.
     
     

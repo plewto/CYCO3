@@ -14,13 +14,13 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr/>
   <img class="center" src="images/patterns.png" alt="patterns"/>
   <h1 class="banner">CYCO Patterns</h1>
   <p class="body">
     A <strong>PATTERN</strong> is an object which returns a sequence of values in some
-    prescribed manner.  Most patterns may be nested to any depth.  The two most
+    prescribed manner.  The two most
     basic pattern types are the <i>cycle</i> and <i>line</i>.
   </p>
   <p class="body">
@@ -38,6 +38,8 @@
   </pre>
   <a id="functions"></a>
   <H2 class="heading">Functions on Patterns</H2>
+  <hr/>
+  <a id="next-1"></a>
   
   <!-- (NEXT-1 pattern) -->
   <!--  -->
@@ -51,6 +53,8 @@
     	(next-1 foo) --> A
     	(next-1 foo) --> B
   </pre>
+  <hr/>
+  <a id="next-n"></a>
   
   <!-- (NEXT-N pattern n) -->
   <!--  -->
@@ -63,6 +67,8 @@
      (next-n foo 2) --> (B C)
      (next-1 foo)   --> D
   </pre>
+  <hr/>
+  <a id="next"></a>
   
   <!-- (NEXT pattern &optional n) -->
   <!--  -->
@@ -83,6 +89,8 @@
         (next foo :rest) --> (F G H)
         (next foo :all)  --> (A B C D E F G H)
   </pre>
+  <hr/>
+  <a id="value"></a>
   
   <!-- (VALUE pattern) -->
   <!--  -->
@@ -94,6 +102,8 @@
     (next foo)  --> A
     (value foo) --> A
   </pre>
+  <hr/>
+  <a id="reset"></a>
   
   <!-- (RESET pattern) -->
   <!--  -->
@@ -107,12 +117,16 @@
     (reset foo)
     (next foo)   --> A
   </pre>
+  <hr/>
+  <a id="pattern-p"></a>
   
   <!-- (PATTERN-P object) -->
   <!--  -->
   <!--  -->
   <b class="definition">(PATTERN-P object)</b><br>
   <p class="summery">Predicate, true if object is a pattern type.</p>
+  <hr/>
+  <a id="cardinality"></a>
   
   <!-- (CARDINALITY pattern) -->
   <!--  -->
@@ -133,6 +147,8 @@
     (cardinality baz) --> 8
     (next baz :rest)  --> (T NIL NIL T T NIL T)
   </pre>
+  <hr/>
+  <a id="remaining"></a>
   
   <!-- (REMAINING pattern) -->
   <!--  -->
@@ -150,6 +166,8 @@
     (next baz 2)    --> (nil nil)
     (remaining baz) --> 6
   </pre>
+  <hr/>
+  <a id="to-pattern"></a>
   
   <!-- (->PATTERN object &key pattern-type) -->
   <!--  -->
@@ -168,6 +186,8 @@
     (param bez (->pattern foo :pattern-type 'line))
     (next bez 6)  --> (A B C C C C)
   </pre>
+  <hr/>
+  <a id="transpose"></a>
   
   <!-- (TRANSPOSE pattern n) -->
   <!--  -->
@@ -179,6 +199,8 @@
     (transpose foo 4)
     (next foo :all) --> (64 65 66)
   </pre>
+  <hr/>
+  <a id="invert"></a>
   
   <!-- (INVERT pattern pivot) -->
   <!--  -->
@@ -193,6 +215,8 @@
     The pivot argument may be a symbolic key-number.
     (invert foo 'c6)
   </pre>
+  <hr/>
+  <a id="retrograde"></a>
   
   <!-- (RETROGRADE pattern) -->
   <!--  -->
@@ -207,13 +231,17 @@
     Retrograde is not defined for all pattern types.  Where
     undefined the pattern is unaltered.
   </pre>
+  <hr/>
+  <a id="clone"></a>
   
   <!-- (CLONE pattern) -->
   <!--  -->
   <!--  -->
   <b class="definition">(CLONE pattern)</b><br>
   <p class="summery">Returns deep copy of pattern</p>
-  <hr/>
+  <p class="body">
+    <br>
+  </p>
   <H2 class="heading">Pattern Types</H2>
   <a id="line"></a>
   
@@ -229,6 +257,7 @@
      (param foo (line :of '(A B C)))
      (next foo 8) --> A B C C C C C C...
   </pre>
+  <hr/>
   <a id="cycle"></a>
   
   <!-- (CYCLE &key of) -->
@@ -243,6 +272,7 @@
      (param foo (cycle :of '(A B C)))
      (next foo 8) --> A B C A B C A B...
   </pre>
+  <hr/>
   <a id="bag"></a>
   
   <!-- (BAG &key of final) -->
@@ -262,6 +292,7 @@
     (param foo (bag :of '(A B C) :final (cycle :of '(ape bat)))
     (next foo 8) --> C A B APE BAT APE BAT APE
   </pre>
+  <hr/>
   <a id="dice"></a>
   
   <!-- (DICE &key of) -->
@@ -275,6 +306,7 @@
     (param foo (dice :of '(A B C)))
     (next foo 8) --> B C B A C C A B
   </pre>
+  <hr/>
   <a id="coin"></a>
   
   <!-- (COIN &key (p 0.5)(head #'true)(tail #'false)(period nil)) -->
@@ -304,8 +336,9 @@
     The RETROGRADE method swaps head/tail probability.
         
     (param foo (coin :p 0.75)) ;; head probability 75%
-    (retrograde foo)           ;; head probability now 50%
+    (retrograde foo)           ;; head probability now 25%
   </pre>
+  <hr/>
   <a id="wrapper"></a>
   
   <!-- (WRAPPER &key (of #'identity)(period 16)) -->
@@ -324,6 +357,7 @@
     (param foo (wrapper :of #'(lambda (n)(* n 2)) :period 4))
     (next foo 10) --> 0 2 4 6 0 2 4 6 0 2 
   </pre>
+  <hr/>
   <a id="walker"></a>
   
   <!-- (WALKER &key of) -->
@@ -337,7 +371,9 @@
     (param foo (walker :of '(A B C D)))
     (next foo 8) --> D C B A B C B A
   </pre>
-  <hr/>
+  <p class="body">
+    <br>
+  </p>
   <a id="nested-patterns"></a>
   <H2 class="heading">Nested Patterns</H2>
   <p class="body">
@@ -362,7 +398,7 @@
         (next foo 16) --> 1 2 A 3 B C 3 A 3 B C 3 A B 3...
   </pre>
   <hr/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

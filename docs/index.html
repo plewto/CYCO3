@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>About</title>
+      <title>CYCO</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -14,31 +14,28 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr/>
   <img class="center" src="images/logo.png" alt="logo"/>
-  <h1 class="banner">About</h1>
+  <h1 class="banner">CYCO</h1>
   <p class="body">
-    CYCO is an expressive music composition language using Lisp.  Scores are
-    prepared in Lisp and then <i>rendered</i> to standard MIDI files.  CYCO is 
-    project-centric with a rich set of pattern types for algorithmic
-    compositions and takes a functional approach to event-time specification.
+    CYCO is a lisp based music composition language with a rich set pattern 
+    generators and a functional approach to event time specification.
   </p>
   <H2 class="heading">History</H2>
   <p class=body>
-  Around 2008 I developed a set of extensions for <a href=http://commonmusic.sourceforge.net/ class="link">Common Music</a> called CMU (Common Music Utility).  CMU primarily added a project level
-  framework and an extended notion for time-signatures.  Eventually Common Music
-  moved to version 3 which invalidated CMU and it became increasingly
-  difficult to maintain the legacy code.  As I was only using a small subset
-  of Common Music's features (namely the patterns and the MIDI file
-  utilities), I decided to sever dependency on Common Music and start from
-  scratch.  The name CYCO is a mutation of a common pattern type: the Cycle.</p>
+  CYCO began as a set of extensions to <a href=http://commonmusic.sourceforge.net/ class="link">Common Music 2</a> called CMU (Common Music Utility). 
+  CMU primarily added a project level framework and a hierarchical time structure.
+  Eventually Common Music moved to version 3 invalidating much of CMU.
+  As CMU only used a small subset of Common Music's features, a decision was made to
+  separate CMU from Common Music and start from scratch.  The name CYCO is a play 
+  on the commonly used 'cycle' pattern generator.</p>
   <p class=body>
   CYCO is written in 100% Lisp and was developed and tested with <a href=http://www.sbcl.org/ class="link">SBCL</a> </p>
   <H2 class="heading">Features</H2>
   <ul>
     <li>Project centric design.</li>
-    <li>Flexible functional time signature support.</li>
+    <li>Functional time signatures.</li>
     <li>A rich set of algorithmic pattern generators.</li>
     <li>Symbolic names for common music parameters.</li>
     <li>Chord tables.</li>
@@ -46,12 +43,21 @@
     <li>Plugins</li>
     <li>Under SBCL CYCO's state may be saved as an executable.</li>
   </ul>
+  <H2 class="heading">Usage overview</H2>
+  <p class="body">
+    Briefly scores are produced by first creating a <i>Project</i> directory to 
+    contain all related files.   This directory should contain a MIDI sub directory 
+    for storing generated MIDI files.  The project proper is defined by a series of Lisp files to 
+    specify it's structure, an 'orchestra' of instruments, and an arbitrary number of 'Sections.' 
+    Once defined the project is rendered to standard MIDI files.  Playback requires an external MIDI 
+    file player.   Many convenience 'shortcut' functions are provided to quickly re-evaluate project 
+    files currently under development.
+  </p>
   <a id="instalation"></a>
   <H2 class="heading">Instalation</H2>
   <p class="body">
     Other then a functional Lisp the basic CYCO installation has no external
-    dependencies.  A planned OSC plugin will require an external library but
-    this is optional.
+    dependencies.
   </p>
   <ol>
   <li>
@@ -83,7 +89,7 @@
   </li>
   <li>
   CYCO is now ready for use.  However you may wish to customize it to
-     match the available MIDI equipment.  You do this by creating plugins
+     match your available MIDI equipment.  You do this by creating plugins
      in the ~/.config/cyco/plugins/ directory as detailed elsewhere.  <br><br></li>
   <li>
   If you are using SBCL you have the option of saving the current state of
@@ -94,7 +100,7 @@
      Lisp prompt.</li>
   </ol>
   <hr/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

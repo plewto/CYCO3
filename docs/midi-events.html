@@ -17,10 +17,10 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=metrics.html class="navigation">Previous: metrics </a> &nbsp;<a href=channel-names.html class="navigation">Next: channel-names </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr/>
   <img class="center" src="images/midi.png" alt="midi"/>
-  <h1 class="banner">CYCO MIDI Events</h1>
+  <h1 class="banner">MIDI Events</h1>
   <p class="body">
-    MIDI events are a low-level structure.   Typically they are not handled
-    directly while creating a score but exists just below the surface.
+    MIDI events are a low-level detail and are typically not directly 
+    manipulated by the user.
   </p>
   <H2 class="heading">Definitions</H2>
   <p class="body">
@@ -51,6 +51,19 @@
     note-on is transmitted before the note-off.   If note-off messages were
     transmitted first there would be a high potential for stuck notes.
   </p>
+  <H2 class="heading">MIDI Channels</H2>
+  <a id="channel-index"></a>
+  <p class="body">
+    MIDI specifies channel numbers between 1 and 16 inclusive.  However the
+    actual transmitted range is 0 to 15.  CYCO endeavors to always use the
+    1-16 range for user facing values.  By necessity the 0 to 15 range is
+    required behind the scenes.  In order to distinguish these closely related
+    ranges the following convention is strictly adhered to.
+  </p>
+  <ul>
+    <li><strong>CHANNEL-INDEX</strong> refers to the transmitted range 0-15.</li>
+    <li><strong>CHANNEL</strong> the unmodified term <i>channel</i> always refers to the range 1-16.</li>
+  </ul>
   <H2 class="heading">MIDI Message Types</H2>
   <p class="body">
     The following functions return appropriate MIDI message objects.
@@ -76,19 +89,7 @@
     <li><b class='definition'>(MIDI-TIME-SIGNATURE num unit)</b><br><br></li>
     <li><b class='definition'>(MIDI-KEY-SIGNATURE sf &optional (minor nil))</b><br><br></li>
   </ul>
-  <H2 class="heading">MIDI Channels</H2>
-  <a id="channel-index"></a>
-  <p class="body">
-    MIDI specifies channel numbers between 1 and 16 inclusive.  However for
-    actual transmitted range is 0 to 15.  CYCO endeavors to always use the
-    1-16 range for user facing values, however by necessity the 0 to 15 range is
-    required behind the scenes.  In order to distinguish these closely related
-    ranges the following convention is strictly adhered to.
-  </p>
-  <ul>
-    <li><strong>CHANNEL-INDEX</strong> refers to the transmitted range 0-15.</li>
-    <li><strong>CHANNEL</strong> the unmodified term <i>channel</i> always refers to the range 1-16.</li>
-  </ul>
+  <hr/>
   
   <!-- (BEND->MIDI-DATA value) -->
   <!--  -->
@@ -100,6 +101,7 @@
     lsb and msb are least and most significant byte values required by 
     MIDI-PITCH-BEND function.
   </pre>
+  <hr/>
   
   <!-- (MIDI-DATA->BEND lsb msb) -->
   <!--  -->

@@ -4,13 +4,13 @@
 ;;;; In a few cases implements simpler methods.
 ;;;;
 
-(defmacro def-type-predicate (name &optional documentation)
+(defmacro def-type-predicate (name &optional (documentation "Predicate"))
   "Defines a new generic predicate function. 
 Implements the default, false, method.
 A true method must be implemented manually."
   `(progn
      (defgeneric ,name (object)
-       (:documentation (or ,documentation "Predicate")))
+       (:documentation ,documentation))
      (defmethod ,name ((object t)) nil)))
 
 (defgeneric ->cycle (object)

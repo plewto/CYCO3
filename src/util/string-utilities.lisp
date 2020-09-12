@@ -101,6 +101,8 @@ Returns string."
 ;; string-replace curtsy of: stack-overflow
 ;; https://stackoverflow.com/questions/4366668/str-replace-in-lisp
 ;;
+;; NOTE: STRING-REPLACE works under SBCL but not under CLISP.
+;;
 (defun string-replace (search replace string &optional count)
   (loop for start = (search search (or result string)
                             :start2 (if start (1+ start) 0))

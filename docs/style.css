@@ -1,0 +1,155 @@
+body.home-page {
+    background-color: #000;
+    background-image: url("images/background1.png");
+    color: #FFFFCC;
+    width: 1500px;
+}
+
+body {
+    background-color: #000;
+    background-image: url("images/background1.png");
+    color: #FFFFCC;
+    width: 1500px;
+}
+
+a {
+    color: #D4DBE2;
+}
+
+
+
+b {
+    color: #CCFFe5;
+}
+
+
+b.arg {
+    #color: #D9DBC5;
+    color: #F0C0C0;
+    font-family: Mono;
+    font-size: 1.1em;
+}
+
+
+p.warning {
+    color: red;
+    font-family: Mono;
+    font-size: 0.6em;
+}
+
+b.warning {
+    color: red;
+    font-family: Mono;
+    font-size: 0.6em;
+}
+
+b.code {
+    color: #D9DBC5;
+    font-family: Mono;
+    font-size: 1.0em;
+    margin-left: 60px;
+}
+
+b.definition {
+    color: #CCFFe5;
+    font-family: Mono;
+    font-size: 1.1em;
+    margin-left: 0px;
+}
+
+#page_wrapper {
+  border: 1px solid #000;
+  color: #FFFFCC;
+  font-family: "PT Serif", "serif";
+  font-size: 1.1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1.banner {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: "Open Sans", "sans-serif";
+}
+
+h1.small-banner {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: "Open Sans", "sans-serif";
+}
+
+h2.sub-banner {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: "Open Sans", "sans-serif";
+    font-size: 0.8em;
+}
+
+
+h2.section-head {
+    
+}
+
+h4.heading {
+    margin-left: 0px;
+    font-family: "Open Sans", "sans-serif";
+}
+
+img.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+p.body {
+    font-family: "PT Serif", "serif";
+    font-size: 1.0em;
+    word-wrap: break-word;
+    max-width: 800px;    
+}
+
+p.synopsis {
+    font-family: "PT Serif", "serif";
+    font-size: 1.0em;
+    word-wrap: break-word;
+    margin-left: 30px;
+    max-width: 800px;
+}
+
+p.footnote {
+    font-family: "Open Sans", "sans-serif";
+    font-size: 0.8em;
+    color: #6A576E;
+    margin-left: 32px;
+    margin-right: auto;
+    word-wrap: break-word;
+    max-width: 800px;    
+}
+
+
+
+pre {
+    font-family: "Ubuntu Mono", "mono";
+    font-size: 1.0em;
+    margin-left: 16px;
+    margin-right: auto;
+    color: #D9DBC5;
+}
+
+pre.footnote {
+    color: #6A576e;
+    font-family: "Ubuntu Mono", "mono";
+    font-size: 1.0em;
+    margin-left: 16px;
+    margin-right: auto;
+}
+
+strong {
+  color: #FFEEDD;
+}
+
+
+

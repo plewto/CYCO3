@@ -28,7 +28,7 @@
   <p class="body">
     The global structure <strong>*CHORD-TABLE*</strong> defines about 100 chord-types
     accessible by name.  *CHORD-TABLE* takes a keyboardist view, several
-    alternate tables, available via plugins, define chords as played on
+    alternate tables available via plugins, define chords as played on
     fretted instruments.  These include:
   </p>
   <ul>
@@ -41,27 +41,30 @@
   <p class="body">
     *CHORD-TABLE* and the structures defined by the Oud plugins are instances
     of the <b>CHORD-MODEL</b> class. In use there is no difference between the
-    global*CHORD-TABLE* and the tables produced by the Oud plugins.  The
-    available chord types will be different but they are used in exactly the
+    global*CHORD-TABLE* and tables produced by the Oud plugins.  The
+    available chord types may be different but they are used in exactly the
     same way.
   </p>
+  <hr/>
   
   <!-- (DEFCHORD name template &optional description) -->
   <!--  -->
   <!--  -->
   <b class="definition">(DEFCHORD name template &optional description)</b><br>
-  <p class="summery">Adds chord to gloabl *CHORD-TABLE*</p>
+  <p class="summery">Adds chord to global *CHORD-TABLE*</p>
   <pre class="description">
     name     - An unofficial style is to name chords inside square brackets: 
     	       [major], though this is not universally followed. 
     template - list of keynumber offsets.
   </pre>
+  <hr/>
   
   <!-- (?CHORDS &optional (model *chord-table*)) -->
   <!--  -->
   <!--  -->
   <b class="definition">(?CHORDS &optional (model *chord-table*))</b><br>
   <p class="summery">Displays list of chords defined by model</p>
+  <hr/>
   
   <!-- (CHORD-INVERSION template degree &key add-octave) -->
   <!--  -->

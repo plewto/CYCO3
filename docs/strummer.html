@@ -86,13 +86,13 @@
     <li>Those that set some persistent values which remain in
          effect until explicitly changed.  These include:<br><br>
   		  
-         :RESET :TIME :CHORD :INVERSION :OCTAVE :STRUM :STRUM* :DIRECTION<br>
-         :END-TOGETHER :AMP* :GRACE-AMP :GRACE-DURATION :GRACE-DELAY<br>
-         :AMP CRES :AMP-BLUR and :AMP-LIMIT<br><br></li>
+         :RESET  :TIME  :CHORD    :INVERSION  :OCTAVE  :STRUM  :STRUM*  :DIRECTION<br>
+         :END-TOGETHER  :AMP*     :GRACE-AMP  :GRACE-DURATION  :GRACE-DELAY<br>
+         :AMP    :CRES  :AMP-BLUR :AMP-LIMIT<br><br></li>
     <li>Those which generate events.  Once the events are generated these
          clauses are cleared.  These include:<br><br>
   
-         :KEY :GRACE :BEND :CC :PROGRAM and :BANK</li>
+         :KEY  :GRACE  :BEND  :CC  :PROGRAM  :BANK</li>
   </ol>
   <H5 class="heading">Available Clauses</H5>
   <pre class="code">
@@ -117,7 +117,7 @@
                If a name is supplied it must be defined by the
                part's chord-model.   Typical examples are [SOLO], [MAJ] and [MIN]
     
-        executing (?CHORDS strummer-name) displays list of define chords.
+        executing (?CHORDS strummer-name) displays list of defined chords.
                      
             2. By List. 
             
@@ -183,7 +183,7 @@
     :DIRECTION direction
     :DIRECTION pattern-list
     
-         Chords notes may be played up, down or in random order.
+         Chord notes may be played up, down or in random order.
          
              down   - play notes in order.
              up     - reverse order
@@ -223,7 +223,7 @@
     
         Sets grace note amplitude relative to the nominal amplitude.
     
-    ACE-DURATION metric-expression
+     :GRACE-DURATION metric-expression
     
         Sets grace-note duration, either as a metric-expression or in seconds.
      
@@ -240,7 +240,7 @@
     :AMP pattern-list
     
         Sets dynamic level or pattern of dynamic levels.   A list of
-    dynamic values are converted to a cycle.
+        dynamic values are converted to a cycle.
             
         (:amp (f ff mf))
         (:key c4)     ;; amp f

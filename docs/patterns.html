@@ -19,22 +19,22 @@
   <img class="center" src="images/patterns.png" alt="patterns"/>
   <h1 class="banner">CYCO Patterns</h1>
   <p class="body">
-    A <strong>PATTERN</strong> is an object which returns a sequence of values in some
+    A <strong>PATTERN</strong> is a generator which returns a sequence of values in some
     prescribed manner.  The two most
     basic pattern types are the <i>cycle</i> and <i>line</i>.
   </p>
   <p class="body">
-    A <strong>CYCLE</strong> returns it's elements in a cyclical manner.
+    A <strong>CYCLE</strong> returns elements in a cyclical manner.
   </p>
   <pre class="code">
-    (CYCLE :of '(A B C)) --> A B C A B C A B...
+    (CYCLE :of '(A B C)) --> A B C A B C A B C A...
   </pre>
   <p class="body">
-    A <strong>LINE</strong> returns it's elements in sequence.  Once all elements have been
+    A <strong>LINE</strong> returns elements in sequence.  Once all elements have been
     returned it continues to return the final element.
   </p>
   <pre class="code">
-    (LINE :of '(A B C)) --> A B C C C...
+    (LINE :of '(A B C)) --> A B C C C C C...
   </pre>
   <a id="functions"></a>
   <H2 class="heading">Functions on Patterns</H2>
@@ -79,8 +79,8 @@
     By default NEXT acts exactly like NEXT-1.  If the optional n argument is an integer
     it behaves like (NEXT-n pattern n) and returns a list of n values.
     
-    If n is the keyword :ALL then NEXT returns a list of all elements.
-    If n is the keyword :REST then NEXT returns a list of all remaining elements.
+    If n is the keyword :ALL then a list of all elements are returned.
+    If n is the keyword :REST then a list of all remaining elements is returned.
     
         (param foo (cycle :of '(A B C D E F G H)))
         (next foo)       --> A

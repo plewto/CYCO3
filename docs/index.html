@@ -20,7 +20,7 @@
   <h1 class="banner">CYCO</h1>
   <p class="body">
     CYCO is a lisp based music composition language with a rich set pattern 
-    generators and a functional approach to event time specification.
+    generators and a project centric design.
   </p>
   <H2 class="heading">History</H2>
   <p class=body>
@@ -28,8 +28,8 @@
   CMU primarily added a project level framework and a hierarchical time structure.
   Eventually Common Music moved to version 3 invalidating much of CMU.
   As CMU only used a small subset of Common Music's features, a decision was made to
-  separate CMU from Common Music and start from scratch.  The name CYCO is a play 
-  on the commonly used 'cycle' pattern generator.</p>
+  separate CMU from Common Music.  The name CYCO is a play 
+  on the commonly used pattern generator, the 'cycle'.</p>
   <p class=body>
   CYCO is written in 100% Lisp and was developed and tested with <a href=http://www.sbcl.org/ class="link">SBCL</a> </p>
   <p class="footnote">
@@ -45,17 +45,20 @@
     <li>Chord tables.</li>
     <li>Hierarchical instrument definitions, IE a snare may be a sub-instrument of a drum-machine. </li>
     <li>Plugins</li>
+    <li>Generates MIDI files for output.</li>
+    <li>Other targets, such as <a href="https://www.musicxml.com/">Music XML</a>, may be added later.</li>
     <li>Under SBCL CYCO's state may be saved as an executable.</li>
   </ul>
-  <H2 class="heading">Usage overview</H2>
+  <H2 class="heading">Usage Overview</H2>
   <p class="body">
-    Briefly scores are produced by first creating a <i>Project</i> directory to 
-    contain all related files.   This directory should contain a MIDI sub directory 
-    for storing generated MIDI files.  The project proper is defined by a series of Lisp files to 
-    specify it's structure, an 'orchestra' of instruments, and an arbitrary number of 'Sections.' 
-    Once defined the project is rendered to standard MIDI files.  Playback requires an external MIDI 
-    file player.   Many convenience 'shortcut' functions are provided to quickly re-evaluate project 
-    files currently under development.
+    Briefly compositions are defined by writing a series of Lisp files in a dedicated 
+    <em>Project</em> directory.  Once defined the project is rendered to a selected output format.  
+    Currently only MIDI file output is supported with an external player required for playback.
+  </p>
+  <p class="body">
+    At any one time there is a single <em>Current Project</em>.  Several short-cut
+    functions are provided to quickly reload the current project, or even a section within the project,
+    while it is under development.
   </p>
   <a id="instalation"></a>
   <H2 class="heading">Instalation</H2>

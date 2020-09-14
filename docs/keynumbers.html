@@ -19,8 +19,9 @@
   <img class="center" src="images/keynumbers.png" alt="keynumbers"/>
   <h1 class="banner">CYCO Key-Numbers</h1>
   <p class="body">
-    All integer values are treated as valid key-numbers, however values outside the 
-    closed interval [0, 127] are treated differently.
+    CYCO uses the MIDI keynumbers between 0 and 127 inclusive.  All negative 
+    values are treated as a rest.  An attempt is made to transpose all values above 127 to an equivalent 
+    pitch in the 0-127 range.
   </p>
   <ul>
     <li>Negative integers are treated as a rest.</li>
@@ -29,7 +30,7 @@
   </ul>
   <H3 class="heading">Rest</H3>
   <p class="body">
-    The constant <b>+REST+</b> is the canonical rest and has a value of -1.   All keynumber related functions convert any
+    The constant <b>+REST+</b> is the canonical rest with value of -1.   All keynumber related functions convert any
     negative value to -1.
   </p>
   <H3 class="heading">Symbolic Key Numbers</H3>
@@ -95,7 +96,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(PITCH-CLASS item)</b><br>
-  <p class="summery">Returns key-number mod 12 of item.</p>
+  <p class="summery">Returns key-number mod 12.</p>
   <pre class="description">
     The argument may be an integer, symbolic key-number or list of key-numbers.
     
@@ -113,7 +114,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(OCTAVE item)</b><br>
-  <p class="summery">Returns octave number(s) of item.</p>
+  <p class="summery">Returns octave number.</p>
   <pre class="description">
     The argument may be an integer, symbolic key-number or list of key-numbers.
     
@@ -131,7 +132,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(KEYNAME item)</b><br>
-  <p class="summery">Returns symbolic key name of item.</p>
+  <p class="summery">Returns symbolic key name.</p>
   <pre class="description">
     The argument may be an integer, symbolic key-number or list of key-numbers.
     
@@ -141,8 +142,8 @@
     (KEYNAME 'B4)   --> B4
     (KEYNAME '(20 30 R (C4 CS5)) -> (GS1 FS2 R (C4 CS5))
     
-    Where a key number has two possible names, such as for B-flat and A-sharp, keyname
-    returns the sharp version.
+    Where a key number has two possible names, such as for B-flat and A-sharp, the sharp version 
+    is returned.
     
     (KEYNUMBER 'AS4) --> 58
     (KEYNUMBER 'BF4) --> 58
@@ -198,7 +199,7 @@
     (TRANSPOSE 100 1234) --> 122
     
     TRANSPOSE is also defined for a wide range of more complex types as detailed elsewhere.
-    When applied to a type for which it is not defined, TRANSPOSE returns the item argument.
+    When applied to a type for which it is not defined it returns the item argument.
     
     (TRANSPOSE whatever ignore) --> whatever
     
@@ -235,7 +236,7 @@
     (INVERT 'R 60)  --> -1
      
     Invert is also defined for a wide range of more complex types as defined elsewhere.
-    When applied to a type or symbol for which it is not defined, invert returns the item
+    When applied to a type or symbol for which it is not defined it returns the item
     argument.
     
     (INVERT whatever ignore) --> whatever

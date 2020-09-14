@@ -32,7 +32,7 @@
   <ol>
     <li>A directory with the plugin's name must exists in either of the locations above.</li>
     <li>The directory and and names of all files it contains must be lowercase only.</li>
-    <li>The main plugin file is names foo-main.lisp</li>
+    <li>The main file for a plugin 'foo' is foo-main.lisp</li>
   </ol>
   <pre class="code">
     
@@ -42,13 +42,14 @@
                             +-- additional lisp files
                             +-- 
   </pre>
+  <hr/>
   <a id="plugin"></a>
   
   <!-- (PLUGIN name &optional reload) -->
   <!--  -->
   <!--  -->
   <b class="definition">(PLUGIN name &optional reload)</b><br>
-  <p class="summery">Loads plugin, if it has not already been loaded.</p>
+  <p class="summery">Loads plugin.</p>
   <pre class="description">
     name should be an unquoted symbol.
     	
@@ -57,6 +58,7 @@
     	
     A plugin may load another plugin.
   </pre>
+  <hr/>
   <a id="load-plugin-file"></a>
   
   <!-- (LOAD-PLUGIN-FILE name) -->
@@ -64,6 +66,7 @@
   <!--  -->
   <b class="definition">(LOAD-PLUGIN-FILE name)</b><br>
   <p class="summery">Loads lisp file relative to current plugin directory.</p>
+  <hr/>
   <a id="forget-plugins"></a>
   
   <!-- (FORGET-PLUGINS) -->
@@ -75,6 +78,7 @@
     The plugins are not actually unloaded from memory. Calling FORGET-PLUGINS 
     simply removes the record of all plugins having been loaded.
   </pre>
+  <hr/>
   <a id="?plugins"></a>
   
   <!-- (?PLUGINS) -->

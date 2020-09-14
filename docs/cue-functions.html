@@ -35,13 +35,14 @@
     
     <i>TIME-SPECIFICATION</i> has no pre-defined format.  This allows great flexibility 
     for setting event times.  Of course acceptable time-specifications must be supplied
-    to whatever cue-function is currently in in use.
+    to whatever cue-function is currently in use.
   </p>
   <p class="body">
     The default cue-function, <b>BAR</b>, converts bar-number, beat and 
     subbeat to an appropriate time offset. Provisions are made for triplets and other 
     odd timing divisions.  It is general enough for most popular music styles.
   </p>
+  <hr/>
   <a id="bar"></a>
   
   <!-- (BAR time-signature time-specification) -->
@@ -86,9 +87,10 @@
     	sixteenth note triplet.  However a time-signature may have an unusual
     	number of subbeats per beat, such as 5.  I'm not sure what such
     	subbeats should be called (perhaps 1/20th notes?)  In any case a T
-    	modifier whene there are 5-subbeats to the beat would result in
+    	modifier when there are 5-subbeats to the beat would result in
     	1/30th of a beat. 
   </pre>
+  <hr/>
   <a id="float-bar"></a>
   
   <!-- (FLOAT-BAR time-signature time-specification) -->
@@ -107,6 +109,7 @@
       BR - bar number   1, 2, 3, ... &lt;= (bars time-signature), default 1
       BT - beat number, float or rational,  BT &gt;= 1.0
   </pre>
+  <hr/>
   <a id="shuffle"></a>
   <H2 class="heading">Shuffle Functions</H2>
   <p class="body">
@@ -123,6 +126,7 @@
     The time-specification argument <b>must</b> be compatible with the 
     current cue-function.
   </p>
+  <hr/>
   
   <!-- (NO-SHUFFLE time-specification) -->
   <!--  -->

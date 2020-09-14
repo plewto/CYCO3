@@ -38,12 +38,14 @@
     <li>:doc     --> Print documentation and return an empty list.</li>
     <li>:default --> Use the instruments program-number property.</li>
   </ul>
+  <hr/>
   
   <!-- (NULL-PROGRAM-MAP time &key bank program) -->
   <!--  -->
   <!--  -->
   <b class="definition">(NULL-PROGRAM-MAP time &key bank program)</b><br>
-  <p class="summery">Place-holder function which ignores all of it's arguments and returns an empty list.</p>
+  <p class="summery">Place-holder function, ignores all arguments and returns an empty list.</p>
+  <hr/>
   
   <!-- (SET-BASIC-PROGRAM-MAP instrument &key (offset 0)(min 0)(max 127)) -->
   <!--  -->
@@ -62,6 +64,7 @@
     	If the map sees the program number :default it uses the instrument's
     	program-number property. 
   </pre>
+  <hr/>
   
   <!-- (SET-SYMBOLIC-PROGRAM-MAP instrument assignments &key offset) -->
   <!--  -->
@@ -69,12 +72,11 @@
   <b class="definition">(SET-SYMBOLIC-PROGRAM-MAP instrument assignments &key offset)</b><br>
   <p class="summery">Assigns a symbolic program-number map to instrument.</p>
   <pre class="description">
-    	assignments argument is either a hash-table or association-list.  The
-    	assignments have the form:
+    	assignments argument is either a hash-table or association-list. 
     	
     	    ((cons name-1 program-number-1 [optional remarks])
-    		 (cons name-2 program-number-2 [optional remarks])
-    		  ................................................)
+    	     (cons name-2 program-number-2 [optional remarks])
+    	      ...............................................)
   </pre>
   <hr/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=dynamic-maps.html class="navigation">Previous: dynamic-maps </a> &nbsp;<a href=time-signature.html class="navigation">Next: time-signature </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

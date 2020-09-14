@@ -17,24 +17,24 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=instruments.html class="navigation">Next: instruments </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr/>
   <img class="center" src="images/nodes.png" alt="nodes"/>
-  <h1 class="banner">CYCO Nodes</h1>
+  <h1 class="banner">Nodes and Trees</h1>
   <p class="body">
-    A <i>CYCO-NODE</i> is an object used in the construction of various trees.  A
-    node has at most one parent and any number of child nodes.
-    
+    The <i>CYCO-NODE</i> class is used to construct various trees.  Each node is 
+    connected to at most one parent and any number of child nodes.   Internally CYCO uses two 
+    primary trees.
+  </p>
+  <ol>
+    <li>Orchestra - a tree of instruments rooted at <strong>*ROOT-INSTRUMENT*</strong></li>
+    <li>Project - the current project rooted at <strong>*PROJECT*</strong></li>
+  </ol>
+  <p class="body">
     Each node type defines a pre-established set of <i>properties</i>, and a node may
     either directly set a property value or inherit the value from it's
     parent.  It is not possible for a node to define a property which has not
     been established at the time it was constructed.
   </p>
-  <p class="body">
-    CYCO maintains two major trees.
-  </p>
-  <ul>
-    <li>Orchestra - a tree of instruments rooted at <strong>*ROOT-INSTRUMENT*</strong></li>
-    <li>Project trees.  The current project is rooted at <strong>*PROJECT*</strong></li>
-  </ul>
   <H2 class="heading">Node Functions</H2>
+  <hr/>
   <a id="name"></a>
   
   <!-- (NAME! node new-name) -->
@@ -47,6 +47,7 @@
   <!--  -->
   <b class="definition">(NAME node)</b><br>
   <p class="summery">Sets/retrieves node name.</p>
+  <hr/>
   <a id="remarks"></a>
   
   <!-- (REMARKS! node text) -->
@@ -59,6 +60,7 @@
   <!--  -->
   <b class="definition">(REMARKS node)</b><br>
   <p class="summery">Sets/retrieves optional remarks text.</p>
+  <hr/>
   <a id="root-p"></a>
   
   <!-- (ROOT-P node) -->
@@ -66,6 +68,7 @@
   <!--  -->
   <b class="definition">(ROOT-P node)</b><br>
   <p class="summery">Predicate, true if node has no parent.</p>
+  <hr/>
   <a id="find-child"></a>
   
   <!-- (FIND-CHILD parent child) -->
@@ -81,6 +84,7 @@
   <pre class="description">
     A nil result indicates parent does not have indicated child.
   </pre>
+  <hr/>
   <a id="path-to-root"></a>
   
   <!-- (PATH-TO-ROOT node) -->
@@ -88,6 +92,7 @@
   <!--  -->
   <b class="definition">(PATH-TO-ROOT node)</b><br>
   <p class="summery">Returns a list of nodes, in order, starting with node back to the root node. </p>
+  <hr/>
   <a id="disconnect"></a>
   
   <!-- (DISCONNECT node) -->
@@ -95,16 +100,18 @@
   <!--  -->
   <b class="definition">(DISCONNECT node)</b><br>
   <p class="summery">Sever the connection between node and it's parent.</p>
+  <hr/>
   <a id="connect"></a>
   
   <!-- (CONNECT parent child) -->
   <!--  -->
   <!--  -->
   <b class="definition">(CONNECT parent child)</b><br>
-  <p class="summery">Make child a child node of parent.</p>
+  <p class="summery">Makes connection between parent and child.</p>
   <pre class="description">
     The connection between child and it's previous parent is severed.
   </pre>
+  <hr/>
   <a id="prune"></a>
   
   <!-- (PRUNE node &optional (force nil)) -->
@@ -113,10 +120,10 @@
   <b class="definition">(PRUNE node &optional (force nil))</b><br>
   <p class="summery">Deconstruct tree starting with node.</p>
   <pre class="description">
-            Each instance of CYCO-NODE has a Boolean field named TRANSIENT.  
-            By default PRUNE only disconnects those nodes with a true transient 
-            value.  If the optional force argument is true, then all nodes are 
-            disconnected regardless of their transient value.
+    Each instance of CYCO-NODE has a Boolean field named TRANSIENT.  
+    By default PRUNE only disconnects those nodes with a true transient 
+    value.  If the optional force argument is true, then all nodes are 
+    disconnected regardless of their transient value.
   </pre>
   <p class="footnote">
     An aside: why all this transient nonsense?<br><br>
@@ -141,6 +148,7 @@
     		project is loaded.  The project is responsible for pruning the
     		orchestra tree prior to creating new instruments.
   </p>
+  <hr/>
   <a id="has-property-p"></a>
   
   <!-- (HAS-PROPERTY-P node key) -->
@@ -148,6 +156,7 @@
   <!--  -->
   <b class="definition">(HAS-PROPERTY-P node key)</b><br>
   <p class="summery">Predicate, true if node defines key as a property.</p>
+  <hr/>
   <a id="put"></a>
   
   <!-- (PUT node key value) -->
@@ -156,9 +165,10 @@
   <b class="definition">(PUT node key value)</b><br>
   <p class="summery">Sets node property key to value.</p>
   <pre class="description">
-        Is is an error if node does not define key as a property.  The new value 
-        will shadow the parent nodes value for key.
+    IT is an error if node does not define key as a property.  The new value 
+    will shadow the parent nodes value for key.
   </pre>
+  <hr/>
   <a id="property"></a>
   
   <!-- (PROPERTY node key) -->
@@ -167,9 +177,10 @@
   <b class="definition">(PROPERTY node key)</b><br>
   <p class="summery">Returns the value of property key.</p>
   <pre class="description">
-        If node does not define a value for key, use the parent node value.  It is an 
-        error if key is not an established property for node.
+    If node does not define a value for key, use the parent node value.  It is an 
+    error if key is not an established property for node.
   </pre>
+  <hr/>
   <a id="local-properties"></a>
   
   <!-- (LOCAL-PROPERTIES node) -->
@@ -178,8 +189,9 @@
   <b class="definition">(LOCAL-PROPERTIES node)</b><br>
   <p class="summery">Returns list of property keys explicitly defined by node</p>
   <pre class="description">
-        Parent properties are not included.
+    Parent properties are not included.
   </pre>
+  <hr/>
   <a id="print-tree"></a>
   
   <!-- (PRINT-TREE node &optional (depth 0)) -->
@@ -188,7 +200,7 @@
   <b class="definition">(PRINT-TREE node &optional (depth 0))</b><br>
   <p class="summery">Prints tree structure starting at node.</p>
   <pre class="description">
-        The optional depth argument is used internally.
+    The optional depth argument is used internally.
   </pre>
   <hr/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=instruments.html class="navigation">Next: instruments </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

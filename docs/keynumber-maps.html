@@ -26,7 +26,7 @@
   </pre>
   <p class="body">
     The result should be an integer between -1 and 127 inclusive with negative
-    result indicating a rest.  A few special cases for the kn argument are
+    result indicating a rest.  A few special cases argument values are
     defined.
   </p>
   <ul>
@@ -36,6 +36,7 @@
   <p class="body">
     The following factory functions generate keynumber-maps of various forms.
   </p>
+  <hr/>
   <a id="basic-keynumber-map"></a>
   
   <!-- (BASIC-KEYNUMBER-MAP &key min max transpose) -->
@@ -45,10 +46,11 @@
   <p class="summery">Creates a basic keynumber-map</p>
   <pre class="description">
     :min       - integer, keynumbers below min return +REST+, default 0.
-     :max       - integer, keynumber above max return +REST+, default 127.
-     :transpose - integer, transposition in half-steps.
-    	      The transposition is applied after the range test, default 0.
+    :max       - integer, keynumber above max return +REST+, default 127.
+    :transpose - integer, transposition in half-steps.
+    	         The transposition is applied after the range test, default 0.
   </pre>
+  <hr/>
   <a id="circular-keynumber-map"></a>
   
   <!-- (CIRCULAR-KEYNUMBER-MAP start end) -->
@@ -67,6 +69,7 @@
       (foo 3) --> 10
       (foo 'whatever) --> -1
   </pre>
+  <hr/>
   <a id="symbolic-keynumber-map"></a>
   
   <!-- (SYMBOLIC-KEYNUMBER-MAP assignments) -->
@@ -95,13 +98,14 @@
           ........
          (foo undefined-symbol) --> -1
     	  
-    For numeric arguments the map acts like a circular-keynumber-map
+    For numeric arguments the map behaves like a circular-keynumber-map
     	 
          (foo 0) --> 36
          (foo 1) --> 38
          (foo 3) --> 37
          (foo 4) --> 36
   </pre>
+  <hr/>
   <a id="metronome-keynumber-map"></a>
   
   <!-- (METRONOME-KEYNNUMBER-MAP &key phrase bar beat) -->
@@ -110,8 +114,7 @@
   <b class="definition">(METRONOME-KEYNNUMBER-MAP &key phrase bar beat)</b><br>
   <p class="summery">Creates keynumber-map for use with metronomes.</p>
   <pre class="description">
-    The metronome map is a specialized form of symbolic-keynumber-map 
-    which recognizes the following three symbols.
+    The metronome map is a symbolic-keynumber-map 
     	
         PHRASE - occurs when the phrase repeats, IE the first beat of bar 1.
         BAR    - occurs on the first beat of each bar, with exception of bar 1.

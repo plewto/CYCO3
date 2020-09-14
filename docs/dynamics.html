@@ -19,9 +19,9 @@
   <img class="center" src="images/dynamics.png" alt="dynamics"/>
   <h1 class="banner">CYCO Dynamics</h1>
   <p class="body">
-    Numerically dynamics values are 'normalized' floats between 0 and 1.  Values above
-    1 are clipped to 1.0 and all negative values are treated as rest.   Functions are defined for
-    converting between dynamic values and MIDI velocities.
+    Dynamic values are represented as 'normalized' floats between 0.0 and 1.0 inclusive, 
+    plus the special value -1.  Values above 1.0 are clipped to 1.0.  All negative values are converted
+    to -1 and treated as rest.
   </p>
   <H2 class="heading">Symbolic Dynamic Values</H2>
   <p class="body">
@@ -57,7 +57,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(DYNAMIC item)</b><br>
-  <p class="summery">Returns numeric dynamic value of item.</p>
+  <p class="summery">Returns numeric dynamic value.</p>
   <pre class="description">
     (DYNAMIC -100) --> -1  a rest
     (DYNAIMC 0.5)  --> 0.5

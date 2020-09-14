@@ -25,6 +25,7 @@
   <pre class="code">
     (lambda dynamic-value) --> float
   </pre>
+  <hr/>
   <a id="basic-dynamic-map"></a>
   
   <!-- (BASIC-DYNAMIC-MAP &key scale min max) -->
@@ -39,6 +40,7 @@
     	
     	The scaling factor is applied prior to the range test.
   </pre>
+  <hr/>
   <a id="metronome-dynamic-map"></a>
   
   <!-- (METRONOME-DYNAMIC-MAP &key phrase bar beat) -->
@@ -47,13 +49,11 @@
   <b class="definition">(METRONOME-DYNAMIC-MAP &key phrase bar beat)</b><br>
   <p class="summery">Returns a dynamic-map for use with metronomes.</p>
   <pre class="description">
-           The map recognizes
-    	three event types.
-    	
-    	  'PHRASE - first beat of bar 1.
-    	  'BAR    - first beat of all bars, except the first bar.
-    	  'BEAT   - all other beats.
+    'PHRASE - first beat of bar 1.
+    'BAR    - first beat of all bars, except the first bar.
+    'BEAT   - all other beats.
   </pre>
+  <hr/>
   <a id="default-map"></a>
   
   <!-- +DEFAULT-DYNAMIC-MAP+ -->

@@ -30,6 +30,7 @@
     often override the project time-signature and may mute or solo individual
     parts or groups of parts.
   </p>
+  <hr/>
   <a id="section"></a>
   
   <!-- (SECTION name &key ...) -->
@@ -70,6 +71,7 @@
   <p class="body">
     See <a href='cue-functions.html'>cue and shuffle</a> functions.
   </p>
+  <hr/>
   <a id="group"></a>
   
   <!-- (GROUP name members) -->
@@ -89,6 +91,7 @@
     
     (group percussion '(kick snare toms))
   </pre>
+  <hr/>
   <a id="mute"></a>
   
   <!-- (MUTE-ALL section) -->
@@ -115,6 +118,7 @@
     :solo   - unmute this group or part, mute all sibling groups and parts.
     nil     - maintain current mute status.
   </pre>
+  <hr/>
   <a id="clone"></a>
   
   <!-- (CLONE section &key new-name new-parent) -->
@@ -131,6 +135,7 @@
     :new-parent - Sets the parent of the clone.  By default the clone has
                   the same parent as the original.
   </pre>
+  <hr/>
   <a id="transformations"></a>
   
   <!-- (TRANSPOSE section n) -->
@@ -155,6 +160,7 @@
     Retrograde is applied only if the section/part REVERSABLE property
     is true.
   </pre>
+  <hr/>
   <a id="render-once"></a>
   
   <!-- (RENDER-ONCE section &key (offset 0)) -->
@@ -176,6 +182,7 @@
     count  - positive integer, number of time to repeat section.
     offset - time, add offset seconds to all event times.
   </pre>
+  <hr/>
   <a id="midi"></a>
   
   <!-- (->MIDI section &key filename repeat pad) -->
@@ -194,6 +201,7 @@
     :pad      - Time in seconds added at the end to allow for final decay
                 tails. Default 0.0
   </pre>
+  <hr/>
   <H3 class="heading">Anatomy of a Section File</H3>
   <pre class="code">
     

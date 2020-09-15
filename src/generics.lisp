@@ -29,6 +29,9 @@ If object is some other sequence type, return new list of object's elements.
 For all other types, create new list with object as it's only element.
 see ->vector"))
 
+(defmethod ->list ((object string))
+  (list object))
+
 (defgeneric ->markov-link (object)
   (:documentation "Coerce object to a markov-link"))
 

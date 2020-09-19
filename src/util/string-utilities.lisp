@@ -98,24 +98,6 @@ Returns string."
 		  (t r)))
     (concatenate 'string s r)))
 
-;; string-replace curtsy of: stack-overflow
-;; https://stackoverflow.com/questions/4366668/str-replace-in-lisp
-;;
-;; NOTE: STRING-REPLACE works under SBCL but not under CLISP.
-;;
-(defun string-replace (search replace string &optional count)
-  (loop for start = (search search (or result string)
-                            :start2 (if start (1+ start) 0))
-        while (and start
-                   (or (null count) (> count 0)))
-        for result = (concatenate 'string
-                                  (subseq (or result string) 0 start)
-                                  replace
-                                  (subseq (or result string)
-                                          (+ start (length search))))
-        do (when count (decf count))
-        finally (return-from string-replace (or result string))))
-
 (defmethod pick ((s string))
   (char s (pick (length s))))
 

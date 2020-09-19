@@ -27,9 +27,16 @@
   (let ((dir (->string (user-homedir-pathname))))
     (subseq dir 0 (1- (length dir)))))
 
+;; (defun resolve-user-home (str)
+;;   "(resolve-user-home '~/foo') -> <user-home>/foo"
+;;   (string-replace (->string *os-homedir-alias*) (user-home) str))
+
 (defun resolve-user-home (str)
-  "(resolve-user-home '~/foo') -> <user-home>/foo"
-  (string-replace (->string *os-homedir-alias*) (user-home) str))
+  (if (and (plusp (length str))(string= (subseq str 0 1) *os-homedir-alias*))
+      (str+ (user-home) (subseq str 1))
+    str))
+
+
 
 ;; (alias file-exists probe-file)  ;; DEPRECIATED -fails under Armed Bear.
 

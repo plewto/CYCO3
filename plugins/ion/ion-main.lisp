@@ -27,7 +27,6 @@
 
 ;; Overloaded pad channels
 ;;
-(meta-channel! :CASIO  12 "")
 (meta-channel! :ROMAB  15 "PAD ROMA B")
 (meta-channel! :VOPB   16 "PAD Voices of passion B")
 
@@ -36,7 +35,6 @@
 
 (plugin general-midi)
 (load-plugin-file "yamaha/yamaha")
-(load-plugin-file "casio/ctk2400")
 (load-plugin-file "korg/korg")
 (load-plugin-file "oberheim/matrix1000")
 (load-plugin-file "emu/procussion/procussion")

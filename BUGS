@@ -65,5 +65,9 @@ BUG 0005 2019.08.31 Status CLOSED
 BUG 0006 2020.09.03 Status OPEN
 
     Enharmonic 'B-sharp' keynumbers not recognized.
-    
-    
+
+--------------------------------------------------------------------
+BUG 0004 2020.09.23 Status OPEN
+
+    ?PROJECTS function does not work uder CLISP.
+    It is functional with SBCL.

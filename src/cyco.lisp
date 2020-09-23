@@ -191,6 +191,8 @@
   (cond
    ((equalp lit "SBCL")
     (ld "src/sbcl"))
+   ((member lit '("SBCL" "CLISP") :test #'string=)
+    nil)
    (t
     (format t "WARNING: Using non-tested Lisp: ~A ~%" lit))))
 

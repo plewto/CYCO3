@@ -37,7 +37,6 @@
     str))
 
 
-
 ;; (alias file-exists probe-file)  ;; DEPRECIATED -fails under Armed Bear.
 
 (defun partition-path (fname)
@@ -108,4 +107,15 @@ Do not append if filename already ends with extension.
       fname)))
 
 
+;; Split extension from filename
+;; (split-extension "foo.bar") --> ("foo" ".bar")
+;; (split-extension "foobar")  --> ("foobar" "")
+;;
+(defun split-extension (fname)
+  (let ((index (search "." fname :from-end t)))
+    (if index
+	(let ((head (subseq fname 0 index))
+	      (tail (subseq fname index)))
+	  (list head tail))
+      (list fname ""))))
 

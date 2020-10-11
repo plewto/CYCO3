@@ -1,7 +1,7 @@
 ;;;; CYCO OSC plugin
 ;;;;
 ;;;; The OSC plugin is for demonstration only, it is not functional.
-;;;; See pigosc for using OSC to control a remote MIDI player.
+;;;; See pigiorn for using OSC to control a remote MIDI player.
 ;;;;
 
 (load "~/quicklisp/setup")

@@ -1,7 +1,5 @@
-;;;; cyco3 pigiron plugin util.lisp
+;;;; cyco3 plugin pig util
 ;;;;
-
-
 
 (defgeneric bool->string (arg))
 (defgeneric string->bool (arg))
@@ -26,15 +24,12 @@
   (defmethod bool->string ((arg string))
     (if (is-boolean arg)
 	(if (is-true arg) "True" "False")
-      (error (sformat "Expected boolean string, encounterd ~S" arg))))
+      (error (cyco:sformat "Expected boolean string, encounterd ~S" arg))))
 
   (defmethod bool->string ((s symbol))
-    (bool->string (->string s)))
+    (bool->string (cyco:->string s)))
 
   (defmethod string->bool ((arg string))
     (if (is-true arg) t nil)))
 	
-      
-  
-
 

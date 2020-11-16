@@ -264,6 +264,7 @@
 	  render-smf-track
 	  reset
 	  reset-channel-assignments
+	  resolve-user-home
 	  rest-p
 	  retrograde
 	  rl
@@ -274,9 +275,8 @@
 	  set-basic-program-map
 	  set-cyco-prompt
 	  set-symbolic-program-map
+	  sformat
 	  signed-norm->midi-data
-	  ;;shift-register-p
-	  ;;shift-register
 	  slew
 	  slew-p
 	  slice
@@ -288,6 +288,7 @@
 	  solo
 	  sort-midi-events
 	  split-list
+	  split-string
 	  strummer
 	  strummer-p
 	  subbeat-duration

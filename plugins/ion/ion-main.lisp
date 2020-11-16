@@ -64,11 +64,5 @@
 	  (make-raw-part 'rr-reset
 			 :events event-list
 			 :remarks "Round-robin reset controler 32 on all MIDI channels."))))
-	 
-
-(defun snapshot (&optional (fname "~/bin/cyco3"))
-  "Saves CYCO snapshot to default location."
-  (save-snapshot fname))
-
 
 (load-plugin-file "legacy")

@@ -12,7 +12,7 @@
 			(name (property *project* :current-section)))
 	      (format s "~%CYCO: ")))))
 
-(defun save-snapshot (filename)
+(defun snapshot (&optional (filename "~/bin/cyco"))
   "Save snapshot of CYCO as an executable."
   (let ((fname (resolve-user-home filename)))
     (format t "Creating CYCO executable, ~S~%" fname)

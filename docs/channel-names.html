@@ -15,10 +15,10 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=midi-events.html class="navigation">Previous: midi-events </a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/channels.png" alt="channels"/>
   <h1 class="banner">MIDI Channel & Controller Names</h1>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel!"></a>
   
   <!-- (META-CHANNEL! name channel &optional remarks) -->
@@ -41,7 +41,7 @@
     	(META-CHANNEL! 'drum-machine 10)
     	(META-CHANNEL! 'snare 'drum-machine)  snare defined in terms of drum machine.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel"></a>
   
   <!-- (META-CHANNEL channel &optional (resolve nil)) -->
@@ -59,7 +59,7 @@
     	(META-CHANNEL 'snare t) --> 10
         (META-CHANNEL 3)        --> 3
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="channel-name"></a>
   
   <!-- (CHANNEL-NAME channel) -->
@@ -71,7 +71,7 @@
         (CHANNEL-NAME 10) --> drum-machine
         (CHANNEL-NAME 6)  --> 6, unassigned channels return their integer value.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel-assignment-p"></a>
   
   <!-- (META-CHANNEL-ASSIGNMENT-P object) -->
@@ -79,7 +79,7 @@
   <!--  -->
   <b class="definition">(META-CHANNEL-ASSIGNMENT-P object)</b><br>
   <p class="summery">Predicate, true if object is a channel assignment.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="?meta-channels"></a>
   
   <!-- (?META-CHANNELS) -->
@@ -91,7 +91,7 @@
     <br>
   </p>
   <H2 class="heading">MIDI Controller Names</H2>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="define-controller"></a>
   
   <!-- (DEFINE-CONTROLLER name controller-number) -->
@@ -99,7 +99,7 @@
   <!--  -->
   <b class="definition">(DEFINE-CONTROLLER name controller-number)</b><br>
   <p class="summery">Assign name to MIDI controller number.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="defined-controllers"></a>
   
   <!-- (DEFINED-CONTROLLERS) -->
@@ -107,7 +107,7 @@
   <!--  -->
   <b class="definition">(DEFINED-CONTROLLERS)</b><br>
   <p class="summery">Returns list of assigned controller names.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="get-controller-number"></a>
   
   <!-- (GET-CONTROLLER-NUMBER name &key (default nil)) -->
@@ -128,7 +128,7 @@
         VOLUME        7
         PAN          10
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=midi-events.html class="navigation">Previous: midi-events </a> &nbsp;<a href=patterns.html class="navigation">Next: patterns </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=project-anatomy.html class="navigation">Previous: project-anatomy </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/section.png" alt="section"/>
   <h1 class="banner">CYCO Sections</h1>
   <p class="body">
@@ -26,11 +26,11 @@
     Sections are the middle layer, they are always a child of a 
     <a href='projects.html'>project</a> and
     only have <a href='parts.html'>parts</a> as child nodes.
-    The primary job of a section is to be a container for it's parts.  Sections
+    The primary job of a section is to be a container for its parts.  Sections
     often override the project time-signature and may mute or solo individual
     parts or groups of parts.
   </p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="section"></a>
   
   <!-- (SECTION name &key ...) -->
@@ -64,14 +64,14 @@
         :remarks      - Optional remarks text solely for the users use.
         :project      - The parent project, defaults to *PROJECT*
     
-    By default the new Section is designated the <i>current</i> section of it's
+    By default the new Section is designated the <i>current</i> section of its
     parent project.   Most section related functions default to the current
     section of *PROJECT*.
   </pre>
   <p class="body">
     See <a href='cue-functions.html'>cue and shuffle</a> functions.
   </p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="group"></a>
   
   <!-- (GROUP name members) -->
@@ -91,7 +91,7 @@
     
     (group percussion '(kick snare toms))
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="mute"></a>
   
   <!-- (MUTE-ALL section) -->
@@ -118,7 +118,7 @@
     :solo   - unmute this group or part, mute all sibling groups and parts.
     nil     - maintain current mute status.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="clone"></a>
   
   <!-- (CLONE section &key new-name new-parent) -->
@@ -135,7 +135,7 @@
     :new-parent - Sets the parent of the clone.  By default the clone has
                   the same parent as the original.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="transformations"></a>
   
   <!-- (TRANSPOSE section n) -->
@@ -160,7 +160,7 @@
     Retrograde is applied only if the section/part REVERSABLE property
     is true.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="render-once"></a>
   
   <!-- (RENDER-ONCE section &key (offset 0)) -->
@@ -182,7 +182,7 @@
     count  - positive integer, number of time to repeat section.
     offset - time, add offset seconds to all event times.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="midi"></a>
   
   <!-- (->MIDI section &key filename repeat pad) -->
@@ -191,7 +191,7 @@
   <b class="definition">(->MIDI section &key filename repeat pad)</b><br>
   <p class="summery">Writes MIDI file from section events.</p>
   <pre class="description">
-    :filename - output filename, defaults projects MIDI directory with the
+    :filename - output filename, defaults to the project's MIDI directory with the
                 same name as section.    For verse section in project foo,
                 the default name is
                              
@@ -201,7 +201,7 @@
     :pad      - Time in seconds added at the end to allow for final decay
                 tails. Default 0.0
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Anatomy of a Section File</H3>
   <pre class="code">
     
@@ -255,7 +255,7 @@
         (->midi verse :repeat 8 :filename "test-filename")
     
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=project-anatomy.html class="navigation">Previous: project-anatomy </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

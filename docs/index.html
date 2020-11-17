@@ -15,26 +15,13 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/logo.png" alt="logo"/>
-  <h1 class="banner">CYCO</h1>
   <p class="body">
     CYCO is a lisp based music composition language with a rich set pattern 
-    generators and a project centric design.
-  </p>
-  <H2 class="heading">History</H2>
-  <p class=body>
-  CYCO began as a set of extensions to <a href=http://commonmusic.sourceforge.net/ class="link">Common Music 2</a> called CMU (Common Music Utility). 
-  CMU primarily added a project level framework and a hierarchical time structure.
-  Eventually Common Music moved to version 3 invalidating much of CMU.
-  As CMU only used a small subset of Common Music's features, a decision was made to
-  separate CMU from Common Music.  The name CYCO is a play 
-  on the commonly used pattern generator, the 'cycle'.</p>
-  <p class=body>
-  CYCO is written in 100% Lisp and was developed and tested with <a href=http://www.sbcl.org/ class="link">SBCL</a> </p>
-  <p class="footnote">
-    As of 11 Septemper 2020, CYCO is known not to work under CLISP due to the 
-    STRING-REPLACE function in util/string-utilities.lisp
+    generators and a project centric design.  It was developed using 
+    <a href='http://www.sbcl.org/'>SBCL</a>.  For a background on its developement
+    see <a href='history.html'>history</a>.
   </p>
   <H2 class="heading">Features</H2>
   <ul>
@@ -46,13 +33,13 @@
     <li>Hierarchical instrument definitions, IE a snare may be a sub-instrument of a drum-machine. </li>
     <li>Plugins</li>
     <li>Generates MIDI files for output.</li>
-    <li>Under SBCL CYCO's state may be saved as an executable.</li>
   </ul>
   <H2 class="heading">Usage Overview</H2>
   <p class="body">
-    Briefly compositions are defined by writing a series of Lisp files in a dedicated 
-    <em>Project</em> directory.  Once defined the project is rendered to a selected output format.  
-    Currently only MIDI file output is supported with an external player required for playback.
+    Briefly, compositions are defined by writing a series of Lisp files in a dedicated 
+    <em>Project</em> directory.  Once defined the project is <i>rendered</i> to a standard MIDI files. 
+    An external player is requierd to play the MIDI files.  The included <em>Pig</em> plugin provides
+    remote OSC control over <a href='todo pigiron link'>Pigiron</a> for MIDI playback.
   </p>
   <p class="body">
     At any one time there is a single <em>Current Project</em>.  Several short-cut
@@ -100,12 +87,12 @@
   <li>
   If you are using SBCL you have the option of saving the current state of
      CYCO to an executable.  <br><br>
-  <strong>(SAVE-SNAPSHOT <i>executable-name</i>)</strong><br><br>
+  <strong>(SNAPSHOT <i>executable-name</i>)</strong><br><br>
   Snapshots are considerably faster then running from source.  After
      starting CYCO from a snapshot you must first enter <strong>(CYCO)</strong> at the initial
-     Lisp prompt.</li>
+     Lisp prompt.  By default the executable is saved as ~/bin/cyco</li>
   </ol>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/keynumbers.png" alt="keynumbers"/>
   <h1 class="banner">CYCO Key-Numbers</h1>
   <p class="body">
@@ -72,7 +72,7 @@
     When the argument is a list, the function is applied to each element of the list and
     returns a new list.
   </p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="keynumber-function"></a>
   
   <!-- (KEYNUMBER item) -->
@@ -89,7 +89,7 @@
     (KEYNUMBER 999)  --> 123, out of bounds integers transposed to valid MIDI key number.
     (KEYNUMBER '(20 30 R (C4 CS5)) --> (20 30 -1 (48 61))
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="pitch-class"></a>
   
   <!-- (PITCH-CLASS item) -->
@@ -107,7 +107,7 @@
     (PITCH-CLASS 'D4)   --> 2
     (PITCH-CLASS '(20 30 r (C4 CS5)) --> (8 6 -1 (0 1))
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="octave"></a>
   
   <!-- (OCTAVE item) -->
@@ -125,7 +125,7 @@
     (OCTAVE 'B4)     --> 4
     (OCTAVE '(20 30 R (C4 CS5)) -> (1 2 -1 (4 5))
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="keyname"></a>
   
   <!-- (KEYNAME item) -->
@@ -149,28 +149,28 @@
     (KEYNUMBER 'BF4) --> 58
     (KEYNAME 58)     --> AS4
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   
   <!-- (REST-P item) -->
   <!--  -->
   <!--  -->
   <b class="definition">(REST-P item)</b><br>
   <p class="summery">Predicate, returns T if item is a rest.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   
   <!-- (KEYNUMBER-P item) -->
   <!--  -->
   <!--  -->
   <b class="definition">(KEYNUMBER-P item)</b><br>
   <p class="summery">Predicate, returns T if item may be treated as a keynumber.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   
   <!-- (DEFKEYNUMBER symbol value) -->
   <!--  -->
   <!--  -->
   <b class="definition">(DEFKEYNUMBER symbol value)</b><br>
   <p class="summery">Defines user key-number.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="transpose"></a>
   
   <!-- (TRANSPOSE item amount) -->
@@ -207,7 +207,7 @@
     
     (TRANSPOSE 'snare-hit 15) --> snare-hit
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="invert"></a>
   
   <!-- (INVERT item pivot-key) -->
@@ -242,7 +242,7 @@
     (INVERT whatever ignore) --> whatever
     (INVERT 'snare-hit ignore) --> snare-hit
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

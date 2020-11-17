@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/patterns.png" alt="patterns"/>
   <h1 class="banner">CYCO Patterns</h1>
   <p class="body">
@@ -38,7 +38,7 @@
   </pre>
   <a id="functions"></a>
   <H2 class="heading">Functions on Patterns</H2>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next-1"></a>
   
   <!-- (NEXT-1 pattern) -->
@@ -53,7 +53,7 @@
     	(next-1 foo) --> A
     	(next-1 foo) --> B
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next-n"></a>
   
   <!-- (NEXT-N pattern n) -->
@@ -67,7 +67,7 @@
      (next-n foo 2) --> (B C)
      (next-1 foo)   --> D
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next"></a>
   
   <!-- (NEXT pattern &optional n) -->
@@ -89,7 +89,7 @@
         (next foo :rest) --> (F G H)
         (next foo :all)  --> (A B C D E F G H)
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="value"></a>
   
   <!-- (VALUE pattern) -->
@@ -102,7 +102,7 @@
     (next foo)  --> A
     (value foo) --> A
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="reset"></a>
   
   <!-- (RESET pattern) -->
@@ -117,7 +117,7 @@
     (reset foo)
     (next foo)   --> A
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="pattern-p"></a>
   
   <!-- (PATTERN-P object) -->
@@ -125,7 +125,7 @@
   <!--  -->
   <b class="definition">(PATTERN-P object)</b><br>
   <p class="summery">Predicate, true if object is a pattern type.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="cardinality"></a>
   
   <!-- (CARDINALITY pattern) -->
@@ -147,7 +147,7 @@
     (cardinality baz) --> 8
     (next baz :rest)  --> (T NIL NIL T T NIL T)
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="remaining"></a>
   
   <!-- (REMAINING pattern) -->
@@ -166,7 +166,7 @@
     (next baz 2)    --> (nil nil)
     (remaining baz) --> 6
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="to-pattern"></a>
   
   <!-- (->PATTERN object &key pattern-type) -->
@@ -177,7 +177,7 @@
   <pre class="description">
     If (PATTERN-P object) is true return object.
     Otherwise return pattern of type pattern-type (default cycle) with object as
-    it's elements.  
+    its elements.  
     
     (param foo '(A B C))
     (param baz (->pattern foo))
@@ -186,7 +186,7 @@
     (param bez (->pattern foo :pattern-type 'line))
     (next bez 6)  --> (A B C C C C)
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="transpose"></a>
   
   <!-- (TRANSPOSE pattern n) -->
@@ -199,7 +199,7 @@
     (transpose foo 4)
     (next foo :all) --> (64 65 66)
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="invert"></a>
   
   <!-- (INVERT pattern pivot) -->
@@ -215,7 +215,7 @@
     The pivot argument may be a symbolic key-number.
     (invert foo 'c6)
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="retrograde"></a>
   
   <!-- (RETROGRADE pattern) -->
@@ -231,7 +231,7 @@
     Retrograde is not defined for all pattern types.  Where
     undefined the pattern is unaltered.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="clone"></a>
   
   <!-- (CLONE pattern) -->
@@ -251,13 +251,13 @@
   <b class="definition">(LINE &key of)</b><br>
   <p class="summery">Creates new LINE pattern.</p>
   <pre class="description">
-    A LINE returns it's elements in sequence until the final element is reached, 
+    A LINE returns its elements in sequence until the final element is reached, 
     thereafter it returns the final value indefinitely.
     
      (param foo (line :of '(A B C)))
      (next foo 8) --> A B C C C C C C...
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="cycle"></a>
   
   <!-- (CYCLE &key of) -->
@@ -266,13 +266,13 @@
   <b class="definition">(CYCLE &key of)</b><br>
   <p class="summery">Creates new CYCLE pattern.</p>
   <pre class="description">
-    A CYCLE returns it's elements in sequence.  Once the final element has been 
+    A CYCLE returns its elements in sequence.  Once the final element has been 
      reached the cycle repeats.
     
      (param foo (cycle :of '(A B C)))
      (next foo 8) --> A B C A B C A B...
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="bag"></a>
   
   <!-- (BAG &key of final) -->
@@ -281,7 +281,7 @@
   <b class="definition">(BAG &key of final)</b><br>
   <p class="summery">Creates new BAG pattern.</p>
   <pre class="description">
-    A BAG returns it's elements at random without replacement, once all elements have been 
+    A BAG returns its elements at random without replacement, once all elements have been 
     returned a bag returns the final element indefinitely. 
     
     (param foo (bag :of '(A B C) :final 'end)))
@@ -292,7 +292,7 @@
     (param foo (bag :of '(A B C) :final (cycle :of '(ape bat)))
     (next foo 8) --> C A B APE BAT APE BAT APE
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="dice"></a>
   
   <!-- (DICE &key of) -->
@@ -301,12 +301,12 @@
   <b class="definition">(DICE &key of)</b><br>
   <p class="summery">Creates new DICE pattern.</p>
   <pre class="description">
-    A DICE returns it's elements randomly with replacement.
+    A DICE returns its elements randomly with replacement.
     
     (param foo (dice :of '(A B C)))
     (next foo 8) --> B C B A C C A B
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="coin"></a>
   
   <!-- (COIN &key (p 0.5)(head #'true)(tail #'false)(period nil)) -->
@@ -338,7 +338,7 @@
     (param foo (coin :p 0.75)) ;; head probability 75%
     (retrograde foo)           ;; head probability now 25%
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="wrapper"></a>
   
   <!-- (WRAPPER &key (of #'identity)(period 16)) -->
@@ -357,7 +357,7 @@
     (param foo (wrapper :of #'(lambda (n)(* n 2)) :period 4))
     (next foo 10) --> 0 2 4 6 0 2 4 6 0 2 
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="walker"></a>
   
   <!-- (WALKER &key of) -->
@@ -366,7 +366,7 @@
   <b class="definition">(WALKER &key of)</b><br>
   <p class="summery">Creates new WALKER pattern.</p>
   <pre class="description">
-    A WALKER produces a random walk over it's elements.
+    A WALKER produces a random walk over its elements.
     
     (param foo (walker :of '(A B C D)))
     (next foo 8) --> D C B A B C B A
@@ -397,7 +397,7 @@
         (param foo (dice :of (list (cycle :of '(A B C))(line :of '(1 2 3)))))
         (next foo 16) --> 1 2 A 3 B C 3 A 3 B C 3 A B 3...
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

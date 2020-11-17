@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=projects.html class="navigation">Previous: projects </a> &nbsp;<a href=sections.html class="navigation">Next: sections </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/project.png" alt="project"/>
   <h1 class="banner">Anatomy of a CYCO Project</h1>
   <p class="body">
@@ -28,7 +28,7 @@
     <li>Set section play order.</li>
     <li>Generate MIDI files.</li>
   </ul>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Creating the Project Object</H3>
   <p class="body">
     The project object is responsible for setting default values and in general 
@@ -70,7 +70,7 @@
         :project-directory - String, defaults to *DEFAULT-PROJECT-DIRECTORY*
         :output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Defining an Orchestra</H3>
   <p class="body">
     CYCO does not have an 'orchestra' object perse, instead the term implies
@@ -79,13 +79,11 @@
     Instruments fall into two general categories:
   </p>
   <ol>
-    <li>
-  Permanent (non-transient). <br>
+    <li>Permanent (non-transient). <br>
   Permanent instruments are usually established via a configuration 
   <a href='plugins.html'>plugin</a>, and are consistently available across 
   all projects.<br><br></li>
-    <li>
-  Temporary (transient). <br>
+    <li>Temporary (transient). <br>
   Temporary instruments are defined by each project.</li>
   </ol>
   <p class="body">
@@ -107,7 +105,7 @@
     Use the <strong>(?O)</strong> function to display the current 
     orchestra tree.
   </p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Loading Section Files</H3>
   <p class="body">
     Sections represent major divisions of a composition.  In all but the simplest case 
@@ -115,10 +113,10 @@
   </p>
   <p class="body">
     When a SECTION object is created it is designated the <i>current-section</i> 
-    within it's parent project.  Most section-related functions default to the current-section
+    within its parent project.  Most section-related functions default to the current-section
     of *PROJECT*.
   </p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Setting Section Order</H3>
   <p class="body">
     Prior to creating a MIDI file the section-order must be established with 
@@ -159,7 +157,7 @@
                                         
     (SECTION-ORDER '(intro (verse :x 2) chorus (verse :x 2 :trans 3) ...))
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H3 class="heading">Rendering Project to MIDI file</H3>
   
   <!-- (PROJECT->MIDI &key (project *PROJECT*)(filename nil)) -->
@@ -174,7 +172,7 @@
                             
     For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H2 class="heading">Example Project File</H2>
   <pre class="code">
     ;; ~/cyco-projects/foo/foo-main.lisp
@@ -192,17 +190,14 @@
   </pre>
   <H4 class="heading">Miscellaneous Comments</H4>
   <ul>
-    <li>
-  Individual sections may also be rendered to MIDI files.
+    <li>Individual sections may also be rendered to MIDI files.
    These are often more useful then a full project render.</li>
-    <li>
-  The <strong>(?P)</strong> and <strong>(?O)</strong> functions print the current project and 
+    <li>The <strong>(?P)</strong> and <strong>(?O)</strong> functions print the current project and 
    orchestra trees respectively.</li>
-    <li>
-  <strong>(?)</strong> is a general help function, try <strong>(? *PROJECT*)</strong> to see 
+    <li><strong>(?)</strong> is a general help function, try <strong>(? *PROJECT*)</strong> to see 
    more details about the current project structure.</li>
   </ul>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=projects.html class="navigation">Previous: projects </a> &nbsp;<a href=sections.html class="navigation">Next: sections </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

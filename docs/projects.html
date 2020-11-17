@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=cue-functions.html class="navigation">Previous: cue-functions </a> &nbsp;<a href=project-anatomy.html class="navigation">Next: project-anatomy </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <h1 class="banner">CYCO Projects</h1>
   <p class="body">
     A <i>Project</i> is the top level composition object and is composed of one or
@@ -37,7 +37,7 @@
   </p>
   <H2 class="heading">Project File Structure</H2>
   <p class="body">
-    Each project has it's own directory in <strong>~/cyco-projects/</strong>  The project
+    Each project has its own directory in <strong>~/cyco-projects/</strong>  The project
     directory has the same name as the project converted to lower case.  For a
     project named 'Foo' the directory structure is:
   </p>
@@ -65,7 +65,7 @@
     <li>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</li>
   </ul>
   <H2 class="heading">Project Files</H2>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="?projects"></a>
   
   <!-- (?PROJECTS) -->
@@ -73,7 +73,7 @@
   <!--  -->
   <b class="definition">(?PROJECTS)</b><br>
   <p class="summery">Displays list of all sub-directories under ~/cyco-projects/</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="create-project-framework"></a>
   
   <!-- (CREATE-PROJECT-FRAMEWORK files) -->
@@ -109,7 +109,7 @@
                      +-- beta.lisp
                      +-- MIDI/
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="load-project"></a>
   
   <!-- (LOAD-PROJECT name) -->
@@ -128,7 +128,7 @@
     *PROJECT*.  Most composition related functions use *PROJECT* 
     by default.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="lp"></a>
   
   <!-- (LP &optional name) -->
@@ -137,10 +137,14 @@
   <b class="definition">(LP &optional name)</b><br>
   <p class="summery">Convenience version of LOAD-PROJECT with a few additional tricks.</p>
   <pre class="description">
-     The optional name argument defaults to the last project loaded.
+    The optional name argument defaults to the last project loaded. 
+    If specified it should not be quoted. <br>
      LP remembers the last project even after CYCO has been exited and restarted.
   </pre>
-  <hr/>
+  <pre class="code">
+    Use (lp foo) not (lp 'foo)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="load-project-file"></a>
   
   <!-- (LOAD-PROJECT-FILE name) -->
@@ -151,7 +155,7 @@
   <pre class="description">
     All project filenames are converted to lower-case.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="lpf"></a>
   
   <!-- (LPF &optional name) -->
@@ -164,7 +168,7 @@
      while working interactively to quickly reload a file currently under
      development.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=cue-functions.html class="navigation">Previous: cue-functions </a> &nbsp;<a href=project-anatomy.html class="navigation">Next: project-anatomy </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

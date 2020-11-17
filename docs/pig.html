@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Pig (Pigiron) plugin</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/pig-logo.png" alt="pig-logo"/>
+  <h1 class="banner">Pig</h1>
+  <p class="body">
+    <a href='TODO get real address'>Pigiron</a> is a MIDI routing utility capable of 
+    playing MIDI files. The :PIG package defines several functions for remote access to Pigiron 
+    via OSC.  Only those functions related to the MIDI file player are imported into the main :CYCO 
+    package. This page only details player related functions in the main :CYCO package and a few 
+    non-imported functions in the :PIG package.
+    See the source for more general information.
+  </p>
+  <p class="body">
+    With exception to the SET-PIG-SERVER and SET-PIG-PLAYER-ID, 
+    all other functions require that Pigiron is running and with an active MidiPlayer
+    operator.
+  </p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="set-pig-server"></a>
+  
+  <!-- (SET-PIG-SERVER :host :port :id :response-filename :read-delay) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SET-PIG-SERVER :host :port :id :response-filename :read-delay)</b><br>
+  <p class="summery">Establishes details about the Pigiron server.</p>
+  <pre class="description">
+    
+    :host - IP address or host name, defaults to local machine #(127 0 0 1)
+    :port - Defaults to 7000
+    :id   - The OSC address prefix for the server, defaults to 'pig'.
+    :response-filename - Location where Pigiron writes its response file. 
+                         The contents of this file is checked after each transmitted
+                         OSC message to determine success or failure.  The 
+                         file also contains any requested information. 
+                         Defaults to '/tmp/pigiron-response'
+    :read-delay - Delay interval between transmitting an OSC message and checking
+                  the response file.  This is to ensure Pigiron has had enough time
+                  to write the response.  Defaults to 0.2 second.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="set-pig-player-id"></a>
+  
+  <!-- (SET-PIG-PLAYER-ID id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SET-PIG-PLAYER-ID id)</b><br>
+  <p class="summery">Sets the OSC id for the Pigiron MIDI player.   If not explicitly changed the
+  default id is 'player'.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="add-media-directory"></a>
+  
+  <!-- (ADD-MEDIA-DIRECTORY directory-name -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(ADD-MEDIA-DIRECTORY directory-name</b><br>
+  <p class="summery">Adds all MIDI files in the directory to the Players Media list.
+  Files must be added to the Media list before they may be played.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="clear-media-list"></a>
+  
+  <!-- (CLEAR-MEDIA-LIST) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CLEAR-MEDIA-LIST)</b><br>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="dump-media-list"></a>
+  
+  <!-- (DUMP-MEDIA-LIST) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DUMP-MEDIA-LIST)</b><br>
+  <p class="summery">Print contents of the Player's media list.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="select-media"></a>
+  
+  <!-- (SELECT-MEDIA name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SELECT-MEDIA name)</b><br>
+  <p class="summery">Selects named media for playback.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="play"></a>
+  
+  <!-- (PLAY) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PLAY)</b><br>
+  <p class="summery">Start playback of the selected media from the beginning.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="stop"></a>
+  
+  <!-- (STOP) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(STOP)</b><br>
+  <p class="summery"></p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="resume"></a>
+  
+  <!-- (RESUME) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RESUME)</b><br>
+  <p class="summery">Continue playback from current position.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="is-playing"></a>
+  
+  <!-- (IS-PLAYING) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(IS-PLAYING)</b><br>
+  <p class="summery">Predicate, returns true if MIDI player is currently running.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <H4 class="heading">Pig functions not imported into :CYCO</H4>
+  <a id="ping"></a>
+  
+  <!-- (PIG:PING) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:PING)</b><br>
+  <p class="summery">Diagnostic used to test if the OSC connection between CYCO and Pigiron is working.</p>
+   <br>
+   <br>
+  <H4 class="heading">Non Documented fuinctions</H4>
+  
+  <!-- (PIG:CHAIN operators...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:CHAIN operators...)</b><br>
+  
+  <!-- (PIG:CHANNEL-FILTER id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:CHANNEL-FILTER id)</b><br>
+  
+  <!-- (PIG:CLEAR-MIDI-CHANNELS operator-id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:CLEAR-MIDI-CHANNELS operator-id)</b><br>
+  
+  <!-- (PIG:CONNECT parent child) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:CONNECT parent child)</b><br>
+  
+  <!-- (PIG:DELETE-OPERATOR id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:DELETE-OPERATOR id)</b><br>
+  
+  <!-- (PIG:DISCONNECT parent child) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:DISCONNECT parent child)</b><br>
+  
+  <!-- (PIG:DISTRIBUTOR id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:DISTRIBUTOR id)</b><br>
+  
+  <!-- (PIG:INITIALIZE) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:INITIALIZE)</b><br>
+  
+  <!-- (PIG:MAKE-PIG-PLAYER id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:MAKE-PIG-PLAYER id)</b><br>
+  
+  <!-- (PIG:MIDI-INPUT id &optional device) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:MIDI-INPUT id &optional device)</b><br>
+  
+  <!-- (PIG:MIDI-OUTPUT id &optional device) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:MIDI-OUTPUT id &optional device)</b><br>
+  
+  <!-- (PIG:NEW-OPERATOR type id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:NEW-OPERATOR type id)</b><br>
+  
+  <!-- (PIG:PANIC) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:PANIC)</b><br>
+  
+  <!-- (PIG:QUERY-CHANNEL-MODE id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:QUERY-CHANNEL-MODE id)</b><br>
+  
+  <!-- (PIG:QUERY-MIDI-CHANNELS id) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:QUERY-MIDI-CHANNELS id)</b><br>
+  
+  <!-- (PIG:QUERY-MIDI-RECEIVERS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:QUERY-MIDI-RECEIVERS)</b><br>
+  
+  <!-- (PIG:query-midi-transmitters) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:query-midi-transmitters)</b><br>
+  
+  <!-- (PIG:QUERY-OPERATORS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:QUERY-OPERATORS)</b><br>
+  
+  <!-- (PIG:QUERY-ROOTS) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:QUERY-ROOTS)</b><br>
+  
+  <!-- (PIG:REFRESH) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:REFRESH)</b><br>
+  
+  <!-- (PIG:SET-MIDI-CHANNELS id channels...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:SET-MIDI-CHANNELS id channels...)</b><br>
+  
+  <!-- (PIG:SET-MIDI-DEVICE id device-name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PIG:SET-MIDI-DEVICE id device-name)</b><br>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

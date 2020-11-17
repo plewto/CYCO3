@@ -15,7 +15,7 @@
 <body lang="en-US">
   <a id="top"></a>
   <a href=index.html class="link">Home</a> &nbsp;<a href=nodes.html class="navigation">Previous: nodes </a> &nbsp;<a href=keynumber-maps.html class="navigation">Next: keynumber-maps </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/instruments.png" alt="instruments"/>
   <h1 class="banner">CYCO Instruments</h1>
   <p class="body">
@@ -30,15 +30,13 @@
     Instruments are roughly divided into two groups:
   </p>
   <ol>
-    <li>
-  <i>Non-transient</i>, permanent instruments representing available external
+    <li><i>Non-transient</i>, permanent instruments representing available external
    MIDI resources, either hardware or virtual.</li>
-    <li>
-  <i>Transient</i>, project level instruments defined as child nodes of the
+    <li><i>Transient</i>, project level instruments defined as child nodes of the
      <nobr>non-transient</nobr> instruments.</li>
   </ol>
   <p class="body">
-    See <a href='nodes.html'>Nodes</a> for an explanation for this division.
+    See <a href='nodes.html'>Nodes</a> for an explanation of this division.
   </p>
   <H2 class="heading">Instrument Properties</H2>
   <ul>
@@ -50,7 +48,7 @@
     <li>articulation-map</li>
     <li>MIDI channel</li>
   </ul>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="instrument-p"></a>
   
   <!-- (INSTRUMENT-P object) -->
@@ -58,7 +56,7 @@
   <!--  -->
   <b class="definition">(INSTRUMENT-P object)</b><br>
   <p class="summery">Predicate, true if argument is an instrument.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="program-map"></a>
   
   <!-- (PROGRAM-MAP! instrument function) -->
@@ -71,7 +69,7 @@
   <!--  -->
   <b class="definition">(PROGRAM-MAP instrument)</b><br>
   <p class="summery">Sets/Retrieves instrument <a href='program-maps.html'>program map</a>.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="program-number"></a>
   
   <!-- (PROGRAM-NUMBER! instrument program) -->
@@ -83,7 +81,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(PROGRAM-NUMBER instrument)</b><br>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="program-bank"></a>
   
   <!-- (PROGRAM-BANK! instrument bank) -->
@@ -96,7 +94,7 @@
   <!--  -->
   <b class="definition">(PROGRAM-BANK instrument)</b><br>
   <p class="summery">These functions set or return an instrument default program number and bank.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="program-change-events"></a>
   
   <!-- (PROGRAM-CHANGE-EVENTS instrument time &key bank program) -->
@@ -108,7 +106,7 @@
     Unless overridden by the bank and/or program arguments, the
     instruments default bank/program properties are used.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="keynumber-map"></a>
   
   <!-- (KEYNUMBER-MAP! instrument function) -->
@@ -121,7 +119,7 @@
   <!--  -->
   <b class="definition">(KEYNUMBER-MAP instrument)</b><br>
   <p class="summery">Sets/Retrieves instrument <a href='keynumber-maps.html'>keynumber map</a> function.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="articulation-map"></a>
   
   <!-- (ARTICULATION-MAP! instrument function) -->
@@ -134,7 +132,7 @@
   <!--  -->
   <b class="definition">(ARTICULATION-MAP instrument)</b><br>
   <p class="summery">Sets/Retrieves instrument <a href='articulation-maps.html'>articulation map</a> function.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="dynamic-map"></a>
   
   <!-- (DYNAMIC-MAP! instrument function) -->
@@ -147,7 +145,7 @@
   <!--  -->
   <b class="definition">(DYNAMIC-MAP instrument)</b><br>
   <p class="summery">Sets/Retrieves instrument <a href='dynamic-maps.html'>dynamic map</a> function.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="channel"></a>
   
   <!-- (CHANNEL! instrument channel) -->
@@ -157,7 +155,7 @@
   <p class="summery">Sets instrument MIDI channel.</p>
   <pre class="description">
     By default an instrument inherits the
-    MIDI channel from it's parent.  The channel may either be an absolute
+    MIDI channel from its parent.  The channel may either be an absolute
     integer between 1 and 16 or a symbolic channel name.
   </pre>
   
@@ -166,7 +164,7 @@
   <!--  -->
   <b class="definition">(CHANNEL instrument &optional resolve)</b><br>
   <p class="summery">Returns the instrument <a href='channel-names.html'>MIDI channel</a>.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="channel-index"></a>
   
   <!-- (CHANNEL-INDEX instrument) -->
@@ -174,7 +172,7 @@
   <!--  -->
   <b class="definition">(CHANNEL-INDEX instrument)</b><br>
   <p class="summery">Returns the instrument <a href='midi-events.html#channel-index'>channel-index</a>, an integer between 0 and 15.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="root-instrument"></a>
   
   <!-- *ROOT-INSTRUMENT* -->
@@ -182,7 +180,7 @@
   <!--  -->
   <b class="definition">*ROOT-INSTRUMENT*</b><br>
   <p class="summery">Forms the root of the orchestra tree.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="null-instrument"></a>
   
   <!-- NULL-INSTRUMENT -->
@@ -190,7 +188,7 @@
   <!--  -->
   <b class="definition">NULL-INSTRUMENT</b><br>
   <p class="summery">place-holder instrument, does not generate any events.</p>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="instrument"></a>
   
   <!-- (INSTRUMENT name &key ...) -->
@@ -221,7 +219,7 @@
     	:articulation-map - Function, see articulation-map
     	:remarks          - Optional remarks text.
   </pre>
-  <hr/>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=nodes.html class="navigation">Previous: nodes </a> &nbsp;<a href=keynumber-maps.html class="navigation">Next: keynumber-maps </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

@@ -4,13 +4,15 @@
 
 (param *midi-player* nil)
 
-(defun make-midi-player (id &key (server *pig-server*))
+(defun make-pig-player (id &key (server *pig-server*))
   (let ((real-id (car (new-operator "MidiPlayer" id :server server))))
-    (setf *midi-player* real-id)))
+    (setf *midi-player* real-id)
+    real-id))
 
-(defun assign-midi-player-id (id)
+(defun set-pig-player-id (id)
   (setf *midi-player* id))
 
+(set-pig-player-id "player")
 
 (labels ((player-address (command id)
 	    (sformat "op/~a/~a" (or id *midi-player*) command)) )

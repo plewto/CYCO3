@@ -62,17 +62,27 @@ after reading.")
     :type float
     :initform 0.2
     :initarg :read-delay
-    :documentation "Time delay in seconds for reading the OSC response file.")
-   (verbose
-    :type boolean
-    :accessor verbose-flag
-    :initform nil
-    :initarg :verbose
-    :documentation "If true print all transmitted OSC messages to terminal."))
+    :documentation "Time delay in seconds for reading the OSC response file."))
   (:documentation
    "Defines OSC interface to Pigiron application"))
     
-(param *pig-server* (make-instance 'pig-proxy))
+(param *pig-server* nil)
+
+(defun set-pig-server (&key (host #(127 0 0 1))
+			    (port 7000)
+			    (id "pig")
+			    (response-filename "/tmp/pigiron-response")
+			    (read-delay 0.2))
+  (setf *pig-server* (make-instance 'pig-proxy 
+				    :host host 
+				    :port port
+				    :id id
+				    :response-file response-filename
+				    :read-delay read-delay))
+  *pig-server*)
+
+(set-pig-server)
+
 
 (defmethod pig-warning ((message string) &optional extra)
   (format t "~%PIGIRON-error ******************************~%")

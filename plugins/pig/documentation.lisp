@@ -1,6 +1,10 @@
 ;;;; cyco3 plugin pig documentation
 ;;;;
 
+
+(setf (documentation 'set-pig-server 'function)
+      "Establishes value for OSC interaction with Pigiron.")
+
 (setf (documentation 'ping 'function)
       "Transmits diagnostic 'ping' message to Pigiron.
 A non-nil result indicates success.")
@@ -85,13 +89,13 @@ Returns actual assigned id.")
       "Creates Pigiron Distributor operator.
 Returns actual assigned id.")
 
-(setf (documentation 'make-midi-player 'function)
-      "Creates Pigiron MidiPlayer operator.
-The new operator becomes the default MIDI player.")
+(setf (documentation 'make-pig-player 'function)
+      "Instructs Pigiron to create a MidiPlayer operator.
+Returns the actual Operator id.")
 
-(setf (documentation 'assign-midi-player-id 'function)
-      "Sets operator id for the default Pigiron MidiPlayer.
-Most player related functions default to this value.")
+(setf (documentation 'set-pig-player-id 'function)
+      "Sets the OSC id for the Pigiron MidiPlayer.
+The player id defaults to 'player' if not explicitly set.")
 
 (setf (documentation 'play 'function)
       "Instructs default Pigiron MidiPlayer to start playback.")
@@ -102,7 +106,7 @@ Most player related functions default to this value.")
 (setf (documentation 'resume 'function)
       "Instructs default Pigiron MidiPlayer to resume playback from current position.")
 
-(setf (documentation 'is-palying 'function)
+(setf (documentation 'is-playing 'function)
       "Returns true if Pigiron MidiPlayer is currently playing.")
 
 (setf (documentation 'add-media-directory 'function)

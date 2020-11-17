@@ -27,50 +27,52 @@
 (load-plugin-file 'player)
 (load-plugin-file 'documentation)
 
-(export '(pig-proxy
-	  *pig-server*
-	  ping
-	  panic
-	  initialize
-	  refresh
-	  query-midi-transmitters
-	  query-midi-receivers
-	  query-roots
-	  query-operators
-	  new-operator
-	  delete-operator
-	  connect
+(export '(add-media-directory
 	  chain
+	  channel-filter
+	  clear-media-list
+	  clear-midi-channels
+	  connect
+	  delete-operator
 	  disconnect
-	  set-midi-device
+	  distributor
+	  dump-media-list
+	  initialize
+	  is-playing
+	  set-pig-player-id
+	  make-pig-player
 	  midi-input
 	  midi-output
+	  new-operator
+	  panic
+	  pig-proxy
+	  ping
+	  play
 	  query-channel-mode
 	  query-midi-channels
-	  set-midi-channels
-	  clear-midi-channels
-	  channel-filter
-	  distributor
-	  make-midi-player
-	  play
-	  stop
+	  query-midi-receivers
+	  query-midi-transmitters
+	  query-operators
+	  query-roots
+	  refresh
 	  resume
-	  is-playing
-	  add-media-directory
-	  dump-media-list
 	  select-media
-	  clear-media-list)
+	  set-midi-channels
+	  set-midi-device
+	  set-pig-server
+	  stop)
 	:pig)
 
-(import '(assign-midi-player-id
-	  play
-	  stop
-	  resume
-	  is-playing
-	  add-media-directory
-	  select-media
+(import '(add-media-directory
+	  clear-media-list
 	  dump-media-list
-	  clear-media-list)
+	  is-playing
+	  play
+	  resume
+	  select-media
+	  set-pig-server
+	  set-pig-player-id
+	  stop)
 	:cyco)
 
 	  

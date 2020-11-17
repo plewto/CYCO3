@@ -59,15 +59,13 @@ it reloads the most recent project-file."))
 	   "Either there is no default project name,"
 	   (sformat "or name argument is invalid: ~A ~A" (type-of name) name)))))
     
-    ;; (defun lp (&optional name)
-    ;;   lp-docstring
-    ;;   (load-project name))
-
-
     (defmacro lp (&optional name)
       `(if ',name
 	   (load-project ',name)
 	 (load-project nil)))
+
+    (setf (documentation 'lp 'function)
+	  lp-docstring)
     
     (defun load-project-file (name)
       load-project-file-docstring

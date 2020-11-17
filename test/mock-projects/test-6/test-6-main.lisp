@@ -60,6 +60,13 @@
 	      (cons 1.0000 (midi-control-change 0 1 127)))
 	:time-fuzz 1e-4))
 
+;; Steel Banks compiler complains about undefined variable CYCO::TEST-NAMED-CONTROLLER
+;; not sure why?
+;;
+
+(remarks
+ "SBCL is complaing about undefined variable CYCO:TEST-NAMED-CONTROLLER"
+ "Not sure why")
 
 (let* ((cc-list (defined-controllers))
        (test-controller (car cc-list))

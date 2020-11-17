@@ -32,6 +32,13 @@
 (defun not-tested (message)
   (format t "    NOT TESTED: ~a~%" message))
 
+(defun remarks (&rest text)
+  (let ((banner "******************************************************"))
+    (format t "~%~A~%" banner)
+    (dolist (line (->list text))
+      (format t "*** ~A~%" line))
+    (format t "~A~%~%" banner)))
+
 
 (defun load-test (test-name)
   (format t "Loading test ~A~%" test-name)

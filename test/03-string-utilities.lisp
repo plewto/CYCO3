@@ -38,7 +38,6 @@
 
 (pass? "sformat" (string= (sformat "~A~A" 'A 'B) "AB"))
 (pass? "format-binary" (string= (format-binary 9 :bits 4) " 1001"))
-(pass? "string-replace" (string= "ape bell cat" (string-replace "bat" "bell" "ape bat cat")))
 (pass? "center-string" (string= "   APE   " (center-string "APE" 9)))
 
 ;;; string pick test

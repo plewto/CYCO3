@@ -17,6 +17,13 @@ a {
 }
 
 
+a.index {
+    color: #D4DBE2;
+    text-decoration: None;
+    line-height: 22pt;
+}
+	       
+
 
 b {
     color: #CCFFe5;

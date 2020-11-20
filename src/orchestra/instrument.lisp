@@ -215,6 +215,7 @@ name        - Symbol
 				   :transient nil
 				   :channel 16
 				   :keynumber-map (metronome-keynumber-map)
+				   :articulation-map (metronome-articulation-map)
 				   :dynamic-map (metronome-dynamic-map)))
 
 

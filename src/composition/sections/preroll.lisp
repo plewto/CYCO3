@@ -36,7 +36,7 @@
       (put preroll :instruments instruments)
       (connect project preroll)
       (if metronome
-	  (make-metronome :name 'preroll-metronome
+	  (make-metronome 'preroll-metronome
 			  :section preroll))
       (if instruments
 	  (make-programs 'preroll-programs (->list instruments) :time '(1 1 1)

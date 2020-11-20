@@ -2,9 +2,9 @@
 ;;;;
 
 (defun ?projects ()
-  "Displays contents of *DEFAULT-PROJECT-DIRECTORY*"
-  (format t "Contents of project directory ~A~%" *default-project-directory*)
-  (dolist (fqn (directory (sformat "~a/*" *default-project-directory*)))
+  "Displays contents of *PROJECTS-ROOT*"
+  (format t "Contents of project directory ~A~%" *projects-root*)
+  (dolist (fqn (directory (sformat "~a/*" *projects-root*)))
     (let* ((nstr (namestring fqn))
 	   (pname (second (split-path (subseq nstr 0 (1- (length nstr)))))))
       (format t "  ~A~%" pname))))
@@ -29,7 +29,7 @@ to be created.
 	   (extras (cdr flist))
 	   (pname (format-name project-name))
 	   (main-file (sformat *project-main-filename-format* project-name))
-	   (pdir (join-path *default-project-directory* pname))
+	   (pdir (join-path *projects-root* pname))
 	   (outdir (join-path pdir *default-project-output-directory*)))
       (format t "Creating project ~A directory framework~%" project-name)
       (dolist (d (list pdir outdir))

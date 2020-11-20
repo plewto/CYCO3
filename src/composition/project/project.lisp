@@ -56,7 +56,7 @@ name  - Symbol, the project's name.
 :make-current   - boolean, if true the new project is made the default 
                   project by binding it to *project*.
 :project-directory - Sets the top level project directory where this 
-                     projects files are stored.  Defaults to *default-project-directory* 
+                     projects files are stored.  Defaults to *projects-root* 
 :main-file -  Sets the lisp file name for the main project file.
               This file is responsible for loading all other project files.
               Defaults to name-main.lisp
@@ -68,7 +68,7 @@ of it's name and the values of project-directory, main-file and
 output-directory.
 
 Using the defaults of 
-    *default-project-directory*  --> <user-home>/cyco-projects
+    *projects-root*  --> <user-home>/cyco-projects
     *default-project-name*       --> main.lisp
     *default-project-output-directory* --> MIDI
 
@@ -97,7 +97,7 @@ abbreviations lp and lpf."))
   (defun make-project (name &key
 			    title
 			    (catalog-number "")
-			    (project-directory *default-project-directory*)
+			    (project-directory *projects-root*)
 			    main-file
 			    (output-directory *default-project-output-directory*)
 			    (cuefn #'bar)
@@ -142,7 +142,7 @@ abbreviations lp and lpf."))
 (defmacro project (name &key
 			title
 			(catalog-number "")
-			(project-directory *default-project-directory*)
+			(project-directory *projects-root*)
 			main-file
 			(output-directory *default-project-output-directory*)
 			(cuefn #'bar)

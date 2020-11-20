@@ -10,7 +10,7 @@
 ;;
 (global *cyco-location* nil)
 (global *config-directory* nil)
-(global *default-project-directory* "~/cyco-projects")
+(global *projects-root* "~/cyco-projects")
 (global *project-main-filename-format* "~A-main")
 (global *default-project-output-directory* "MIDI")
 

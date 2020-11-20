@@ -41,7 +41,7 @@ it reloads the most recent project-file."))
 			  (read-persistent-project-name))))))
   
     (defun load-project (name &key
-			      (project-directory *default-project-directory*)
+			      (project-directory *projects-root*)
 			      main-file)
       load-project-docstring
       (let ((project-name (default-project-name name)))

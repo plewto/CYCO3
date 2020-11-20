@@ -161,18 +161,18 @@ The spcial symbol 'x returns the first keynumber in the list."
 (defun metronome-keynumber-map (&key (phrase 72)(bar 67)(beat 60))
   "Creates specialized symbolic keynumber-map for metronomes.
 The map defines three event types:
-phrase  - A strong accent on the first beat of the phrase.
-bar  - A strong accent on the first beat of each bar, except the first.
-beat - all other beats."
+:PHRASE - A strong accent on the first beat of the phrase.
+:BAR    - A strong accent on the first beat of each bar, except the first.
+:BEAT   - all other beats."
   (let ((ktab (make-hash-table :size 3)))
-    (setf (gethash 'phrase ktab)(keynumber phrase))
-    (setf (gethash 'bar ktab)(keynumber bar))
-    (setf (gethash 'beat ktab)(keynumber beat))
+    (setf (gethash :phrase ktab)(keynumber phrase))
+    (setf (gethash :bar ktab)(keynumber bar))
+    (setf (gethash :beat ktab)(keynumber beat))
     (flet ((docfn ()
 		  (format t ";; Metronome keynumber map~%")
-		  (format t ";;   phrase  -> ~3D~%" (gethash 'phrase ktab))
-		  (format t ";;   bar     -> ~3D~%" (gethash 'bar ktab))
-		  (format t ";;   beat    -> ~3D~%" (gethash 'beat ktab))
+		  (format t ";;   :PHRASE  --> ~3D~%" (gethash 'phrase ktab))
+		  (format t ";;   :BAR     --> ~3D~%" (gethash 'bar ktab))
+		  (format t ";;   :BEAT    --> ~3D~%" (gethash 'beat ktab))
 		  +rest+))
       (let ((fn #'(lambda (kn)
 		    (if (eq kn :doc)

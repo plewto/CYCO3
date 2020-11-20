@@ -45,12 +45,12 @@
 (defun metronome-articulation-map (&key (phrase 'e)(bar 'x)(beat 'x))
   "Creates articulation map for metronome instruments.
 The map returns appropriate durations for the following 
-symbols:  PHRASE, BAR and BEAT.  Unrecognized symbols are as rest." 
+symbols:  :PHRASE, :BAR and :BEAT.  Unrecognized symbols are as rest." 
   (flet ((docfn ()
 		(format t ";; METRONOME-ARTICULATION-MAP~%")
-		(format t ";;    phrase: ~A~%" phrase)
-		(format t ";;    bar   : ~A~%" bar)
-		(format t ";;    beat  : ~A~%" beat)
+		(format t ";;    :PHRASE  --> ~A~%" phrase)
+		(format t ";;    :BAR     --> ~A~%" bar)
+		(format t ";;    :BEAT    --> ~A~%" beat)
 		+rest+))
     (let ((phrase-beep-duration (metric phrase))
 	  (bar-beep-duration (metric bar))
@@ -61,10 +61,10 @@ symbols:  PHRASE, BAR and BEAT.  Unrecognized symbols are as rest."
 		 (docfn))
 		((rest-p m)
 		 +rest+)
-		((eq m 'phrase)
+		((eq m :phrase)
 		 phrase-beep-duration)
-		((eq m 'bar)
+		((eq m :bar)
 		 bar-beep-duration)
-		((eq m 'beat)
+		((eq m :beat)
 		 default-beep-duration)
 		(t +rest+))))))

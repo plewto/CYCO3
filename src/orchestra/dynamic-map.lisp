@@ -26,14 +26,14 @@ and returns +REST+"
 
 (defun metronome-dynamic-map (&key (phrase 'ffff)(bar 'fff)(beat 'f))
   "Creates dynamic-map for use with metronome instruments.
-Recognized arguments (PHRASE, BAR and BEAT) are converted to 
+Recognized arguments (:PHRASE :BAR and :BEAT) are converted to 
 appropriate amplitude values.  The map returns +REST+ for unrecognized
 arguments."
   (flet ((docfn ()
 		(format t ";; METRONOME-DYNAMIC-MAP~%")
-		(format t ";;    phrase: ~A~%" phrase)
-		(format t ";;    bar: ~A~%" bar)
-		(format t ";;    beat: ~A~%" beat)
+		(format t ";;    :PHRASE  --> ~A~%" phrase)
+		(format t ";;    :BAR     --> ~A~%" bar)
+		(format t ";;    :BEAT    --> ~A~%" beat)
 		0.0))
     (let ((phrase-amplitude (dynamic phrase))
 	  (bar-amplitude (dynamic bar))
@@ -41,11 +41,11 @@ arguments."
       #'(lambda (a)
 	  (cond ((eq a :doc)
 		 (docfn))
-		((eq a 'phrase)
+		((eq a :phrase)
 		 phrase-amplitude)
-		((eq a 'bar)
+		((eq a :bar)
 		 bar-amplitude)
-		((eq a 'beat)
+		((eq a :beat)
 		 beat-amplitude)
 		(t +REST+))))))
 

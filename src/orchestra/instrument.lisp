@@ -119,7 +119,7 @@ other instruments."))
 
 (global *root-instrument*
 	(let ((root (make-instance 'instrument
-				   :name 'root-instrument
+				   :name '*root-instrument*
 				   :properties +instrument-properties+
 				   :transient nil)))
 	  (set-basic-program-map root)
@@ -210,9 +210,10 @@ name        - Symbol
 	    :remarks "Null instrument ~~ Does not produce any events.")
 (program-map! null-instrument #'(lambda (&rest _)(dismiss _) nil))
 
-(setf *metronome* (make-instrument 'null-metronome
+(setf *metronome* (make-instrument '*metronome*
 				   :parent *root-instrument*
 				   :transient nil
+				   :channel 16
 				   :keynumber-map (metronome-keynumber-map)
 				   :dynamic-map (metronome-dynamic-map)))
 

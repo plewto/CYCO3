@@ -49,6 +49,22 @@
   <!--  -->
   <b class="definition">(CONSTANT-ARTICULATION-MAP metric-expression)</b><br>
   <p class="summery">Creates an articulation-map with a constant result.</p>
+  <a id="metronome"></a>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  
+  <!-- (METRONOME-ARTICULATION-MAP &key :phrase :bar :beat) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(METRONOME-ARTICULATION-MAP &key :phrase :bar :beat)</b><br>
+  <p class="summery">Creates articulation map for use with metronomes.</p>
+  <pre class="description">
+    
+        :PHRASE - beep duration at start of phrase. 
+        :BAR    - duration for start of each bar, except for the start of the phrase.
+        :BEAT   - duration for all other events.
+    
+    For all other values the map returns -1.
+  </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=keynumber-maps.html class="navigation">Previous: keynumber-maps </a> &nbsp;<a href=dynamic-maps.html class="navigation">Next: dynamic-maps </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   

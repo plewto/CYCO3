@@ -2,8 +2,8 @@
 ;;;;
 ;;;; The project 'persistence' feature saves the current project name to
 ;;;; the configuration directory.  Upon the next application run the
-;;;; previous project may be reloaded with by entering (lp) without needing
-;;;; to specify a project name.
+;;;; previous project may be reloaded by entering (lp) without 
+;;;; specifying a project name.
 ;;;;
 
 (global *persistent-project-name-namestring* "current-project-name")
@@ -18,6 +18,7 @@
 		       :direction :output
 		       :if-does-not-exist :create
 		       :if-exists :overwrite)))
+    (format t "BUG 0008 (SAVE-PERSISTENT-PROJECT-NAME ~S~%" PROJECT-NAME) ;; TODO remove test
     (format stream (->string project-name))
     (close stream)))
 

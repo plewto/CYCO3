@@ -4,6 +4,8 @@
 (defun ?projects ()
   "Displays contents of *PROJECTS-ROOT*"
   (format t "Contents of project directory ~A~%" *projects-root*)
+  (format t "*PROJECT-MAIN-FILENAME-FORMAT* is ~A~%" *project-main-filename-format*)
+  (format t "*DEFAULT-PROJECT-OUTPUT-DIRECTORY* is ~A~%" *default-project-output-directory*)
   (dolist (fqn (directory (sformat "~a/*" *projects-root*)))
     (let* ((nstr (namestring fqn))
 	   (pname (second (split-path (subseq nstr 0 (1- (length nstr)))))))

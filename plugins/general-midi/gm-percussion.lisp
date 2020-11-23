@@ -18,53 +18,53 @@
 
 (constant +general-midi-percussion-keymap+
 	  (symbolic-keynumber-map
-	   '((kick1 . 35)
-	     (kick2 . 36)
-	     (stick . 37)
-	     (snare1 . 38)
-	     (clap . 39)
-	     (snare2 . 40)
-	     (tom1 . 41)
-	     (hat-closed . 42)
-	     (tom2 . 43)
-	     (hat-ped . 44)
-	     (tom3 . 45)
-	     (hat-open . 46)
-	     (tom4 . 47)
-	     (tom5 . 48)
-	     (crash1 . 49)
-	     (tom6 . 50)
-	     (ride1 . 51)
-	     (chinese . 52)
-	     (ride-bell . 53)
-	     (tambourine . 54)
-	     (splash . 55)
-	     (cow . 56)
-	     (crash2 . 57)
-	     (vibraslap . 58)
-	     (ride2 . 59)
-	     (bongo-high . 60)
-	     (bongo-low . 61)
-	     (conga-high . 62)
-	     (conga-open . 63)
-	     (conga-low . 64)
-	     (timbale-high . 65)
-	     (timbale-low . 66)
-	     (agogo-high . 67)
-	     (agogo-low . 68)
-	     (cabasa . 69) 
-	     (maracas . 70) 
-	     (whistle1  . 71)
-	     (whistle2  . 72)
-	     (guiro-short . 73) 
-	     (guiro-long . 74) 
-	     (clave . 75)
-	     (block-high . 76)
-	     (block-low . 77)
-	     (cuica-mute . 78)
-	     (cuica-open . 79)
-	     (triangle-mute . 80)
-	     (triangle . 81))))
+	   '((kick1 . (35))
+	     (kick2 . (36))
+	     (stick . (37))
+	     (snare1 . (38))
+	     (clap . (39))
+	     (snare2 . (40))
+	     (tom1 . (41))
+	     (hat-closed . (42))
+	     (tom2 . (43))
+	     (hat-ped . (44))
+	     (tom3 . (45))
+	     (hat-open . (46))
+	     (tom4 . (47))
+	     (tom5 . (48))
+	     (crash1 . (49))
+	     (tom6 . (50))
+	     (ride1 . (51))
+	     (chinese . (52))
+	     (ride-bell . (53))
+	     (tambourine . (54))
+	     (splash . (55))
+	     (cow . (56))
+	     (crash2 . (57))
+	     (vibraslap . (58))
+	     (ride2 . (59))
+	     (bongo-high . (60))
+	     (bongo-low . (61))
+	     (conga-high . (62))
+	     (conga-open . (63))
+	     (conga-low . (64))
+	     (timbale-high . (65))
+	     (timbale-low . (66))
+	     (agogo-high . (67))
+	     (agogo-low . (68))
+	     (cabasa . (69) )
+	     (maracas . (70) )
+	     (whistle1  . (71))
+	     (whistle2  . (72))
+	     (guiro-short . (73) )
+	     (guiro-long . (74) )
+	     (clave . (75))
+	     (block-high . (76))
+	     (block-low . (77))
+	     (cuica-mute . (78))
+	     (cuica-open . (79))
+	     (triangle-mute . (80))
+	     (triangle . (81)))))
 
 (instrument gm-percussion
 	    :parent *root-instrument*
@@ -76,11 +76,11 @@
 	    :remarks "General MIDI percussion")
 
 (constant +gm-cowbell-keymap+ (symbolic-keynumber-map
-			       '((cow . 56)
-				 (hi-agogo . 67)
-				 (low-agogo . 68)
-				 (triangle . 81)
-				 (mute-triangle . 80))))
+			       '((cow . (56))
+				 (hi-agogo . (67))
+				 (low-agogo . (68))
+				 (triangle . (81))
+				 (mute-triangle . (80)))))
 
 (instrument gm-cowbell
 	    :parent gm-percussion
@@ -88,9 +88,9 @@
 	    :keynumber-map +gm-cowbell-keymap+)
 
 (constant +gm-woodblock-keymap+ (symbolic-keynumber-map
-				 '((hi . 76)
-				   (low . 77)
-				   (clave . 75))))
+				 '((hi . (76))
+				   (low . (77))
+				   (clave . (75)))))
 
 (instrument gm-woodblock
 	    :parent gm-percussion
@@ -99,24 +99,24 @@
 	    :remarks "Woodblocks & clave")
 
 (constant +gm-cymbal-keymap+ (symbolic-keynumber-map
-			      '((ride1 . 51)
-				(ride2 . 59)
-				(bell . 53)
-				(crash1 . 49)
-				(crash2 . 57)
-				(chinese . 52)
-				(splash . 55))))
+			      '((ride1 . (51))
+				(ride2 . (59))
+				(bell . (53))
+				(crash1 . (49))
+				(crash2 . (57))
+				(chinese . (52))
+				(splash . (55)))))
 (instrument gm-cymbal
 	    :parent gm-percussion
 	    :transient nil
 	    :keynumber-map +gm-cymbal-keymap+)
 
 (constant +gm-drum-keymap+ (symbolic-keynumber-map
-			    '((conga-low . 64)
- 			      (conga-hi . 62)
-			      (conga-open . 63)
-			      (bongo-low . 61)
-			      (bongo-hi . 60))))
+			    '((conga-low . (64))
+ 			      (conga-hi . (62))
+			      (conga-open . (63))
+			      (bongo-low . (61))
+			      (bongo-hi . (60)))))
 
 (instrument gm-drum
 	    :parent gm-percussion
@@ -125,9 +125,9 @@
 	    :remarks "Conga and Bongo")
 
 (constant +gm-hihat-keymap+ (symbolic-keynumber-map
-			     '((closed . 42)
-			       (open . 46)
-			       (ped . 44))))
+			     '((closed . (42))
+			       (open . (46))
+			       (ped . (44)))))
 
 (instrument gm-hihat
 	    :parent gm-percussion
@@ -135,14 +135,14 @@
 	    :keynumber-map +gm-hihat-keymap+)
 
 (constant +gm-shaker-keymap+ (symbolic-keynumber-map
-			      '((cabasa . 69) 
-				(guiro-short . 73) 
-				(guiro-long . 74) 
-				(maracas . 70) 
-				(tambourine . 54)
-				(vibraslap . 58)
-				(whistle1  . 71)
-				(whistle2  . 72))))
+			      '((cabasa . (69) )
+				(guiro-short . (73) )
+				(guiro-long . (74) )
+				(maracas . (70) )
+				(tambourine . (54))
+				(vibraslap . (58))
+				(whistle1  . (71))
+				(whistle2  . (72)))))
 
 (instrument gm-shaker
 	    :parent gm-percussion
@@ -151,10 +151,10 @@
 	    :remarks "Cabasa, Guiro, maracas, vibraslap & whistle")
 
 (constant +gm-snare-keymap+ (symbolic-keynumber-map
-			     '((x1 . 38)
-			       (x2 . 40)
-			       (stick . 37)
-			       (clap . 39))))
+			     '((x1 . (38))
+			       (x2 . (40))
+			       (stick . (37))
+			       (clap . (39)))))
 
 (instrument gm-snare
 	    :parent gm-percussion
@@ -162,8 +162,8 @@
 	    :keynumber-map +gm-snare-keymap+)
 
 (constant +gm-kick-keymap+ (symbolic-keynumber-map
-			    '((x1 . 35)
-			      (x2 . 36))))
+			    '((x1 . (35))
+			      (x2 . (36)))))
 
 (instrument gm-kick
 	    :parent gm-percussion
@@ -171,8 +171,8 @@
 	    :keynumber-map +gm-kick-keymap+)
 
 (constant +gm-cuica-keymap+ (symbolic-keynumber-map
-			     '((open . 79)
-			       (mute . 78))))
+			     '((open . (79))
+			       (mute . (78)))))
 
 (instrument gm-cuica
 	    :parent gm-percussion
@@ -180,8 +180,8 @@
 	    :keynumber-map +gm-cuica-keymap+)
 
 (constant +gm-timbale-keymap+ (symbolic-keynumber-map
-			       '((low . 66)
-				 (high . 65))))
+			       '((low . (66))
+				 (high . (65)))))
 
 (instrument gm-timbale
 	    :parent gm-percussion
@@ -189,12 +189,12 @@
 	    :keynumber-map +gm-timbale-keymap+)
 
 (constant +gm-tom-keymap+ (symbolic-keynumber-map
-			   '((x1 . 41)
-			     (x2 . 43)
-			     (x3 . 45)
-			     (x4 . 47)
-			     (x5 . 48)
-			     (x6 . 50))))
+			   '((x1 . (41))
+			     (x2 . (43))
+			     (x3 . (45))
+			     (x4 . (47))
+			     (x5 . (48))
+			     (x6 . (50)))))
 
 (instrument gm-tom
 	    :parent gm-percussion

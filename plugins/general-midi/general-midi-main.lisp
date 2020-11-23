@@ -96,14 +96,16 @@ the new instrument to the symbol name."
 						     :remarks ,remarks)))
 
 (defun general-midi-metronome (&key (channel 16)(phrase 84)(bar 72)(beat 67)(program 'woodblock))
+  "Creates general-midi metronome instrument and binds it to *METRONOME*"
   (setf *metronome*
-	(make-general-midi-instrument 'gm-metronome
-				      :channel channel
-				      :program program
-				      :keynumber-map (metronome-keynumber-map :phrase phrase
-									      :bar bar
-									      :beat beat)
-				      :dynamic-map (metronome-dynamic-map :phrase 'fff
-									  :beat 'ff
-									  :bar 'ff)
-				      :articulation-map (metronome-articulation-map))))
+	(make-general-midi-instrument
+	 'gm-metronome
+	 :channel channel
+	 :program program
+	 :keynumber-map (metronome-keynumber-map :phrase phrase
+						 :bar bar
+						 :beat beat)
+	 :dynamic-map (metronome-dynamic-map :phrase 'fff
+					     :beat 'ff
+					     :bar 'ff)
+	 :articulation-map (metronome-articulation-map))))

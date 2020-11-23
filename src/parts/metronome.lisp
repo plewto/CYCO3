@@ -63,7 +63,7 @@
 (defmacro metronome (name &key section tempo unit bars beats cuefn
 			  cue key amp dur
 			  (instrument *metronome*))
-  `(let* ((met (make-metronome ,name
+  `(let* ((met (make-metronome ',name
 			       :section ,section
 			       :tempo ,tempo
 			       :unit ,unit

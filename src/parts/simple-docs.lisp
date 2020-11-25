@@ -33,7 +33,7 @@
 ;;;;  events are generated the field is immediately cleared.
 ;;;;
 ;;;;    key               : Note event keynumber, this value is proceeded
-;;;;                        by each instrument's keynumber-map prior to use.
+;;;;                        by each instruments keynumber-map prior to use.
 ;;;;    pressure          : normalized float, channel-pressure event
 ;;;;    controller-number : int MIDI controller number 0..127
 ;;;;    controller-value  : normalized float, only used with controller-number
@@ -118,7 +118,7 @@ Commands fall into two general classes;
 
 :time      - :time time-specification
              Sets the event time.  The format for time-specification must
-             match whatever the part's cue function is expecting.  For the 
+             match whatever the parts cue function is expecting.  For the 
              default BAR function, the format is a list 
              (bar-number beat-number sub-beat-number)
 
@@ -172,33 +172,33 @@ Commands fall into two general classes;
              number. If a metric-expression is used the duration is scaled 
              by the tempo.  When a number is specified it is absolute time
              in seconds and independent of the tempo.  
-             The duration is processed independent by each instrument's
+             The duration is processed independently by each instruments
              articulation-map.
 
 :amp       - :amp dynamic-value
-             The amplitude is processed independently by each instrument's
+             The amplitude is processed independently by each instruments
              dynamic-map.
 
 :key      - :key keynumber
             Generates note on/off events using keynumber and the current 
             chord.  The keynumber is processed independently by each 
-            instrument's keynumber-map.
+            instruments keynumber-map.
 
 :pressure - :pressure value   0.0 <= value <= 1.0
-            Generates MIDI channel-pressure event on each instrument's
+            Generates MIDI channel-pressure event on each instrument
             channel.
 
 :cc       - :cc controller-number value   
             0 <= controller-number <= 127  0.0 <= value <= 1.0
-            Generates MIDI control-change event on each instrument's
+            Generates MIDI control-change event on each instruments
             channel
 
 :bend     - :bend value   -1.0 <= value +1.0
-            Generates pitch-bend event on each instrument's channel.
+            Generates pitch-bend event on each instruments channel.
 
 :program  - :program program-number
             Generates program-change event for each instrument.
-            The program-number is processed by the instrument's 
+            The program-number is processed by the instruments 
             program-change-map
 
 :bank     - :bank bank-number program-number

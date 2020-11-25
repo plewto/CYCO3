@@ -29,7 +29,7 @@ times are specified in terms of the section time-signature.
 
 The tracked part may have a different time-signature, specifically it may
 have a lower bar count.  When the ghost part is rendered it uses the
-tracked part's duration, and -not- the section duration.  As a consequence
+tracked parts duration, and -not- the section duration.  As a consequence
 the Ghost phrase-duration method returns the duration of the tracked part
 and -not- the normally expected value of the nominal time-signature.
 

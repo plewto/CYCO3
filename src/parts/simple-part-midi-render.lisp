@@ -83,13 +83,10 @@
 		(duration (funcall (articulation-map instrument) articulation))
 		(amplitude (funcall (dynamic-map instrument) dynamic)))
 	    (if (playable-p keynumber duration amplitude)
-		(let (
-		      (template (create-chord-template chord-model chord-type keynumber inversion octave))
+		(let ((template (create-chord-template chord-model chord-type keynumber inversion octave))
 		      (channel-index (channel-index instrument))
-		      
 		      (off-time (+ on-time duration))
-		      (velocity (norm->midi-data amplitude))
-		      )
+		      (velocity (norm->midi-data amplitude)))
 		  (setf template (expand-template chord-model template keynumber))
 		  (dolist (kn template)
 		    (if (not (rest-p kn))

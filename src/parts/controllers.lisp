@@ -1,3 +1,6 @@
+;;;; **** DEPRECIATED ****
+
+
 (in-package :cyco-part)
 
 (constant +controllers-properties+

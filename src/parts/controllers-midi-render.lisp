@@ -1,3 +1,6 @@
+;;;; **** DEPRECIATED ****
+
+
 (in-package :cyco-part)
 
 ;; event-type may be one of following

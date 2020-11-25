@@ -1,3 +1,5 @@
+;;;; **** DEPRECIATED ****
+
 (in-package :cyco-part)
 
 (defstruct controllers-state

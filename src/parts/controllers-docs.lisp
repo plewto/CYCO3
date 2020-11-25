@@ -1,3 +1,4 @@
+;;;; *** DEPRECIATED ***
 ;;;; controllers event clauses
 ;;;;
 ;;;; :time t1 t2    (allow *1 *2 substitution)

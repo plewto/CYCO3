@@ -22,6 +22,14 @@ once all previous values have been returned."))
     (setf (slot-value q 'value) val)
     val))
 
-
-
-
+(defun range->line (start end &key (steps 16))
+  "Creates LINE pattern from numeric range.
+start - initial value.
+end - final value.
+:steps - number of steps, default 16.
+Returns Pattern.
+The ending value is never reached."
+  (let* ((delta (float (- end start)))
+	 (increment (/ delta steps)))
+    (line :of (range start end :by increment))))
+  

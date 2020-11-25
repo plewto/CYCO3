@@ -136,14 +136,16 @@
 (src-load "strummer-state")
 (src-load "strummer")
 (src-load "strummer-midi-render")
-(src-load "controllers-docs")
-(src-load "controllers-state")
-(src-load "controllers")
-(src-load "controllers-midi-render")
+
+
+;; (src-load "controllers-docs")      ;; DEPRECIATED
+;; (src-load "controllers-state")
+;; (src-load "controllers")
+;; (src-load "controllers-midi-render")
 
 (export '(*strummer-render-trace*
-	  controllers
-	  controllers-p
+	  ;; controllers     ;; DEPRECIATED
+	  ;; controllers-p
 	  ghost
 	  ghost-p
 	  make-controllers
@@ -166,11 +168,11 @@
 	  strummer-p) :cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
-	  cyco-part:controllers
-	  cyco-part:controllers-p
+	  ;; cyco-part:controllers
+	  ;; cyco-part:controllers-p
 	  cyco-part:ghost
 	  cyco-part:ghost-p
-	  cyco-part:make-controllers
+	  ;; cyco-part:make-controllers
 	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs

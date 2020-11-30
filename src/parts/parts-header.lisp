@@ -142,14 +142,7 @@
 (src-load "cball-midi-render")
 
 
-;; (src-load "controllers-docs")      ;; DEPRECIATED
-;; (src-load "controllers-state")
-;; (src-load "controllers")
-;; (src-load "controllers-midi-render")
-
 (export '(*strummer-render-trace*
-	  ;; controllers     ;; DEPRECIATED
-	  ;; controllers-p
 	  cball
 	  cball-p
 	  ghost
@@ -175,17 +168,11 @@
 	  strummer-p) :cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
-	  ;; cyco-part:controllers
-	  ;; cyco-part:controllers-p
 	  cyco-part:ghost
 	  cyco-part:ghost-p
-	  ;; cyco-part:make-controllers
-
 	  cyco-part:make-cball
 	  cyco-part:cball
 	  cyco-part:cball-p
-	  
-	  
 	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs

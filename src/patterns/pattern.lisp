@@ -27,20 +27,7 @@
 ;;;; --> 1 2 3 A B C A B C A B C ...
 ;;;;
 ;;;;
-;;;; PATTERN
-;;;;  |
-;;;;  +-- LINE
-;;;;  +-- CYCLE
-;;;;  +-- BAG     - random without replacement
-;;;;  +-- DICE    - random with replacement
-;;;;  +-- COIN    - random binary choice, unlike dice, coin may call functions
-;;;;  +-- WRAPPER - wraps a function call in a pattern
-;;;;  +-- SLEW    - extends pattern period
-;;;;  +-- WALKER  - random walk
-;;;;  +-- MARKOV  - Markov chain pattern
-;;;;  +-- SHIFT-REGISTER 
-;;;;  +-- INSTRUMENT-LAYER - special pattern type used for layering instruments
-;;;;
+
 
 (defclass pattern nil
   ((elements

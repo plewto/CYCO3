@@ -225,6 +225,7 @@
 	  partition-list
 	  path-to-root
 	  pattern-p
+	  period
 	  permute
 	  phrase-duration
 	  pick

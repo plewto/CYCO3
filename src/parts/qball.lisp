@@ -1,4 +1,4 @@
-;;;; CYCO   part.lisp
+;;;; CYCO   qball.lisp
 
 (in-package :cyco-part)
 
@@ -193,8 +193,7 @@ new object to a symbol named name. ~%~A"
 			  :dur (clone (property source :articulation-pattern))
 			  :amp (clone (property source :dynamic-pattern))
 			  :reset-on-repeat (property source :reset-on-repeat)
-			  :remarks (remarks source)
-			  )))
+			  :remarks (remarks source))))
     (copy-time-signature source new-qball)
     (put new-qball :shift (property source :shift))
     (dolist (sub-part (children source))

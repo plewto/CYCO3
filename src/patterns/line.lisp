@@ -22,8 +22,8 @@ once all previous values have been returned."))
     (setf (slot-value q 'value) val)
     val))
 
-(defun range->line (start end &key (steps 16))
-  "Creates LINE pattern from numeric range.
+(defun ramp (start end &key (steps 16))
+  "Creates linear ramp pattern from numeric range.
 start - initial value.
 end - final value.
 :steps - number of steps, default 16.

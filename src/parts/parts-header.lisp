@@ -54,6 +54,7 @@
 		:next-1
 		:next-n
 		:norm->midi-data
+		:period
 		:partition-list
 		:permute
 		:phrase-duration
@@ -102,7 +103,8 @@
   		:solo
   		:sort-midi-events
   		:time-signature
-  		:unmute))
+  		:unmute
+		:while))
 
 (in-package :cyco-part)
 
@@ -136,6 +138,8 @@
 (src-load "strummer-state")
 (src-load "strummer")
 (src-load "strummer-midi-render")
+(src-load "cball")
+(src-load "cball-midi-render")
 
 
 ;; (src-load "controllers-docs")      ;; DEPRECIATED
@@ -146,8 +150,11 @@
 (export '(*strummer-render-trace*
 	  ;; controllers     ;; DEPRECIATED
 	  ;; controllers-p
+	  cball
+	  cball-p
 	  ghost
 	  ghost-p
+	  make-cball
 	  make-controllers
 	  make-ghost
 	  make-metronome
@@ -173,6 +180,12 @@
 	  cyco-part:ghost
 	  cyco-part:ghost-p
 	  ;; cyco-part:make-controllers
+
+	  cyco-part:make-cball
+	  cyco-part:cball
+	  cyco-part:cball-p
+	  
+	  
 	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs

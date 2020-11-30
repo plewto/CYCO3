@@ -9,7 +9,7 @@
 (in-package :cyco-part)
 
 (constant +qball-docstring+
-       "Creates new QBALL instance.
+       "Creates new instance of QBALL.
 Most keyname arguments default to the parent node values.
 name
 instruments - Pattern of instruments. A single instrument or list

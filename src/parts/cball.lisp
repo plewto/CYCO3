@@ -22,7 +22,6 @@
 (defmethod cball-p ((object cball)) t)
 
 
-
 (labels ((bad-section-error (section part-name)
 	    (cyco-type-error 'make-cball "Section or nil" section
 			     (sformat "CBALL ~A" part-name)))
@@ -123,6 +122,8 @@
 	(reset cball)
 	cball))) )
 
+(setf (documentation 'make-cball 'function) +cball-docstring+)
+
 	
 (defmacro cball (name controller instruments  &key
 		      section
@@ -195,6 +196,13 @@
       (clone sub-part :new-name frmt :new-parent other))
     other)) 
     
-    
+
+(setf (documentation 'cball 'function)
+      (sformat "The CBALL macro is a thin wrapper of the MAKE-CBALL
+      function.  The primary difference is the CBALL binds the new object
+      to the named name, while MAKE-CBALL does not.   The name argument
+      should be quoted for MAKE-CBALL and unquoted for CBALL. ~%~%~A"
+	       +cball-docstring+))
+
     
 			   

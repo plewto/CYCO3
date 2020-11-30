@@ -138,6 +138,7 @@
 (src-load "strummer-state")
 (src-load "strummer")
 (src-load "strummer-midi-render")
+(src-load "cball-docs")
 (src-load "cball")
 (src-load "cball-midi-render")
 

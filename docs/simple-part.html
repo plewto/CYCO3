@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Simpel Parts</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <h1 class="banner">Simple Parts</h1>
+  <p class="body">
+    A SIMPLE-PART provides straight forward specifications
+    for note events, including chords.  It may also produce rudimentary
+    controller, channel-pressure, pitch-bend and program events.
+  </p>
+  <p class="body">
+    The <a href='strummer.html'>STRUMMER</a> is an extended
+    SUPER-PART which provides greater chord manipulation and other features.
+  </p>
+  
+  <!-- MAKE-SIMPLE-PART name instruments &key ... -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">MAKE-SIMPLE-PART name instruments &key ...</b><br>
+  
+  <!-- SIMPLE-PART name instruments &key ... -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">SIMPLE-PART name instruments &key ...</b><br>
+  <pre class="description">
+    MAKE-SIMPLE-PART and SIMPLE-PART are identical except the
+    later binds the new part object to the symbol name, and the former does
+    not.  The name argument should be quoted for MAKE-SIMPLE-PART and unquoted
+    for SIMPLE-PART.
+    
+    name          - part name
+    instruments   - instrument or list of instruments.
+    :section      - parent section, defaults to current section of *PROJECT*.
+    :cuefn        - time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
+    :shuffle      - time <a href='cue-functions.html#shuffle'>shuffle function</a>, defaults to section value.
+    :shift        - time shift in seconds, default 0.0
+    :tempo        - tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :unit         - time unit, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :bars         - bars per phrase, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :beats        - beats per bar, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :subbeats     - sub beats per beat, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :render-once  - Boolean, if true generate events only on first repetition, default nil.
+    :transposable - Boolean, if true part is subject to transpose and invert modifications, default t.
+    :reversible   - Boolean, if true part is subject to retrograde modification, default t.
+    :chord-model  - Sets how the part processes <a href='chords.html'>chords</a>.  See also the <a href='oud.html'>oud plugin</a>.  Defaults to *CHORD-TABLE*.
+    :remarks      - Optional remarks text.
+    :events       - List of events, see below.
+  </pre>
+  <H3 class="heading">Event Specifications</H3>
+  <p class="body">
+    Events are specified as a nested list of event 'clauses' where
+    each clause
+    begins with a keyword followed by a prescribed number of arguments.
+    Clause fall into two general classes:
+  </p>
+  <ol>
+    <li>Those that set some persistent value.  The value remains in effect until
+   explicitly changed. These include:<br><br>
+  
+   :TIME :CHORD :INVERSION :OCTAVE :DUR and :AMP<br><br></li>
+    <li>Those which generate events.  Once the events are generated these clauses
+   are cleared:<br><br>
+  
+   :KEY :PRESSURE :CC :BEND :PROGRAM :BANK</li>
+  </ol>
+  <H5 class="heading">Available Clauses</H5>
+  <pre class="code">
+    
+    :RESET
+         
+         Resets all persistent values to their defaults.
+    
+    
+    :TIME time-specification
+    
+         Sets event time.  time-specification must be in a format accepted by
+         the cue and shuffle functions.   For the default BAR function the
+         time format is a list (BAR BEAT SUBBEAT).
+    
+    
+    :CHORD chord-name or transpose-list
+    
+         The chord specification.   Assuming the default *CHORD-TABLE*, the 
+         clause  <b>:CHORD [maj]</b> will cause key events to generate major 
+         chords. Use <b>(?CHORDS part)</b> to see list of available chords 
+         for the given part.
+    
+         Chords may also be specified as a list of integers.   How this list
+         is interpreted depends on the current chord-model.   Chord models
+         are either <i>absolute</i> or <i>relative</i>.   The default 
+         *CHORD-TABLE* is relative.
+    
+         For relative chord-tables, a chord list is treated as offsets 
+         to the current key number.  IE a major triad is specified 
+         by (0 4 7).
+    
+         For absolute chord-tables the chord list is taken as the actual 
+         key-numbers.  The chord list (60 64 67) will produce a C-major 
+         chord regardless of the current key-number.
+    
+    
+    :INVERSION degree   -12 <= degree <= +12
+    
+        Modifies the chords list by rotating the note order.  For the
+        chord (0 3 7)
+    
+        degree -1   --> (7 0 3)    rotate left
+        degree  0   --> (0 3 7)    no rotation
+        degree +1   --> (3 7 0)    rotate right
+        degree +2   --> (7 0 3)    rotate right twice
+    
+        Inversion has no audible effect unless paired with an octave
+        value.  NOTE This statement does not apply to STRUMMER parts.
+    
+    
+    :OCTAVE n          -3 <= octave <= +3
+    
+        Adds an octave copy of the first note to the end of the 
+        chord template   For chord (0 3 7)
+    
+        octave -1  --> (0 3 7 -12)
+        octave  0  --> (0 3 7)
+        octave +1  --> (0 3 7 12)
+    
+        The octave value is applied after inversion.   For original 
+        chord template  (0 3 7)
+    
+    
+        :inversion 1  --> (3 7 0)
+        :octave 1     --> (3 7 0 15)
+    
+    
+    :DUR duration
+    
+       Sets note duration.   The argument may either be a <a href='metrics.html#metric-expression'>metric-expression</a>
+       or a real number.    
+        
+        If a metric-expression is used the duration is scaled by the part's tempo.
+    
+        If the duration is a number then it is the absolute duration in seconds.
+    
+    
+    
+    :AMP <a href='dynamics.html'>dynamic-value</a>
+    
+    
+    :KEY <a href='keynumbers.html'>keynumber</a>
+    
+       Generate note events.
+    
+    
+    
+    :PRESSURE value      0.0 <= value <= 1.0
+    
+       Generate single MIDI channel-pressure event.
+    
+    
+    :CC controller-number value     0 <= controller-number < 128,  0.0 <= value <= 1.0
+    
+       Generate single MIDI control-change event.
+    
+    
+    
+    :BEND value           -1.0 <= value <= +1.0
+    
+       Generate single MIDI pitch bend event.
+        
+    
+    
+    :PROGRAM number
+    
+       Generate single program-change event for each instrument.
+       If number is :DEFAULT, each instrument's default program-number is
+       used.
+    
+    
+    :BANK  bank-number program-number
+    
+       Generate single program change with bank selection for each instrument.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <H2 class="heading">Examples</H2>
+  <pre class="code">
+    
+    
+    ;; Produce c major arpeggio followed by major chord.   The [solo] chord 
+    ;; produces a single note.
+    ;;
+    
+    (simple-part example-1 piano
+    	     :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
+    		       (:time (1 2 1) :key e5)
+    		       (:time (1 3 1) :key g5)
+    		       (:time (1 4 1) :key c5 :chord [maj] :dur w)))
+    
+    
+    --------------------------------------------------------------
+    
+    ;; The following produces the same result but the major chords are specified by 
+    ;; list of keynumber offsets.
+    ;;
+    (simple-part example-2 piano
+    	     :events '((:time (1 1 1) :key c5 :chord (0) :dur q :amp mf)
+    		       (:time (1 2 1) :key e5)
+    		       (:time (1 3 1) :key g5)
+    		       (:time (1 4 1) :key c5 :chord (0 3 7) :dur w)))
+    
+    
+    --------------------------------------------------------------
+    
+    ;; Using an alternate chord model.
+    ;;
+    
+    (plugin guitar-chords)
+    (simple-part example-3 piano
+    	     :chord-model *guitar-chord-model*
+    	     :events '((:time (1 1 1) :key c0 :chord [maj] :dur w :amp mf)
+    		       (:time (2 1 1) :key c1)
+    		       (:time (3 1 1) :key c2)))
+    
+    
+    --------------------------------------------------------------
+    With the guitar chord model the keynumber octave selects a variation of the chord.
+    If you need to specify specific notes to play list them directly.
+    
+    (simple-part example-4 piano
+                 :chord-model *guitar-chord-model*
+    	     :events '((:time (1 1 1) :key c0 :chord (a4 c5 e5) :dur w :amp mf)))
+    
+    In the above example the chord list (a4 c5 e5) is interpreted by the guitar chord 
+    model as the absolute notes to be played.   The keynumber c0 could have been 
+    anything and is ignored.
+    
+    
+    --------------------------------------------------------------
+    ;; Layering instruments
+    ;;
+    (simple-part example-5 (list piano organ)
+                 :events '((:time (1 1 1) :program default)))
+    
+    This example layers a piano and organ.  The :program default clause
+    generates program changes events at time (1 1 1) for both instruments.
+    
+    You may specify an explicit program number.
+    
+    (simple-part example-6 piano
+                 :events '((:time (1 1 1) :program 4)))
+    
+    --------------------------------------------------------------
+    ;; Shuffle 
+    ;; 
+    ;; A shuffle rhythm is obtained by modifying the nominal times of selected beats
+    ;; 
+    ;; A shuffle function must take the same argument format as the cue function
+    ;; This example delays beats 2 and 4 by 0.25 seconds.
+    
+    (defun shuffle-function (time-specification)
+      (let ((beat (second time-specification))
+            (sub (or (third time-specification) 1)))
+        (if (and (member beat '(2 4))(= sub 1))
+    	0.25
+          0.0)))
+    
+    (simple-part example-6 piano
+    	     :shuffle #'shuffle-function
+    	     :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
+    		       (:time (1 2 1) :key e5)
+    		       (:time (1 3 1) :key g5)
+                           (:time (1 4 1) :key c6)))
+    
+    The above generates events at times
+    
+        With shuffle      Without shuffle
+        0.0000            0.0000
+        1.2500            1.0000
+        2.0000            2.0000 
+        3.2500            3.0000
+    
+    
+    --------------------------------------------------------------
+    ;; Controller events
+    ;;
+    ;; A simple-part may generate single controller, pressure and bend events.
+    ;; Values are 'normalized' between 0.0 and 1.0 for cc and pressure and
+    ;; -1.0 and +1.0 for bend.
+    ;;
+    
+    (simple-part example-7 piano
+                 :events '((:time (1 1 1) :cc 4 0.5)      ;; MIDI control change
+                                                          ;;    controller number 4
+                                                          ;;    value 0.5 --> MIDI 64
+                           (:time (2 1 1) :pressure 0.75) ;; MIDI channel pressure
+                                                          ;;    value 0.75 --> ~ MIDI 95
+                           (:time (3 1 1) :bend -0.5      ;; MIDI pitch bend
+                                                          ;;    -1.0 &lt;&equals; value &lt;&equals; +1.0
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

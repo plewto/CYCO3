@@ -87,5 +87,5 @@ amp2 - alternate amplitude
 :width - pulse width, 0 < width < 1, default 0.5
 Returns pulse Pattern."
     (let* ((saw (saw-curve 0.0 1.0 steps phase))
-	   (pulse (mapcar #'(lambda (v)(compare v width amp1 amp2)) saw)))
+	   (pulse (mapcar #'(lambda (v)(compare v width amp2 amp1)) saw)))
       (cycle :of pulse))))

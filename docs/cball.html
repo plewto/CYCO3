@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>CBall Parts</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=chords.html class="navigation">Next: chords </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/cball.png" alt="cball"/>
+  <h1 class="banner">CBall</h1>
+  <p class="body">
+    A <i>CBALL</i> part generates MIDI control-change, channel pressure and 
+    pitch-bend events.
+  </p>
+  
+  <!-- MAKE-CBALL name controller instruments &key ... -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">MAKE-CBALL name controller instruments &key ...</b><br>
+  
+  <!-- CBALL name controller instruments &key ... -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">CBALL name controller instruments &key ...</b><br>
+  <pre class="description">
+    MAKE-CBALL and CBALL are identical except the later binds the new
+    object to the symbol name while the former does not.  The name argument should
+    be a quoted symbol for MAKE-CBALL and unquoted for CBALL.
+    
+    name         - Part name
+    controller   - MIDI controller number or the keywords :PRESSURE or :BEND
+    instruments  - Instrument or list of instruments.
+    :section     - Parent section, defaults to current section of *PROJECT*  
+    :cuefn       - time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
+    :shift       - time shift in seconds, default 0.0
+    :tempo       - tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :unit        - time unit, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :bars        - bars per phrase, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :beats       - beats per bar, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :subbeats    - sub beats per beat, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :render-once - Boolean, if true generate events only on first repetition, default nil.
+    :start       - Start time specification, must be in format accepted by cue function. 
+    :end         - End time specification, must be in format accepted by cue function.
+    :increment   - <a href='metrics.html#metric-expression'>metric-expression</a> interval between events.
+    :pattern     - Value <a href='patterns.html'>pattern</a>  The pattern should have numeric values only.
+                   Defaults to constant 0.
+    :remarks     - Optional remarks text.
+    :reset-on-repeat - If true, MIDI events are generated only on the first repetition of the part.
+  </pre>
+  <p class="body">
+    Values must be supplied for the :START :END and :INCREMENT arguments.
+  </p>
+  <p class="body">
+    The :PATTERN must only produce numeric values.   All values are 'normalized' 
+    <span  style='white-space: nowrap;'>0.0 &lt;&equals; value &lt;&equals; 1.0</span> for 
+    controller and pressure and 
+    <span  style='white-space: nowrap;'>-1.0 &lt;&equals; value &lt;&equals; +1.0</span> 
+    for bend.   Out of bounds values are clipped.
+  </p>
+  <p class="body">
+    The 
+    <a href='patterns.html#ramp'>RAMP</a> 
+    <a href='patterns.html#sawtooth'>SAWTOOTH</a> 
+    <a href='patterns.html#triangle'>TRIANGLE</a> and
+    <a href='patterns.html#pulse'>PULSE</a> patterns are particularly useful 
+    as CBALL patterns.
+  </p>
+  <H2 class="heading">Examples</H2>
+  <p class="body">
+    Produce mod wheel (controller 1) ramp between start of bar 2 to start of bar 3
+  </p>
+  <pre class="code">
+    (cball part-name piano 
+         :controller 1
+         :start '(2 1 1)
+         :end '(3 1 1)
+         :increment 's
+         :pattern (ramp 0.0 1.0 :steps 16))
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=chords.html class="navigation">Next: chords </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -14,16 +14,14 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=controllers.html class="navigation">Next: controllers </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=simple-part.html class="navigation">Previous: simple-part </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/strummer.png" alt="strummer"/>
   <h1 class="banner">Strummer Parts</h1>
   <p class="body">
-    A <i>STRUMMER</i> is a type of 
-    <a href='parts.html'>PART</a> useful for producing strummed chord
-    effects.  Unlike a 
-    <a href='qball.html'>QBALL</a>, with a STRUMMER each event is explicitly
-    stated.
+    A <i>STRUMMER</I> is like an extended version of
+    <a href='simple-part.html'>SIMPLE-PART</a>.   Much of the 
+    documentation for SIMPLE-PART also applies to STRUMMER.
   </p>
   <H5 class="heading">Features</H5>
   <ul>
@@ -37,26 +35,26 @@
     <li>Simple events for bend, controller and program change.</li>
   </ul>
   
-  <!-- (STRUMMER name instrument &key ...) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(STRUMMER name instrument &key ...)</b><br>
-  
   <!-- (MAKE-STRUMMER name instrument &key ...) -->
   <!--  -->
   <!--  -->
   <b class="definition">(MAKE-STRUMMER name instrument &key ...)</b><br>
   <p class="summery">Creates new STRUMMER part.</p>
+  
+  <!-- (STRUMMER name instrument &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(STRUMMER name instrument &key ...)</b><br>
   <pre class="description">
-    STRUMMER and MAKE-STRUMMER are identical except the later binds
-    the new part to the symbol name while the later does not.<br>
+    MAKE-STRUMMER and STRUMMER are identical except the later binds
+    the new part to the symbol name while the former does not.<br>
     
     The name argument to MAKE-STRUMMER should be a quoted-symbol and
     should be unquoted for STRUMMER.
     
     	
         name          - symbol
-        instrument    - instrument
+        instrument    - instrument.  NOTE: A Strummer part only takes a single instrument.
         :section      - parent section, defaults to current section of *PROJECT*.
         :cuefn        - cue-function, defaults to section value.
         :shuffle      - shuffle-function, defaults to section-value.
@@ -76,14 +74,14 @@
         :remarks      - optional remarks text.
         :events       - List of events, see below.
   </pre>
-  <H3 class="heading">Event Specifications:</H3>
+  <H3 class="heading">Event Specifications</H3>
   <p class="body">
     Events are specified as a nested list of event 'clauses' where each clause
-        begins with a keyword followed by a specific number of arguments.
+        begins with a keyword followed by prescribed number of arguments.
         Clauses fall into two general classes:
   </p>
   <ol>
-    <li>Those that set some persistent values which remain in
+    <li>Those that set some persistent value.  The value remain in
          effect until explicitly changed.  These include:<br><br>
   		  
          :RESET  :TIME  :CHORD    :INVERSION  :OCTAVE  :STRUM  :STRUM*  :DIRECTION<br>
@@ -103,9 +101,7 @@
               
     :TIME time-specification
     
-        Sets event time.  time-specification must be in a format excepted
-        by the cue and shuffle functions.  For the default BAR cue
-        function the time format is (BAR BEAT SUBBEAT)
+        Same as <a href='simple-part.html'>simple-part</a>
     
     :CHORD chord-type
     
@@ -144,11 +140,11 @@
     
     :INVERSION degree        -12 <= degree <= +12
     
-          Sets chord inversion degree.  See CHORD-INVERSION function.
+         Same as <a href='simple-part.html'>simple-part</a> 
     
     :OCTAVE n                -3 <= n <= +3
     
-          Adds octave to chord template.  See CHORD-INVERSION function.
+        Same as <a href='simple-part.html'>simple-part</a>   
     
     :STRUM delay
     
@@ -234,7 +230,7 @@
     
     :DUR metric-expression
     
-        Sets note duration either as a metric-expression or in seconds.
+        Same as <a href='simple-part.html'>simple-part</a> 
     
     :AMP dynamic
     :AMP pattern-list
@@ -277,26 +273,23 @@
     
     :BEND amount
     
-        Generate single pitch-bend event.
+        Same as <a href='simple-part.html'>simple-part</a>
     
     :CC controller-number amount
     
-        Generate single controller event.
+        Same as <a href='simple-part.html'>simple-part</a>
+    
     
     :PROGRAM program
     
-        Generate program-change events.  If the program argument is 'default
-        then use the instrument's default program-number.
+       Same as <a href='simple-part.html'>simple-part</a>
     
     :BANK bank program
-    
-        Generate bank and program change events.  If either the program or
-        bank arguments are 'default use the instrument's default values.
-        For instruments which do not support program-banks, generate
-        identical events as the :PROGRAM clause.
+       
+       Same as <a href='simple-part.html'>simple-part</a>
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=controllers.html class="navigation">Next: controllers </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=simple-part.html class="navigation">Previous: simple-part </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

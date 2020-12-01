@@ -397,6 +397,76 @@
         (param foo (dice :of (list (cycle :of '(A B C))(line :of '(1 2 3)))))
         (next foo 16) --> 1 2 A 3 B C 3 A 3 B C 3 A B 3...
   </pre>
+  <H2 class="heading">Pseudo Patterns</H2>
+  <p class="body">
+    The following are special case patterns which have numeric values only.
+    They may not contain nested patterns.
+  </p>
+  <a id="ramp"></a>
+  
+  <!-- (RAMP start end &key steps) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RAMP start end &key steps)</b><br>
+  <pre class="description">
+    Special case LINE pattern, produces linear sequence from start to end values 
+    with given number of steps.  step defaults to 16.   Note the final value is not reached.
+    
+        (param foo (ramp 0 8 :steps 8))
+        (next foo :all) --> (0 1.0 2.0 3.0 4.0 5.0 6.0 7.0)
+  </pre>
+  <a id="sawtooth"></a>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  
+  <!-- (SAWTOOTH amp1 amp2 &key steps phase) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SAWTOOTH amp1 amp2 &key steps phase)</b><br>
+  <pre class="description">
+    Special case CYCLE for producing numeric sawtooth pattern between two
+    amplitude values.   steps defaults to 16, phase is in degrees and defaults to 0.
+    The amp2 value is never reached.
+    
+        (param foo (sawtooth 0 10 :steps 10 :phase 0))
+        (next foo :all) --> (0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0)
+  </pre>
+  <a id="triangle"></a>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  
+  <!-- (TRIANGLE amp1 amp2 &key steps phase) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TRIANGLE amp1 amp2 &key steps phase)</b><br>
+  <pre class="description">
+    Special case CYCLE for producing numeric triangle pattern between two 
+    amplitude values.   steps defaults to 16, phase is in degrees and defaults to 0.
+    
+    
+        (param foo (triangle 0 10 :steps 10 :phase 0))
+        (next foo :All) --> (0 2.0 4.0 6.0 8.0 10 8.0 6.0 4.0 2.0)
+  </pre>
+  <a id="pulse"></a>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  
+  <!-- (PULSE amp1 amp2 &key steps phase width) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PULSE amp1 amp2 &key steps phase width)</b><br>
+  <pre class="description">
+    Special case CYCLE for producing numeric pulse pattern between two 
+    amplitudes.  steps defaults 16, phase is in degrees and defaults to 0.
+    width sets the relative times for amp1 and amp2, 0.0 &lt;&equals; width &lt;&equals; 1.0,
+    defaults to 0.5
+    
+        (param foo (pulse 0 1))
+        (next foo :all) -> (0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1)
+    
+        (param foo (pulse 0 1 :width 0.8))
+        (next foo :all) -> (0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1)
+    
+        (param foo (pulse 0 1 :width 0.8 :phase 90))
+        (next foo :all) -> (0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0)
+  </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   

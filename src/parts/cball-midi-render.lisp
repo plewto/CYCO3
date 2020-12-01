@@ -43,11 +43,16 @@
     (if (muted-p cball)(return-from render-once nil))
     (if (property cball :reset-on-repeat)(reset cball))
     (let* ((midi-events '())
+	   
 	   (cuefn (property cball :cue-function))
 	   (start-time (funcall cuefn cball (property cball :start-cue)))
 	   (current-time start-time)
 	   (end-time (funcall cuefn cball (property cball :end-cue)))
-	   (time-increment (metric-expression (property cball :time-increment)))
+	   (time-increment (let* ((ti (property cball :time-increment))
+				  (scale (if (numberp ti)
+					     1.0
+					   (beat-duration cball))))
+			     (* scale (metric-expression ti))))
 	   (shift (property cball :shift))
 	   (channel-index-list (get-channel-index-list cball))
 	   (pattern (property cball :value-pattern))

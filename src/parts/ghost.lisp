@@ -79,12 +79,11 @@ Key number manipulation function is the composition:
 				:properties +ghost-properties+
 				:name name
 				:remarks (->string (or remarks ""))
-				:transient t))
-	   (cuefn (property parent-section :cue-function)))
+				:transient t)))
       (connect parent-section new-ghost)
       (copy-time-signature parent-section new-ghost)
       (put new-ghost :source source-part)
-      (put new-ghost :delay (funcall cuefn parent-section delay))
+      (put new-ghost :delay (or delay 0.0))
       (put new-ghost :transpose-steps transpose)
       (put new-ghost :pivot pivot)
       (put new-ghost :ampscale (or ampscale 1.0))
@@ -95,6 +94,8 @@ Key number manipulation function is the composition:
       (put new-ghost :transposable nil)
       (put new-ghost :reversible nil)
       new-ghost)))
+
+
 
 (defmacro ghost (name source-part track &key
 		      (delay nil)
@@ -160,7 +161,11 @@ Key number manipulation function is the composition:
 
   (defmethod render-once ((ghost ghost) &key (offset 0.0))
     (let ((midi-events '())
-	  (delay (property ghost :delay))
+	  (delay (let* ((n (property ghost :delay))
+			(scale (if (numberp n)
+				   1
+				 (beat-duration ghost))))
+		   (* scale (metric-expression n))))
 	  (transpose-amount (property ghost :transpose-steps))
 	  (inversion-pivot-key (property ghost :pivot))
 	  (key-table (property ghost :keytable))

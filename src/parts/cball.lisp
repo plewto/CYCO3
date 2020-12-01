@@ -12,10 +12,14 @@
 		    :end-cue
 		    :time-increment
 		    :value-pattern
-		    :reset-on-repeat)))
+		    :reset-on-repeat
+		    :initial-value
+		    :initial-value-time-shift
+		    :final-value
+		    :final-value-time-shift)))
+		    
 
 (defclass cball (part) nil)
-
 
 (defgeneric cball-p (object))
 (defmethod cball-p ((object t)) nil)
@@ -66,34 +70,24 @@
 	     (or (and (numberp controller)(<= 0 controller)(< controller 128))
 		 (eq controller :pressure)
 		 (eq controller :bend)
-		 (invalid-controller-error controller part-name)))
+		 (invalid-controller-error controller part-name))) )
 
-	 (validate-cue-points (part-name start end increment)
-	     (or (and start end increment)
-		 (cyco-type-error
-		  'make-cball
-		  "Values must be supplied for :START, :END and :INCREMENT"
-		  (sformat ":START = ~A  :END = ~A   :INCREMENT = ~A" start end increment)
-		  (sformat "CBALL ~A" part-name)))) )
-
-  (defun make-cball (name controller instruments &key
+  (defun make-cball (name controller instruments start end &key
 			  section
 			  cuefn
 			  shift
 			  tempo unit bars beats subbeats
 			  render-once
-			  start
-			  end
 			  increment
 			  pattern
 			  reset-on-repeat
-			  remarks)
+			  remarks
+			  initial
+			  final)
     (let ((parent (validate-section name section))
 	  (instrument-list (validate-instruments name instruments))
 	  (controller-type (validate-controller name controller)))
       (if (not (and parent instrument-list controller-type))
-	  (return-from make-cball nil))
-      (if (not (validate-cue-points name start end increment))
 	  (return-from make-cball nil))
       (let ((cball (make-instance 'cball
 				  :properties +cball-properties+
@@ -115,31 +109,39 @@
 	(put cball :instruments instrument-list)
 	(put cball :start-cue start)
 	(put cball :end-cue end)
-	(put cball :time-increment increment)
+	(put cball :time-increment (or increment 's))
 	(put cball :shift (metric-expression (or shift 0.0)))
-	(put cball :value-pattern (or pattern (line :of 0.0)))
+	(put cball :value-pattern pattern)
 	(put cball :reset-on-repeat reset-on-repeat)
+	(let ((v (car initial))
+	      (time-shift (or (cdr initial) 0)))
+	  (put cball :initial-value v)
+	  (put cball :initial-value-time-shift (and v time-shift)))
+	(let ((v (car final))
+	      (time-shift (or (cdr final) 0)))
+	  (put cball :final-value v)
+	  (put cball :final-value-time-shift (and v time-shift)))
 	(reset cball)
 	cball))) )
 
 (setf (documentation 'make-cball 'function) +cball-docstring+)
 
 	
-(defmacro cball (name controller instruments  &key
+(defmacro cball (name controller instruments start end &key
 		      section
 		      cuefn
 		      shift
 		      tempo unit bars beats subbeats
 		      render-once
-		      start
-		      end
 		      increment
 		      pattern
 		      reset-on-repeat
-		      remarks)
+		      remarks
+		      initial
+		      final)
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((cball (make-cball ',name ,controller ,instruments
+     (let ((cball (make-cball ',name ,controller ,instruments ,start ,end
 			      :section ,section
 			      :cuefn ,cuefn
 			      :shift ,shift
@@ -149,11 +151,11 @@
 			      :beats  ,beats 
 			      :subbeats ,subbeats
 			      :render-once ,render-once
-			      :start ,start
-			      :end ,end
 			      :increment ,increment
 			      :pattern ,pattern
 			      :reset-on-repeat ,reset-on-repeat
+			      :initial ,initial
+			      :final ,final
 			      :remarks ,remarks)))
        (defparameter ,name cball)
        cball)))
@@ -178,18 +180,26 @@
 (defmethod clone ((source cball) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (parent (or new-parent (parent source)))
+	 (initial-value (property source :initial-value))
+	 (initial-time-shift (property source :initial-value-time-shift))
+	 (initial (if initial-value (cons initial-value initial-time-shift)))
+	 (final-value (property source :final-value))
+	 (final-time-shift (property source :final-value-time-shift))
+	 (final (if final-value (cons final-value final-time-shift)))
 	 (other (make-cball (->symbol frmt (name source))
 			    (property source :controller)
 			    (property source :instruments)
+			    (property source :start-cue)
+			    (property source :end-cue)
 			    :section parent
 			    :cuefn (property source :cue-function)
 			    :shift (property source :shift)
 			    :render-once (property source :render-once)
-			    :start (property source :start-cue)
-			    :end (property source :end-cue)
 			    :increment (property source :time-increment)
 			    :pattern (property source :pattern)
 			    :reset-on-repeat (property source :reset-on-repeat)
+			    :initial initial
+			    :final final
 			    :remarks (property source :remarks))))
     (copy-time-signature source other)
     (dolist (sub-part (children source))
@@ -203,6 +213,3 @@
       to the named name, while MAKE-CBALL does not.   The name argument
       should be quoted for MAKE-CBALL and unquoted for CBALL. ~%~%~A"
 	       +cball-docstring+))
-
-    
-			   

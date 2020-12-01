@@ -60,6 +60,7 @@
 		:phrase-duration
 		:program-change-events
 		:program-map
+		:ramp
 		:range
 		:reset
 		:rest-p

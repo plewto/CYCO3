@@ -10,7 +10,7 @@
 		    :cue-function
 		    :start-cue
 		    :end-cue
-		    :time-increment
+		    :time-interval
 		    :value-pattern
 		    :reset-on-repeat
 		    :initial-value
@@ -103,7 +103,7 @@
 			  shift
 			  tempo unit bars beats subbeats
 			  render-once
-			  increment
+			  interval
 			  pattern
 			  reset-on-repeat
 			  remarks
@@ -134,7 +134,7 @@
 	(put cball :instruments instrument-list)
 	(put cball :start-cue start)
 	(put cball :end-cue end)
-	(put cball :time-increment (or increment 's))
+	(put cball :time-interval (or interval 's))
 	(put cball :shift (metric-expression (or shift 0.0)))
 	(put cball :reset-on-repeat reset-on-repeat)
 	(let ((v (car initial))
@@ -158,7 +158,7 @@
 		      shift
 		      tempo unit bars beats subbeats
 		      render-once
-		      increment
+		      interval
 		      pattern
 		      reset-on-repeat
 		      remarks
@@ -176,7 +176,7 @@
 			      :beats  ,beats 
 			      :subbeats ,subbeats
 			      :render-once ,render-once
-			      :increment ,increment
+			      :interval ,interval
 			      :pattern ,pattern
 			      :reset-on-repeat ,reset-on-repeat
 			      :initial ,initial
@@ -191,7 +191,7 @@
 	 (start-time (funcall cuefn cball (property cball :start-cue)))
 	 (end-time (funcall cuefn cball (property cball :end-cue)))
 	 (time-delta (float (- end-time start-time)))
-	 (interval (let* ((n (property cball :time-increment))
+	 (interval (let* ((n (property cball :time-interval))
 			  (scale (if (numberp n)
 				     1.0
 				   (beat-duration cball))))
@@ -234,7 +234,7 @@
 			    :cuefn (property source :cue-function)
 			    :shift (property source :shift)
 			    :render-once (property source :render-once)
-			    :increment (property source :time-increment)
+			    :interval (property source :time-interval)
 			    :pattern (property source :pattern)
 			    :reset-on-repeat (property source :reset-on-repeat)
 			    :initial initial

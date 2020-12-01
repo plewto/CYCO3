@@ -21,7 +21,7 @@ end         - End time, must be in a format accepted by cuefn.
 :bars       - Defaults to parent section value.
 :beats      - Defaults to parent section value.
 :subbeats   - Defaults to parent section value.
-:increment  - Metric-expression, default 's
+:interval   - Metric-expression, default 's
 :pattern    - Value pattern or pattern specification, see below, default nil.
 :initial    - cons (value shift), default nil
 :final      - cons (value shift), default nil

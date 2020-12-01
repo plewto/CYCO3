@@ -27,13 +27,21 @@
 					    (get-channel-index-list cball))) )
 	      (if initial-norm-value
 		  (let* ((value (funcall data-mapping-function initial-norm-value))
-			 (shift (or (property cball :initial-value-time-shift) 0.01))
+			 (shift (let* ((n (or (property cball :initial-value-time-shift) 0.01))
+				       (scale (if (numberp n)
+						  1.0
+						(float (beat-duration cball)))))
+				  (* scale (metric-expression n))))
 			 (time (max 0 (- start-time shift))))
 		    (dolist (ci channel-index-list)
 		      (push (cons time (create-message controller ci value)) midi-events))))
 	      (if final-norm-value
 		  (let* ((value (funcall data-mapping-function final-norm-value))
-			 (shift (or (property cball :final-value-time-shift) 0.01))
+			 (shift (let* ((n (or (property cball :final-value-time-shift) 0.01))
+				       (scale (if (numberp n)
+						  1.0
+						(float (beat-duration cball)))))
+				  (* scale (metric-expression n))))
 			 (time (+ end-time shift)))
 		    (dolist (ci channel-index-list)
 		      (push (cons time (create-message controller ci value)) midi-events))))
@@ -48,7 +56,7 @@
 	   (start-time (funcall cuefn cball (property cball :start-cue)))
 	   (current-time start-time)
 	   (end-time (funcall cuefn cball (property cball :end-cue)))
-	   (time-increment (let* ((ti (property cball :time-increment))
+	   (time-interval (let* ((ti (property cball :time-interval))
 				  (scale (if (numberp ti)
 					     1.0
 					   (beat-duration cball))))
@@ -65,7 +73,7 @@
 		   (time (+ current-time shift offset)))
 	      (dolist (ci channel-index-list)
 		(push (cons time (create-message controller ci data)) midi-events))
-	      (setf current-time (+ current-time time-increment)))))
+	      (setf current-time (+ current-time time-interval)))))
       (setf midi-events
 	    (append midi-events
 		    (render-single-events cball start-time end-time)))

@@ -35,7 +35,6 @@ cycle repeats."))
   (cycle :of (->list object)))
 
 
-
 (labels ((rotate (curve phase)
 		 (if (zerop (rem phase 360))
 		     curve
@@ -43,49 +42,58 @@ cycle repeats."))
 			  (head (nthcdr index curve))
 			  (tail (subseq curve 0 index)))
 		     (append head tail))))
-
-	 (saw-curve (amp1 amp2 steps phase)
-		    (let* ((delta (float (- amp2 amp1)))
-			   (increment (/ delta steps)))
-		      (rotate (range amp1 amp2 :by increment) phase)))
 	 
-	 (tri-curve (amp1 amp2 steps phase)
-		    (let* ((delta (float (- amp2 amp1)))
-			   (increment (* 2 (/ delta steps)))
+	 (saw-curve (amp1 amp2 cycles steps phase)
+		    (let* ((delta (float (abs (- amp2 amp1))))
+			   (increment (* cycles (/ delta (1- steps))))
+			   (value (min amp1 amp2))
+			   (acc '()))
+		      (while (<= value (max amp1 amp2))
+			(push value acc)
+			(setf value (+ value increment)))
+		      (flatten (copies cycles (rotate (reverse acc) phase)))))
+		     
+	 (tri-curve (amp1 amp2 cycles steps phase)
+		    (let* ((delta (float (abs (- amp2 amp1))))
+			   (increment (* 2 cycles (/ delta steps)))
 			   (curve-1 (range amp1 amp2 :by increment))
 			   (curve-2 (range amp2 amp1 :by increment)))
-		      (rotate (append curve-1 curve-2) phase)))
+		      (flatten (copies cycles (rotate (append curve-1 curve-2) phase)))))
 	 
 	 (compare (value threshold high low)
 		  (if (< value threshold) low high)) )
 
-  (defun sawtooth (amp1 amp2 &key (steps 16)(phase 0))
-    "Creates numeric pattern with sawtooth contour.
-amp1 - initial amplitude.
-amp2 - final amplitude.
-:steps - number of steps, default 16.
-:phase - phase shift in degrees, default 0.
+  (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0))
+    "Creates numeric pattern with sawtooth contour.  Note amp2 
+value may never be reached.
+amp1 - minimum amplitude.
+amp2 - peak amplitude.
+:cycles - number of sawtooth cycles, default 1 
+:steps  - number of steps, default 16.
+:phase  - phase shift in degrees, default 0.
 Returns Pattern."
-    (cycle :of (saw-curve amp1 amp2 steps phase)))
+    (cycle :of (saw-curve amp1 amp2 cycles steps phase)))
   
-  (defun triangle (amp1 amp2 &key (steps 16)(phase 0))
+  (defun triangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0))
     "Creates numeric pattern with triangle contour.
-amp1 - initial amplitude.
-amp2 - alternate amplitude
-:steps - number of steps, default 16.
-:phase - phase shift in degrees, default 0.
+amp1 - minimum amplitude.
+amp2 - peak amplitude.
+:cycles - number of triangle cycles, default 1
+:steps  - number of steps, default 16.
+:phase  - phase shift in degrees, default 0.
 Returns Pattern."
-      (cycle :of (tri-curve amp1 amp2 steps phase)))
+      (cycle :of (tri-curve amp1 amp2 cycles steps phase)))
 
 
-  (defun pulse (amp1 amp2 &key (steps 16)(phase 0)(width 0.5))
+  (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5))
     "Creates numeric pulse pattern.
-amp1 - initial amplitude
-amp2 - alternate amplitude
-:steps - number of steps, default 16
-:phase - phase shift in degrees, default 0.
-:width - pulse width, 0 < width < 1, default 0.5
+amp1 - minimum amplitude.
+amp2 - maximum amplitude.
+:cycles - number of pulse cycles, default 1.
+:steps  - number of steps, default 16
+:phase  - phase shift in degrees, default 0.
+:width  - pulse width, 0 < width < 1, default 0.5
 Returns pulse Pattern."
-    (let* ((saw (saw-curve 0.0 1.0 steps phase))
+    (let* ((saw (saw-curve 0.0 1.0 cycles steps phase))
 	   (pulse (mapcar #'(lambda (v)(compare v width amp2 amp1)) saw)))
       (cycle :of pulse))))

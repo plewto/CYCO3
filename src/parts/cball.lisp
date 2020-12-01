@@ -24,7 +24,7 @@
 (defgeneric cball-p (object))
 (defmethod cball-p ((object t)) nil)
 (defmethod cball-p ((object cball)) t)
-
+(defgeneric cball-steps (object))
 
 (labels ((bad-section-error (section part-name)
 	    (cyco-type-error 'make-cball "Section or nil" section
@@ -70,7 +70,32 @@
 	     (or (and (numberp controller)(<= 0 controller)(< controller 128))
 		 (eq controller :pressure)
 		 (eq controller :bend)
-		 (invalid-controller-error controller part-name))) )
+		 (invalid-controller-error controller part-name)))
+
+	 ;; nil
+	 ;; pattern object
+	 ;; (:RAMP amp1 amp2 )
+	 ;; (:sawtooth amp1 amp2 :phase)
+	 ;; (:triangle amp1 amp2 :phase)
+	 ;; (:pulse amp1 amp2 :phase :width)
+	 (create-pattern (cball pattern)
+			 (if (or (null pattern)(pattern-p pattern))
+			     (return-from create-pattern pattern))
+			 (let* ((steps (cball-steps cball))
+				(curve-type (car pattern))
+				(args (append (cdr pattern)(list :steps steps))))
+			   (cond ((eq curve-type :ramp)
+				  (apply #'ramp args))
+				 ((eq curve-type :sawtooth)
+				  (apply #'sawtooth args))
+				 ((eq curve-type :triangle)
+				  (apply #'triangle args))
+				 ((eq curve-type :pulse)
+				  (apply #'pulse args))
+				 (t (cyco-type-error 'make-cball
+						     "curve type, one of :RAMP :SAWTOOTH :TRIANGLE or :PULSE"
+						     curve-type
+						     (sformat "CBALL ~A" (name cball))))))) )
 
   (defun make-cball (name controller instruments start end &key
 			  section
@@ -111,7 +136,6 @@
 	(put cball :end-cue end)
 	(put cball :time-increment (or increment 's))
 	(put cball :shift (metric-expression (or shift 0.0)))
-	(put cball :value-pattern pattern)
 	(put cball :reset-on-repeat reset-on-repeat)
 	(let ((v (car initial))
 	      (time-shift (or (cdr initial) 0)))
@@ -121,12 +145,13 @@
 	      (time-shift (or (cdr final) 0)))
 	  (put cball :final-value v)
 	  (put cball :final-value-time-shift (and v time-shift)))
+	(put cball :value-pattern (create-pattern cball pattern))
 	(reset cball)
 	cball))) )
 
 (setf (documentation 'make-cball 'function) +cball-docstring+)
 
-	
+
 (defmacro cball (name controller instruments start end &key
 		      section
 		      cuefn
@@ -160,7 +185,21 @@
        (defparameter ,name cball)
        cball)))
 		  
-  
+
+(defmethod cball-steps ((cball cball))
+  (let* ((cuefn (property cball :cue-function))
+	 (start-time (funcall cuefn cball (property cball :start-cue)))
+	 (end-time (funcall cuefn cball (property cball :end-cue)))
+	 (time-delta (float (- end-time start-time)))
+	 (interval (let* ((n (property cball :time-increment))
+			  (scale (if (numberp n)
+				     1.0
+				   (beat-duration cball))))
+		     (* scale (metric-expression n)))))
+	(if (minusp time-delta)
+	    0
+	  (truncate (/ time-delta interval)))))
+
 (defmethod transpose ((cball cball)(n t))
   cball)
 

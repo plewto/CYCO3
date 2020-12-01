@@ -14,6 +14,10 @@
 		:->list
   		:->string
   		:->symbol
+		:ramp
+		:pulse
+		:sawtooth
+		:triangle
 		:absolute-chords-p
 		:approximate
 		:articulation-map

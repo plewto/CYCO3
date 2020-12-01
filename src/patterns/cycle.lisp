@@ -63,7 +63,7 @@ cycle repeats."))
 	 (compare (value threshold high low)
 		  (if (< value threshold) low high)) )
 
-  (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0))
+  (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with sawtooth contour.  Note amp2 
 value may never be reached.
 amp1 - minimum amplitude.
@@ -74,7 +74,7 @@ amp2 - peak amplitude.
 Returns Pattern."
     (cycle :of (saw-curve amp1 amp2 cycles steps phase)))
   
-  (defun triangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0))
+  (defun triangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with triangle contour.
 amp1 - minimum amplitude.
 amp2 - peak amplitude.
@@ -85,7 +85,7 @@ Returns Pattern."
       (cycle :of (tri-curve amp1 amp2 cycles steps phase)))
 
 
-  (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5))
+  (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5) &allow-other-keys)
     "Creates numeric pulse pattern.
 amp1 - minimum amplitude.
 amp2 - maximum amplitude.

@@ -247,8 +247,10 @@
 	  prune
 	  prune-orchestra
 	  prune-project
+	  pulse
 	  push-event
 	  put
+	  ramp
 	  read-midi-bend
 	  read-midi-data
 	  read-midi-long
@@ -271,6 +273,7 @@
 	  rl
 	  root-p
 	  rotate
+	  sawtooth
 	  section-p
 	  section-order
 	  set-basic-program-map
@@ -304,6 +307,7 @@
 	  ticks-per-beat
 	  time-signature
 	  transpose
+	  triangle
 	  true
 	  tsubbeat-duration
 	  tsubbeats

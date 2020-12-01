@@ -22,7 +22,7 @@ once all previous values have been returned."))
     (setf (slot-value q 'value) val)
     val))
 
-(defun ramp (start end &key (steps 16))
+(defun ramp (start end &key (steps 16) &allow-other-keys)
   "Creates linear ramp pattern from numeric range.
 start - initial value.
 end - final value.

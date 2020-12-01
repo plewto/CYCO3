@@ -22,21 +22,38 @@ end         - End time, must be in a format accepted by cuefn.
 :beats      - Defaults to parent section value.
 :subbeats   - Defaults to parent section value.
 :increment  - Metric-expression, default 's
-:pattern    - Value pattern, defaults to nil
+:pattern    - Value pattern or pattern specification, see below, default nil.
 :initial    - cons (value shift), default nil
 :final      - cons (value shift), default nil
 :remarks    - Optional remarks text
 :render-once     - Boolean, if true do not repeat, default false.
 :reset-on-repeat - Boolean, if true reset pattern on repeat, default t.
 
-The pattern argument specifies the controller values to be generated and must 
-either be nil or a PATTERN which produces numbers only.   All data values
-are 'normalized'  0.0 <= value <= 1.0  for controller and pressure and
--1.0 <= value <= +1.0 for bend.  Out of range values are clipped.  
+;; The pattern argument specifies the controller values to be generated and must 
+;; either be nil or a PATTERN which produces numbers only.   All data values
+;; are 'normalized'  0.0 <= value <= 1.0  for controller and pressure and
+;; -1.0 <= value <= +1.0 for bend.  Out of range values are clipped.  
 
-The RAMP, SAWTOOTH, TRIANGLE and PULSE patterns are particularly useful.
+The pattern argument specifies the controller values to be generated and may 
+be one of the following:
 
-If pattern is nil then no events are generated.
+   1) nil (the default), do not generate events, does not apply to initial 
+      and final arguments.
+
+   2) A pattern object.  The pattern must only produce numeric values.
+      All values are normalized 0.0 <= value <= 1.0 for controller and
+      pressure, -1.0 <= value <= +1.0 for bend.  Out of bounds values
+      are clipped.
+
+   3) A pattern specification list of form 
+
+      (type args...)
+
+      Where type is one of :RAMP  :SAWTOOTH  :TRIANGLE  or :PULSE.
+
+      With remaining arguments required by the ramp, sawtooth, triangle
+      and pulse functions respectively.   The steps value is automatically
+      determined.
 
 The initial and final arguments specify single events to be generated
 prior to the start time and after the end time, respectively.  Both

@@ -51,7 +51,6 @@
     (if (muted-p cball)(return-from render-once nil))
     (if (property cball :reset-on-repeat)(reset cball))
     (let* ((midi-events '())
-	   
 	   (cuefn (property cball :cue-function))
 	   (start-time (funcall cuefn cball (property cball :start-cue)))
 	   (current-time start-time)
@@ -65,6 +64,7 @@
 	   (channel-index-list (get-channel-index-list cball))
 	   (pattern (property cball :value-pattern))
 	   (controller (property cball :controller))
+	   (trim-count (property cball :trim))
 	   (data-map-function (mapping-function cball)))
       (if pattern
 	  (while (<= current-time end-time)
@@ -74,9 +74,8 @@
 	      (dolist (ci channel-index-list)
 		(push (cons time (create-message controller ci data)) midi-events))
 	      (setf current-time (+ current-time time-interval)))))
-      (setf midi-events
-	    (append midi-events
-		    (render-single-events cball start-time end-time)))
+      (setf midi-events (append (elide midi-events :start (or trim-count 0))
+				(render-single-events cball start-time end-time)))
       (sort-midi-events midi-events))) )
 
 

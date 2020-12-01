@@ -99,6 +99,7 @@
 	  dynamic-map!
 	  dynamic-name
 	  dynamic-p
+	  elide
 	  exit
 	  false
 	  fill-list

@@ -13,6 +13,7 @@
 		    :time-interval
 		    :value-pattern
 		    :reset-on-repeat
+		    :trim
 		    :initial-value
 		    :initial-value-time-shift
 		    :final-value
@@ -105,6 +106,7 @@
 			  render-once
 			  interval
 			  pattern
+			  trim
 			  reset-on-repeat
 			  remarks
 			  initial
@@ -130,6 +132,7 @@
 	(put cball :render-once render-once)
 	(put cball :transposable nil)
 	(put cball :reversible nil)
+	(put cball :trim trim)
 	(put cball :muted nil)
 	(put cball :instruments instrument-list)
 	(put cball :start-cue start)
@@ -160,6 +163,7 @@
 		      render-once
 		      interval
 		      pattern
+		      trim
 		      reset-on-repeat
 		      remarks
 		      initial
@@ -178,6 +182,7 @@
 			      :render-once ,render-once
 			      :interval ,interval
 			      :pattern ,pattern
+			      :trim ,trim
 			      :reset-on-repeat ,reset-on-repeat
 			      :initial ,initial
 			      :final ,final
@@ -237,6 +242,7 @@
 			    :interval (property source :time-interval)
 			    :pattern (property source :pattern)
 			    :reset-on-repeat (property source :reset-on-repeat)
+			    :trim (property source :trim)
 			    :initial initial
 			    :final final
 			    :remarks (property source :remarks))))

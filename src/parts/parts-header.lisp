@@ -14,6 +14,7 @@
 		:->list
   		:->string
   		:->symbol
+		:elide
 		:ramp
 		:pulse
 		:sawtooth

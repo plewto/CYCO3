@@ -23,6 +23,7 @@ end         - End time, must be in a format accepted by cuefn.
 :subbeats   - Defaults to parent section value.
 :interval   - Metric-expression, default 's
 :pattern    - Value pattern or pattern specification, see below, default nil.
+:trim       - Integer, number of events to remove from end of pattern, default 0.
 :initial    - cons (value shift), default nil
 :final      - cons (value shift), default nil
 :remarks    - Optional remarks text
@@ -57,7 +58,8 @@ be one of the following:
 
 The initial and final arguments specify single events to be generated
 prior to the start time and after the end time, respectively.  Both
-must either be a cons (value shift) or nil.
+must either be a cons (value shift) or nil.  shift value maybe 
+absolute in seconds or a metric-expression.
 
 :initial (cons value shift) generates an event of the given value
 shift-seconds before the start time.

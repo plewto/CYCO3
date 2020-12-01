@@ -119,13 +119,26 @@ If n > 0, rotate right."
     htab))
 
 
+(defun elide (list method &optional (count 1))
+  "Removes count values from either end of list and returns.
+method may be one of
+   nil    - return list without modification
+   :start - removes first count items.
+   :end   - removes final count items.
+   :both  - removes count items from both ends."
+  (cond ((or (null method)(eq method :NONE))
+	 list)
+	((eq method :start)
+	 (nthcdr count list))
+	((eq method :end)
+	 (reverse (nthcdr count (reverse list))))
+	((eq method :both)
+	 (nthcdr count (reverse (nthcdr count (reverse list)))))
+	(t list)))
+
 (defmethod palindrome ((lst list) &key (elide nil))
   (let ((rev (reverse lst)))
-    (setf rev (cond ((eq elide :last)(butlast lst))
-		    ((eq elide :first)(cdr lst))
-		    ((eq elide :both)(cdr (butlast lst)))
-		    (t rev)))
-    (append lst rev)))
+    (append lst (elide rev elide))))
 
 (defmethod palindrome ((v vector) &key (elide nil))
   (->vector (palindrome (->list v) :elide elide)))

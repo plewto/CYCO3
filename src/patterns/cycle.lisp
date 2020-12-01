@@ -61,7 +61,9 @@ cycle repeats."))
 		      (flatten (copies cycles (rotate (append curve-1 curve-2) phase)))))
 	 
 	 (compare (value threshold high low)
-		  (if (< value threshold) low high)) )
+		  (if (< value threshold) low high))
+
+	 )
 
   (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with sawtooth contour.  Note amp2 

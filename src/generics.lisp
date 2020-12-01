@@ -595,8 +595,8 @@ All negative key numbers have octave -1."))
    "Creates palindrome from source sequence.
 The :elide argument determine how end-values are treated.
 (palindrome '(A B C D))  --> (A B C D D C B A)
-(palindrome '(A B C D) :elide :last)  --> (A B C D C B A)
-(palindrome '(A B C D) :elide :first) --> (A B C D D C B)
+(palindrome '(A B C D) :elide :start)  --> (A B C D C B A)
+(palindrome '(A B C D) :elide :end) --> (A B C D D C B)
 (palindrome '(A B C D) :elide :both)  --> (A B C D C B)"))
 
 (defmethod palindrome (object &key elide)

@@ -14,13 +14,14 @@
     :initform '()
     :initarg :events)))
 	    
-(defmethod clone ((track smf-track) &key (new-name "~A") new-parent)
+(defmethod clone ((mother smf-track) &key (new-name "~A") new-parent)
   (dismiss new-parent)
-  (let ((new-track (make-instance 'smf-track
-				  :name (sformat new-name (name track)))))
-    (setf (slot-value new-track 'events)
-	  (clone (slot-value track 'events)))
-    new-track))
+  (let ((daughter (make-instance
+		   'smf-track
+		   :name (sformat new-name (name mother)))))
+    (setf (slot-value daughter 'events)
+	  (clone (slot-value mother 'events)))
+    daughter))
 
 (defmethod push-event ((time number)(message midi-message)(track smf-track))
   (push (cons (float time) message)

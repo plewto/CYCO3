@@ -112,11 +112,9 @@ within in the section.
       group)) )
 
 
-;;; Group clone is handled by Section clone.
-;;;
-;; (defmethod clone ((grp group) &key new-name new-parent)
-;;   (dismiss grp new-name new-parent)
-;;   grp)
-
-
-
+(defmethod clone ((mother group) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (cyco-error
+   "Cloning of groups not supported."
+   (sformat "Can not clone group ~A" (name mother)))
+  mother)

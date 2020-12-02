@@ -188,29 +188,11 @@ a symbol named name."
 ;; NOTE 1: current-section property is not preserved.
 ;; NOTE 2: global *project* is not altered.
 ;;
-(defmethod clone ((source-project project) &key new-name new-parent)
-  (dismiss new-parent)
-  (let* ((frmt (or new-name "~A"))
-	 (cloned-project (make-project (->symbol (sformat frmt (name source-project)))
-			    :title (property source-project :title)
-			    :catalog-number (property source-project :catalog-number)
-			    :project-directory (property source-project :project-directory)
-			    :main-file (property source-project :main-file)
-			    :output-directory (property source-project :output-directory)
-			    :cuefn (property source-project :cue-function)
-			    :tempo (property source-project :tempo)
-			    :unit (property source-project :unit)
-			    :bars (property source-project :bars)
-			    :beats (property source-project :beats)
-			    :subbeats (property source-project :subbeats)
-			    :remarks (remarks source-project)
-			    :make-current nil)))
-    (init-time-signature cloned-project)
-    (put cloned-project :chord-model (property source-project :chord-model))
-    (dolist (c (children source-project))
-      (clone c :new-name "~A" :new-parent cloned-project))
-    (put cloned-project :section-order (clone (property source-project :section-order)))
-    cloned-project))
+(defmethod clone ((mother project) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (cyco-error "Cloning of project not supported."
+	      (sformat "Can not clone project ~A" (name mother)))
+  mother)
 
 (defun prune-project (section-name &key (project *project*))
   "prune-project removes named section from project."

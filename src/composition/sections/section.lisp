@@ -171,38 +171,12 @@ same name.
 	(format t "~A " (name part)))
       (format t "~%"))))
 
-(labels ((clone-groups (source-section destination-section)
-		       (dolist (group (property source-section :groups))
-			 (clone-group destination-section group)))
-
-	 ;; ISSUE: member copy will not work if names differ
-	 ;;        between source and destination 
-	 ;;
-	 (clone-group (destination-group group)
-	  (let* ((member-names (let ((acc '()))
-				 (dolist (part (group-members group))
-				   (push (name part) acc))
-				 (reverse acc)))
-		 (new-group (make-group (name group)
-					:member-names member-names
-					:section destination-group)))
-	    (setf (mute-state new-group)(mute-state group)))))
-
-  (defmethod clone ((source-section section) &key new-name new-parent)
-    (let* ((name (->symbol (sformat (or new-name "~A") (name source-section))))
-	   (parent (or new-parent (parent source-section)))
-	   (new-section (make-section name
-				      :project parent
-				      :cuefn (property source-section :cue-function)
-				      :remarks (remarks source-section))))
-      (put new-section :chord-model (property source-section :chord-model))
-      (copy-time-signature source-section new-section)
-      (dolist (child (children source-section))
-	(let ((part (clone child :new-name "~A" :new-parent new-section)))
-	  (put part :muted (property child :muted))))
-      (clone-groups source-section new-section)
-      new-section)))
-
+(defmethod clone ((mother section) &key new-name new-parent)
+  (dismiss new-name new-parent)
+  (cyco-error (sformat "Section cloning not supported.")
+	      (sformat "Can not clone section ~A" (name mother)))
+  mother)
+	 
 (defmethod transpose ((section section)(n t))
   (if (property section :transposable)
       (dolist (part (children section))

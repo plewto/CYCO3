@@ -54,7 +54,7 @@
   (retrograde (final-value bag))
   bag)
 
-(defmethod clone ((bag bag) &key new-name new-parent)
+(defmethod clone ((mother bag) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (bag :of (clone (seed bag))
-       :final (clone (final-value bag))))
+  (bag :of (clone (seed mother))
+       :final (clone (final-value mother))))

@@ -38,16 +38,16 @@ division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
 	   (smf-division (smf-header midi-file))
 	   (length (smf-tracks midi-file))))
 
-(defmethod clone ((source-midi-file smf) &key new-name new-parent)
+(defmethod clone ((mother smf) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (let* ((frm (smf-format (smf-header source-midi-file)))
-	 (div (smf-division (smf-header source-midi-file)))
-	 (tracks (clone (smf-tracks source-midi-file)))
-	 (new-midi-file (smf :format frm
-		     :track-count (length tracks)
-		     :division div)))
-    (setf (slot-value new-midi-file 'tracks) tracks)
-    new-midi-file))
+  (let* ((frm (smf-format (smf-header mother)))
+	 (div (smf-division (smf-header mother)))
+	 (tracks (clone (smf-tracks mother)))
+	 (daughter (smf :format frm
+			:track-count (length tracks)
+			:division div)))
+    (setf (slot-value daughter 'tracks) tracks)
+    daughter))
 
 (defmethod smf-track-count ((midi-file smf))
   (length (smf-tracks midi-file)))

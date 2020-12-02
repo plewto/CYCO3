@@ -143,20 +143,19 @@ subbeats"))
   (put time-signature :subbeats value)
   (init-time-signature time-signature))
 
-(defmethod clone ((source time-signature) &key new-name new-parent)
-  (let ((new-time-signature (time-signature)))
-
-    (name! new-time-signature (if new-name
-				  (->symbol (sformat new-name (name source)))))
-    (dolist (p (local-properties source))
-      (put new-time-signature (car p)(cdr p)))
+(defmethod clone ((mother time-signature) &key new-name new-parent)
+  (let ((daughter (time-signature)))
+    (name! daughter (if new-name
+			(->symbol (sformat new-name (name mother)))))
+    (dolist (p (local-properties mother))
+      (put daughter (car p)(cdr p)))
     (if new-parent
-	(connect new-parent new-time-signature))
-    (dolist (c (children source))
+	(connect new-parent daughter))
+    (dolist (c (children mother))
       (let ((c2 (clone c :name new-name)))
-	(connect new-time-signature c2)))
-    (init-time-signature new-time-signature)
-    new-time-signature))
+	(connect daughter c2)))
+    (init-time-signature daughter)
+    daughter))
 	 
 (defmethod ->string ((time-signature time-signature))
   (let ((frmt "~A: ~A ~A BPM ~A bars ~A/~A subbeat=~A"))

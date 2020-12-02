@@ -43,12 +43,6 @@
        (setf *endpad* epad)
        epad)))
 
-(defmethod clone ((source endpad) &key new-name new-parent)
-  (dismiss new-name)
-  (make-endpad :project (or new-parent (parent source))
-	       :bars (bars source)
-	       :beats (beats source)))
-  
 (defmethod render-once ((endpad endpad) &key (offset 0.0))
   (let ((period (phrase-duration endpad)))
     (list

@@ -11,15 +11,15 @@
   invert
   retrograde)
   
-(defmethod clone ((source section-render-mode) &key new-name new-parent)
+(defmethod clone ((mother section-render-mode) &key new-name new-parent)
   (dismiss new-name new-parent)
   (make-section-render-mode
-   :section-name (section-render-mode-section-name source)
-   :shift (section-render-mode-shift source)
-   :count (section-render-mode-count source)
-   :retrograde (section-render-mode-retrograde source)
-   :transpose (section-render-mode-transpose source)
-   :invert (section-render-mode-invert source)))
+   :section-name (section-render-mode-section-name mother)
+   :shift (section-render-mode-shift mother)
+   :count (section-render-mode-count mother)
+   :retrograde (section-render-mode-retrograde mother)
+   :transpose (section-render-mode-transpose mother)
+   :invert (section-render-mode-invert mother)))
 
 
 (defmethod section-order  ((render-mode section-render-mode) &key (project *project*))

@@ -64,20 +64,6 @@
        (param preroll new-preroll)
        new-preroll)))
 
-
-(defmethod clone ((source preroll) &key new-name new-parent)
-  (let ((name (->symbol (sformat (or new-name "~A") (name source)))))
-    (make-preroll :name name
-		  :project (or new-parent (parent source))
-		  :tempo (property source :tempo)
-		  :unit (property source :unit)
-		  :bars (property source :bars)
-		  :beats (property source :beats)
-		  :subbeats (property source :subbeats)
-		  :instruments (property source :instruments))))
-
-
-
 (let* ((function-docstring
        "MAKE-PREROLL & PREROLL  Creates new preroll section.
 

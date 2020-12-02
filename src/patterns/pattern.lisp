@@ -48,11 +48,11 @@
 
 (defmethod pattern-p ((obj pattern)) obj)
 
-(defmethod clone ((p pattern) &key new-name new-parent)
+(defmethod clone ((mother pattern) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (let ((rs (make-instance (type-of p) :of (clone (elements p)))))
-    (reset rs)
-    rs))
+  (let ((daughter (make-instance (type-of mother) :of (clone (elements mother)))))
+    (reset daughter)
+    daughter))
 		  
 (defmethod reset ((p pattern))
   (dolist (e (elements p))

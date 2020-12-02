@@ -40,6 +40,6 @@
       (next-1 (nth (walker-current-position w)
 		   (elements w))))))
       
-(defmethod clone ((w walker) &key new-name new-parent)
+(defmethod clone ((mother walker) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (walker :of (clone (elements w))))
+  (walker :of (clone (elements mother))))

@@ -1,9 +1,9 @@
 ;;;; CYCO
 ;;;;
 
-(defmethod clone ((str string) &key new-name new-parent)
+(defmethod clone ((mother string) &key new-name new-parent)
   (dismiss new-name new-parent)
-  str)
+  mother)
 
 (defmethod final ((s string))
   (if (plusp (length s))

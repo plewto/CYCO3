@@ -85,9 +85,9 @@
 
 (defmethod midi-message-p ((message midi-message)) t)
 
-(defmethod clone ((message midi-message) &key new-name new-parent)
+(defmethod clone ((mother midi-message) &key new-name new-parent)
   (dismiss new-name new-parent)
-  message)
+  mother)
 
 (defmethod transpose ((message midi-message)(n integer)) message)
 

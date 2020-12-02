@@ -204,39 +204,39 @@ Other chord-models may ignore this value."))
   (:documentation
    "Returns list of chord types defined by chord-model."))
 
-(defgeneric clone (source &key new-name new-parent)
+(defgeneric clone (mother &key new-name new-parent)
   (:documentation
-   "Creates copy of source.
+   "Creates copy of mother.
 Clone is defined for all types. However, for types where a specific clone
-method has not been defined, it returns the source argument.
+method has not been defined, it returns the mother argument.
 
 
 :new-name   - Format string, inclusion of the format ~A directive inserts 
-              the source name into the result.  For object types which do not
+              the mother's name into the result.  For object types which do not
               have a name, new-name is ignored.
 
-:new-parent - By default the cloned object has the same parent as the source,
+:new-parent - By default the cloned object has the same parent as the mother,
               new-parent explicitly sets the parent of the result.  For objects
               which do not have a parent/child relationship, new-parent is 
               ignored."))
 
-(defmethod clone ((object t) &key new-name new-parent)
+(defmethod clone ((mother t) &key new-name new-parent)
   (dismiss new-name new-parent)
-  object)
+  mother)
 
-(defmethod clone ((src hash-table) &key new-name new-parent)
+(defmethod clone ((mother hash-table) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (let ((dst (make-hash-table :size (hash-table-count src))))
-    (maphash #'(lambda (k v)(setf (gethash k dst)(clone v))) src)
-    src))
+  (let ((dst (make-hash-table :size (hash-table-count mother))))
+    (maphash #'(lambda (k v)(setf (gethash k dst)(clone v))) mother)
+    mother))
 
-(defmethod clone ((c cons) &key new-name new-parent)
+(defmethod clone ((mother cons) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (cons (clone (car c))(clone (cdr c))))
+  (cons (clone (car mother))(clone (cdr mother))))
 
-(defmethod clone ((v vector) &key new-name new-parent)
+(defmethod clone ((mother vector) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (->vector (clone (->list v))))
+  (->vector (clone (->list mother))))
 
 (defgeneric cnth (n seq)
   (:documentation

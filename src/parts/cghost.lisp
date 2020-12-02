@@ -112,26 +112,11 @@ new part object to the symbol name."
   ghost)
 
 
-;; Cloning control-ghost is more subtle the for other parts.
-;;   The parent of a control-ghost is another part.
-;;   Cloneing the parent part automatically clones a new ghost.
-;;   This part however is not bound to any symbol
-;;
-;;      (section a)
-;;      (cball alpha ...)
-;;      (control-ghost alpha-ghost   alpha ...)
-;;
-;;
-;;       (section b)
-;;       (param b-alpha (clone alpha :new-parent b))
-;;
-;; 
-
 (defmethod clone ((mother control-ghost) &key new-name new-parent)
   (let* ((name-format (or new-name "~A"))
 	 (name (sformat name-format (name mother)))
 	 (parent (or new-parent (parent mother)))
-	 (ghost (make-control-ghost name parent
+	 (daughter (make-control-ghost name parent
 				    (property mother :source-controller)
 				    (property mother :source-channel)
 				    :out-controller (property mother :out-controller)
@@ -139,9 +124,7 @@ new part object to the symbol name."
 				    :delay (property mother :delay)
 				    :value-map (property mother :value-map)
 				    :remarks (property mother :remarks))))
-    ghost))
-	 
-
+    daughter))
 
 
 (defmethod render-once ((ghost control-ghost) &key (offset 0.0))

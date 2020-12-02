@@ -175,9 +175,9 @@ not."))
   (dolist (c (children node))
     (print-tree c (1+ depth))))
   
-(defmethod clone ((node cyco-node) &key new-name new-parent)
+(defmethod clone ((mother cyco-node) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (cyco-type-error 'clone '?cyco-node node))
+  (cyco-type-error 'clone '?cyco-node mother))
   
 (defmethod ->string ((n cyco-node))
   (sformat "~A name: ~A" (type-of n)(name n)))

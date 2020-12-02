@@ -123,20 +123,21 @@ subject to the Section cueing function."))
        (defparameter ,name new-raw-part)
        new-raw-part)))
 
-(defmethod clone ((source raw-part) &key new-name new-parent)
-  (let* ((name (->symbol (string-upcase (sformat (or new-name "CLONE-OF-~A")
-						 (name source)))))
-	 (parent (or new-parent (parent source)))
-	 (new-raw-part (make-raw-part name
+(defmethod clone ((mother raw-part) &key new-name new-parent)
+  (let* ((frmt (or new-name "~A"))
+	 (name (->symbol (sformat frmt (name mother))))
+	 (parent (or new-parent (parent mother)))
+	 (daughter (make-raw-part name
 			     :events '()
-			     :bars (bars source)
-			     :beats (beats source)
-			     :transposable (property source :transposable)
+			     :bars (bars mother)
+			     :beats (beats mother)
+			     :transposable (property mother :transposable)
 			     :section parent
-			     :remarks (remarks source))))
-    (copy-time-signature source new-raw-part)
-    (setf (event-list new-raw-part) (clone (event-list source)))
-    new-raw-part))
+			     :remarks (remarks mother))))
+    (copy-time-signature mother daughter)
+    (setf (event-list daughter) (clone (event-list mother)))
+    daughter))
+
 
 (defmethod render-once ((raw-part raw-part) &key (offset 0.0))
   (let ((midi-events '()))

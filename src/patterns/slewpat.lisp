@@ -68,7 +68,7 @@ embedded pattern.
   (retrograde (slot-value s 'client))
   s)
 	      
-(defmethod clone ((s slew) &key new-name new-parent)
+(defmethod clone ((mother slew) &key new-name new-parent)
   (dismiss new-name new-parent)
-  (slew (clone (slot-value s 'client))(slot-value s 'delay)))
+  (slew (clone (slot-value mother 'client))(slot-value mother 'delay)))
 

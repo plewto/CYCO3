@@ -105,11 +105,11 @@ See ->list"))
 
 (defgeneric articulation-map (object)
   (:documentation
-   "Returns objects's articulation-map."))
+   "Returns object's articulation-map."))
 
 (defgeneric articulation-map! (object mapfn)
   (:documentation
-   "Sets objects's articulation-map"))
+   "Sets object's articulation-map"))
 
 (def-type-predicate bag-p
    "Predicate, true if argument is an instance of Bag pattern.")
@@ -412,9 +412,9 @@ Properties defined by an object's parent are not considered local."))
 
 (defgeneric markov-add-link (source destination weight)
   (:documentation
-   "Adds potentail destinations for a Markov-link.
+   "Adds potential destinations for a Markov-link.
 source - the markov-link
-destination - potentail next value.  The destination may be of any type
+destination - potential next value.  The destination may be of any type
 but is coerced to a markov-link.
 weight - The number of times destination is added to sources' links list."))
 
@@ -453,7 +453,7 @@ exp is a valid metric-expression, the result is its float value."))
 (def-type-predicate midi-channel-pressure-p
    "Predicate, true if object is a MIDI channel pressure message.")
 
-(def-type-predicate midi-control-chnage-p
+(def-type-predicate midi-control-change-p
    "Predicate, true if object is a MIDI control change message.")
 
 (def-type-predicate midi-end-of-track-p
@@ -643,7 +643,7 @@ have a pitch class of -1."))
 
 (defgeneric print-tree (node &optional depth)
   (:documentation
-   "Print hierarchal tree starting at node.  
+   "Print hierarchical tree starting at node.  
 The depth argument is used internally."))
 
 (defgeneric priority (object)
@@ -790,7 +790,7 @@ Generally any negative number, and the symbol 'r are treated as rest."))
 (defgeneric retrograde (object)
   (:documentation
    "Reverse object's elements. 
-If the object has the :RESERVABLE property with a value of nil, do not 
+If the object has the :REVERSIBLE property with a value of nil, do not 
 apply.   Retrograde may be called with any object without producing an
 error."))
 
@@ -803,7 +803,7 @@ error."))
 
 (def-type-predicate section-p
    "Predicate, true if object is an instance of Section or one of it's
-subclasses.")
+sub-classes.")
 
 (defgeneric section-order (sections &key project)
   (:documentation
@@ -910,7 +910,7 @@ amount - integer, transposition amount."))
 
 (defgeneric unmute (object)
   (:documentation
-   "Convenance method, same as (mute object :unmute)"))
+   "Convenience method, same as (mute object :unmute)"))
 
 (defgeneric unmute-all (object)
   (:documentation
@@ -926,4 +926,9 @@ amount - integer, transposition amount."))
   (:documentation
    "Write MIDI file object to disc."))
 
+(defgeneric wrap (table &key out-of-bounds-value)
+  (:documentation
+   "Wraps table into function (lambda (index))
+Function returns indexed value from table.
+If index is out of bounds, returns out-of-bounds-value"))
 

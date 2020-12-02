@@ -137,7 +137,6 @@
 (src-load "qball-midi-render")
 (src-load "metronome")
 (src-load "programs")
-(src-load "ghost")
 (src-load "cghost")
 (src-load "simple-docs")
 (src-load "simple-state")
@@ -158,12 +157,9 @@
 	  cball-p
 	  control-ghost
 	  control-ghost-p
-	  ghost
-	  ghost-p
 	  make-cball
 	  make-control-ghost
 	  make-controllers
-	  make-ghost
 	  make-metronome
 	  make-programs
 	  make-qball
@@ -184,13 +180,10 @@
 (import '(cyco-part:*strummer-render-trace*
 	  cyco-part:control-ghost
 	  cyco-part:control-ghost-p
-	  cyco-part:ghost
-	  cyco-part:ghost-p
 	  cyco-part:make-cball
 	  cyco-part:cball
 	  cyco-part:cball-p
 	  cyco-part:make-control-ghost
-	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs
 	  cyco-part:make-qball

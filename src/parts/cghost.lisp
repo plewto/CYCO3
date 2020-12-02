@@ -58,7 +58,7 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 			      :name name
 			      :remarks (->string (or remarks ""))
 			      :transient t)))
-    (connect (parent source-part) ghost)
+    (connect source-part ghost)
     (copy-time-signature source-part ghost)
     (put ghost :source-part source-part)
     (put ghost :source-controller source-controller)
@@ -111,15 +111,27 @@ new part object to the symbol name."
   (reset (property ghost :source-part))
   ghost)
 
+
+;; Cloning control-ghost is more subtle the for other parts.
+;;   The parent of a control-ghost is another part.
+;;   Cloneing the parent part automatically clones a new ghost.
+;;   This part however is not bound to any symbol
+;;
+;;      (section a)
+;;      (cball alpha ...)
+;;      (control-ghost alpha-ghost   alpha ...)
+;;
+;;
+;;       (section b)
+;;       (param b-alpha (clone alpha :new-parent b))
+;;
+;; 
+
 (defmethod clone ((mother control-ghost) &key new-name new-parent)
   (let* ((name-format (or new-name "~A"))
-	 (name (->symbol (sformat name-format (name mother))))
+	 (name (sformat name-format (name mother)))
 	 (parent (or new-parent (parent mother)))
-	 (source-part (clone (property mother :source-part)
-			     :new-name name-format
-			     :new-parent parent))
-
-	 (ghost (make-control-ghost name source-part
+	 (ghost (make-control-ghost name parent
 				    (property mother :source-controller)
 				    (property mother :source-channel)
 				    :out-controller (property mother :out-controller)
@@ -127,8 +139,9 @@ new part object to the symbol name."
 				    :delay (property mother :delay)
 				    :value-map (property mother :value-map)
 				    :remarks (property mother :remarks))))
-    (copy-time-signature mother ghost)
     ghost))
+	 
+
 
 
 (defmethod render-once ((ghost control-ghost) &key (offset 0.0))

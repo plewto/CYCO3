@@ -17,7 +17,9 @@
 		    :initial-value
 		    :initial-value-time-shift
 		    :final-value
-		    :final-value-time-shift)))
+		    :final-value-time-shift
+		    
+		    )))
 		    
 
 (defclass cball (part) nil)
@@ -220,6 +222,7 @@
 
 (defmethod clone ((source cball) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
+	 (name (->symbol (sformat frmt (name source))))
 	 (parent (or new-parent (parent source)))
 	 (initial-value (property source :initial-value))
 	 (initial-time-shift (property source :initial-value-time-shift))
@@ -227,7 +230,7 @@
 	 (final-value (property source :final-value))
 	 (final-time-shift (property source :final-value-time-shift))
 	 (final (if final-value (cons final-value final-time-shift)))
-	 (other (make-cball (->symbol frmt (name source))
+	 (other (make-cball name
 			    (property source :controller)
 			    (property source :instruments)
 			    (property source :start-cue)
@@ -237,7 +240,7 @@
 			    :shift (property source :shift)
 			    :render-once (property source :render-once)
 			    :interval (property source :time-interval)
-			    :pattern (property source :pattern)
+			    :pattern (property source :value-pattern)
 			    :reset-on-repeat (property source :reset-on-repeat)
 			    :trim (property source :trim)
 			    :initial initial
@@ -247,7 +250,6 @@
     (dolist (sub-part (children source))
       (clone sub-part :new-name frmt :new-parent other))
     other)) 
-    
 
 (setf (documentation 'cball 'function)
       (sformat "The CBALL macro is a thin wrapper of the MAKE-CBALL

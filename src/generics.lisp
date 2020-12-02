@@ -214,6 +214,7 @@ method has not been defined, it returns the source argument.
 :new-name   - Format string, inclusion of the format ~A directive inserts 
               the source name into the result.  For object types which do not
               have a name, new-name is ignored.
+
 :new-parent - By default the cloned object has the same parent as the source,
               new-parent explicitly sets the parent of the result.  For objects
               which do not have a parent/child relationship, new-parent is 

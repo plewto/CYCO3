@@ -43,7 +43,7 @@ cycle repeats."))
 			  (tail (subseq curve 0 index)))
 		     (append head tail))))
 	 
-	 (saw-curve (amp1 amp2 cycles steps phase trim)
+	 (saw-curve (amp1 amp2 cycles steps phase)
 		    (let* ((delta (float (abs (- amp2 amp1))))
 			   (increment (* cycles (/ delta (1- steps))))
 			   (value (min amp1 amp2))
@@ -51,10 +51,7 @@ cycle repeats."))
 		      (while (<= value (max amp1 amp2))
 			(push value acc)
 			(setf value (+ value increment)))
-		      (let ((curve (flatten (copies cycles (rotate (reverse acc) phase)))))
-			(if (numberp trim)
-			    (elide curve :end trim)
-			  curve))))
+		      (flatten (copies cycles (rotate (reverse acc) phase)))))
 		     
 	 (tri-curve (amp1 amp2 cycles steps phase)
 		    (let* ((delta (float (abs (- amp2 amp1))))
@@ -66,7 +63,7 @@ cycle repeats."))
 	 (compare (value threshold high low)
 		  (if (< value threshold) low high)))
 
-  (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(trim nil) &allow-other-keys)
+  (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with sawtooth contour.  Note amp2 
 value may never be reached.
 amp1 - minimum amplitude.
@@ -74,9 +71,8 @@ amp2 - peak amplitude.
 :cycles - number of sawtooth cycles, default 1 
 :steps  - number of steps, default 16.
 :phase  - phase shift in degrees, default 0.
-:trim   - number of values to remove from end, default 0.
 Returns Pattern."
-    (cycle :of (saw-curve amp1 amp2 cycles steps phase trim)))
+    (cycle :of (saw-curve amp1 amp2 cycles steps phase)))
   
   (defun triangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with triangle contour.
@@ -89,7 +85,7 @@ Returns Pattern."
       (cycle :of (tri-curve amp1 amp2 cycles steps phase)))
 
 
-  (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5)(trim nil) &allow-other-keys)
+  (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5) &allow-other-keys)
     "Creates numeric pulse pattern.
 amp1 - minimum amplitude.
 amp2 - maximum amplitude.
@@ -97,8 +93,7 @@ amp2 - maximum amplitude.
 :steps  - number of steps, default 16
 :phase  - phase shift in degrees, default 0.
 :width  - pulse width, 0 < width < 1, default 0.5
-:trim   - number of values to remove from end, default 0.
 Returns pulse Pattern."
-    (let* ((saw (saw-curve 0.0 1.0 cycles steps phase trim))
+    (let* ((saw (saw-curve 0.0 1.0 cycles steps phase))
 	   (pulse (mapcar #'(lambda (v)(compare v width amp2 amp1)) saw)))
       (cycle :of pulse))))

@@ -3,8 +3,6 @@
 ;;;; Defines generic functions for wrapping list and vectors as functions
 
 
-(defgeneric wrap (backing-item &key out-of-bounds-value))
-
 (defmethod wrap ((table list) &key out-of-bounds-value)
   (let ((limit (length table)))
     #'(lambda (n)
@@ -19,5 +17,3 @@
 	       out-of-bounds-value)
 	      (t (aref table n))))))
 	
-
-

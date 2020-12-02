@@ -218,9 +218,6 @@
   (reset (property cball :value-pattern))
   cball)
 
-(defmethod reset ((cball cball))
-  cball)
-
 (defmethod clone ((source cball) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (parent (or new-parent (parent source)))

@@ -49,6 +49,7 @@
 		:metric-expression-p
 		:midi-channel-pressure
 		:midi-control-change
+		:midi-control-change-p
 		:midi-note-off
 		:midi-note-off-p
 		:midi-note-on
@@ -110,7 +111,8 @@
   		:sort-midi-events
   		:time-signature
   		:unmute
-		:while))
+		:while
+		:wrap))
 
 (in-package :cyco-part)
 
@@ -136,6 +138,7 @@
 (src-load "metronome")
 (src-load "programs")
 (src-load "ghost")
+(src-load "cghost")
 (src-load "simple-docs")
 (src-load "simple-state")
 (src-load "simple-part")
@@ -149,12 +152,16 @@
 (src-load "cball-midi-render")
 
 
+
 (export '(*strummer-render-trace*
 	  cball
 	  cball-p
+	  control-ghost
+	  control-ghost-p
 	  ghost
 	  ghost-p
 	  make-cball
+	  make-control-ghost
 	  make-controllers
 	  make-ghost
 	  make-metronome
@@ -175,11 +182,14 @@
 	  strummer-p) :cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
+	  cyco-part:control-ghost
+	  cyco-part:control-ghost-p
 	  cyco-part:ghost
 	  cyco-part:ghost-p
 	  cyco-part:make-cball
 	  cyco-part:cball
 	  cyco-part:cball-p
+	  cyco-part:make-control-ghost
 	  cyco-part:make-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs

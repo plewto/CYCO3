@@ -16,26 +16,13 @@
 		    :track-channel
 		    :output-channel)))
 
-(defclass ghost (Part) nil
+(defclass ghost (part) nil
   (:documentation
    "A GHOST is a PART which tracks the note events of another part.
 The ghosted notes may be re-channelized, delayed, transposed, inverted,
 velocity scaled and key-mapped.
 
-A potential source of confusion is the time-signature of the Ghost.  The
-ghost may only be a child of a section, and thus inherits the
-time-signature of the section and not that of the ghosted part.  Delay
-times are specified in terms of the section time-signature. 
-
-The tracked part may have a different time-signature, specifically it may
-have a lower bar count.  When the ghost part is rendered it uses the
-tracked parts duration, and -not- the section duration.  As a consequence
-the Ghost phrase-duration method returns the duration of the tracked part
-and -not- the normally expected value of the nominal time-signature.
-
 A Ghost may not have child nodes."))
-
-
 
 
 (let ((docstring
@@ -52,8 +39,9 @@ track      - Instrument or MIDI channel to track.
 :keytable  - A vector of length 128 which maps keynumbers.  A value of -1 
              produces a rest.  Defaults to +DEFAULT-KEYTABLE+
 :ampscale  - Amplitude scaling factor, default 1.0
-:outchan   - Ghosted note MIDI channel, defaults to the track channel.
-:remarks   - 
+:outchan   - Output channel or list of channels.
+             Defaults to the track channel.
+:remarks   - Optional remarks text.
 
 Key number manipulation function is the composition:
 
@@ -89,16 +77,9 @@ Key number manipulation function is the composition:
       (put new-ghost :ampscale (or ampscale 1.0))
       (put new-ghost :keytable (or keytable +default-keytable+))
       (put new-ghost :track-channel (channel track))
-      ;; (put new-ghost :output-channel (or (and outchan (channel outchan :resolve))
-      ;; 					 (channel track)))
-
-
       (put new-ghost :output-channel (if outchan
 					 (mapcar #'(lambda (c)(channel c :resolve))(->list outchan))
 				       (list (channel track))))
-      
-      
-      
       (put new-ghost :transposable nil)
       (put new-ghost :reversible nil)
       new-ghost)))
@@ -179,9 +160,7 @@ Key number manipulation function is the composition:
 	  (key-table (property ghost :keytable))
 	  (ampscale (property ghost :ampscale))
 	  (channel-index-track (1- (property ghost :track-channel)))
-	  ;;(channel-index-out (1- (property ghost :output-channel)))
-	  (channel-index-list (mapcar #'channel-index (property ghost :output-channel)))
-	  )
+	  (channel-index-list (mapcar #'channel-index (property ghost :output-channel))))
       (dolist (event (render-once (property ghost :source) :offset offset))
 	(let ((time (car event))
 	      (message (cdr event)))

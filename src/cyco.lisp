@@ -91,6 +91,7 @@
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
 		   "src/util/paths"
+		   "src/util/table-wrapper"
 		   "src/keynumbers"
 		   "src/keytables"
 		   "src/dynamics"
@@ -137,9 +138,6 @@
 		   "src/composition/group"
 		   "src/composition/sections/section"
 		   "src/parts/parts-header"
-		
-
-		   
 		   "src/composition/sections/preroll"
 		   ;;"src/composition/sections/endpad"
 		   "src/util/inspection"

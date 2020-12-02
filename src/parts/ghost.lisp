@@ -89,8 +89,16 @@ Key number manipulation function is the composition:
       (put new-ghost :ampscale (or ampscale 1.0))
       (put new-ghost :keytable (or keytable +default-keytable+))
       (put new-ghost :track-channel (channel track))
-      (put new-ghost :output-channel (or (and outchan (channel outchan :resolve))
-				     (channel track)))
+      ;; (put new-ghost :output-channel (or (and outchan (channel outchan :resolve))
+      ;; 					 (channel track)))
+
+
+      (put new-ghost :output-channel (if outchan
+					 (mapcar #'(lambda (c)(channel c :resolve))(->list outchan))
+				       (list (channel track))))
+      
+      
+      
       (put new-ghost :transposable nil)
       (put new-ghost :reversible nil)
       new-ghost)))
@@ -171,7 +179,9 @@ Key number manipulation function is the composition:
 	  (key-table (property ghost :keytable))
 	  (ampscale (property ghost :ampscale))
 	  (channel-index-track (1- (property ghost :track-channel)))
-	  (channel-index-out (1- (property ghost :output-channel))))
+	  ;;(channel-index-out (1- (property ghost :output-channel)))
+	  (channel-index-list (mapcar #'channel-index (property ghost :output-channel)))
+	  )
       (dolist (event (render-once (property ghost :source) :offset offset))
 	(let ((time (car event))
 	      (message (cdr event)))
@@ -179,11 +189,12 @@ Key number manipulation function is the composition:
 	      (let ((key-number (key-wrangle (data message 0) key-table transpose-amount inversion-pivot-key))
 		    (velocity (amp-wrangle (data message 1) ampscale)))
 		(if (not (rest-p key-number))
-		    (push (cons (+ time delay)
-				(if (midi-note-on-p message)
-				    (midi-note-on channel-index-out key-number velocity)
-				  (midi-note-off channel-index-out key-number velocity)))
-			  midi-events))))))
+		    (dolist (channel-index channel-index-list)
+		      (push (cons (+ time delay)
+				  (if (midi-note-on-p message)
+				      (midi-note-on channel-index key-number velocity)
+				    (midi-note-off channel-index key-number velocity)))
+			    midi-events)))))))
       (sort-midi-events midi-events))) )
 
 

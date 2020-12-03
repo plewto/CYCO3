@@ -1,9 +1,6 @@
-;;;; CYCO qball docs
+;;;; CYCO qball-docs
 ;;;;
-;;;; A QBall is a recombinative note generator.
-;;;; The user specifies instrument, time, key-number, duration and
-;;;; dynamic patterns.  These are recombined according to their
-;;;; individual pattern types to produce MIDI note events.
+;;;; Defines docstring for QBALL.
 ;;;;
 
 (in-package :cyco-part)

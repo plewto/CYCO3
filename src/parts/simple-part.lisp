@@ -239,7 +239,7 @@
 				     :remarks (property mother :remarks)
 				     :events '())))
     (copy-time-signature mother daughter)
-    (setf (simple-part-states mother)
+    (setf (simple-part-states daughter)
 	  (clone (simple-part-states mother)))
     daughter))
       

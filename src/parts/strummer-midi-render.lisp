@@ -196,8 +196,6 @@
 		  (progn 
 		    (format t "~A~%" state)
 		    (dump-events state-events)))))
-  	  (dolist (c (children strummer))
-  	    (setf midi-events (append midi-events (render-once c))))
   	  midi-events)))
 
   (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))

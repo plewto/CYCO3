@@ -48,8 +48,6 @@
 		    (dynamic (next (property qball :dynamic-pattern)))
 		    (instrument-list (->list (next (property qball :instruments)))) )
 		(setf midi-events (append midi-events (render-event qball time instrument-list keylist articulation dynamic)))))
-	    (dolist (sub-parts (reverse (children qball)))
-	      (setf midi-events (append midi-events (render-once sub-parts :offset offset))))
 	    (sort-midi-events midi-events))))))
 
 (defmethod render-n ((qball qball)(n integer) &key (offset 0.0))

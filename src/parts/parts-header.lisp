@@ -14,6 +14,7 @@
 		:->list
   		:->string
   		:->symbol
+		:disconnect
 		:elide
 		:ramp
 		:pulse
@@ -137,7 +138,6 @@
 (src-load "qball-midi-render")
 (src-load "metronome")
 (src-load "programs")
-(src-load "control-ghost")
 (src-load "simple-docs")
 (src-load "simple-state")
 (src-load "simple-part")
@@ -149,6 +149,8 @@
 (src-load "control-ball-docs")
 (src-load "control-ball")
 (src-load "control-ball-midi-render")
+(src-load "control-ghost")
+(src-load "key-ghost")
 
 
 
@@ -157,8 +159,11 @@
 	  control-ball-p
 	  control-ghost
 	  control-ghost-p
+	  key-ghost
+	  key-ghost-p
 	  make-control-ball
 	  make-control-ghost
+	  make-key-ghost
 	  make-controllers
 	  make-metronome
 	  make-programs
@@ -180,6 +185,9 @@
 (import '(cyco-part:*strummer-render-trace*
 	  cyco-part:control-ghost
 	  cyco-part:control-ghost-p
+	  cyco-part:key-ghost
+	  cyco-part:key-ghost-p
+	  cyco-part:make-key-ghost
 	  cyco-part:make-control-ball
 	  cyco-part:control-ball
 	  cyco-part:control-ball-p

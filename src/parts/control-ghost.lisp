@@ -58,7 +58,6 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 			      :transient t)))
     (connect source-part ghost)
     (copy-time-signature source-part ghost)
-    ;; (put ghost :source-part source-part)
     (put ghost :source-controller source-controller)
     (put ghost :source-channel (channel source-channel :resolve))
     (put ghost :out-controller (or out-controller 1))
@@ -74,7 +73,7 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
     (put ghost :out-channels (mapcar #'(lambda (obj)(channel obj :resolve))
 				     (if out-channels
 					 (->list out-channels)
-				       (->list source-channel))))
+				       (->list (property ghost :source-channel)))))
     (reset ghost)
     ghost))
 

@@ -106,7 +106,6 @@
 		   "src/patterns/wrapper"
 		   "src/patterns/walker"
 		   "src/patterns/markov"
-		   "src/patterns/merger"
 		   "src/patterns/instrument-layer"
 		   "src/node"
 		   "src/midi/midi-message"

@@ -1,4 +1,4 @@
-;;;; CYCO CGhost
+;;;; CYCO control-ghost
 ;;;;
 
 (in-package :cyco-part)

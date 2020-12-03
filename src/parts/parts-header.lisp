@@ -137,7 +137,7 @@
 (src-load "qball-midi-render")
 (src-load "metronome")
 (src-load "programs")
-(src-load "cghost")
+(src-load "control-ghost")
 (src-load "simple-docs")
 (src-load "simple-state")
 (src-load "simple-part")

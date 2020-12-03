@@ -128,7 +128,7 @@ new part object to the symbol name."
 
 
 (defmethod render-once ((ghost control-ghost) &key (offset 0.0))
-  (if (muted-p ghost)(return-from render-once nil))
+  (if (muted-p ghost)(return-from render-once '()))
   (let ((midi-events '())
 	(delay (let* ((n (property ghost :delay))
 		      (scale (if (numberp n)

@@ -109,25 +109,26 @@
 		    (setf acc (append acc (expand-chord on-time key chord-type inversion octave 
 							articulation dynamic chord-model instrument))))))
 	    acc)) )
-	 
+
   (defmethod render-once ((part simple-part) &key (offset 0))
-    (if (not (muted-p part))
-	(let* ((midi-events '())
-	       (chord-model (property part :chord-model))
-	       (instrument-list (property part :instruments)))
-	  (dolist (state (simple-part-states part))
-	    (let* ((state-time (+ offset (simple-state-time state))))
-	      (setf midi-events (append midi-events 
-					(render-bend-events state-time state instrument-list)))
-	      (setf midi-events (append midi-events 
-					(render-controller-events state-time state instrument-list)))
-	      (setf midi-events (append midi-events 
-					(render-program-events state-time state instrument-list)))
-	      (setf midi-events (append midi-events 
-					(render-pressure-events state-time state instrument-list)))
-	      (setf midi-events (append midi-events 
-					(render-note-events state-time state chord-model instrument-list)))))
-	  (sort-midi-events midi-events)))) )
+    (if (muted-p part)(return-from render-once '()))
+    (let* ((midi-events '())
+	   (chord-model (property part :chord-model))
+	   (instrument-list (property part :instruments)))
+      (dolist (state (simple-part-states part))
+	(let* ((state-time (+ offset (simple-state-time state))))
+	  (setf midi-events (append midi-events 
+				    (render-bend-events state-time state instrument-list)))
+	  (setf midi-events (append midi-events 
+				    (render-controller-events state-time state instrument-list)))
+	  (setf midi-events (append midi-events 
+				    (render-program-events state-time state instrument-list)))
+	  (setf midi-events (append midi-events 
+				    (render-pressure-events state-time state instrument-list)))
+	  (setf midi-events (append midi-events 
+				    (render-note-events state-time state chord-model instrument-list)))))
+      (sort-midi-events midi-events))) )
+
 
 (defmethod render-n ((part simple-part)(n integer) &key (offset 0.0))
   (let ((period (phrase-duration part))

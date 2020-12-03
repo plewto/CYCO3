@@ -48,7 +48,7 @@
 	      midi-events)) )
 
   (defmethod render-once ((control-ball control-ball) &key (offset 0.0))
-    (if (muted-p control-ball)(return-from render-once nil))
+    (if (muted-p control-ball)(return-from render-once '()))
     (if (property control-ball :reset-on-repeat)(reset control-ball))
     (let* ((midi-events '())
 	   (cuefn (property control-ball :cue-function))

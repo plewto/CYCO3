@@ -184,19 +184,20 @@
     (dolist (state (strummer-states strummer))
       (pattern-reset state)))
   
+
   (defmethod render-once ((strummer strummer) &key (offset 0))
-    (if (not (muted-p strummer))
-  	(let* ((midi-events '())
-  	       (instrument (property strummer :instruments)))
-	  (pattern-reset strummer)
-  	  (dolist  (state (strummer-states strummer))
-	    (let ((state-events (render-state strummer state instrument offset)))
-	      (setf midi-events (append midi-events state-events))
-	      (if *strummer-render-trace*
-		  (progn 
-		    (format t "~A~%" state)
-		    (dump-events state-events)))))
-  	  midi-events)))
+    (if (muted-p strummer)(return-from render-once '()))
+    (let* ((midi-events '())
+	   (instrument (property strummer :instruments)))
+      (pattern-reset strummer)
+      (dolist  (state (strummer-states strummer))
+	(let ((state-events (render-state strummer state instrument offset)))
+	  (setf midi-events (append midi-events state-events))
+	  (if *strummer-render-trace*
+	      (progn 
+		(format t "~A~%" state)
+		(dump-events state-events)))))
+      midi-events))
 
   (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))
     (let ((period (phrase-duration part))

@@ -140,12 +140,14 @@ subject to the Section cueing function."))
 
 
 (defmethod render-once ((raw-part raw-part) &key (offset 0.0))
+  (if (muted-p raw-part)(return-from render-once '()))
   (let ((midi-events '()))
-    (if (not (muted-p raw-part))
-	(progn 
-	  (dolist (event (event-list raw-part))
-	    (push (cons (+ offset (car event)) (cdr event)) midi-events))
-	  (sort-midi-events midi-events)))))
+    (dolist (event (event-list raw-part))
+      (push (cons (+ offset (car event)) (cdr event)) midi-events))
+    (sort-midi-events midi-events)))
+
+
+
 
 (defmethod render-n ((raw-part raw-part)(n integer) &key (offset 0.0))
   (let ((period (phrase-duration raw-part))

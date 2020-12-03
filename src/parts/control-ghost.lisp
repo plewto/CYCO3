@@ -120,7 +120,7 @@ new part object to the symbol name."
 				    :out-channels (property mother :out-channels)
 				    :delay (property mother :delay)
 				    :value-map (property mother :value-map)
-				    :remarks (reamrks mother))))
+				    :remarks (remarks mother))))
     daughter))
 
 

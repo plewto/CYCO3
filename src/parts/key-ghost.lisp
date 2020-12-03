@@ -13,7 +13,6 @@
 	    :velocity-map)))
 
 (defclass key-ghost (part) nil)
-
 (defgeneric key-ghost-p (object))
 (defmethod key-ghost-p ((object t)) nil)
 (defmethod key-ghost-p ((object key-ghost)) t)
@@ -135,3 +134,41 @@
 				   (midi-note-off ci key 64)))
 		      midi-events)))))
       (sort-midi-events midi-events))) )
+
+
+(constant +key-ghost-docstring+
+	  "A KEY-GHOST tracks NOTE events from another part.
+
+
+name           - Symbol, parts name.
+source-part    - Part, the part to be tracked.
+source-channel - MIDI channel designator.  Only events for the 
+                 designated channel are tracked.
+:out-channels  - MIDI channel designator or list of channels.
+                 Events are generated for each output channels.
+                 Defaults to source-channel.
+:delay         - Metric-expression.  Delay time for generated notes.
+                 Default 0.0
+:key-map       - Function, list or simple-vector.  Translates input
+                 keynumbers.  Notes are not generated if the map 
+                 returns -1.   List and vectors are wrapped into 
+                 a function and return -1 for out of bounds values.
+                 Default #'identity.
+:velocity-map  - Function, list or simple-vector.  Translates input
+                 velocities.  Notes are not generated if the map 
+                 returns -1.  Default #'identity.
+:render-once   - Bool, if true do not repeat after the first pass.
+                 Default nil.
+:remarks       - Optional remarks text.
+
+KEY-GHOST has the same time-signature as the source-part.")
+
+
+(setf (documentation 'make-key-ghost 'function) +key-ghost-docstring+)
+
+(setf (documentation 'key-ghost 'function)
+      "KEY-GHOST and MAKE-KEY-GHOST are identical except the form binds
+the new part to the symbol name, while the later does not.  The name
+argument should be a quoted symbol for MAKE-KEY-GHOST and unquoted 
+for KEY-GHOST.")
+

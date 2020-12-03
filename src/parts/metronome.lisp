@@ -1,6 +1,6 @@
 ;;;; CYCO3
 ;;;;
-;;;; Defines specialized psudo-part METRONOME
+;;;; Defines specialized pseudo-part METRONOME
 ;;;;
 
 (in-package :cyco-part)
@@ -80,3 +80,21 @@
 			
 	  
 			       
+
+(setf (documentation 'make-metronome 'function)
+      	  "Metronome is a specialized part for generating metric ticks.
+
+name        - Symbol
+:section    - Parent section, defaults to current section of 8PROJECT*.
+:cuefn      - Cuing function, defaults to parent value.
+:tempo      - Tempo in BPM, defaults to parent value.
+:unit       - Time signature beat unit, defaults to parent value.
+:bars       - Time signature bars per phrase, defaults to parent value.
+:beats      - Time signature beats per bar, defaults to parent value.
+:instrument - Instrument used to generate events, Defaults to *METRONOME*.")
+
+
+(setf (documentation 'metronome 'function)
+      "METRONOME and MAKE-METRONOME are identical except the later binds 
+the new part to the symbol name while the later does not.  The name argument
+to MAKE-METRONOME should be a quoted symbol and unquoted for METRONOME.")

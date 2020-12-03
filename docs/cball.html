@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>CBall Parts</title>
+      <title>Control-ball</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -19,156 +19,9 @@
   <img class="center" src="images/cball.png" alt="cball"/>
   <h1 class="banner">CBall</h1>
   <p class="body">
-    A <i>CBALL</i> part generates MIDI control-change, channel pressure and 
+    A <i>CONTROL-BALL</i> part generates MIDI control-change, channel pressure and 
     pitch-bend events.
   </p>
-  
-  <!-- MAKE-CBALL name controller instruments start end &key ... -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">MAKE-CBALL name controller instruments start end &key ...</b><br>
-  
-  <!-- CBALL name controller instruments start end &key ... -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">CBALL name controller instruments start end &key ...</b><br>
-  <pre class="description">
-    MAKE-CBALL and CBALL are identical except the later binds the new
-    object to the symbol name while the former does not.  The name argument 
-    should be a quoted symbol for MAKE-CBALL and unquoted for CBALL.
-    
-    name         - Part name
-    controller   - MIDI controller number or the keywords :PRESSURE or :BEND
-    instruments  - Instrument or list of instruments.
-    start        - Start time specification, must be in format accepted by cue function. 
-    end          - End time specification, must be in format accepted by cue function.
-    :section     - Parent section, defaults to current section of *PROJECT*  
-    :cuefn       - time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
-    :shift       - time shift in seconds, default 0.0
-    :tempo       - tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :unit        - time unit, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :bars        - bars per phrase, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :beats       - beats per bar, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :subbeats    - sub beats per beat, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :render-once - Boolean, if true generate events only on first repetition, default nil.
-    :increment   - <a href='metrics.html#metric-expression'>metric-expression</a> interval between events, defaults to 's
-    :pattern     - Value <a href='patterns.html'>pattern</a>, default nil
-    :initial     - cons (value shift), specify single event before start time, default nil.
-    :final       - cons (value shift), specify single event after stop time, default nil. 
-    :remarks     - Optional remarks text.
-    :reset-on-repeat - If true, MIDI events are generated only on the first repetition of the part.
-  </pre>
-  <p class="body">
-    The :PATTERN must only produce numeric values.
-  </p>
-  <pre class="code">
-      0.0 &lt;&equals; value &lt;&equals; +1.0  for controllers and pressure.
-     -1.0 &lt;&equals; value &lt;&equals; +1.0  for bend.
-    
-    Out of bounds values are clipped.
-  </pre>
-  <p class="body">
-    The 
-    <a href='patterns.html#ramp'>RAMP</a> 
-    <a href='patterns.html#sawtooth'>SAWTOOTH</a> 
-    <a href='patterns.html#triangle'>TRIANGLE</a> and
-    <a href='patterns.html#pulse'>PULSE</a> patterns are particularly useful 
-    as CBALL patterns.   If :PATTERN is nil then no events are generated.  This does not
-    apply to the :INITIAL and :FINAL arguments.
-  </p>
-  <p class="body">
-    The :INITIAL and :FINAL arguments, if not nil, specify a single event to be produced
-    before the start-time or after the end-time respectively.  The events are specified as a cons
-    <span style='white-space: nowrap;'><b>(value shift)</b></span> where value is the normalized controller
-    value and shift is a time shift in seconds.  For :INITIAL, shift is the time before the start-time.
-    for :FINAL, shift is the time after the end-time.
-  </p>
-  <p class="body">
-    It is possible to create a single controller event by specifying an initial 
-    event only and leaving pattern and final as nil.
-  </p>
-  <H2 class="heading">Examples</H2>
-  <p class="body">
-    Generate mod-wheel ramp
-  </p>
-  <pre class="code">
-    
-    1:   (cball name 1 piano '(1 1 1) '(2 1 1)
-    2:         :pattern (ramp 0.0 1.0 :steps 16)
-    3:         :interval 's
-    4:         :final (cons 1.0 0.1))
-    
-    line 1, Creates cball object and binds it to symbol name.
-            Generate MIDI controller 1 (mod wheel) events for piano instrument.
-            Events start at time (1 1 1) and end at time (2 1 1).
-    
-    line 2, Specifies a 16-step linear ramp pattern between initial value 0.0 to 1.0.
-            These correspond to MIDI data values 0 and 127 respectively. 
-            Note that for a ramp pattern the final value is never reached. 
-            In this case the final value is 15/16 (MIDI ~119).
-    
-    line 3. An event is generated every sixteenth note.
-    
-    line 4. To compensate for the ramp pattern not reaching the final value
-            of 1.0, the :FINAL argument generates a single event 0.1 seconds
-            after the end-time.   (cons value time-offset)
-  </pre>
-  <p class="footnote">
-    The above example illustrates at least two places where CBALL could be improved.<br><br>
-    
-    1. On lines 2 and 3 the pattern steps value of 16 and the interval 's were carefully
-    chosen so that the pattern produced the same number of values as there are events.
-    It would be nice if these two values were automatically set.<br><br>
-    
-    2. On line 4 the time-shift value of 0.1 is in seconds and has no relationship 
-    to the tempo.  This value should be changed to a metric-expression.
-  </p>
-  <pre class="code">
-    ------------------------------------------------------
-  </pre>
-  <p class="body">
-    Generate pitch bend for two instruments
-  </p>
-  <pre class="code">
-    
-    1:   (cball name :bend (list piano organ) '(1 1 1) '(2 1 1)
-    2:         :pattern (ramp -1.0 0.0 :steps 16)
-    3:         :interval 's
-    4:         :final (cons 0.0 0.1))
-    
-    This example is almost the same as the previous one 
-    
-    line 1. Creates cball object and binds it to symbol name.
-            Generates pitch-bend events for two instruments simultaneously.
-            
-    line 2. The ramp pattern starts at -1 (full bend down) and changes
-            to just shy of 0.0 over 16 steps.
-    
-    line 4. The final clause ensures the bend ends up at neutral (value 0.0).
-  </pre>
-  <pre class="code">
-    ------------------------------------------------------
-  </pre>
-  <p class="body">
-    Generate single channel-pressure event
-  </p>
-  <pre class="code">
-    
-    1:   (cball name :pressure piano '(1 1 1) '(2 1 1)
-    2:         :pattern nil
-    3:         :initial  (cons 1.0 0.0))
-    
-    line 1.  Creates cball object and binds it to symbol name.
-             Generate channel-pressure events for the piano instrument.
-             Sets start and end times.   In this example the end time is
-             not actually used
-    
-    line 2.  Sets main pattern to nil.  This is the default and is 
-             included only for illustration.
-    
-    line 3.  Generates a channel-pressure event with value 1.0 (MIDI 127) 
-             at start-time + 0.0 seconds.
-  </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=chords.html class="navigation">Next: chords </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   

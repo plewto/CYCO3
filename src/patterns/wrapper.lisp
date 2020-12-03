@@ -13,7 +13,7 @@
     :initarg :period))
     (:documentation
      "A WRAPPER is a PATTERN which calls a 'wrapped' function and returns 
-it's value."))
+its value."))
    
 
 (defmethod wrapper-p ((obj wrapper)) t)

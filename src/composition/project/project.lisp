@@ -64,7 +64,7 @@ name  - Symbol, the project's name.
                     Defaults to *default-project-output-directory*
 
 The location of the project's files is determined by a combination 
-of it's name and the values of project-directory, main-file and 
+of its name and the values of project-directory, main-file and 
 output-directory.
 
 Using the defaults of 

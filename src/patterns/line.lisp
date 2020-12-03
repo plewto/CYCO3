@@ -3,7 +3,7 @@
 
 (defclass line (pattern) nil
   (:documentation
-   "A LINE is a PATTERN which continues to return it's final value
+   "A LINE is a PATTERN which continues to return its final value
 once all previous values have been returned."))
 
 (defmethod line-p ((object line)) object)

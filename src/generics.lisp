@@ -26,7 +26,7 @@ For all other types, coerce object to a list and return new Cycle."))
    "Coerce object to a list.
 If object is a list, return it.
 If object is some other sequence type, return new list of object's elements.
-For all other types, create new list with object as it's only element.
+For all other types, create new list with object as its only element.
 see ->vector"))
 
 (defmethod ->list ((object string))
@@ -83,7 +83,7 @@ stack depth may be exhausted.
    "Coerce object to vector.
 If object is a vector, return it.
 If object is a non-vector sequence, return new vector using elements of object.
-For all other cases return new vector with object as it's only element.
+For all other cases return new vector with object as its only element.
 See ->list"))
 
 (defgeneric ? (object)
@@ -278,7 +278,7 @@ description - Optional text."))
 
 (defgeneric disconnect (child)
   (:documentation
-   "Severs connection between child and it's parent, if any. 
+   "Severs connection between child and its parent, if any. 
 After a disconnect the child becomes a root node."))
 
 (defgeneric dump-chords (chord-model)
@@ -436,7 +436,7 @@ is returned."))
 
 (defgeneric metric-expression (metric-expression)
   (:documentation
-   "Evaluates metric-expression and return it's value as a float."))
+   "Evaluates metric-expression and return its value as a float."))
 
 (defgeneric metric-expression-p (metric-expression)
   (:documentation
@@ -673,7 +673,7 @@ external MIDI device."))
   (:documentation
    "Generates list of MIDI events to effect an instrument's program change.
 The result format is dependent on the specific external MIDI instrument.
-At it's simplest the result is a single program-change event.  
+At its simplest the result is a single program-change event.  
 More complex results may include control changes for bank selection.  
 The result may also include note events for 'key-switched' instruments."))
 
@@ -803,7 +803,7 @@ error."))
    "Predicate, true if object is a root node."))
 
 (def-type-predicate section-p
-   "Predicate, true if object is an instance of Section or one of it's
+   "Predicate, true if object is an instance of Section or one of its
 sub-classes.")
 
 (defgeneric section-order (sections &key project)

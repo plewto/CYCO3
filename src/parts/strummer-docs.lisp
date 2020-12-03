@@ -74,7 +74,7 @@ instrument    - Single instance of INSTRUMENT.
 :bars         - Length in bars, defaults to parent section value.
 :beats        - Beats per bar, defaults to parent section value.
 :subbeats     - Sub-beats per beat, defaults to parent section value.
-:render-once  - Boolean, if true the part is not repeated with it's section.
+:render-once  - Boolean, if true the part is not repeated with its section.
 :transposable - Boolean, if true the part is subject to transposition and
                 key inversion.
 :reversible   - Boolean, if true the part is subject to being reversed by

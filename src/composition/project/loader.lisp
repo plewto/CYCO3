@@ -21,7 +21,7 @@ The first time it is used the optional name argument should be specified as in
 load-project.  Thereafter subsequent calls to LP will default to reloading the 
 current project.  
 
-Whenever a new project is loaded it's name is saved to a file in the configuration
+Whenever a new project is loaded its name is saved to a file in the configuration
 directory.  The next time CYCO is ran the previous project may be reloaded simply 
 by calling LP without an argument.")
       

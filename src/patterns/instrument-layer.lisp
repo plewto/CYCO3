@@ -5,7 +5,7 @@
 (defclass instrument-layer (pattern) nil
   (:documentation 
 "A INSTRUMENT-LAYER is a specialized Pattern which always returns
-a list of all of it's elements.
+a list of all of its elements.
 
 Use Case:
    Instrument-Layer is only used in conjunction with Parts to provide

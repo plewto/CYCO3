@@ -4,7 +4,7 @@
 ;;;; prescribed manner.  Patterns may be nested to any level.  Two of the
 ;;;; common pattern types are LINE and CYCLE.
 ;;;;
-;;;; A Line returns it's elements in sequence until the final element is
+;;;; A Line returns its elements in sequence until the final element is
 ;;;; reached. Thereafter the line continues to return the final element.
 ;;;;
 ;;;; (line :of '(A B C)) --> A B C C C C ...

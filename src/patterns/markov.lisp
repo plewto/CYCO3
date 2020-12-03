@@ -3,7 +3,7 @@
 ;;;; Defines Markov Chain in terms of a Pattern.
 ;;;; Before a chain is defined a graph must be created of markov-links,
 ;;;; where a link has a value and a list of potential new markov-link.
-;;;; The number of occurrence of a new link determines it's probability of
+;;;; The number of occurrence of a new link determines its probability of
 ;;;; being the next value.
 ;;;;
 ;;;; Once the graph has been defined it may be wrapped in a MARKOV-CHAIN

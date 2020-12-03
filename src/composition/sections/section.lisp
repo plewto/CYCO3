@@ -14,7 +14,7 @@
 (defclass section (time-signature) nil
   (:Documentation
    "A Section represents a major composition division, IE verse, chorus,
-bridge etc...  The parent of a Section is always a Project and it's 
+bridge etc...  The parent of a Section is always a Project and its 
 child nodes are always some type of Part.   A section inherits time-signature
 and chord-model parameters from the project but may selectivly override them."))
 

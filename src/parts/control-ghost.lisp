@@ -30,8 +30,7 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 
 (constant +control-ghost-properties+
   (append +part-properties+
-	  '(:source-part
-	    :source-controller
+	  '(:source-controller
 	    :source-channel
 	    :out-controller
 	    :out-channels
@@ -45,8 +44,7 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 (defmethod control-ghost-p ((object t)) nil)
 (defmethod control-ghost-p ((object control-ghost)) t)
 
-(defun make-control-ghost (name source-part source-controller source-channel
-				&key
+(defun make-control-ghost (name source-part source-controller source-channel &key
 				out-controller
 				out-channels
 				delay
@@ -60,7 +58,7 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 			      :transient t)))
     (connect source-part ghost)
     (copy-time-signature source-part ghost)
-    (put ghost :source-part source-part)
+    ;; (put ghost :source-part source-part)
     (put ghost :source-controller source-controller)
     (put ghost :source-channel (channel source-channel :resolve))
     (put ghost :out-controller (or out-controller 1))
@@ -108,7 +106,7 @@ new part object to the symbol name."
 			       
 
 (defmethod reset ((ghost control-ghost))
-  (reset (property ghost :source-part))
+  (reset (parent ghost))
   ghost)
 
 
@@ -140,7 +138,7 @@ new part object to the symbol name."
 	(map-function (property ghost :value-map))
 	(out-channel-index-list (mapcar #'(lambda (c)(1- c))(property ghost :out-channels)))
 	(out-controller (property ghost :out-controller))
-	(source-part (property ghost :source-part)))
+	(source-part (parent ghost)))
     (reset source-part)
     (dolist (event (render-once source-part :offset offset))
       (let* ((time (+ (car event) delay))

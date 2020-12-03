@@ -282,8 +282,6 @@
 	  set-symbolic-program-map
 	  sformat
 	  signed-norm->midi-data
-	  slew
-	  slew-p
 	  slice
 	  smf
 	  smf-track

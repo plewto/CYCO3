@@ -13,7 +13,7 @@
 
 
 
-(defun make-endpad (&key (project *project*)(bars 2) beats )
+(defun make-endpad (&key (project *project*)(bars 2) beats)
   (setf project (or project *project*))
   (if (not (project-p project))
       (cyco-value-error 'endpad project
@@ -54,15 +54,16 @@
 
 
 (let* ((function-docstring
-	"MAKE-ENDPAD (function) & ENDPAD (macro) creates new endpad section.
+	"MAKE-ENDPAD (function) & ENDPAD (macro) create new endpad sections.
 
 An endpad is an empty terminal section of a project to provide time
 for final decay tails.   The new section has the name 'ENDPAD and the 
-macro also binds the new section to the symbol 'ENDPAD.
+macro also binds it to the symbol 'ENDPAD.
 
 :project  - The project
 :bars     - Number of bars, defaults to project
 :beats    - Number of beats per bar, defaults to project")
+
        (macro-docstring (str+ function-docstring "
 :auto-prune - bool, if true, first remove any existing endpad from the project")))
   (setf (documentation 'make-endpad 'function) function-docstring)

@@ -11,8 +11,7 @@
 		    :muted
 		    :transposable
 		    :reversible
-		    :group
-		    :remarks)))
+		    :group)))
 		    
 (defclass part (time-signature) nil
   (:documentation

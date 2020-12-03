@@ -236,7 +236,7 @@
 				     :chord-model (property mother :chord-model)
 				     :render-once (property mother :render-once)
 				     :shift (property mother :shift)
-				     :remarks (property mother :remarks)
+				     :remarks (remarks mother)
 				     :events '())))
     (copy-time-signature mother daughter)
     (setf (simple-part-states daughter)

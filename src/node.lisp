@@ -1,28 +1,5 @@
 ;;;; CYCO
 ;;;;
-;;;;  cyco-node
-;;;;    |
-;;;;    +-- time-signature
-;;;;    |     |
-;;;;    |     +-- project
-;;;;    |     |
-;;;;    |     +-- section
-;;;;    |     |    |
-;;;;    |     |    +-- countin
-;;;;    |     |    +-- endpad
-;;;;    |     |
-;;;;    |     +-- part
-;;;;    |          |
-;;;;    |          +-- programs leaf
-;;;;    |          +-- raw-part leaf
-;;;;    |          +-- strummer 
-;;;;    |          +-- controllers
-;;;;    |          +-- qball
-;;;;    |          +-- ghost
-;;;;    |          +-- metronome
-;;;;    |     
-;;;;    +-- instrument
-;;;;
 
 (defclass cyco-node ()
   ((name

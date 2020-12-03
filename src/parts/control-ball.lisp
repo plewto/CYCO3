@@ -17,10 +17,7 @@
 		    :initial-value
 		    :initial-value-time-shift
 		    :final-value
-		    :final-value-time-shift
-		    
-		    )))
-		    
+		    :final-value-time-shift)))
 
 (defclass control-ball (part) nil)
 
@@ -245,7 +242,7 @@
 			    :trim (property mother :trim)
 			    :initial initial
 			    :final final
-			    :remarks (property mother :remarks))))
+			    :remarks (remarks mother))))
     (copy-time-signature mother daughter)
     daughter)) 
 

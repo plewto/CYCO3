@@ -1,8 +1,8 @@
-;;;; CYCO cball.lisp
+;;;; CYCO control-ball.lisp
 
 (in-package :cyco-part)
 
-(constant +cball-properties+
+(constant +control-ball-properties+
 	  (append +part-properties+
 		  '(:controller
 		    :shift
@@ -22,33 +22,33 @@
 		    )))
 		    
 
-(defclass cball (part) nil)
+(defclass control-ball (part) nil)
 
-(defgeneric cball-p (object))
-(defmethod cball-p ((object t)) nil)
-(defmethod cball-p ((object cball)) t)
-(defgeneric cball-steps (object))
+(defgeneric control-ball-p (object))
+(defmethod control-ball-p ((object t)) nil)
+(defmethod control-ball-p ((object control-ball)) t)
+(defgeneric control-ball-steps (object))
 
 (labels ((bad-section-error (section part-name)
-	    (cyco-type-error 'make-cball "Section or nil" section
-			     (sformat "CBALL ~A" part-name)))
+	    (cyco-type-error 'make-control-ball "Section or nil" section
+			     (sformat "CONTROL-BALL ~A" part-name)))
 	 
 	 (no-project-error (part-name)
-	    (cyco-composition-error 'make-cball
-				    (sformat "No default project while creating CBALL ~A"
+	    (cyco-composition-error 'make-control-ball
+				    (sformat "No default project while creating CONTROL-BALL ~A"
 					     part-name)))
 
 
 	 (invalid-instrument-error (part-name)
-	    (cyco-type-error 'make-cball "Instrument or list of instruments"
-			     (sformat "Invalid instrument CBALL ~A" part-name)))
+	    (cyco-type-error 'make-control-ball "Instrument or list of instruments"
+			     (sformat "Invalid instrument CONTROL-BALL ~A" part-name)))
 
 
 	 (invalid-controller-error (controller part-name)
-	    (cyco-type-error 'make-cball
+	    (cyco-type-error 'make-control-ball
 			     "MIDI controller number :PRESSURE or :BEND"
 			     controller
-			     (sformat "CBALL ~A" part-name)))
+			     (sformat "CONTROL-BALL ~A" part-name)))
 	 
 	 
 	 (validate-section (part-name section)
@@ -81,10 +81,10 @@
 	 ;; (:sawtooth amp1 amp2 :phase)
 	 ;; (:triangle amp1 amp2 :phase)
 	 ;; (:pulse amp1 amp2 :phase :width)
-	 (create-pattern (cball pattern)
+	 (create-pattern (control-ball pattern)
 			 (if (or (null pattern)(pattern-p pattern))
 			     (return-from create-pattern pattern))
-			 (let* ((steps (cball-steps cball))
+			 (let* ((steps (control-ball-steps control-ball))
 				(curve-type (car pattern))
 				(args (append (cdr pattern)(list :steps steps))))
 			   (cond ((eq curve-type :ramp)
@@ -95,12 +95,12 @@
 				  (apply #'triangle args))
 				 ((eq curve-type :pulse)
 				  (apply #'pulse args))
-				 (t (cyco-type-error 'make-cball
+				 (t (cyco-type-error 'make-control-ball
 						     "curve type, one of :RAMP :SAWTOOTH :TRIANGLE or :PULSE"
 						     curve-type
-						     (sformat "CBALL ~A" (name cball))))))) )
+						     (sformat "CONTROL-BALL ~A" (name control-ball))))))) )
 
-  (defun make-cball (name controller instruments start end &key
+  (defun make-control-ball (name controller instruments start end &key
 			  section
 			  cuefn
 			  shift
@@ -117,47 +117,47 @@
 	  (instrument-list (validate-instruments name instruments))
 	  (controller-type (validate-controller name controller)))
       (if (not (and parent instrument-list controller-type))
-	  (return-from make-cball nil))
-      (let ((cball (make-instance 'cball
-				  :properties +cball-properties+
+	  (return-from make-control-ball nil))
+      (let ((control-ball (make-instance 'control-ball
+				  :properties +control-ball-properties+
 				  :name name
 				  :remarks (->string (or remarks ""))
 				  :transient t)))
-	(connect parent cball)
-	(put cball :controller controller)
-	(put cball :tempo tempo)
-	(put cball :unit unit)
-	(put cball :bars bars)
-	(put cball :beats beats)
-	(put cball :subbeats subbeats)
-	(put cball :cue-function cuefn)
-	(put cball :render-once render-once)
-	(put cball :transposable nil)
-	(put cball :reversible nil)
-	(put cball :trim trim)
-	(put cball :muted nil)
-	(put cball :instruments instrument-list)
-	(put cball :start-cue start)
-	(put cball :end-cue end)
-	(put cball :time-interval (or interval 's))
-	(put cball :shift (metric-expression (or shift 0.0)))
-	(put cball :reset-on-repeat reset-on-repeat)
+	(connect parent control-ball)
+	(put control-ball :controller controller)
+	(put control-ball :tempo tempo)
+	(put control-ball :unit unit)
+	(put control-ball :bars bars)
+	(put control-ball :beats beats)
+	(put control-ball :subbeats subbeats)
+	(put control-ball :cue-function cuefn)
+	(put control-ball :render-once render-once)
+	(put control-ball :transposable nil)
+	(put control-ball :reversible nil)
+	(put control-ball :trim trim)
+	(put control-ball :muted nil)
+	(put control-ball :instruments instrument-list)
+	(put control-ball :start-cue start)
+	(put control-ball :end-cue end)
+	(put control-ball :time-interval (or interval 's))
+	(put control-ball :shift (metric-expression (or shift 0.0)))
+	(put control-ball :reset-on-repeat reset-on-repeat)
 	(let ((v (car initial))
 	      (time-shift (or (cdr initial) 0)))
-	  (put cball :initial-value v)
-	  (put cball :initial-value-time-shift (and v time-shift)))
+	  (put control-ball :initial-value v)
+	  (put control-ball :initial-value-time-shift (and v time-shift)))
 	(let ((v (car final))
 	      (time-shift (or (cdr final) 0)))
-	  (put cball :final-value v)
-	  (put cball :final-value-time-shift (and v time-shift)))
-	(put cball :value-pattern (create-pattern cball pattern))
-	(reset cball)
-	cball))) )
+	  (put control-ball :final-value v)
+	  (put control-ball :final-value-time-shift (and v time-shift)))
+	(put control-ball :value-pattern (create-pattern control-ball pattern))
+	(reset control-ball)
+	control-ball))) )
 
-(setf (documentation 'make-cball 'function) +cball-docstring+)
+(setf (documentation 'make-control-ball 'function) +control-ball-docstring+)
 
 
-(defmacro cball (name controller instruments start end &key
+(defmacro control-ball (name controller instruments start end &key
 		      section
 		      cuefn
 		      shift
@@ -172,7 +172,7 @@
 		      final)
   `(progn
      (part-banner (name ,section) ',name)
-     (let ((cball (make-cball ',name ,controller ,instruments ,start ,end
+     (let ((control-ball (make-control-ball ',name ,controller ,instruments ,start ,end
 			      :section ,section
 			      :cuefn ,cuefn
 			      :shift ,shift
@@ -189,38 +189,38 @@
 			      :initial ,initial
 			      :final ,final
 			      :remarks ,remarks)))
-       (defparameter ,name cball)
-       cball)))
+       (defparameter ,name control-ball)
+       control-ball)))
 		  
 
-(defmethod cball-steps ((cball cball))
-  (let* ((cuefn (property cball :cue-function))
-	 (start-time (funcall cuefn cball (property cball :start-cue)))
-	 (end-time (funcall cuefn cball (property cball :end-cue)))
+(defmethod control-ball-steps ((control-ball control-ball))
+  (let* ((cuefn (property control-ball :cue-function))
+	 (start-time (funcall cuefn control-ball (property control-ball :start-cue)))
+	 (end-time (funcall cuefn control-ball (property control-ball :end-cue)))
 	 (time-delta (float (- end-time start-time)))
-	 (interval (let* ((n (property cball :time-interval))
+	 (interval (let* ((n (property control-ball :time-interval))
 			  (scale (if (numberp n)
 				     1.0
-				   (beat-duration cball))))
+				   (beat-duration control-ball))))
 		     (* scale (metric-expression n)))))
 	(if (minusp time-delta)
 	    0
 	  (truncate (/ time-delta interval)))))
 
-(defmethod transpose ((cball cball)(n t))
-  cball)
+(defmethod transpose ((control-ball control-ball)(n t))
+  control-ball)
 
-(defmethod invert ((cball cball)(pivot t))
-  cball)
+(defmethod invert ((control-ball control-ball)(pivot t))
+  control-ball)
 
-(defmethod retrograde ((cball cball))
-  cball)
+(defmethod retrograde ((control-ball control-ball))
+  control-ball)
 
-(defmethod reset ((cball cball))
-  (reset (property cball :value-pattern))
-  cball)
+(defmethod reset ((control-ball control-ball))
+  (reset (property control-ball :value-pattern))
+  control-ball)
 
-(defmethod clone ((mother cball) &key new-name new-parent)
+(defmethod clone ((mother control-ball) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (name (->symbol (sformat frmt (name mother))))
 	 (parent (or new-parent (parent mother)))
@@ -230,7 +230,7 @@
 	 (final-value (property mother :final-value))
 	 (final-time-shift (property mother :final-value-time-shift))
 	 (final (if final-value (cons final-value final-time-shift)))
-	 (daughter (make-cball name
+	 (daughter (make-control-ball name
 			    (property mother :controller)
 			    (property mother :instruments)
 			    (property mother :start-cue)
@@ -249,9 +249,9 @@
     (copy-time-signature mother daughter)
     daughter)) 
 
-(setf (documentation 'cball 'function)
-      (sformat "The CBALL macro is a thin wrapper of the MAKE-CBALL
-      function.  The primary difference is the CBALL binds the new object
-      to the named name, while MAKE-CBALL does not.   The name argument
-      should be quoted for MAKE-CBALL and unquoted for CBALL. ~%~%~A"
-	       +cball-docstring+))
+(setf (documentation 'control-ball 'function)
+      (sformat "The CONTROL-BALL macro is a thin wrapper of the MAKE-CONTROL-BALL
+      function.  The primary difference is the CONTROL-BALL binds the new object
+      to the named name, while MAKE-CONTROL-BALL does not.   The name argument
+      should be quoted for MAKE-CONTROL-BALL and unquoted for CONTROL-BALL. ~%~%~A"
+	       +control-ball-docstring+))

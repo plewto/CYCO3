@@ -146,18 +146,18 @@
 (src-load "strummer-state")
 (src-load "strummer")
 (src-load "strummer-midi-render")
-(src-load "cball-docs")
-(src-load "cball")
-(src-load "cball-midi-render")
+(src-load "control-ball-docs")
+(src-load "control-ball")
+(src-load "control-ball-midi-render")
 
 
 
 (export '(*strummer-render-trace*
-	  cball
-	  cball-p
+	  control-ball
+	  control-ball-p
 	  control-ghost
 	  control-ghost-p
-	  make-cball
+	  make-control-ball
 	  make-control-ghost
 	  make-controllers
 	  make-metronome
@@ -180,9 +180,9 @@
 (import '(cyco-part:*strummer-render-trace*
 	  cyco-part:control-ghost
 	  cyco-part:control-ghost-p
-	  cyco-part:make-cball
-	  cyco-part:cball
-	  cyco-part:cball-p
+	  cyco-part:make-control-ball
+	  cyco-part:control-ball
+	  cyco-part:control-ball-p
 	  cyco-part:make-control-ghost
 	  cyco-part:make-metronome
 	  cyco-part:make-programs

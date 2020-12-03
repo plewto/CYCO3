@@ -1,13 +1,13 @@
-;;;; CYCO cball docs
+;;;; CYCO control-ball docs
 ;;;;
-;;;; A CBALL is a PART for generating MIDI controller, channel-pressure and
+;;;; A CONTROL-BALL is a PART for generating MIDI controller, channel-pressure and
 ;;;; bend events.
 
 
 (in-package :cyco-part)
 
-(constant +cball-docstring+
-	  "Creates new instance of CBALL.
+(constant +control-ball-docstring+
+	  "Creates new instance of CONTROL-BALL.
 name        - symbol, part name
 controller  - MIDI controller number (0..127) inclusive, :PRESSURE or :BEND
 instruments - Instrument or list of instruments.

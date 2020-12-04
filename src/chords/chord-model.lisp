@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO chords  chord-model.lisp
 ;;;;
+;;;; Defines structures for generating chords.
+;;;;
+
+(in-package :cyco)
 
 ;; Generic methods on chord models
 ;;    name model
@@ -93,5 +97,3 @@ one octave higher at the end the template list.
 	  (if (and (not (rest-p head))(< head 116))
 	      (setf template (append template (list (+ (* 12 add-octave) head)))))))
     template))
-
-

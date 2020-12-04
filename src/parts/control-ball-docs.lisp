@@ -1,8 +1,9 @@
-;;;; CYCO control-ball docs
+;;;; CYCO parts control-ball-docs.lisp
 ;;;;
+;;;; Defines docstring for control-ball.
 ;;;; A CONTROL-BALL is a PART for generating MIDI controller, channel-pressure and
 ;;;; bend events.
-
+;;;;
 
 (in-package :cyco-part)
 
@@ -11,7 +12,7 @@
 name        - symbol, part name
 controller  - MIDI controller number (0..127) inclusive, :PRESSURE or :BEND
 instruments - Instrument or list of instruments.
-start       - Start time, must be in a format accepted by cuefun.
+start       - Start time, must be in a format accepted by cuefn.
 end         - End time, must be in a format accepted by cuefn.
 :section    - Parent section, defaults to current section of *PROJECT*
 :cuefn      - Time cue function, defaults to section value.

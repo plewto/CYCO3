@@ -1,6 +1,8 @@
+;;;; CYCO implementation-config.lisp
+;;;;
+;;;; Loads implementation specific source.
+;;;;
 
-
-;; Load Lisp Implementation specific code.
 (let ((imp (lisp-implementation-type))
       (ver (lisp-implementation-version)))
   (format t "CYCO ~A Lisp type ~A ~A~%"

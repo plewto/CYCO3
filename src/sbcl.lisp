@@ -1,5 +1,9 @@
+;;;; CYCO sbcl.lisp
+;;;;
 ;;;; Steel Banks Common Lisp specific
 ;;;;
+
+(in-package :cyco)
 
 (format t "Using SBCL options~%")
 

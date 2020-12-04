@@ -1,5 +1,9 @@
-;;;; CYCO3 composition/project/framework
+;;;; CYCO composition/project framework.lisp
 ;;;;
+;;;; Defines convenience functions to create empty project.
+;;;;
+
+(in-package :cyco)
 
 (defun ?projects ()
   "Displays contents of *PROJECTS-ROOT*"

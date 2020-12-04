@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO orchestra  articulation-map.lisp
 ;;;;
 ;;;; An articulation map is a function of form  (lambda (dur &key time-scale))
 ;;;; which returns float for key-down duration.
@@ -12,7 +12,9 @@
 ;;;;      1) Produce an error
 ;;;;      2) Generate warning and return rest.
 ;;;;      3) Ignore and return rest.
+;;;;
 
+(in-package :cyco)
 
 (defun basic-articulation-map (&key (scale 1.0)(min 0)(max 1e6))
   (flet ((docfn ()
@@ -44,7 +46,7 @@
 
 (defun metronome-articulation-map (&key (phrase 'e)(bar 'x)(beat 'x))
   "Creates articulation map for metronome instruments.
-The map returns appropriate durations for the following 
+The map returns appropriate duration for the following 
 symbols:  :PHRASE, :BAR and :BEAT.  Unrecognized symbols are as rest." 
   (flet ((docfn ()
 		(format t ";; METRONOME-ARTICULATION-MAP~%")

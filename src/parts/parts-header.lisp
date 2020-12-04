@@ -1,25 +1,18 @@
-;;;; CYCO
+;;;; CYCO parts parts-header.lisp
+;;;; 
+;;;; Creates the :CYCO-PART package and loads related files.
 ;;;;
 
 (defpackage :cyco-part
   (:use :cl)
   (:import-from :cyco
-		:*metronome*
-		:*project*
+			:*project*
 		:+default-keytable+
 		:+rest+
 		:+time-signature-properties+
 		:->cycle
-		:->pattern
 		:->list
-  		:->string
-  		:->symbol
-		:disconnect
-		:elide
-		:ramp
-		:pulse
-		:sawtooth
-		:triangle
+		:->pattern
 		:absolute-chords-p
 		:approximate
 		:articulation-map
@@ -34,11 +27,14 @@
 		:cyco-composition-error
 		:data
 		:defines-chord-p
+		:disconnect
 		:dismiss
 		:duration
 		:dynamic
 		:dynamic-map
 		:dynamic-p
+		:elide
+		:final
 		:get-controller-number
 		:global
 		:invert
@@ -61,21 +57,29 @@
 		:next-1
 		:next-n
 		:norm->midi-data
-		:period
 		:partition-list
+		:period
 		:permute
 		:phrase-duration
 		:program-change-events
 		:program-map
+		:pulse
+		:ramp
 		:ramp
 		:range
 		:reset
 		:rest-p
 		:retrograde
+		:sawtooth
 		:signed-norm->midi-data
 		:tempo
 		:transpose
+		:triangle
 		:value
+		:while
+	:*metronome*
+  		:->string
+  		:->symbol
   		:banner3
   		:bars
   		:beats
@@ -89,7 +93,6 @@
   		:dump-events
   		:elements
   		:false
-		:final
   		:instrument-layer
   		:instrument-p
   		:midi-message-p
@@ -112,7 +115,6 @@
   		:sort-midi-events
   		:time-signature
   		:unmute
-		:while
 		:wrap))
 
 (in-package :cyco-part)
@@ -163,8 +165,8 @@
 	  key-ghost-p
 	  make-control-ball
 	  make-control-ghost
-	  make-key-ghost
 	  make-controllers
+	  make-key-ghost
 	  make-metronome
 	  make-programs
 	  make-qball
@@ -183,31 +185,31 @@
 	  strummer-p) :cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
-	  cyco-part:control-ghost
-	  cyco-part:control-ghost-p
-	  cyco-part:key-ghost
-	  cyco-part:key-ghost-p
-	  cyco-part:make-key-ghost
-	  cyco-part:make-control-ball
-	  cyco-part:control-ball
-	  cyco-part:control-ball-p
-	  cyco-part:make-control-ghost
-	  cyco-part:make-metronome
-	  cyco-part:make-programs
-	  cyco-part:make-qball
-	  cyco-part:make-raw-part
-	  cyco-part:make-simple-part
-	  cyco-part:make-strummer
-	  cyco-part:metronome
-	  cyco-part:programs
-	  cyco-part:qball
-	  cyco-part:qball-p
-	  cyco-part:raw-part
-	  cyco-part:raw-part-p
-	  cyco-part:simple-part
-	  cyco-part:simple-part-p
-	  cyco-part:strummer
-	  cyco-part:strummer-p) :cyco)
+          cyco-part:control-ball
+          cyco-part:control-ball-p
+          cyco-part:control-ghost-p
+          cyco-part:key-ghost
+          cyco-part:key-ghost-p
+          cyco-part:make-control-ball
+          cyco-part:make-control-ghost
+          cyco-part:make-key-ghost
+          cyco-part:make-metronome
+          cyco-part:make-programs
+          cyco-part:make-qball
+          cyco-part:make-raw-part
+          cyco-part:make-simple-part
+          cyco-part:make-strummer
+          cyco-part:metronome
+          cyco-part:programs
+          cyco-part:qball
+          cyco-part:qball-p
+          cyco-part:raw-part
+          cyco-part:raw-part-p
+          cyco-part:simple-part
+          cyco-part:simple-part-p
+          cyco-part:control-ghost
+          cyco-part:strummer
+          cyco-part:strummer-p) :cyco)
 
 (in-package :cyco)
 

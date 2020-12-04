@@ -1,5 +1,33 @@
 ;;;; CYCO
 ;;;;
+;;;;  cyco-node
+;;;;    |
+;;;;    +-- time-signature
+;;;;    |     |
+;;;;    |     +-- project
+;;;;    |     |
+;;;;    |     +-- section
+;;;;    |     |    |
+;;;;    |     |    +-- countin
+;;;;    |     |    +-- endpad
+;;;;    |     |
+;;;;    |     +-- part
+;;;;    |          |
+;;;;    |          +-- control-ball
+;;;;    |          +-- control-ghost
+;;;;    |          +-- controllers
+;;;;    |          +-- key-ghost
+;;;;    |          +-- metronome
+;;;;    |          +-- programs
+;;;;    |          +-- qball
+;;;;    |          +-- raw-part
+;;;;    |          +-- simple-part
+;;;;    |          +-- strummer
+;;;;    |     
+;;;;    +-- instrument
+;;;;
+
+(in-package :cyco)
 
 (defclass cyco-node ()
   ((name

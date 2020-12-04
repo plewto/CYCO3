@@ -1,6 +1,9 @@
-;;;; CYCO
-;;;; smf ~ Standard Midi File
+;;;; CYCO midi smf.lisp
 ;;;;
+;;;; Defines MIDI file   smf ~ Standard MIDI File
+;;;;
+
+(in-package :cyco)
 
 (defclass smf nil
   ((header
@@ -84,8 +87,3 @@ division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
       (format t "TRACK: ~s~%" (name track))
       (dump-events track :range range :filter filter :render render)))
   (smf-track-count midi-file))
-
-
-
-
-

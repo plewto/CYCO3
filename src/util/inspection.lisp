@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO util inspection.lisp
+;;;;   
+;;;; Defines functions for inspecting objects.
 ;;;;
+
+(in-package :cyco)
 
 (defun ?d (sym)
   "A shortcut abbreviation for describe"
@@ -39,7 +43,7 @@
 	    (format t "[~2D] ~A~%" chan iname)))))))
 
 (defun ?o (&optional (root *root-instrument*))
-  "Displays orcestra tree."
+  "Displays orchestra tree."
   (print-tree root))
 
 (defun ?p ()
@@ -51,7 +55,7 @@
 (defun ?? ()
   "Displays list of available inspection functions."
   (format t "(? object)    Displays info about object.~%")
-  (format t "(?a symbol)   Shortcut for (apropos symbal)~%")
+  (format t "(?a symbol)   Shortcut for (apropos symbol)~%")
   (format t "(?d symbol)   Shortcut for (describe symbol)~%")
   (format t "(?o)          Displays orchestra tree.~%")
   (format t "(?p)          Displays current project structure.~%")

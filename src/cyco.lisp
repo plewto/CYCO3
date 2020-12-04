@@ -1,4 +1,6 @@
-;;;; CYCO cyco-loaders
+;;;; CYCO cyco.lisp
+;;;;
+;;;; Main entry point to build CYCO.
 ;;;;
 
 (defpackage :cyco

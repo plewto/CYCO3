@@ -1,8 +1,10 @@
-;;;; CYCO
+;;;; CYCO composition/section preroll.lisp
 ;;;;
-;;;; Coutin is a specialized Section for MIDI initialization and
+;;;; preroll is a specialized Section for MIDI initialization and
 ;;;; metronome count-in.
 ;;;;
+
+(in-package :cyco)
 
 (constant +preroll-properties+
 	  (append +section-properties+

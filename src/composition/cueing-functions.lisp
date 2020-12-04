@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO composition  cueing-functions.lisp
 ;;;;
 ;;;; Cueing functions convert a user specified time-point to real time
 ;;;; using the current time-signature.  Usually the time point is some
@@ -11,6 +11,8 @@
 ;;;; The time-specification format is intentionally undefined.  Implementing
 ;;;; functions are free to use whatever format meets their specific needs.
 
+
+(in-package :cyco)
 
 ;; The Default cueing function BAR
 ;;
@@ -104,6 +106,3 @@ BT - Beat number, float/rational >= 1"))
 	     (br (bar-value time-signature time-specification (aref v 0)))
 	     (bt (* (beat-duration time-signature)(1- (aref v 1)))))
 	(float (+ br bt)))) )) 
-
-
-

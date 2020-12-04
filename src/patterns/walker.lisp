@@ -1,6 +1,9 @@
-;;;; CYCO Walker Pattern (Random Walks)
-;;;; 
+;;;; CYCO pattern walker.lisp
 ;;;;
+;;;; The WALKER pattern generates values by random walks. 
+;;;;
+
+(in-package :cyco)
 
 (defclass walker (pattern)
   ((current-position

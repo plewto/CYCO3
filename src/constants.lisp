@@ -1,6 +1,9 @@
-;;;; CYCO
-;;;; 
+;;;; CYCO constants.lisp
+;;;;
+;;;; Defines global constants.
+;;;;
 
+(in-package :cyco)
 
 (constant +CYCO-VERSION+  (list 3 0 0))
 

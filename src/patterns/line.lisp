@@ -1,5 +1,9 @@
-;;;; CYCO Line Pattern
+;;;; CYCO pattern line.lisp
 ;;;;
+;;;; A LINE pattern returns items in sequence, then stops.
+;;;;
+
+(in-package :cyco)
 
 (defclass line (pattern) nil
   (:documentation

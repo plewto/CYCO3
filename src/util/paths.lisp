@@ -1,7 +1,10 @@
-;;;; CYCO
+;;;; CYCO util paths.lisp
 ;;;;
+;;;; Defines functions for manipulating file system paths.
 ;;;; ISSUE: This file flaunts the idiomatic Lisp approach to pathnames.
 ;;;;
+
+(in-package :cyco)
 
 ;; Set path parameters for current platform.
 ;;
@@ -14,9 +17,6 @@
 	(t (let ((msg1 (sformat  "Platform ~A not currently supported." platform))
 		 (msg2 "Using default (Linux) path parameters."))
 	     (cyco-warning msg1 msg2)))))
-
-;; (defun cwd ()
-;;   *default-pathname-defaults*)
 
 (defun absolute-path-p (namestring)
   "Predicate, true if namestring indicates an absolute file name."

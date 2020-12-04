@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO composition time-signature.lisp
 ;;;;
+;;;; Defines time-signature class
+;;;;
+
+(in-package :cyco)
 
 (defclass time-signature (cyco-node) ()
   (:documentation

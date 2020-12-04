@@ -23,8 +23,8 @@
 	  ->cycle
 	  ->list
 	  ->markov-link
-	  ->pattern
 	  ->midi
+	  ->pattern
 	  ->string
 	  ->symbol
 	  ->vector
@@ -81,10 +81,10 @@
 	  data-count
 	  defdynamic
 	  define-chord
-	  defines-chord-p
-	  defkeynumber
 	  define-controller
 	  defined-controllers
+	  defines-chord-p
+	  defkeynumber
 	  dice
 	  dice-p
 	  disconnect
@@ -109,9 +109,9 @@
 	  flatten1
 	  float-bar
 	  get-controller-number
-	  global
 	  ghost
 	  ghost-p
+	  global
 	  group-p
 	  has-group-p
 	  hash-property
@@ -136,12 +136,12 @@
 	  load-profile-file
 	  load-sub-profile
 	  local-properties
+	  make-ghost
+	  make-instrument
 	  markov-add-link
 	  markov-chain-p
 	  markov-link-p
 	  markov-walk
-	  make-instrument
-	  make-ghost
 	  mean
 	  meta-channel
 	  meta-channel!
@@ -240,8 +240,8 @@
 	  program-map!
 	  program-number
 	  program-number!
-	  project-p
 	  project->midi
+	  project-p
 	  properties
 	  property
 	  property*
@@ -275,8 +275,8 @@
 	  root-p
 	  rotate
 	  sawtooth
-	  section-p
 	  section-order
+	  section-p
 	  set-basic-program-map
 	  set-cyco-prompt
 	  set-symbolic-program-map
@@ -314,9 +314,9 @@
 	  unit!
 	  unmute
 	  unmute-all
-	  while
 	  walker
 	  walker-p
+	  while
 	  wrapper
 	  wrapper-p
 	  write-smf

@@ -1,4 +1,6 @@
-;;;; CYCO
+;;;; CYCO midi midi-message.lisp
+;;;;
+;;;; Defines low-level MIDI messages.
 ;;;;
 ;;;; Terminology:  
 ;;;;
@@ -45,7 +47,9 @@
 ;;;;       +-- MIDI-TEMPO-CHANGE
 ;;;;       +-- MIDI-TIME-SIGNATURE
 ;;;;       +-- MIDI-KEY-SIGNATURE
+;;;;
 
+(in-package :cyco)
 
 (defun assert-midi-channel-index (channel-index)
   "Throws error if value not valid MIDI channel index (0..15)."

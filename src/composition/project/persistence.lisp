@@ -1,4 +1,4 @@
-;;;; CYCO3 composition/project/persistence
+;;;; CYCO composition/project persistence.lisp
 ;;;;
 ;;;; The project 'persistence' feature saves the current project name to
 ;;;; the configuration directory.  Upon the next application run the
@@ -6,8 +6,10 @@
 ;;;; specifying a project name.
 ;;;;
 
-(global *persistent-project-name-namestring* "current-project-name")
+(in-package :cyco)
 
+
+(global *persistent-project-name-namestring* "current-project-name")
 
 (defun save-persistent-project-name (project-name)
   "Saves the current project name to a configuration file."
@@ -18,7 +20,6 @@
 		       :direction :output
 		       :if-does-not-exist :create
 		       :if-exists :overwrite)))
-    (format t "BUG 0008 (SAVE-PERSISTENT-PROJECT-NAME ~S~%" PROJECT-NAME) ;; TODO remove test
     (format stream (->string project-name))
     (close stream)))
 

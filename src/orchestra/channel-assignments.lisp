@@ -1,8 +1,10 @@
-;;;; CYCO
+;;;; CYCO orchestra channel-assignments.lisp
+;;;;
 ;;;; Defines nested symbolic MIDI channel names.
 ;;;;
-;;;; (meta-channel nil) --> nil
-;;;; (meta-channel nil resolve) --> 1
+;;;;
+
+(in-package :cyco)
 
 (defstruct meta-channel
   name
@@ -97,6 +99,3 @@ remarks - optional explanation."
 or a defined symbolic meta channel."
       (or (and (integerp object)(plusp object)(<= object 16))
 	  (assoc object assignments))))) 
-  
-
-

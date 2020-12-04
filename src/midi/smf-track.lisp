@@ -1,7 +1,9 @@
-;;;; CYCO
+;;;; CYCO midi smf-track.lisp
 ;;;;
-;;;; Defines Standard MIDI File Track
+;;;; Defines MIDI file track.
 ;;;;
+
+(in-package :cyco)
 
 (defclass smf-track nil
   ((track-name

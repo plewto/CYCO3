@@ -9,6 +9,8 @@
 ;;;;  -1 <= r < 128
 ;;;;
 
+(in-package :cyco)
+
 (constant +default-keytable+ (->vector (range 0 128)))
 
 (defun keytable-p (obj)

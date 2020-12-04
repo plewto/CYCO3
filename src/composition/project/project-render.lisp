@@ -1,5 +1,9 @@
-;;;; CYCO3 composition/project/project-render
+;;;; CYCO composition/project project-render.lisp
 ;;;;
+;;;; Methods for converting project to MIDI file.
+;;;;
+
+(in-package :cyco)
 
 (defun render-project (&optional (project *project*))
   "Converts project to a MIDI event list."

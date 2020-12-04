@@ -1,3 +1,7 @@
+;;;; CYCO parts strummer-midi-render.lisp
+;;;;
+;;;; MIDI rendering methods for STRUMMER.
+;;;;
 
 (in-package :cyco-part)
 

@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO dynamics.lisp
 ;;;;
 ;;;; Defines symbolic representation of note dynamics.
 ;;;; Dynamics are normalized between 0 and 1 and map to MIDI velocity 0..127
@@ -10,6 +10,8 @@
 ;;;;
 ;;;;   ... F- < F < F+ < FF- < FF < FF+ ...
 ;;;;
+
+(in-package :cyco)
 
 (global *dynamic-table*
 	  (let ((dynamic-table (make-hash-table :size 40)))

@@ -1,9 +1,9 @@
-;;;; cyco3/local-config
+;;;; cyco local-config.lisp
 ;;;;
+;;;; Modifies plugins search path.
+;;;; 
 
-(setf *cyco-location* "~/dev/cyco3")
-(setf *config-directory* "~/.config/cyco")
-(setf *projects-root* "~/cyco-projects")
+(in-package :cyco)
 
 (push-plugin-search-path (join-path *cyco-location* "plugins"))
 (push-plugin-search-path (join-path *config-directory* "plugins"))

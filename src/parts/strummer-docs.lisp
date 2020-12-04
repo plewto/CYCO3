@@ -1,4 +1,6 @@
-;;;; cyco-strummer docs
+;;;; CYCO parts strummer-docs.lisp
+;;;;
+;;;; Documentation for STRUMMER class.
 ;;;;
 ;;;; STRUMMER is a type of part which produces strummed chords.  It has a
 ;;;; similar structure to SIMPLE-PART but provides much more flexibility.
@@ -56,7 +58,6 @@
 ;;;;    program-bank. 
 ;;;; 
 ;;;;
-
 
 (in-package :cyco-part)
 

@@ -1,6 +1,10 @@
-;;;; CYCO INSTRUMENT-LAYER Pattern
+;;;; CYCO pattern instrument-layer.lisp
+;;;;
+;;;; An INSTRUMENT-LAYER is a special-case pattern for handling
+;;;; list of instruments within a part.
 ;;;;
 
+(in-package :cyco)
 
 (defclass instrument-layer (pattern) nil
   (:documentation 

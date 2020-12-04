@@ -1,8 +1,9 @@
-;;;; CYCO
+;;;; CYCO util notifications.lisp
 ;;;;
-;;;; Defines CYCO warnings and errors.
+;;;; Defines warnings and errors.
 ;;;; 
 
+(in-package :cyco)
 
 (global *cyco-error-as-warning* nil
 	"If true treat errors as warnings.")

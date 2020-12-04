@@ -1,4 +1,7 @@
-;;;; CYCO control-ghost
+;;;; CYCO parts control-ghost.lisp
+;;;;
+;;;; A CONTROL-GHOST produces modified copies of MIDI controller events
+;;;; from another part.
 ;;;;
 
 (in-package :cyco-part)

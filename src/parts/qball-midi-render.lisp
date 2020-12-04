@@ -1,4 +1,6 @@
-;;;; CYCO qball midi-render
+;;;; CYCO parts qball-midi-render.lisp
+;;;;
+;;;; Defines rendering methods for QBALL.
 ;;;;
 
 (in-package :cyco-part)

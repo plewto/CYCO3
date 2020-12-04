@@ -2,6 +2,8 @@
 ;;;; Symbolic representation of MIDI key numbers.
 ;;;;
 
+(in-package :cyco)
+
 (constant +pitch-classes+ #(C CS D DS E F FS G GS A AS B))
 
 (global *KEYNUMBER-TABLE*

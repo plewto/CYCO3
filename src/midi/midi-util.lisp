@@ -1,7 +1,10 @@
-;;;; CYCO
+;;;; CYCO midi midi-util.lisp
 ;;;;
 ;;;; Low level MIDI functions.
 ;;;;
+
+(in-package :cyco)
+
 
 ;;; ************************************************************************
 ;;;                     MIDI variable length values (vlv)

@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO metrics.lisp
 ;;;;
 ;;;; Metric values specify relative times. The basic metric values are:
 ;;;;
@@ -7,12 +7,12 @@
 ;;;;    Q  = 1    quarter note
 ;;;;    E  = 1/2  eighth note 
 ;;;;    S  = 1/4  sixteenth note
-;;;;    T  = 1/8  thirtysecond note
-;;;;    X  = 1/16 sixtyfourth note
+;;;;    T  = 1/8  thirty-second note
+;;;;    X  = 1/16 sixty-fourth note
 ;;;;    Z  = 1/32 128th note.
 ;;;;    R  = -1   rest
 ;;;;
-;;;; Each basic unit may be modified by appending dots '.' or 't's to the left.
+;;;; Each basic unit may be modified by appending dots '.' or 't' to the left.
 ;;;; Each dot modifies value by 3/2
 ;;;;
 ;;;;    Q.  -> dotted quarter note
@@ -31,6 +31,8 @@
 ;;;;
 ;;;;    RT   -> legal but pointless.
 ;;;;
+
+(in-package :cyco)
 
 (constant +METRIC-UNITS+
 	  (let ((acc (make-hash-table :size 8)))
@@ -90,7 +92,7 @@
 ;;;;
 ;;;; Examples:
 ;;;;    Q+S       -> add quarter and sixteenth notes
-;;;;    Q+S-x     -> subtract sixtyfourth note from above.
+;;;;    Q+S-x     -> subtract sixty-fourth note from above.
 ;;;;    2.3*Q+S   -> add Q and S, then scale result by 2.3
 ;;;;    Q+R       -> add rest to quarter note, legal but pointless.
 ;;;;
@@ -165,6 +167,3 @@
 
 (defmethod metric-expression ((metric-expression-list list))
   (mapcar #'metric-expression metric-expression-list))
-
-
-

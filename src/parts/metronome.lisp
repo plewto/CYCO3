@@ -1,4 +1,4 @@
-;;;; CYCO3
+;;;; CYCO parts metronome.lisp
 ;;;;
 ;;;; Defines specialized pseudo-part METRONOME
 ;;;;

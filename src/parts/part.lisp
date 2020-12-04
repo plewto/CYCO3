@@ -1,4 +1,6 @@
-;;;; CYCO
+;;;; CYCO parts part.lisp
+;;;;
+;;;; Defines the PART class.
 ;;;;
 
 (in-package :cyco-part)

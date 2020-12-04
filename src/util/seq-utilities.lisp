@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO util seq-utilities.lisp
+;;;; 
+;;;; Utility functions on sequences.
 ;;;;
+
+(in-package :cyco)
 
 (defmethod ->list ((obj t)) (list obj))
 (defmethod ->list ((lst list)) lst)
@@ -246,5 +250,3 @@ Default is to split list at keyword boundaries.
 			 (pri-b (priority (cdr b))))
 		    (> pri-b pri-a))
 		(< time-a time-b))))))
-
-

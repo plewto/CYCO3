@@ -1,7 +1,11 @@
-;;;; CYCO
+;;;; CYCO composition/section endpad.lisp
 ;;;;
 ;;;; ENDPAD provides a final section to "pad-out" the end of a MIDI track.
 ;;;; They are useful to provide space for final decay tails.
+;;;;
+
+(in-package :cyco)
+
 
 (constant +endpad-properties+ (append
 			       +section-properties+

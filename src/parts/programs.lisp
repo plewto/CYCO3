@@ -1,7 +1,7 @@
-;;;; CYCO
+;;;; CYCO parts programs.lisp
+;;;;
 ;;;; Programs is a type of Part for generating MIDI program change events.
 ;;;;
-;;;; Programs are always leaf nodes
 
 (in-package :cyco-part)
 

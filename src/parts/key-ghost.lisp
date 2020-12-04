@@ -1,6 +1,7 @@
-;;;; CYCO key-ghost
+;;;; CYCO parts key-ghost.lisp
+;;;; 
+;;;; A KEY-GHOST produces modified version of note events from another part.
 ;;;;
-
 
 (in-package :cyco-part)
 

@@ -1,4 +1,4 @@
-;;;; CYCO Plugins
+;;;; CYCO plugins.lisp
 ;;;;
 ;;;; Plugins provide additional features and configuration.
 ;;;; Plugins may be located in multiple locations but the following
@@ -16,6 +16,7 @@
 ;;;; in ~/.config/cyco/plugins/ shadow those in cyco3/plugins/
 ;;;; 
 
+(in-package :cyco)
 
 (let ((search-path '())
       (current-plugin-stack '())
@@ -108,5 +109,3 @@ An asterisk at the beginning of a line indicates that plugin has been loaded."
 	      (format t "    ~A " (if (member plugin-name registry) "*" " "))
 	      (format t "~A~%" plugin-name))))
 	  nil) ))
-		
-  

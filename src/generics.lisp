@@ -1,8 +1,10 @@
-;;;; CYCO
+;;;; CYCO  generics.lisp
 ;;;;
-;;;; Defines all generic CYCO functions.
+;;;; Defines generic CYCO functions.
 ;;;; In a few cases implements simpler methods.
 ;;;;
+
+(in-package :cyco)
 
 (defmacro def-type-predicate (name &optional (documentation "Predicate"))
   "Defines a new generic predicate function. 

@@ -1,4 +1,6 @@
-;;;; CYCO
+;;;; CYCO midi meta.lisp
+;;;;
+;;;; Low level MIDI meta messages.
 ;;;;
 ;;;; Not all meta messages are defined.
 ;;;; Implemented:
@@ -14,7 +16,9 @@
 ;;;;    port
 ;;;;    smpte-offset
 ;;;;    sequencer-specific
+;;;;
 
+(in-package :cyco)
 
 (defclass midi-meta-message (midi-message)
   ((command

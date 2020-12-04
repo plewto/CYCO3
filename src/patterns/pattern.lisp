@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO pattern pattern.lisp
 ;;;;
 ;;;; A Pattern is an object which generates a sequence of values in some
 ;;;; prescribed manner.  Patterns may be nested to any level.  Two of the
@@ -26,8 +26,8 @@
 ;;;; (line :of (list 1 2 3 (cycle :of '(A B C))))
 ;;;; --> 1 2 3 A B C A B C A B C ...
 ;;;;
-;;;;
 
+(in-package :cyco)
 
 (defclass pattern nil
   ((elements
@@ -125,6 +125,4 @@
 (defmethod retrograde ((p pattern))
   (setf (elements p)(retrograde (elements p)))
   p)
-
-
 

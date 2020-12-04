@@ -1,3 +1,8 @@
+;;;; CYCO parts control-ball-midi-render.lisp
+;;;;
+;;;; Defines rendering methods for control-ball.
+;;;;
+
 (in-package :cyco-part)
 
 (labels ((mapping-function (control-ball)

@@ -1,4 +1,4 @@
-;;;; CYCO qball-docs
+;;;; CYCO parts qball-docs.lisp
 ;;;;
 ;;;; Defines docstring for QBALL.
 ;;;;

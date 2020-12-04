@@ -1,5 +1,7 @@
-;;;; CYCO
+;;;; CYCO util string-utilities.lisp
 ;;;;
+
+(in-package :cyco)
 
 (defmethod clone ((mother string) &key new-name new-parent)
   (dismiss new-name new-parent)
@@ -124,6 +126,3 @@ shift - optional number of spaces to shift text right."
     (if (minusp diff)
 	text
       (str+ pad text pad))))
-
-
-

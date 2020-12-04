@@ -1,5 +1,9 @@
-;;;; CYCO Bag Pattern.
+;;;; CYCO patterns bag.lisp
 ;;;;
+;;;; The BAG pattern generates random values without replacement.
+;;;;
+
+(in-package :cyco)
 
 (defclass bag (pattern)
   ((seed
@@ -15,7 +19,7 @@
   (:documentation
    "A BAG is a PATTERN which returns elements at random without
   replacement.  Once all elements have been retrieved, bag returns a
-  final value indefinitely.  The final 'value' may itselve be a pattern."))
+  final value indefinitely.  The final 'value' may itself be a pattern."))
 
 (defmethod bag-p ((object bag)) object)
 

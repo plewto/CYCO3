@@ -1,4 +1,7 @@
-;;;; CYCO   qball.lisp
+;;;; CYCO parts qball.lisp
+;;;;
+;;;; Defines QBALL part used for combinatoric note generation.
+;;;;
 
 (in-package :cyco-part)
 
@@ -143,7 +146,7 @@
        new-qball)))
 
 (setf (documentation 'qball 'function)
-      (sformat "The QBALL macro is identical to MAKE-QBALL function excpt that it binds the
+      (sformat "The QBALL macro is identical to MAKE-QBALL function except that it binds the
 new object to a symbol named name. ~%~A"
 	       +qball-docstring+))
        

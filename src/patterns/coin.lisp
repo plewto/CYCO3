@@ -1,5 +1,9 @@
-;;;; CYCO Coin Pattern
+;;;; CYCO pattern coin.lisp
 ;;;;
+;;;; The COIN pattern produces random binary choices.
+;;;;
+
+(in-package :cyco)
 
 (defclass coin (pattern)
   ((probability

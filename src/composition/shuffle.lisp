@@ -1,6 +1,9 @@
-;;;; CYCO
+;;;; CYCO composition
 ;;;;
+;;;; Defines default shuffle function.
 
+
+(in-package :cyco)
 
 (let ((docstring
        "A shuffle function selectively returns a time

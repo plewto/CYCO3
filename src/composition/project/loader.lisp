@@ -1,5 +1,10 @@
-;;;; CYCO3 composition/project/loader
+;;;; CYCO composition/project loader.lisp
 ;;;;
+;;;; Functions for loading project files.
+;;;;
+
+(in-package :cyco)
+
 
 (let ((current-project-main-file nil)
       (current-filename nil)

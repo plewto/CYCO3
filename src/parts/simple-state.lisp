@@ -1,4 +1,7 @@
-;;;; CYCO simple-part state.lisp
+;;;; CYCO parts simple-state.lisp
+;;;;
+;;;; Defines object for internal state of SIMPLE-PART.
+;;;;
 
 (in-package :cyco-part)
 

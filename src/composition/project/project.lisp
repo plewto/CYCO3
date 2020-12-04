@@ -1,5 +1,9 @@
-;;; CYCO
+;;;; CYCO composition/project project.lisp
 ;;;; 
+;;;; Defines the top-level project class.
+;;;;
+
+(in-package :cyco)
 
 (constant +project-properties+
 	  (append +time-signature-properties+

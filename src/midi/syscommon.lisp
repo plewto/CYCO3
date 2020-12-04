@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO midi syscommon.lisp
 ;;;;
+;;;; Defines MIDI "system common" messages.
+;;;;
+
+(in-package :cyco)
 
 
 (defclass midi-system-common-message (midi-message) nil)

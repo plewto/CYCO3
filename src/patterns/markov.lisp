@@ -1,4 +1,6 @@
-;;;; CYCO Markov Chain Pattern
+;;;; CYCO pattern markov.lisp
+;;;;
+;;;; The MARKOV pattern selects values from a random path.
 ;;;;
 ;;;; Defines Markov Chain in terms of a Pattern.
 ;;;; Before a chain is defined a graph must be created of markov-links,
@@ -8,7 +10,9 @@
 ;;;;
 ;;;; Once the graph has been defined it may be wrapped in a MARKOV-CHAIN
 ;;;; Pattern.  The resulting object may be used as any other pattern type.
-;;;;;
+;;;;
+
+(in-package :cyco)
 
 (defclass markov-link nil
   ((value
@@ -54,7 +58,7 @@ of each potential value."))
 (defun markov-link (value &rest ilinks)
   "Constructs new markov-link
 value - The links 'value', may be of any type.
-ilinks - potential destinationS, elements must have the form (value weight)"
+ilinks - potential destinations, elements must have the form (value weight)"
   (let ((node (make-instance 'markov-link :value value)))
     (dolist (lnk ilinks)
       (markov-add-link node (car lnk)(second lnk)))

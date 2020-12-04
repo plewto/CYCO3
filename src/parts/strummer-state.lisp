@@ -1,4 +1,6 @@
-;;;; cyco-strummer state.lisp
+;;;; CYCO parts strummer-state.lisp
+;;;; 
+;;;; Defines internal state of STRUMMER objects.
 ;;;;
 
 (defstruct strummer-state

@@ -1,7 +1,10 @@
-;;;; CYCO3 composition/project/render-mode
+;;;; CYCO composition/project section-render-mode.lisp
+;;;;
 ;;;; Defines order of Sections within a project and the manner in which
 ;;;; they are rendered.
+;;;;
 
+(in-package :cyco)
 
 (defstruct section-render-mode
   section-name

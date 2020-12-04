@@ -1,7 +1,9 @@
-;;;; CYCO table-wrapper
+;;;; CYCO util table-wrapper
 ;;;;
-;;;; Defines generic functions for wrapping list and vectors as functions
+;;;; Defines generic functions for wrapping list and simple-vectors as functions
+;;;;
 
+(in-package :cyco)
 
 (defmethod wrap ((table list) &key out-of-bounds-value)
   (let ((limit (length table)))

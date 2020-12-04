@@ -1,4 +1,7 @@
-;;;; CYCO simple-part part.lisp
+;;;; CYCO parts simple-part.lisp
+;;;;
+;;;; SIMPLE-PART generates MIDI events from a straight forward event list.
+;;;; See STRUMMER for more advanced features.
 ;;;;
 
 (in-package :cyco-part)

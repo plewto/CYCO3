@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO orchestra keynumber-map.lisp
 ;;;;
 ;;;; Functions to map elements to MIDI keynumbers.
 ;;;;
@@ -26,6 +26,9 @@
 ;;;; metronome-keynumber-map
 ;;;;   Highly specialized symbolic map for use with metronomes.
 ;;;;
+;;;;
+
+(in-package :cyco)
 
 (defun basic-keynumber-map (&key (min 0)(max 127)(transpose 0))
   "Creates a basic keynumber-map
@@ -132,7 +135,7 @@ The assignments list has the form  ((sym1 . keynumber1)
                                      ..................)
 
 For integer arguments the map functions as with circular-list-keynumber-map
-The spcial symbol 'x returns the first keynumber in the list."
+The spacial symbol 'x returns the first keynumber in the list."
   (flet ((docfn ()
 		(format t ";; Symbolic keynumber map~%")
 		(dolist (p assignments)

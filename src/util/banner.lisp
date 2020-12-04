@@ -1,6 +1,9 @@
-;;;; CYCO
+;;;; CYCO util banner.lisp
 ;;;;
 ;;;; Defines several text banners.
+;;;;
+
+(in-package :cyco)
 
 (constant +BANNER-BAR1+ (scopies 68 #\*))
 (constant +BANNER-HEADER1+ "*** ")

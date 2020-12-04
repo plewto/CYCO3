@@ -1,15 +1,20 @@
-;;;; CYCO
+;;;; CYCO composition
 ;;;;
-;;;; syntax within section context
+;;;;  Defines group object for muting collections of parts.
+;;;;
+;;;; Syntax within section context:
 ;;;;
 ;;;;   (group name  [parts....])
 ;;;;
-;;;; Functions on groups/parts
+;;;; Functions on groups/parts:
 ;;;;
-;;;;    (mute obj  [:mute :unmute :solo nil])
-;;;;    (unmute obj)
-;;;;    (solo obj)
+;;;;    (mute part-or-group  [:mute :unmute :solo nil])
+;;;;    (unmute part-or-group)
+;;;;    (solo part-or-group)
 ;;;;
+;;;;
+
+(in-package :cyco)
 
 (defclass group nil
   ((name

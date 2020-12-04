@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO chords  default-chords.lisp
 ;;;;
+;;;; Defines the default chord table *CHORD-TABLE*
+;;;;
+
+(in-package :cyco)
 
 (global *chord-table* (make-instance 'chord-table
 				     :name 'default-chord-table

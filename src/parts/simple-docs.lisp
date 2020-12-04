@@ -1,4 +1,6 @@
-;;;; cyco-simple documentation
+;;;; CYCO parts simple-docs.lisp
+;;;;
+;;;; Documentation for SIMPLE-PART
 ;;;;
 ;;;; SIMPLE-PART provides a straight forward event specifications
 ;;;; comparable to a stripped down STRUMMER part.  A SIMPLE-PART may
@@ -58,7 +60,7 @@
 ;;;;  Each sub-list is called an "event" and is composed of one or more
 ;;;;  "clauses", where each clause begins with a keyword followed by zero,
 ;;;;  one or two values, depending on the specific keyword.
-
+;;;;
 
 (in-package :cyco-part)
 

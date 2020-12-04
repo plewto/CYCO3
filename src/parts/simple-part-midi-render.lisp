@@ -1,4 +1,5 @@
-;;;; cyco-simple midi-render
+;;;; CYCO parts simple-part-midi-render.lisp
+;;;;
 ;;;; MIDI rendering functions for simple-part
 
 (in-package :cyco-part)

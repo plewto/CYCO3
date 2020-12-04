@@ -13,16 +13,21 @@
 ;;;;    |     |
 ;;;;    |     +-- part
 ;;;;    |          |
-;;;;    |          +-- programs leaf
-;;;;    |          +-- raw-part leaf
-;;;;    |          +-- strummer 
+;;;;    |          +-- control-ball
+;;;;    |          +-- control-ghost
 ;;;;    |          +-- controllers
-;;;;    |          +-- qball
-;;;;    |          +-- ghost
+;;;;    |          +-- key-ghost
 ;;;;    |          +-- metronome
+;;;;    |          +-- programs
+;;;;    |          +-- qball
+;;;;    |          +-- raw-part
+;;;;    |          +-- simple-part
+;;;;    |          +-- strummer
 ;;;;    |     
 ;;;;    +-- instrument
 ;;;;
+
+(in-package :cyco)
 
 (defclass cyco-node ()
   ((name

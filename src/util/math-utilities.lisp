@@ -1,5 +1,7 @@
-;;;; CYCO
+;;;; CYCO util math-utilities.lisp
 ;;;;
+
+(in-package :cyco)
 
 (defun 2+ (n)(+ 2 n))
 (defun 3+ (n)(+ 3 n))
@@ -32,7 +34,6 @@ value  - number,
 (defun mean (lst)
   (/ (float (apply #'+ lst))
      (length lst)))
-
 
 (defun dividesp (a b)
   "Predicate, true if b evenly divides a, b != 0"

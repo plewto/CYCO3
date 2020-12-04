@@ -1,4 +1,6 @@
-;;;; CYCO
+;;;; CYCO parts raw-part.lisp
+;;;;
+;;;; Defines primitive RAW-PART class for explicit MIDI event specification.
 ;;;;
 
 (in-package :cyco-part)

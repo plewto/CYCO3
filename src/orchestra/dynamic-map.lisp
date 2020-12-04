@@ -1,10 +1,12 @@
-;;;; CYCO
+;;;; CYCO orchestra dynamic-map.lisp
 ;;;;
 ;;;; A dynamic-map is a function which maps dynamic values to
 ;;;; 'normalized' amplitude between 0 and 1 inclusive or +REST+.
 ;;;; If the maps argument is :DOC it prints documentation and
 ;;;; returns +REST+
 ;;;;
+
+(in-package :cyco)
 
 (defun basic-dynamic-map (&key (scale 1)(min 0.0)(max 1.0))
   "Creates default dynamic-map (lambda dynamic) --> amplitude

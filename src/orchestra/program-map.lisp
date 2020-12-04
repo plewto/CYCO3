@@ -1,4 +1,4 @@
-;;;; CYCO
+;;;; CYCO orchestra program-map.lisp
 ;;;;
 ;;;; A Program-map is a function of form 
 ;;;;
@@ -17,7 +17,9 @@
 ;;;;    program = integer p        -> use program p, assuming it is a valid MIDI program number.
 ;;;;    program = something-else   -> dependent on the specific map function.
 ;;;;    program = nil              -> empty list
+;;;;
 
+(in-package :cyco)
 
 (defun null-program-map (time &key bank program)
   "A Dummy program-map used as a place-holder. 

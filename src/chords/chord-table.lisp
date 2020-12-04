@@ -1,5 +1,9 @@
-;;;; CYCO
-;;;; 
+;;;; CYCO chords chord-table.lisp
+;;;;
+;;;; Defines table for mapping symbolic names to chord structure.
+;;;;
+
+(in-package :cyco)
 
 (defclass chord-table (abstract-chord-model)
   ((templates
@@ -52,6 +56,3 @@
 	  (sformat "Undefined Chord: ~A" name)
 	  "Using default (0)")
 	 '(0)))))
-		     
-
-

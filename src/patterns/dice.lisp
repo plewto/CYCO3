@@ -1,5 +1,9 @@
-;;;; CYCO Dice Pattern
+;;;; CYCO pattern dice.lisp
 ;;;;
+;;;; The DICE pattern generates random values with replacement.
+;;;;
+
+(in-package :cyco)
 
 (defclass dice (pattern) nil
   (:documentation

@@ -1,3 +1,10 @@
+;;;; CYCO controller-number.lisp
+;;;;
+;;;; Defines symbolic controller numbers.
+;;;; May be depreciated.
+;;;;
+
+(in-package :cyco)
 
 (let ((controller-table (make-hash-table :size 128)))
 

@@ -1,5 +1,9 @@
-;;;; CYCO Cycle Pattern
+;;;; CYCO pattern cycle.lisp
 ;;;;
+;;;; A CYCLE pattern generates cyclical values.
+;;;;
+
+(in-package :cyco)
 
 (defclass cycle (pattern) nil
   (:documentation
@@ -10,7 +14,7 @@ cycle repeats."))
 (defmethod cycle-p ((object cycle)) object)
 
 (defun cycle (&key (of '()))
-  "Cre4ates new instance of cycle pattern."
+  "Creates new instance of cycle pattern."
   (let ((q (make-instance 'cycle :of (->list of))))
     (reset q)
     q))

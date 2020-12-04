@@ -1,6 +1,9 @@
-;;;; CYCO
+;;;; CYCO orchestra instrument.lisp
 ;;;;
 ;;;; NOTE: Child node of an Instrument must also be an Instrument.
+;;;;
+
+(in-package :cyco)
 
 (constant +instrument-properties+
 	  '(:program-map 

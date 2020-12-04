@@ -1,6 +1,9 @@
-;;;; CYCO Wrapper Pattern
+;;;; CYCO pattern wrapper.lisp
+;;;;
+;;;; The WRAPPER pattern allows a function to be treated as a pattern.
 ;;;;
 
+(in-package :cyco)
 
 (defclass wrapper (pattern)
   ((function

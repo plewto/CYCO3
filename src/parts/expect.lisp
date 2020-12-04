@@ -1,8 +1,7 @@
-;;;; CYCO parts/expect
+;;;; CYCO parts expect.lisp
 ;;;;
 ;;;; Utilities for parsing part event list
 ;;;;
-
 
 (in-package :cyco-part)
 

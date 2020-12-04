@@ -1,5 +1,9 @@
-;;;; CYCO
+;;;; CYCO midi smf-header.lisp
 ;;;; 
+;;;; Defines MIDI file header.
+;;;;
+
+(in-package :cyco)
 
 (defclass smf-header nil
   ((format

@@ -1,5 +1,8 @@
-;;;; CYCO
+;;;; CYCO globals.lisp
 ;;;;
+;;;; Defines global variables.
+
+(in-package :cyco)
 
 (global *os-path-root* "/")
 (global *os-path-separator* #\/)

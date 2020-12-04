@@ -1,4 +1,8 @@
-;;;; CYCO control-ball.lisp
+;;;; CYCO parts control-ball.lisp
+;;;;
+;;;; Defines CONTROL-BALL class for generating MIDI controller,
+;;;; pressure and bend events.
+;;;;
 
 (in-package :cyco-part)
 

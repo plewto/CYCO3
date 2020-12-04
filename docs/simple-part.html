@@ -44,15 +44,15 @@
     
     name          - part name
     instruments   - instrument or list of instruments.
-    :section      - parent section, defaults to current section of *PROJECT*.
+    :section      - parent section, defaults to current <a href='sections.html'>section</a> of *PROJECT*.
     :cuefn        - time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
     :shuffle      - time <a href='cue-functions.html#shuffle'>shuffle function</a>, defaults to section value.
     :shift        - time shift in seconds, default 0.0
     :tempo        - tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :unit         - time unit, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :bars         - bars per phrase, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :beats        - beats per bar, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :subbeats     - sub beats per beat, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :unit         - time-signature unit, defauts to section value.
+    :bars         - bars per phrase, defauts to section value.
+    :beats        - beats per bar, defauts to section value.
+    :subbeats     - sub beats per beat, defauts to section value.
     :render-once  - Boolean, if true generate events only on first repetition, default nil.
     :transposable - Boolean, if true part is subject to transpose and invert modifications, default t.
     :reversible   - Boolean, if true part is subject to retrograde modification, default t.

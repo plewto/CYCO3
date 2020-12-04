@@ -107,6 +107,7 @@
 	 
 	 (generate-source-events (ghost target-index offset)
 	    (let ((source-part (clone (parent ghost) :new-name "TEMP ~A")))
+	      (put source-part :mute nil)
 	      (reset source-part)
 	      (prog1
 		  (filter-events (render-once source-part :offset offset) target-index)

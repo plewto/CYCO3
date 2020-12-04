@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Control-ball</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=ghost.html class="navigation">Next: ghost </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/cball.png" alt="cball"/>
+  <h1 class="banner">CONTROL-BALL</h1>
+  <p class="body">
+    A <b>control-ball</b> part generates MIDI control-change, channel pressure and 
+    pitch-bend events.
+  </p>
+  <p class="body">
+    A series of events are generated between specified start and end times at a
+    fixed interval.  A <a href='patterns.html'>pattern</a> is used to produce the controller 
+    values.
+  </p>
+  <p class="body">
+    In addition to the main sequence of events.  Explicit initial and final 
+    events may be specified.
+  </p>
+  
+  <!-- (MAKE-CONTROL-BALL name controller instruments start end &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-CONTROL-BALL name controller instruments start end &key ...)</b><br>
+  
+  <!-- (CONTROL-BALL name controller instruments start end &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CONTROL-BALL name controller instruments start end &key ...)</b><br>
+  <pre class="description">
+    CONTROL-BALL and MAKE-CONTROL-BALL are identical except the later binds
+    the new part to the symbol name.  The name argument should be a quoted symbol for
+    MAKE-CONTROL-BALL and unquoted for CONTROL-BALL
+    
+    
+    name         - Symbol, parts name.
+    controller   - Integer, controller number to produce.
+    instruments  - MIDI channel <a href='glossary.html#midi-channel-designator'>designator</a> or list of designators.  Events are generated
+                   for each channel.
+    start        - Start time.  Format must be accepted by the <a href='cue-functions.html'>cue function</a>.
+    end          - End time. Format must be accepted by the cue function.
+    :section     - Parent <a href='sections.html'>section</a>, defaults to current section of *PROJECT*
+    :cuefn       - The cue function, defaults to section value.
+    :shift       - undocumented
+    :tempo       - Tempo in BPM, defaults to section value.
+    :unit        - <a href='time-signature.html'>time signature</a> beat unit, defaults to section value. 
+    :bars        - time-signature bars per phrase, defaults to section value. 
+    :beats       - time-signature beats per bar, defaults to section value. 
+    :subbeats    - time-signature subbeats per beat, defaults to section value. 
+    :interval    - Metric expression, time between generated events.  Defaults to 's
+    :pattern     - Value pattern, see below
+    :trim        - Integer, number of events to remove at end of main pattern.  This value is useful
+                   if the pattern generates spurious events.  Default 0.
+    :initial     - Cons (value . shift), generate an initial event shift seconds before start-time, where
+                   value is a <a href='glossary.html#normalized-value'>normalized value</a> and shift is a <a href='metrics.html#metric-expressions'>metric-expression</a>. Default nil.
+    :final       - Cons (value . shift), generate final event shift seconds after end-time.
+    :remarks     - Optional remarks text.
+    :render-once     - Boolean, if true do not repeat part within the section. Default nil.
+    :reset-on-repeat - Boolean, if true do not reset value-pattern when it repeats.  Default nil.
+  </pre>
+  <p class="body">
+    The events argument takes one of two forms
+  </p>
+  <ol>
+    <li><a href='patterns.html'>Pattern</a> object</li>
+    <li>Curve specification list</li>
+  </ol>
+  <p class="body">
+    If the value is a pattern it must only produce <a href='glossary.html#normalized-values'>normalized values</a>.  
+    Out of bounds values are clipped.
+  </p>
+  <p class="body">
+    A curve specification list has the general form:
+  </p>
+  <pre class="description">
+    
+        (:TYPE amp1 amp2 args....)
+    
+    where :TYPE is one of :RAMP  :SAWTOOTH  :TRIANGLE  or :PULSE
+    and the remaining values are arguments to the appropriate functions
+    
+    <a href='patterns.html#ramp'>(:RAMP start end :steps)</a>
+    
+    <a href='patterns.html#sawtooth'>(:SAWTOOH amp1 amp2 :cycles :phase :steps)</a>
+    
+    <a href='patterns.html#triangle'>(:TRIANGLE amp1 amp2 :cycles :phase :steps)</a>
+    
+    <a href='patterns.html#pulse'>(:PULSE amp1 amp2 :cycles :width :phase :steps)</a>
+    
+    The steps value is automatically set to match the number of generated events.
+  </pre>
+  <H2 class="heading">Examples</H2>
+  <p class="body">
+    Generate mod wheel events from minimum to maximum values between
+    start time of bar 2 and start of bar 3.  All time specifications assume
+    the default <a href='cue-functions.html'>cue function</a>.
+  </p>
+  <pre class="code">
+    (control-ball part-name 1 piano '(2 1 1) '(3 1 1) :pattern (:RAMP 0.0 1.0)) :interval 's)
+    
+    ;; Generates mod-wheel (controller 1) event every sixteenth note starting at 
+    ;; time (2 1 1) and ending at (3 1 1).  The initial value is 0.0 (~MIDI 0) and
+    ;; final value is 1.0 (MIDI ~ 127).
+    ;; 
+    ;; The events are generated on the channel specified by piano.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Same as above but generates events for both piano and channel 4.
+  </p>
+  <pre class="code">
+    (control-ball part-name 1 (list piano 4) '(2 1 1) '(3 1 1) :pattern (:RAMP 0.0 1.0)) :interval 's)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Same as first example but generate channel-pressure events.
+  </p>
+  <pre class="code">
+    (control-ball part-name :PRESSURE piano '(2 1 1) '(3 1 1) :pattern (:RAMP 0.0 1.0)) :interval 's)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Same as example 1 but generate pitch-bend events.   Bend values are signed.
+  </p>
+  <pre class="code">
+    (control-ball part-name :BEND piano '(2 1 1) '(3 1 1) :pattern (:RAMP -1.0 1.0)) :interval 's)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Generate pitch bend using a triangle shape.  Adds initial and final values.
+  </p>
+  <pre class="code">
+    (control-ball part-name :BEND piano '(2 1 1) '(3 1 1) 
+                    :pattern (:TRIANGLE -1.0 +1.0) :interval 's
+                    :initial (cons 0.0 's)
+                    :final (cons 0.0 's))
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Produce single event only by setting :PATTERN to nil
+  </p>
+  <pre class="code">
+    (control-ball part-name 1 piano '(2 1 1) '(3 1 1)
+                    :Pattern nil
+                    :initial (cons 0.5 0.0))
+    
+    A single mod wheel event with value 0.5 (~MIDI 64) is generated at time 
+    (2 1 1).  The end time argument is ignored.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <p class="body">
+    Produce random mod-wheel events by using a <a href='patterns.html#dice'>dice</a>
+    pattern
+  </p>
+  <pre class="code">
+    (control-ball part-name 1 piano '(2 1 1) '(3 1 1) :interval 's
+                    :pattern (dice :of (range 0.0 1.0 :by 0.007))
+                    :final (cons 0.0 's))  ;; reset mod wheel to 0.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=ghost.html class="navigation">Next: ghost </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

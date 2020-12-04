@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>Preroll section</title>
+      <title>Preroll & Endpad sections</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -14,10 +14,11 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=section.html class="navigation">Previous: section </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=sections.html class="navigation">Previous: sections </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/preroll.png" alt="preroll"/>
   <h1 class="banner">Preroll Sections</h1>
+  <a id="preroll"></a>
   <p class="body">
     <b>Preroll</b> is a specialized section for initializing MIDI programs and
     controller values.  It also contains a count-in <a href='specialized-parts.html#metronome'>metronome</a>.
@@ -34,7 +35,7 @@
   <b class="definition">(PREROLL &key ...)</b><br>
   <pre class="description">
     MAKE-PREROLL and PREROLL are identical except the later binds the new
-    instance to the symbol name while the former does not.   The name argument
+    section to the symbol name while the former does not.   The name argument
     should be quoted for MAKE-PREROLL and unquoted for PREROLL.
     
         Keyword arguments
@@ -51,8 +52,32 @@
         :beats       - Defaults to project's beats.
         :subbeats    - Defaults to project's subbeats.
   </pre>
+  <a id="endpad"></a>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=section.html class="navigation">Previous: section </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <p class="body">
+    <b>Endpadd</b> is a specialized section for terminating a MIDI file.  It produces 
+    a specified number of silent bars to allow space for final decay tails.
+  </p>
+  
+  <!-- (MAKE-ENDPAD  &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-ENDPAD  &key ...)</b><br>
+  
+  <!-- (ENDPAD  &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(ENDPAD  &key ...)</b><br>
+  <pre class="description">
+    MAKE-ENDPAD and ENDPAD are identical except the later binds the new
+    section to the symbol 'ENDPAD while the later does not.
+    
+    :project - defaults TO *PROJECT*
+    :bars    - number of bars, default 2.
+    :beats   - beats, number of beats per bar, defaults to project's value.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=sections.html class="navigation">Previous: sections </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

@@ -169,11 +169,26 @@ same name.
 	(format t "~A " (name part)))
       (format t "~%"))))
 
+
 (defmethod clone ((mother section) &key new-name new-parent)
-  (dismiss new-name new-parent)
-  (cyco-error (sformat "Section cloning not supported.")
-	      (sformat "Can not clone section ~A" (name mother)))
-  mother)
+  (let* ((frmt (or new-name "~A"))
+	 (name (->symbol (sformat frmt (name mother))))
+	 (parent (or new-parent (parent mother)))
+	 (daughter (make-section name
+				 :project parent
+				 :cuefn (property mother :cue-function)
+				 :shuffle (property mother :shuffle-function)
+				 :transposable (property mother :transposable)
+				 :reversible (property mother :reversible)
+				 :remarks (remarks mother))))
+    (dolist (child (children mother))
+      (clone child :new-parent daughter))
+    (put daughter :groups (clone (property mother :groups)))
+    (reset daughter)
+    daughter))
+    
+	 
+    
 	 
 (defmethod transpose ((section section)(n t))
   (if (property section :transposable)

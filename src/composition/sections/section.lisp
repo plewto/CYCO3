@@ -37,8 +37,6 @@ and chord-model parameters from the project but may selectivly override them."))
 	(put parent-section :current-part child-part)
 	child-part))))
 
-
-
 (defun make-section (name &key
 			  (project *project*)
 			  (cuefn nil)
@@ -277,3 +275,7 @@ is appended to the name if needed."   ))
     midi-file))
 
 
+(constant +NULL-SECTION+ (make-instance 'section
+					:name 'NULL-SECTION
+					:properties +SECTION-PROPERTIES+))
+					

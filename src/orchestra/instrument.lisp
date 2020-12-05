@@ -18,7 +18,7 @@
   ((channel-index
     :type integer
     :accessor instrument-channel-index
-    :initform nil))
+    :initform 0))
   (:documentation
    "An INSTRUMENT is a type of NODE used to represent an external MIDI 
 device.  They are essentially proxies for real-world synthesizers.

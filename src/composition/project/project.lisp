@@ -204,3 +204,12 @@ a symbol named name."
     (if (eq (name child) section-name)
 	(disconnect child))))
   
+(constant +NULL-PROJECT+ (make-instance 'project
+					:name 'null-project
+					:properties +PROJECT-PROPERTIES+))
+	  
+(put +NULL-PROJECT+ :tempo 60)
+(put +NULL-PROJECT+ :bars 1)
+(put +null-project+ :unit 'q)
+
+					

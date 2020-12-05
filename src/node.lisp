@@ -206,3 +206,5 @@ not."))
   (format t "  properties :~%")
   (dolist (k (property-keys n))
     (format t "      [~24A] --> ~A~%" k (property n k))))
+
+(constant +NULL-NODE+ (make-instance 'cyco-node))

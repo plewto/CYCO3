@@ -21,7 +21,7 @@
     :initform nil
     :initarg :value)
    (links
-    :type cons
+    :type list
     :accessor markov-links
     :initform nil))
   (:documentation
@@ -104,18 +104,20 @@ ilinks - potential destinations, elements must have the form (value weight)"
 	    (_invert mkv pivot)))
       mkv)))
 
+(constant +NULL-MARKOV-LINK+ (markov-link nil))
+
 ;; ----------------------------------------------------------
 
 (defclass markov-chain (pattern)
   ((root
     :type markov-link
     :accessor markov-root
-    :initform nil
+    :initform +NULL-MARKOV-LINK+
     :initarg :root)
    (current
     :type markov-link
     :accessor markov-current
-    :initform nil
+    :initform +NULL-MARKOV-LINK+
     :initarg :root))
   (:documentation
    "Wraps graph of markov-link objects in a Pattern."))

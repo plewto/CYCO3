@@ -27,9 +27,9 @@
     :accessor mute-state
     :initform nil)
    (parent-section
-    :type section
+    :type cyco-node
     :accessor parent
-    :initform nil
+    :initform +NULL-NODE+
     :initarg :parent)
    (member
     :type list ;; list of parts

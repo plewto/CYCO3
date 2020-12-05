@@ -13,9 +13,11 @@
 ;;;
 ;;; The new section is bound to the symbol PREROLL.
 ;;;
-(preroll :bars 1
-	 :beats 2
-	 :instruments (list piano flute *metronome*))
+
+(param foo (preroll
+	    :bars 2
+	    :beats 2
+	    :instruments (list piano flute *metronome*)))
 
 ;;; Write the preroll section to a MIDI file.
 ;;;

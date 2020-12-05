@@ -6,7 +6,7 @@
 ;;; Defines section
 (section verse :bars 7)
 
-;; (metronome verse-metronome)
+(metronome verse-metronome)
 
 (simple-part verse-melody flute
 	     :events '((:time (1 1 1) :key d5  :dur e  :amp mf )
@@ -84,7 +84,7 @@
 	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0    )
 	       (:time (7 1 1) :key f4  :chord [maj] :inv 1 :oct 1 :dur h.)))
 
-;; (mute verse-metronome   :mute)
+(mute verse-metronome   :mute)
 (mute verse-melody      nil  )
 (mute verse-piano-left  nil  )
 (mute verse-piano-right nil  )

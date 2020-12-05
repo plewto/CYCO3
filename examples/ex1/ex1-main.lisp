@@ -24,7 +24,7 @@
 ;;;
 
 (project ex1
-	 :tempo 60    
+	 :tempo 90    
 	 :bars 7                   ;; bars per phrase, odd length that!
 	 :beats 2                  ;; beats per bar, IE in 2/4 time.
 	 :title "Moscow Nights"
@@ -38,8 +38,6 @@
 (lpf 'preroll)
 (lpf 'verse)
 
-(section-order '(preroll verse))
-
-(dump-events (render-project))
+(section-order '(preroll (verse :x 2)))
 
 (project->midi)

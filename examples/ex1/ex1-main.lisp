@@ -25,7 +25,7 @@
 
 (project ex1
 	 :tempo 90    
-	 :bars 7                   ;; bars per phrase, an unusual length. 
+	 :bars 8                   ;; bars per phrase.
 	 :beats 2                  ;; beats per bar, IE in 2/4 time.
 	 :title "Moscow Nights"
 	 :remarks "CYCO example project 1")
@@ -35,4 +35,6 @@
 ;;;
 
 (lpf 'orchestra)
+(lpf 'preroll)
+(lpf 'verse)
 

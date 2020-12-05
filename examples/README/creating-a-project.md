@@ -51,7 +51,7 @@ projects-root directory.
 
 #### Loading a project
 
-ERntering  **(LP project-name)** loads the main-file of the named project.
+Entering  **(LP project-name)** loads the main-file of the named project.
 Do not quote the name argument.  Subsequently calling LP without an argument reloads the project.  
 
 The default project-name is persistent between CYCO runs.  Entering (LP)

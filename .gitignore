@@ -5,3 +5,6 @@
 .\#*
 
 current-project-name
+
+# MIDI files
+*.mid

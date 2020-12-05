@@ -25,7 +25,7 @@
 
 (project ex1
 	 :tempo 90    
-	 :bars 8                   ;; bars per phrase.
+	 :bars 7                   ;; bars per phrase, odd length that!
 	 :beats 2                  ;; beats per bar, IE in 2/4 time.
 	 :title "Moscow Nights"
 	 :remarks "CYCO example project 1")
@@ -38,3 +38,6 @@
 (lpf 'preroll)
 (lpf 'verse)
 
+(section-order '(preroll (verse :x 2)))
+
+(project->midi)

@@ -1,7 +1,10 @@
 ;;;; CYCO examples ex1 verse.lisp
 ;;;;
 
-(section verse :bars 8)
+
+
+;;; Defines section
+(section verse :bars 7)
 
 (metronome verse-metronome)
 
@@ -59,32 +62,27 @@
 (simple-part verse-piano-right piano
 	     :events
 	     '((:time (1 1 1) :dur e :amp f)
-	       (:time (1 1 1) :key d4 :chord [min]    :inv 1 )
-	       (:time (1 1 3) :key d4 :chord dy[min3] :inv 0 )
-	       (:time (1 2 1) :key a5 :chord [solo]                )
-	       (:time (1 2 3) :key f5                              )
-	       (:time (2 1 1) :key g5                  :dur q      )
-	       (:time (2 1 3) :key bf4 :chord dy[maj3] :dur e      )
-	       (:time (2 2 1) :key f5  :chord [solo]               )
-	       (:time (2 2 3) :key d5  :chord dy[min2]             )
-	       (:time (3 1 1) :key a5  :chord [solo]   :dur q      )
-	       (:time (3 2 1) :key cs5                 :dur e      )
-	       (:time (3 2 3) :key g5                  :dur q      )
-	       (:time (4 1 1) :key d5                  :dur h      )
-	       (:time (4 1 3) :key a4                  :dur q.     )
-	       (:time (5 1 1) :key f4 :chord [maj] :inv 2 :dur e)
-	       (:time (5 1 3) :key f4              :inv 1       )
-	       (:time (5 2 1) :key f5 :chord [maj] :inv 0 :dur e)
-	       (:time (5 2 3) :key f5                                 )
-	       (:time (6 1 1) :key bf4 :chord [maj] :inv 1    :dur q)
-	       (:time (6 2 1) :key f5  :chord [maj] :inv 0    :dur e)
-	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0                  )
-	       (:time (7 1 1) :key f4  :chord [maj]    :inv 1 :oct 1 :dur h.)))
-
-
-
-
-
+	       (:time (1 1 1) :key d4 :chord [min]    :inv 1  )
+	       (:time (1 1 3) :key d4 :chord dy[min3] :inv 0  )
+	       (:time (1 2 1) :key a5 :chord [solo]           )
+	       (:time (1 2 3) :key f5                         )
+	       (:time (2 1 1) :key g5                  :dur q )
+	       (:time (2 1 3) :key bf4 :chord dy[maj3] :dur e )
+	       (:time (2 2 1) :key f5  :chord [solo]          )
+	       (:time (2 2 3) :key d5  :chord dy[min2]        )
+	       (:time (3 1 1) :key a5  :chord [solo]   :dur q )
+	       (:time (3 2 1) :key cs5                 :dur e )
+	       (:time (3 2 3) :key g5                  :dur q )
+	       (:time (4 1 1) :key d5                  :dur h )
+	       (:time (4 1 3) :key a4                  :dur q.)
+	       (:time (5 1 1) :key f4 :chord [maj] :inv 2  :dur e)
+	       (:time (5 1 3) :key f4              :inv 1        )
+	       (:time (5 2 1) :key f5 :chord [maj] :inv 0  :dur e)
+	       (:time (5 2 3) :key f5                            )
+	       (:time (6 1 1) :key bf4 :chord [maj] :inv 1 :dur q)
+	       (:time (6 2 1) :key f5  :chord [maj] :inv 0 :dur e)
+	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0    )
+	       (:time (7 1 1) :key f4  :chord [maj] :inv 1 :oct 1 :dur h.)))
 
 (mute verse-metronome   :mute)
 (mute verse-melody      nil  )

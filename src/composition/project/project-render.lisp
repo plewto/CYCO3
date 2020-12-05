@@ -23,6 +23,7 @@
 	      (if (not (zerop xpose))(transpose section xpose))
 	      (if invert-pivot (invert section invert-pivot))
 	      (if retro (retrograde section))
+	      (format t "[TIME ~5,4F] ~12A period ~5,4f      ~%"   (+ shift time)  section-name period  )
 	      (setf acc (append acc (render-n section count :offset (+ shift time))))
 	      (setf time (+ time (* count period)))
 	      (disconnect section))

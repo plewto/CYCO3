@@ -135,11 +135,15 @@ The available clause types are detailed below.
                         (:key c5 :chord (0 4 7))
 
 :inversion      - :inversion degree    -12 <= degree <= +12
-                  Set the chord inversion degree.  See CHORD-INVERSION
+:inv              Set the chord inversion degree.  See CHORD-INVERSION
                   function. 
 
+                  :inversion and :inv are identical.
+
 :octave         - :octave n   -3 <= n <= +3
-                  Sets added chord octave.  See CHORD-INVERSION function.
+:oct              Sets added chord octave.  See CHORD-INVERSION function.
+
+                  :octave and :oct are identical.
 
 :strum          - :strum delay
                   Sets delay time of successive chord notes.  delay may

@@ -143,9 +143,9 @@ Commands fall into two general classes;
              The ABSOLUTE-CHORDS-P predicate may be used to determine if a 
              chord-model is absolute or not.  +CHORD-TABLE+ is the default 
              chord-model and is not absolute.
-             
+
 :inversion - :inversion degree    -12 <= degree <= +12
-             Sets the chord inversion by rotating notes in the chord template 
+:inv         Sets the chord inversion by rotating notes in the chord template 
              list.  For chord (0 3 7)
 
              degree -1   --> (7 0 3)
@@ -155,9 +155,11 @@ Commands fall into two general classes;
              Inversion has no audible effect unless paired with an octave 
              value.  Note, for STRUMMER parts inversion does make a 
              difference with or without an octave value.
-             
+
+             :inversion and :inv are identical.
+
 :octave    - :octave n    -3 <= n <= +3
-             Inserts a note shifted n octaves from the first note in the 
+:oct         Inserts a note shifted n octaves from the first note in the 
              chord template.  For chord (0 3 7)
 
              octave -1 --> (0 3 7 -12) 
@@ -168,6 +170,8 @@ Commands fall into two general classes;
              original (0 3 7)
              inversion 1 --> (3 7 0)
              octave 1    --> (3 7 0 15)
+
+             :octave and :oct are identical.
 
 :dur       - :dur metric-expression   or  :dur float
              Sets note duration by metric-expression or by floating point 

@@ -85,7 +85,7 @@
   		  
          :RESET  :TIME  :CHORD    :INVERSION  :OCTAVE  :STRUM  :STRUM*  :DIRECTION<br>
          :END-TOGETHER  :AMP*     :GRACE-AMP  :GRACE-DURATION  :GRACE-DELAY<br>
-         :AMP    :CRES  :AMP-BLUR :AMP-LIMIT<br><br></li>
+         :AMP    :CRES  :AMP-BLUR :AMP-LIMIT  :INV :OCT<br><br></li>
     <li>Those which generate events.  Once the events are generated these
          clauses are cleared.  These include:<br><br>
   
@@ -138,12 +138,19 @@
                       (:key c5 :chord (0 4 7))
     
     :INVERSION degree        -12 <= degree <= +12
+    :INV degree
     
          Same as <a href='simple-part.html'>simple-part</a> 
+          
+         :INVERSION and :INV are identical. 
+    
     
     :OCTAVE n                -3 <= n <= +3
+    :OCT n
     
         Same as <a href='simple-part.html'>simple-part</a>   
+    
+        :OCTAVE and :OCT are identical.
     
     :STRUM delay
     

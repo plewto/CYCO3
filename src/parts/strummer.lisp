@@ -28,7 +28,9 @@
 	(gethash :time argument-count-table) 1
 	(gethash :chord argument-count-table) 1
 	(gethash :inversion argument-count-table) 1
+	(gethash :inv argument-count-table) 1
 	(gethash :octave argument-count-table) 1
+	(gethash :oct argument-count-table) 1
 	(gethash :strum argument-count-table) 1
 	(gethash :strum* argument-count-table) 1
 	(gethash :direction argument-count-table) 1
@@ -300,8 +302,10 @@
 	       ((eq command :reset) (reset state))
 	       ((eq command :time) (process-time strummer state clause))
 	       ((eq command :chord) (process-chord strummer state event clause))
-	       ((eq command :inversion) (process-chord-inversion strummer state event clause))
-	       ((eq command :octave) (process-chord-octave strummer state event clause))
+	       ((or (eq command :inversion)(eq command :inv))
+		(process-chord-inversion strummer state event clause))
+	       ((or (eq command :octave)(eq command :oct))
+		(process-chord-octave strummer state event clause))
 	       ((eq command :strum) (process-strum-delay strummer state event clause))
 	       ((eq command :strum*) (process-strum-acceleration strummer state event clause))
 	       ((eq command :direction) (process-strum-direction strummer state event clause))

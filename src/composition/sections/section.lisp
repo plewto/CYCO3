@@ -287,11 +287,24 @@ is appended to the name if needed."   ))
     (write-smf midi-file output-filename :pad pad)
     midi-file))
 
-
 (defun  get-section-part (section part-name)
+  "Returns the named part from section.
+It is a CYO-ERROR if the part does not exissts."
   (or (find-child section part-name)
       (cyco-error
-       (sformat "Section ~A does not contain part named ~A~" (name section) part-name))))
+       (sformat "Section ~A does not contain part named: ~A" (name section) part-name))))
+
+(defun bulk-rename-parts (section prefix-trim new-prefix)
+  "Renames all section parts.
+
+section     - The section.
+prefix-trim - Number of characters to remove from the left of each name.
+new-prefix  - prefix added to each name."
+  (dolist (child (remove-if-not #'part-p (children section)))
+    (let* ((old-name (->string (name child)))
+	   (suffix (subseq old-name prefix-trim))
+	   (new-name (str+ new-prefix suffix)))
+      (name! child (->symbol new-name)))))
 
 
 (constant +NULL-SECTION+ (make-instance 'section

@@ -169,7 +169,6 @@ same name.
 	(format t "~A " (name part)))
       (format t "~%"))))
 
-
 (defmethod clone ((mother section) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (name (->symbol (sformat frmt (name mother))))
@@ -188,9 +187,6 @@ same name.
     (put daughter :groups (clone (property mother :groups)))
     (reset daughter)
     daughter))
-    
-	 
-    
 	 
 (defmethod transpose ((section section)(n t))
   (if (property section :transposable)
@@ -290,6 +286,12 @@ is appended to the name if needed."   ))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
     midi-file))
+
+
+(defun  get-section-part (section part-name)
+  (or (find-child section part-name)
+      (cyco-error
+       (sformat "Section ~A does not contain part named ~A~" (name section) part-name))))
 
 
 (constant +NULL-SECTION+ (make-instance 'section

@@ -2,18 +2,40 @@
 ;;;;
 ;;;; Defines the PART class.
 ;;;;
+;;;; CYCO-NODE
+;;;;  |
+;;;;  +-- TIME-SIGNATURE
+;;;;       |
+;;;;       +-- PART
+;;;;            |
+;;;;            +-- CONTROL-BALL
+;;;;            +-- CONTROL-GHOST
+;;;;            +-- KEY-GHOST
+;;;;            +-- PROGRAMS
+;;;;            +-- QBALL
+;;;;            |    |
+;;;;            |    +-- metronome (pseudo part)
+;;;;            |
+;;;;            +-- RAW-PART
+;;;;            +-- SIMPLE-PART
+;;;;            +-- STRUMMER
+;;;;          
 
 (in-package :cyco-part)
 
+(constant +part-specific-properties+ 
+	  '(:chord-model
+	    :instruments
+	    :cue-function
+	    :muted
+	    :transposable
+	    :reversible
+	    :group))
+	  
 (constant +part-properties+
 	  (append +time-signature-properties+
-		  '(:chord-model
-		    :instruments
-		    :cue-function
-		    :muted
-		    :transposable
-		    :reversible
-		    :group)))
+		  +part-specific-properties+))
+		 
 		    
 (defclass part (time-signature) nil
   (:documentation
@@ -95,5 +117,10 @@ used directly."))
 (defmethod dump-events ((part part) &key (range (cons 0 1e9))(filter #'false)(render nil))
   (dump-events (render-once part) :range range :filter filter :render render))
 
+(defgeneric copy-part-properties (source destination))
 
-
+(defmethod copy-part-properties ((source part)(destination part))
+  (dolist (p +part-specific-properties+)
+    (put destination p (clone (property source p)))))
+  
+  

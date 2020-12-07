@@ -136,8 +136,10 @@ subject to the Section cueing function."))
 			     :transposable (property mother :transposable)
 			     :section parent
 			     :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (setf (event-list daughter) (clone (event-list mother)))
+    (reset daughter)
     daughter))
 
 

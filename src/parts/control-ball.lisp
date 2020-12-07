@@ -247,6 +247,7 @@
 			    :initial initial
 			    :final final
 			    :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     daughter)) 
 

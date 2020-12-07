@@ -104,6 +104,7 @@ Programs are always a leaf node."))
 			     :section parent
 			     :render-once (property mother :render-once)
 			     :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (setf (programs-events daughter)
 	  (clone (programs-events mother)))

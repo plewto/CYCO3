@@ -197,6 +197,8 @@ new object to a symbol named name. ~%~A"
 			  :amp (clone (property mother :dynamic-pattern))
 			  :reset-on-repeat (property mother :reset-on-repeat)
 			  :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (put daughter :shift (property mother :shift))
+    (reset daughter)
     daughter))

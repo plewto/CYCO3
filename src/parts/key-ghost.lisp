@@ -85,6 +85,8 @@
 				   :velocity-map (property mother :velocity-map)
 				   :render-once (property mother :render-once)
 				   :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
+    (copy-time-signature mother daughter)
     daughter))
 
 

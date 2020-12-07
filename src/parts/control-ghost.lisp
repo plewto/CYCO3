@@ -124,6 +124,8 @@ new part object to the symbol name."
 				    :delay (property mother :delay)
 				    :value-map (property mother :value-map)
 				    :remarks (remarks mother))))
+    (copy-part-properties mother daughter)
+    (copy-time-signature mother daughter)
     daughter))
 
 

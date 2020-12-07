@@ -77,9 +77,7 @@
 			       :instrument ,instrument)))
      (defparameter ,name met)
      met))
-			
-	  
-			       
+
 
 (setf (documentation 'make-metronome 'function)
       	  "Metronome is a specialized part for generating metric ticks.

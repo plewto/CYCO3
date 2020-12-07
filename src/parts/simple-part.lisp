@@ -241,9 +241,11 @@
 				     :shift (property mother :shift)
 				     :remarks (remarks mother)
 				     :events '())))
+    (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (setf (simple-part-states daughter)
 	  (clone (simple-part-states mother)))
+    (reset daughter)
     daughter))
       
 	      

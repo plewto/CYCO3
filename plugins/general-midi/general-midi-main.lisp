@@ -49,7 +49,7 @@ name       - Symbol
 :program   - Symbol or integer program-number, defaults to name.
              If an integer is used it must be in range 0,127 inclusive.
              If program is a symbol it must match an entry in 
-             +GENERAL-MIDI-PROGRAMS+.  The function ?GENERAL-MIDI-PROGRAMS 
+             +GENERAL-MIDI-PROGRAMS+.  The function ?GENERAL-MIDI
              displays a list of valid program symbols.
 :parent    - nil or instance of Instrument, defaults to *ROOT-INSTRUMENT*
 :transient - bool, If true this instrument is purged form the orchestra

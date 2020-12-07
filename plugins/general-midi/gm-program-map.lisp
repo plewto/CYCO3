@@ -135,7 +135,7 @@
 	       (q (nth index +general-midi-programs+)))
 	   (format t frmt (second q)(first q)(third q)))))
 
-  (defun ?general-midi-programs ()
+  (defun ?general-midi ()
     "Displays list of general MIDI programs."
     (format t ";; General MIDI Programs~%")
     (dotimes (i 128)
@@ -152,7 +152,7 @@ Use (?GENEAL-MIDI-PROGRAMS) for a list of valid programs."
 	(cyco-warning
 	 (sformat "Invalid General MIDI program: ~A" p)
 	 "Using default program 0."
-	 "Try (?GENERAL-MIDI-PROGRAMS) for list of options.")
+	 "Try (?GENERAL-MIDI) for list of options.")
 	0)))
 
 (defun general-midi-program-p (program-name)

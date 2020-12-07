@@ -28,14 +28,17 @@
 			 :channel 1
 			 :program 'piano1)
 
-;;; Create the flute instrument on channel 2.  There is no need to specify
-;;; the specific flute since the instrument's name exactly matches
-;;; a general-midi program.
-;;;
+;;; Create the flute and vibes instruments on channel 2 and 3.  
+;;; There is no need to specify a value for :program since both instrument
+;;; names exactly match a general-midi program.
 
 (general-midi-instrument flute
 			 :channel 2
 			 :keynumber-map (basic-keynumber-map :transpose 12))
+
+(general-midi-instrument vibes
+			 :channel 3)
+
 
 ;;; Creates an instrument to use as metronome on channel 16 using the 
 ;;; general-midi woodblock.  The woodblock is bound to the global

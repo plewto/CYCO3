@@ -36,8 +36,9 @@
 
 (lpf 'orchestra)
 (lpf 'preroll)
-(lpf 'verse)
+(lpf 'a)
+(lpf 'b)
 
-(section-order '(preroll (verse :x 2)))
+(section-order '(preroll a b))
 
 (project->midi)

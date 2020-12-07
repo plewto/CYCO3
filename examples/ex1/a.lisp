@@ -1,14 +1,13 @@
-;;;; CYCO examples ex1 verse.lisp
+;;;; CYCO examples ex1 a.lisp
 ;;;;
 
 
-
 ;;; Defines section
-(section verse :bars 7)
+(section a :bars 7)
 
-(metronome verse-metronome)
+(metronome a-metronome)
 
-(simple-part verse-melody flute
+(simple-part a-melody flute
 	     :events '((:time (1 1 1) :key d5  :dur e  :amp mf )
 		       (:time (1 1 3) :key e5                  )
 		       (:time (1 2 1) :key a5                  )
@@ -29,7 +28,7 @@
 		       (:time (7 1 1) :key a5  :dur h.         )))
 
 
-(simple-part verse-piano-left piano
+(simple-part a-piano-left piano
 	     :events
 	     '((:time (1 1 1) :amp f)
 	       (:time (1 1 1) :key d3  :chord (0 12) :dur q )
@@ -59,7 +58,7 @@
 	       (:time (7 2 1) :key g4                       )
 	       (:time (7 2 3) :key f4                       )))
 
-(simple-part verse-piano-right piano
+(simple-part a-piano-right piano
 	     :events
 	     '((:time (1 1 1) :dur e :amp f)
 	       (:time (1 1 1) :key d4 :chord [min]    :inv 1  )
@@ -84,13 +83,9 @@
 	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0    )
 	       (:time (7 1 1) :key f4  :chord [maj] :inv 1 :oct 1 :dur h.)))
 
-(mute verse-metronome   :mute)
-(mute verse-melody      nil  )
-(mute verse-piano-left  nil  )
-(mute verse-piano-right nil  )
+(mute a-metronome   :mute )
+(mute a-melody      nil  )
+(mute a-piano-left  nil  )
+(mute a-piano-right nil  )
 
-(->midi verse :repeat 2)
-
-
-
-
+(->midi a :repeat 2)

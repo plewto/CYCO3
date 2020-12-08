@@ -6,7 +6,7 @@
 (defpackage :cyco-part
   (:use :cl)
   (:import-from :cyco
-			:*project*
+		:*project*
 		:+default-keytable+
 		:+rest+
 		:+time-signature-properties+
@@ -151,22 +151,12 @@
 (src-load "control-ball-docs")
 (src-load "control-ball")
 (src-load "control-ball-midi-render")
-(src-load "control-ghost")
-(src-load "key-ghost")
-
-
 
 (export '(*strummer-render-trace*
 	  control-ball
 	  control-ball-p
-	  control-ghost
-	  control-ghost-p
-	  key-ghost
-	  key-ghost-p
 	  make-control-ball
-	  make-control-ghost
 	  make-controllers
-	  make-key-ghost
 	  make-metronome
 	  make-programs
 	  make-qball
@@ -187,12 +177,7 @@
 (import '(cyco-part:*strummer-render-trace*
           cyco-part:control-ball
           cyco-part:control-ball-p
-          cyco-part:control-ghost-p
-          cyco-part:key-ghost
-          cyco-part:key-ghost-p
           cyco-part:make-control-ball
-          cyco-part:make-control-ghost
-          cyco-part:make-key-ghost
           cyco-part:make-metronome
           cyco-part:make-programs
           cyco-part:make-qball
@@ -207,7 +192,6 @@
           cyco-part:raw-part-p
           cyco-part:simple-part
           cyco-part:simple-part-p
-          cyco-part:control-ghost
           cyco-part:strummer
           cyco-part:strummer-p) :cyco)
 

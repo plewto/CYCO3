@@ -10,7 +10,6 @@
 (constant +strummer-properties+
 	  (append +part-properties+
 		  '(
-		    :render-once
 		    :shuffle-function
 		    )))
 

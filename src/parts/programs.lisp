@@ -5,11 +5,7 @@
 
 (in-package :cyco-part)
 
-(constant +programs-properties+
-	  (append +part-properties+
-		  '(
-		    :render-once
-		    )))
+(constant +programs-properties+ +part-properties+)
 
 (defclass programs (part)
   ((events
@@ -56,6 +52,7 @@ Programs are always a leaf node."))
 				 :name name
 				 :remarks (->string (or remarks "")))))   
 	(connect parent new-programs-part)
+	(init-time-signature new-programs-part)
 	(let ((event-time (funcall (property new-programs-part :cue-function) new-programs-part time))
 	      (midi-events '()))
 	  ;; ISSUE: A confused mess~

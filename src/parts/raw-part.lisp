@@ -5,11 +5,7 @@
 
 (in-package :cyco-part)
 
-(constant +raw-part-properties+
-	  (append +part-properties+
-		  '(
-		    :render-once
-		    )))
+(constant +raw-part-properties+ +part-properties+)
 
 (defclass raw-part (part)
   ((event-list

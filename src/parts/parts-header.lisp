@@ -37,6 +37,7 @@
 		:final
 		:get-controller-number
 		:global
+		:init-time-signature
 		:invert
 		:keynumber
 		:keynumber-map

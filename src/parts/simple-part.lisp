@@ -9,7 +9,6 @@
 (constant +simple-part-properties+
 	  (append +part-properties+
 		  '(
-		    :render-once
 		    :shuffle-function
 		    )))
 

@@ -28,6 +28,7 @@
 	    :group
 	    :instruments
 	    :muted
+	    :render-once
 	    :reversible
 	    :shift
 	    :transposable

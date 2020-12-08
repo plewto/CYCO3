@@ -16,7 +16,6 @@
 		    :final-value-time-shift
 		    :initial-value
 		    :initial-value-time-shift
-		    :render-once
 		    :reset-on-repeat
 		    :start-cue
 		    :time-interval
@@ -144,6 +143,7 @@
 	(put control-ball :time-interval (or interval 's))
 	(put control-ball :shift (float (or shift 0.0)))
 	(put control-ball :reset-on-repeat reset-on-repeat)
+	(init-time-signature control-ball)
 	(let ((v (car initial))
 	      (time-shift (or (cdr initial) 0)))
 	  (put control-ball :initial-value v)
@@ -154,6 +154,7 @@
 	  (put control-ball :final-value-time-shift (and v time-shift)))
 	(put control-ball :value-pattern (create-pattern control-ball pattern))
 	(reset control-ball)
+	(format t "DEBUG MAKE-CONTROL-BALL bars --> ~A   (bars part) --> ~A~%" bars (bars control-ball))
 	control-ball))) )
 
 (setf (documentation 'make-control-ball 'function) +control-ball-docstring+)

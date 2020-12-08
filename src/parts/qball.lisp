@@ -12,7 +12,6 @@
 		    :cue-cycle
 		    :dynamic-pattern
 		    :key-pattern
-		    :render-once
 		    :reset-on-repeat
 		    :shuffle-function
 		    )))

@@ -3,6 +3,7 @@
 ;;;; A CONTROL-GHOST produces modified copies of MIDI controller events
 ;;;; from another part.
 ;;;;
+;;;; *** NOT TESTED ***
 
 (in-package :cyco-part)
 
@@ -33,7 +34,9 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 
 (constant +control-ghost-properties+
   (append +part-properties+
-	  '(:source-controller
+	  '(:source-part
+	    :shift
+	    :source-controller
 	    :source-channel
 	    :out-controller
 	    :out-channels
@@ -59,8 +62,10 @@ source-channel    - Integer or instrument.  The MIDI channel to copy.
 			      :name name
 			      :remarks (->string (or remarks ""))
 			      :transient t)))
-    (connect source-part ghost)
+    (connect (parent source-part) ghost)
     (copy-time-signature source-part ghost)
+    (put ghost :shift 0.0)
+    (put ghost :source-part source-part)
     (put ghost :source-controller source-controller)
     (put ghost :source-channel (channel source-channel :resolve))
     (put ghost :out-controller (or out-controller 1))
@@ -131,7 +136,7 @@ new part object to the symbol name."
 
 
 (labels ((generate-source-events (ghost offset)
-	    (let ((source-part (clone (parent ghost) :new-name "TEMP")))
+	    (let ((source-part (clone (property ghost :source-property) :new-name "TEMP")))
 	      (put source-part :mute nil)
 	      (reset source-part)
 	      (prog1

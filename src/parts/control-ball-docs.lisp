@@ -16,7 +16,7 @@ start       - Start time, must be in a format accepted by cuefn.
 end         - End time, must be in a format accepted by cuefn.
 :section    - Parent section, defaults to current section of *PROJECT*
 :cuefn      - Time cue function, defaults to section value.
-:shift      - Metric-expression, defaults to 0.0
+:shift      - float, time offset in seconds added to each event, default 0.0
 :tempo      - Defaults to parent section value.  
 :unit       - Defaults to parent section value.
 :bars       - Defaults to parent section value.

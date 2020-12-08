@@ -9,9 +9,10 @@
 
 (constant +strummer-properties+
 	  (append +part-properties+
-		  '(:shift
+		  '(
+		    :render-once
 		    :shuffle-function
-		    :render-once)))
+		    )))
 
 (defclass strummer (part)
   ((states				
@@ -376,7 +377,7 @@
 	(put new-strummer :reversible reversible)
 	(put new-strummer :chord-model chord-model)
 	(put new-strummer :muted nil)
-	(put new-strummer :shift (or shift 0.0))
+	(put new-strummer :shift (float (or shift 0.0)))
 	(connect parent new-strummer)
 	(setf (strummer-states new-strummer)
 	      (process-states new-strummer (->list events)))

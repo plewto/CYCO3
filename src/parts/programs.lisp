@@ -7,8 +7,9 @@
 
 (constant +programs-properties+
 	  (append +part-properties+
-		  '(:render-once
-		    :shift)))
+		  '(
+		    :render-once
+		    )))
 
 (defclass programs (part)
   ((events
@@ -47,7 +48,7 @@ Programs are always a leaf node."))
 					(t (cyco-composition-error 'make-programs
 								   "No default project")))))		  
        
-    (defun make-programs (name instruments &key time section remarks render-once)
+    (defun make-programs (name instruments &key time section remarks render-once shift)
       docstring
       (let* ((parent (validate-parent-section section))
 	     (new-programs-part (make-instance 'programs
@@ -74,7 +75,7 @@ Programs are always a leaf node."))
 		     (setf prognum (second program-specification-list))
 		     (setf bank (third program-specification-list))) )
 	      (put new-programs-part :render-once render-once)
-	      (put new-programs-part :shift 0.0) ;; constant
+	      (put new-programs-part :shift (float (or shift 0.0)))
 	      (put new-programs-part :reversible nil)
 	      (setf prognum (or prognum :default))
 	      (setf bank (or bank :default))
@@ -85,7 +86,7 @@ Programs are always a leaf node."))
 	  new-programs-part)))))
 	  
 
-(defmacro programs (name instruments &key time section remarks render-once)
+(defmacro programs (name instruments &key time section remarks render-once shift)
   "Same as make-programs but binds the programs object to name symbol."
   `(progn
      (part-banner (name ,section) ',name)
@@ -93,6 +94,7 @@ Programs are always a leaf node."))
 			       :time ,time
 			       :section ,section
 			       :render-once ,render-once
+			       :shift ,shift
 			       :remarks ,remarks)))
        (defparameter ,name new-programs-part)
        new-programs-part)))
@@ -112,11 +114,12 @@ Programs are always a leaf node."))
 
 (defmethod render-once ((programs-part programs) &key (offset 0))
   (if (muted-p programs-part)(return-from render-once '()))
-  (let ((midi-events '()))
+  (let ((midi-events '())
+	(shift (+ offset (property programs-part :shift))))
     (dolist (event (programs-events programs-part))
       (let ((event-time (car event))
 	    (message (cdr event)))
-	(push (cons (+ event-time offset) message) midi-events)))
+	(push (cons (+ event-time shift) message) midi-events)))
     (sort-midi-events midi-events)))
 
 (defmethod render-n ((programs-part programs)(n integer) &key (offset 0.0))

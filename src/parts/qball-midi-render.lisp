@@ -38,10 +38,11 @@
 	  (reset qball)
 	(soft-reset qball))
       (let ((midi-events '())
+	    (shift (+ offset (property qball :shift)))
 	    (shuffle-function (property qball :shuffle-function))
 	    (cuefn (property qball :cue-function)))
 	(dolist (time-spec (next (property qball :cue-cycle) :all))
-	  (let ((time (+ offset
+	  (let ((time (+ shift
 			 (funcall cuefn qball time-spec)
 			 (funcall shuffle-function time-spec)))
 		(keylist (->list (next (property qball :key-pattern))))

@@ -9,8 +9,6 @@
 ;;;;       +-- PART
 ;;;;            |
 ;;;;            +-- CONTROL-BALL
-;;;;            +-- CONTROL-GHOST
-;;;;            +-- KEY-GHOST
 ;;;;            +-- PROGRAMS
 ;;;;            +-- QBALL
 ;;;;            |    |
@@ -24,13 +22,16 @@
 (in-package :cyco-part)
 
 (constant +part-specific-properties+ 
-	  '(:chord-model
-	    :instruments
+	  '(
+	    :chord-model
 	    :cue-function
+	    :group
+	    :instruments
 	    :muted
-	    :transposable
 	    :reversible
-	    :group))
+	    :shift
+	    :transposable
+	    ))
 	  
 (constant +part-properties+
 	  (append +time-signature-properties+

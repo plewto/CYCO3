@@ -116,11 +116,12 @@
 		       (end-times (prepare-note-end-times state start-times instrument))
 		       (velocities (prepare-note-velocities state note-count root-velocity))
 		       (channel-index (channel-index instrument))
+		       (shift (property strummer :shift))
 		       (midi-events '()))
 		  (dotimes (i note-count)
-		    (push (cons (nth i start-times)(midi-note-on channel-index (nth i note-list)(nth i velocities)))
+		    (push (cons (+ shift (nth i start-times))(midi-note-on channel-index (nth i note-list)(nth i velocities)))
 			  midi-events)
-		    (push (cons (nth i end-times)(midi-note-off channel-index (nth i note-list) 64))
+		    (push (cons (+ shift (nth i end-times))(midi-note-off channel-index (nth i note-list) 64))
 			  midi-events))
 		  (sort-midi-events midi-events))))) 
 
@@ -192,10 +193,11 @@
   (defmethod render-once ((strummer strummer) &key (offset 0))
     (if (muted-p strummer)(return-from render-once '()))
     (let* ((midi-events '())
+	   (time-shift (+ offset (property strummer :shift)))
 	   (instrument (property strummer :instruments)))
       (pattern-reset strummer)
       (dolist  (state (strummer-states strummer))
-	(let ((state-events (render-state strummer state instrument offset)))
+	(let ((state-events (render-state strummer state instrument time-shift)))
 	  (setf midi-events (append midi-events state-events))
 	  (if *strummer-render-trace*
 	      (progn 

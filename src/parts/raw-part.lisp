@@ -7,8 +7,9 @@
 
 (constant +raw-part-properties+
 	  (append +part-properties+
-		  '(:shift
-		    :render-once)))
+		  '(
+		    :render-once
+		    )))
 
 (defclass raw-part (part)
   ((event-list
@@ -76,6 +77,7 @@ subject to the Section cueing function."))
     
     (defun make-raw-part (name &key
 			       events
+			       shift
 			       bars
 			       beats
 			       render-once
@@ -96,7 +98,7 @@ subject to the Section cueing function."))
 	(put new-raw-part :bars bars)
 	(put new-raw-part :beats beats)
 	(put new-raw-part :render-once render-once)
-	(put new-raw-part :shift 0.0) ;; constant 0
+	(put new-raw-part :shift (float (or shift 0.0)))
 	(put new-raw-part :reversible nil)
 	(connect parent-section new-raw-part)
 	(if (validate-event-list new-raw-part events)
@@ -105,6 +107,7 @@ subject to the Section cueing function."))
 	
 (defmacro raw-part (name &key
 			 events
+			 shift
 			 bars
 			 beats
 			 render-once
@@ -115,6 +118,7 @@ subject to the Section cueing function."))
   `(progn
      (part-banner (name ,section) ',name)
      (let ((new-raw-part (make-raw-part ',name
+					:shift ,shift
 					:events ,events
 					:bars ,bars
 					:beats ,beats
@@ -130,12 +134,13 @@ subject to the Section cueing function."))
 	 (name (->symbol (sformat frmt (name mother))))
 	 (parent (or new-parent (parent mother)))
 	 (daughter (make-raw-part name
-			     :events '()
-			     :bars (bars mother)
-			     :beats (beats mother)
-			     :transposable (property mother :transposable)
-			     :section parent
-			     :remarks (remarks mother))))
+				  :events '()
+				  :shift (property mother :shfit)
+				  :bars (bars mother)
+				  :beats (beats mother)
+				  :transposable (property mother :transposable)
+				  :section parent
+				  :remarks (remarks mother))))
     (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (setf (event-list daughter) (clone (event-list mother)))
@@ -145,12 +150,11 @@ subject to the Section cueing function."))
 
 (defmethod render-once ((raw-part raw-part) &key (offset 0.0))
   (if (muted-p raw-part)(return-from render-once '()))
-  (let ((midi-events '()))
+  (let ((midi-events '())
+	(shift (+ offset (property raw-part :shift))))
     (dolist (event (event-list raw-part))
-      (push (cons (+ offset (car event)) (cdr event)) midi-events))
+      (push (cons (+ shift (car event)) (cdr event)) midi-events))
     (sort-midi-events midi-events)))
-
-
 
 
 (defmethod render-n ((raw-part raw-part)(n integer) &key (offset 0.0))

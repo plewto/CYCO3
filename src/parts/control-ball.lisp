@@ -8,20 +8,21 @@
 
 (constant +control-ball-properties+
 	  (append +part-properties+
-		  '(:controller
-		    :shift
-		    :render-once
+		  '(
+		    :controller
 		    :cue-function
-		    :start-cue
 		    :end-cue
-		    :time-interval
-		    :value-pattern
-		    :reset-on-repeat
-		    :trim
+		    :final-value
+		    :final-value-time-shift
 		    :initial-value
 		    :initial-value-time-shift
-		    :final-value
-		    :final-value-time-shift)))
+		    :render-once
+		    :reset-on-repeat
+		    :start-cue
+		    :time-interval
+		    :trim
+		    :value-pattern
+		    )))
 
 (defclass control-ball (part) nil)
 
@@ -141,7 +142,7 @@
 	(put control-ball :start-cue start)
 	(put control-ball :end-cue end)
 	(put control-ball :time-interval (or interval 's))
-	(put control-ball :shift (metric-expression (or shift 0.0)))
+	(put control-ball :shift (float (or shift 0.0)))
 	(put control-ball :reset-on-repeat reset-on-repeat)
 	(let ((v (car initial))
 	      (time-shift (or (cdr initial) 0)))

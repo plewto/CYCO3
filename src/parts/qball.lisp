@@ -7,14 +7,15 @@
 
 (constant +qball-properties+
 	  (append +part-properties+
-		  '(:shift
-		    :render-once
-		    :cue-cycle
-		    :shuffle-function
-		    :key-pattern
+		  '(
 		    :articulation-pattern
+		    :cue-cycle
 		    :dynamic-pattern
-		    :reset-on-repeat)))
+		    :key-pattern
+		    :render-once
+		    :reset-on-repeat
+		    :shuffle-function
+		    )))
 
 (defclass qball (part) nil)
 
@@ -101,7 +102,7 @@
       (reset new-qball)
       (put new-qball :reset-on-repeat reset-on-repeat)
       (connect parent new-qball)
-      (put new-qball :shift (if shift (float shift) 0.0))
+      (put new-qball :shift (float (or shift 0.0)))
       new-qball))) 
 
 (setf (documentation 'make-qball 'function) +qball-docstring+)

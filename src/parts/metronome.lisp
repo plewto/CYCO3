@@ -32,6 +32,7 @@
 
   (defun make-metronome (name &key
 			      section
+			      shift
 			      cuefn
 			      tempo unit bars beats
 			      cue key amp dur
@@ -48,6 +49,7 @@
       (make-qball name instrument
 		  :section section
 		  :cuefn cuefn
+		  :shift shift
 		  :tempo tempo
 		  :unit unit
 		  :bars bars
@@ -60,11 +62,12 @@
 		  :reset-on-repeat t))) ) 
 		  
 
-(defmacro metronome (name &key section tempo unit bars beats cuefn
+(defmacro metronome (name &key section tempo unit bars beats cuefn shift
 			  cue key amp dur
 			  (instrument *metronome*))
   `(let* ((met (make-metronome ',name
 			       :section ,section
+			       :shift ,shift
 			       :tempo ,tempo
 			       :unit ,unit
 			       :bars ,bars

@@ -114,10 +114,11 @@
   (defmethod render-once ((part simple-part) &key (offset 0))
     (if (muted-p part)(return-from render-once '()))
     (let* ((midi-events '())
+	   (shift (+ offset (property part :shift)))
 	   (chord-model (property part :chord-model))
 	   (instrument-list (property part :instruments)))
       (dolist (state (simple-part-states part))
-	(let* ((state-time (+ offset (simple-state-time state))))
+	(let* ((state-time (+ shift (simple-state-time state))))
 	  (setf midi-events (append midi-events 
 				    (render-bend-events state-time state instrument-list)))
 	  (setf midi-events (append midi-events 

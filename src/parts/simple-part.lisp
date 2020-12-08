@@ -8,9 +8,10 @@
 
 (constant +simple-part-properties+
 	  (append +part-properties+
-		  '(:shift
+		  '(
+		    :render-once
 		    :shuffle-function
-		    :render-once)))
+		    )))
 
 (defclass simple-part (part)
   ((states
@@ -152,7 +153,7 @@
 	(put new-part :instruments (->list instruments))
 	(put new-part :cue-function cuefn)
 	(put new-part :shuffle-function shuffle)
-	(put new-part :shift (or shift 0.0))
+	(put new-part :shift (float (or shift 0.0)))
 	(put new-part :tempo tempo)
 	(put new-part :unit unit)
 	(put new-part :bars bars)

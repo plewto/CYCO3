@@ -151,9 +151,9 @@ subject to the Section cueing function."))
 (defmethod render-once ((raw-part raw-part) &key (offset 0.0))
   (if (muted-p raw-part)(return-from render-once '()))
   (let ((midi-events '())
-	(shift (+ offset (property raw-part :shift))))
+	(time-shift (+ offset (property raw-part :shift))))
     (dolist (event (event-list raw-part))
-      (push (cons (+ shift (car event)) (cdr event)) midi-events))
+      (push (cons (+ time-shift (car event)) (cdr event)) midi-events))
     (sort-midi-events midi-events)))
 
 

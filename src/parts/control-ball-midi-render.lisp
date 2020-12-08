@@ -65,7 +65,7 @@
 					     1.0
 					   (beat-duration control-ball))))
 			     (* scale (metric-expression ti))))
-	   (shift (property control-ball :shift))
+	   (time-shift (property control-ball :shift))
 	   (channel-index-list (get-channel-index-list control-ball))
 	   (pattern (property control-ball :value-pattern))
 	   (controller (property control-ball :controller))
@@ -75,7 +75,7 @@
 	  (while (<= current-time end-time)
 	    (let* ((norm-value (next pattern))
 		   (data (funcall data-map-function norm-value))
-		   (time (+ current-time shift offset)))
+		   (time (+ current-time time-shift offset)))
 	      (dolist (ci channel-index-list)
 		(push (cons time (create-message controller ci data)) midi-events))
 	      (setf current-time (+ current-time time-interval)))))

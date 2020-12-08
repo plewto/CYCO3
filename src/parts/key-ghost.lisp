@@ -7,10 +7,13 @@
 
 (constant +key-ghost-properties+
   (append +part-properties+
-	  '(:source-channel
+	  '(:source-part
+	    :source-channel
 	    :out-channels
 	    :delay
 	    :key-map
+	    :render-once
+	    :shift
 	    :velocity-map)))
 
 (defclass key-ghost (part) nil)
@@ -30,8 +33,10 @@
 			      :name name
 			      :remarks (->string (or remarks ""))
 			      :transient t)))
-    (connect source-part ghost)
+    (connect (parent source-part) ghost)
     (copy-time-signature source-part ghost)
+    (put ghost :shift 0.0)
+    (put ghost :source-part source-part)
     (put ghost :source-channel (channel (or source-channel 1) :resolve))
     (put ghost :out-channels (mapcar #'(lambda (obj)(channel obj :resolve))
 				     (if out-channels
@@ -102,18 +107,19 @@
 		(midi-note-off-p msg)))
 
 	 (filter-events (source-list target-index)
-	    (remove-if-not #'(lambda (evnt)
-			       (let ((msg (cdr evnt)))
-				 (and (is-key-message msg)
-				      (= (channel-index msg) target-index))))
-			   source-list))
+	    (remove-if #'(lambda (evnt)
+			   (let ((msg (cdr evnt)))
+			     (not (or (is-key-message msg)
+				      (not (= (channel-index msg) target-index))))))
+		       source-list))
+
 	 
-	 (generate-source-events (ghost target-index offset)
-	    (let ((source-part (clone (parent ghost) :new-name "TEMP ~A")))
-	      (put source-part :mute nil)
+	 (generate-source-events (ghost target-index)
+	    (let ((source-part (clone (property ghost :source-part) :new-name "TEMP ~A")))
+	      (put source-part :muted nil)
 	      (reset source-part)
 	      (prog1
-		  (filter-events (render-once source-part :offset offset) target-index)
+		  (filter-events (render-once source-part) target-index)
 		(disconnect source-part)))) )
 
   (defmethod render-once ((ghost key-ghost) &key (offset 0.0))
@@ -124,12 +130,13 @@
 	   (delay (resolve-delay-time ghost))
 	   (kmap (property ghost :key-map))
 	   (vmap (property ghost :velocity-map))
-	   (source-events (generate-source-events ghost offset target-index)))
+	   (source-events (generate-source-events ghost target-index)))
       (dolist (event source-events)
-	(let* ((time (+ delay (car event)))
+	(let* ((time (+ delay offset (car event)))
 	       (msg (cdr event))
 	       (key (funcall kmap (data msg 0)))
 	       (velocity (funcall vmap (data msg 1))))
+
 	  (if (or (midi-note-off-p msg)
 		  (and (<= 0 key)(<= 0 velocity)))
 	      (dolist (ci out-indexes)
@@ -138,6 +145,17 @@
 				   (midi-note-off ci key 64)))
 		      midi-events)))))
       (sort-midi-events midi-events))) )
+
+(defmethod render-n ((ghost key-ghost)(n integer) &key (offset 0.0))
+  (reset ghost)
+  (let ((period (phrase-duration ghost))
+	(midi-events '()))
+    (dotimes (i (if (property ghost :render-once) 1 n))
+      (dolist (event (render-once ghost))
+	(let ((relative-time (car event))
+	      (message (cdr event)))
+	  (push (cons (+ offset (* i period) relative-time) (clone message)) midi-events))))
+    (sort-midi-events midi-events)))
 
 
 (constant +key-ghost-docstring+

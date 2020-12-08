@@ -12,10 +12,19 @@
 
 
 (put b-melody :instruments (list vibes))
+(key-ghost b-ghost b-melody vibes
+		:delay 's
+		:key-map #'(lambda (n)(transpose n 3)))
 
 
-;; (transpose b-piano-right 12)
 
-(mute b-piano-right  :mute)
+
+
+(mute b-metronome   :mute)
+(mute b-melody      nil)
+(mute b-ghost       nil)
+(mute b-piano-right :mute)
+(mute b-piano-left  :mute)
+
 
 (->midi b)

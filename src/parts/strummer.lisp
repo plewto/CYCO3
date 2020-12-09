@@ -7,11 +7,8 @@
 
 (in-package :cyco-part)
 
-(constant +strummer-properties+
-	  (append +part-properties+
-		  '(
-		    :shuffle-function
-		    )))
+(constant +strummer-properties+ +part-properties+)
+
 
 (defclass strummer (part)
   ((states				

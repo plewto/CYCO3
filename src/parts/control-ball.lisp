@@ -104,6 +104,7 @@
   (defun make-control-ball (name controller instruments start end &key
 			  section
 			  cuefn
+			  shuffle
 			  shift
 			  tempo unit bars beats subbeats
 			  render-once
@@ -133,6 +134,7 @@
 	(put control-ball :beats beats)
 	(put control-ball :subbeats subbeats)
 	(put control-ball :cue-function cuefn)
+	(put control-ball :shuffle-function (or shuffle #'no-shuffle))
 	(put control-ball :render-once render-once)
 	(put control-ball :transposable nil)
 	(put control-ball :reversible nil)
@@ -162,6 +164,7 @@
 (defmacro control-ball (name controller instruments start end &key
 		      section
 		      cuefn
+		      shuffle
 		      shift
 		      tempo unit bars beats subbeats
 		      render-once
@@ -177,6 +180,7 @@
      (let ((control-ball (make-control-ball ',name ,controller ,instruments ,start ,end
 			      :section ,section
 			      :cuefn ,cuefn
+			      :shuffle ,shuffle
 			      :shift ,shift
 			      :tempo  ,tempo 
 			      :unit  ,unit 
@@ -239,6 +243,7 @@
 			    (property mother :end-cue)
 			    :section parent
 			    :cuefn (property mother :cue-function)
+			    :shuffle (property mother :shuffle-function)
 			    :shift (property mother :shift)
 			    :render-once (property mother :render-once)
 			    :interval (property mother :time-interval)

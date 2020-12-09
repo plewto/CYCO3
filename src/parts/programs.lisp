@@ -44,7 +44,7 @@ Programs are always a leaf node."))
 					(t (cyco-composition-error 'make-programs
 								   "No default project")))))		  
        
-    (defun make-programs (name instruments &key time section remarks render-once shift)
+    (defun make-programs (name instruments &key time cuefn shuffle section remarks render-once shift)
       docstring
       (let* ((parent (validate-parent-section section))
 	     (new-programs-part (make-instance 'programs
@@ -53,7 +53,10 @@ Programs are always a leaf node."))
 				 :remarks (->string (or remarks "")))))   
 	(connect parent new-programs-part)
 	(init-time-signature new-programs-part)
-	(let ((event-time (funcall (property new-programs-part :cue-function) new-programs-part time))
+	(put new-programs-part :cue-function (or cuefn #'bar))
+	(put new-programs-part :shuffle-function (or shuffle #'no-shuffle))
+	(let ((event-time (+ (funcall (property new-programs-part :cue-function) new-programs-part time)
+			     (funcall (property new-programs-part :shuffle-function) time)))
 	      (midi-events '()))
 	  ;; ISSUE: A confused mess~
 	  (dolist (instrument (->list instruments))
@@ -83,13 +86,15 @@ Programs are always a leaf node."))
 	  new-programs-part)))))
 	  
 
-(defmacro programs (name instruments &key time section remarks render-once shift)
+(defmacro programs (name instruments &key time cuefn shuffle section remarks render-once shift)
   "Same as make-programs but binds the programs object to name symbol."
   `(progn
      (part-banner (name ,section) ',name)
      (let ((new-programs-part (make-programs ',name ,instruments
 			       :time ,time
 			       :section ,section
+			       :cuefn ,cuefn
+			       :shuffle ,shuffle
 			       :render-once ,render-once
 			       :shift ,shift
 			       :remarks ,remarks)))
@@ -100,9 +105,11 @@ Programs are always a leaf node."))
   (let* ((name (->symbol (string-upcase (sformat (or new-name "~A") (name mother)))))
 	 (parent (or new-parent (parent mother)))
 	 (daughter (make-programs name (property mother :instruments)
-			     :section parent
-			     :render-once (property mother :render-once)
-			     :remarks (remarks mother))))
+				  :section parent
+				  :cuefn (property mother :cue-function)
+				  :shuffle (property mother :shuffle-function)
+				  :render-once (property mother :render-once)
+				  :remarks (remarks mother))))
     (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     (setf (programs-events daughter)

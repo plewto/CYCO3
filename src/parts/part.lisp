@@ -31,6 +31,7 @@
 	    :render-once
 	    :reversible
 	    :shift
+	    :shuffle-function
 	    :transposable
 	    ))
 	  

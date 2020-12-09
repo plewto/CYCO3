@@ -6,11 +6,8 @@
 
 (in-package :cyco-part)
 
-(constant +simple-part-properties+
-	  (append +part-properties+
-		  '(
-		    :shuffle-function
-		    )))
+(constant +simple-part-properties+ +part-properties+)
+
 
 (defclass simple-part (part)
   ((states

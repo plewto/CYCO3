@@ -16,6 +16,7 @@
 		:absolute-chords-p
 		:approximate
 		:articulation-map
+		:bar
 		:beat-duration
 		:bend->midi-data
 		:channel
@@ -57,6 +58,7 @@
 		:next
 		:next-1
 		:next-n
+		:no-shuffle
 		:norm->midi-data
 		:partition-list
 		:period

@@ -82,6 +82,8 @@
 				     :name name
 				     :remarks (->string (or remarks ""))
 				     :transient t)))
+      (connect parent new-qball)
+      (init-time-signature new-qball)
       (put new-qball :instruments instrument-pattern)
       (put new-qball :tempo tempo)
       (put new-qball :unit unit)
@@ -98,10 +100,9 @@
       (put new-qball :key-pattern (->pattern (or key '(60))))
       (put new-qball :articulation-pattern (->pattern (or dur 1.0)))
       (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
-      (reset new-qball)
+      (put new-qball :shift (scale-time-parameter (or shift 0) new-qball))
       (put new-qball :reset-on-repeat reset-on-repeat)
-      (connect parent new-qball)
-      (put new-qball :shift (float (or shift 0.0)))
+      (reset new-qball)
       new-qball))) 
 
 (setf (documentation 'make-qball 'function) +qball-docstring+)

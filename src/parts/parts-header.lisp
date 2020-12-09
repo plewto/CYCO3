@@ -126,6 +126,10 @@
 (defmacro push? (item list) 
   `(if ,item (push ,item ,list)))
 
+(defun scale-time-parameter (param time-signature)
+  (let ((scale (float (if (numberp param) 1.0 (beat-duration time-signature)))))
+    (* scale (metric-expression param))))
+
 (defun src-load (filename)
   (let ((fqn (sformat "src/parts/~A" filename)))
     (format t "    ~A~%" fqn)

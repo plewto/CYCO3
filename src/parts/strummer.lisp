@@ -363,6 +363,8 @@
 					  :name part-name
 					  :remarks (->string (or remarks ""))
 					  :transient t)))
+	(connect parent new-strummer)
+	(init-time-signature new-strummer)
 	(put new-strummer :instruments instrument)
 	(put new-strummer :tempo tempo)
 	(put new-strummer :unit unit)
@@ -376,8 +378,7 @@
 	(put new-strummer :reversible reversible)
 	(put new-strummer :chord-model chord-model)
 	(put new-strummer :muted nil)
-	(put new-strummer :shift (float (or shift 0.0)))
-	(connect parent new-strummer)
+	(put new-strummer :shift (scale-time-parameter (or shift 0) new-strummer))
 	(setf (strummer-states new-strummer)
 	      (process-states new-strummer (->list events)))
 	new-strummer)) ))

@@ -89,14 +89,16 @@ subject to the Section cueing function."))
 				 :name name
 				 :properties +raw-part-properties+
 				 :remarks (->string remarks))))
+	(connect parent-section new-raw-part)
+	(init-time-signature new-raw-part)
 	(setf (event-list new-raw-part) (->list events))
 	(put new-raw-part :transposable transposable)
 	(put new-raw-part :bars bars)
 	(put new-raw-part :beats beats)
 	(put new-raw-part :render-once render-once)
-	(put new-raw-part :shift (float (or shift 0.0)))
+	(put new-raw-part :shift (scale-time-parameter (or shift 0) new-raw-part))
 	(put new-raw-part :reversible nil)
-	(connect parent-section new-raw-part)
+	
 	(if (validate-event-list new-raw-part events)
 	    (setf (event-list new-raw-part) events))
 	new-raw-part))))

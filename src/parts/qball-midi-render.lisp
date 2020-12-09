@@ -7,12 +7,9 @@
 
 (labels ((render-event
 	  (qball time instrument-list key-list articulation dynamic)
-	  (if (or (rest-p articulation)(rest-p dynamic))
-	      (return-from render-event nil))
+	  (if (or (rest-p articulation)(rest-p dynamic))(return-from render-event nil))
 	  (let ((midi-events '())
-		(articulation-scale (if (numberp articulation)
-					1.0
-				      (beat-duration qball))))
+		(articulation-scale (scale-time-parameter articulation qball)))
 	    (dolist (instrument instrument-list)
 	      (let* ((channel-index (channel-index instrument))
 		     (keynumber-map (property instrument :keynumber-map))
@@ -27,7 +24,7 @@
 		    (if (not (or (rest-p keynumber)
 				 (rest-p duration)
 				 (rest-p amp)))
-			(let ((velocity (norm->midi-data amp))) 
+			(let ((velocity (norm->midi-data amp)))
 			  (push (cons time (midi-note-on channel-index keynumber velocity)) midi-events)
 			  (push (cons end-time (midi-note-off channel-index keynumber 0)) midi-events)))))))
 	    midi-events)))

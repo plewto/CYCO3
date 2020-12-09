@@ -16,7 +16,7 @@
    "A Section represents a major composition division, IE verse, chorus,
 bridge etc...  The parent of a Section is always a Project and its 
 child nodes are always some type of Part.   A section inherits time-signature
-and chord-model parameters from the project but may selectivly override them."))
+and chord-model parameters from the project but may selectively override them."))
 
 (defmethod section-p ((s section)) t)
 
@@ -206,6 +206,31 @@ same name.
 	(retrograde part)))
   section)
 
+
+;;; Commented version of render-once suppresses all note-on-events
+;;; with times greater the then the section's period.  Not exactly
+;;; sure why this was done.  The alternate version below has the
+;;; filters removed.
+;;;
+;;
+;; (defmethod render-once ((section section) &key (offset 0.0))
+;;   (let* ((event-list (list (cons offset
+;; 				 (midi-meta-marker (name section)))
+;; 			   (cons offset
+;; 				 (midi-tempo-message (tempo section)))
+;; 			   (cons offset
+;; 				 (midi-time-signature (beats section)(unit section)))))
+;; 	 (period (phrase-duration section))
+;; 	 (end-mask (+ offset period)))
+;;     (dolist (part (reverse (children section)))
+;;       (let* ((count (truncate (/ period (phrase-duration part)))))
+;; 	(dolist (event (render-n part count :offset offset))
+;; 	  (let* ((time (car event))
+;; 		 (message (cdr event)))
+;; 	    (if (or (< time end-mask)(not (midi-note-on-p message)))
+;; 		(push (clone event) event-list))))))
+;;     (sort-midi-events event-list)))
+
 (defmethod render-once ((section section) &key (offset 0.0))
   (let* ((event-list (list (cons offset
 				 (midi-meta-marker (name section)))
@@ -213,16 +238,11 @@ same name.
 				 (midi-tempo-message (tempo section)))
 			   (cons offset
 				 (midi-time-signature (beats section)(unit section)))))
-	 (period (phrase-duration section))
-	 (end-mask (+ offset period)))
+	 (period (phrase-duration section)))
     (dolist (part (reverse (children section)))
-      (let* ((count (truncate (/ period (phrase-duration part))))
-	     (shift (or (property part :shift) 0.0)))
-	(dolist (event (render-n part count :offset (+ offset shift)))
-	  (let* ((time (car event))
-		 (message (cdr event)))
-	    (if (or (< time end-mask)(not (midi-note-on-p message)))
-		(push (clone event) event-list))))))
+      (let* ((count (truncate (/ period (phrase-duration part)))))
+	(dolist (event (render-n part count :offset offset))
+	  (push (clone event) event-list))))
     (sort-midi-events event-list)))
 
 (defmethod render-n ((section section)(n integer) &key (offset 0.0))
@@ -289,7 +309,7 @@ is appended to the name if needed."   ))
 
 (defun  get-section-part (section part-name)
   "Returns the named part from section.
-It is a CYO-ERROR if the part does not exissts."
+It is a CYCO-ERROR if the part does not exists."
   (or (find-child section part-name)
       (cyco-error
        (sformat "Section ~A does not contain part named: ~A" (name section) part-name))))

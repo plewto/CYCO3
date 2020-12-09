@@ -183,6 +183,33 @@
     offset - time, add offset seconds to all event times.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="get-section-part"></a>
+  
+  <!-- (GET-SECTION-PART section part-name) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(GET-SECTION-PART section part-name)</b><br>
+  <pre class="description">
+    section - The section.
+    part    - Symbol
+    
+    Returns the named part.  It is an error if the part does not exists.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="bulk-rename-parts"></a>
+  
+  <!-- (BULK-RENAME-PARTS section prefix-trim new-prefix) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BULK-RENAME-PARTS section prefix-trim new-prefix)</b><br>
+  <pre class="description">
+    Renames all parts in a section.
+    
+    section     - The section.
+    prefix-trim - Integer, number of characters to remove from left of each name.
+    new-prexif  - String, text to add to each name.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="midi"></a>
   
   <!-- (->MIDI section &key filename repeat pad) -->

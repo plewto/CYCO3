@@ -42,17 +42,17 @@
     not.  The name argument should be quoted for MAKE-SIMPLE-PART and unquoted
     for SIMPLE-PART.
     
-    name          - part name
-    instruments   - instrument or list of instruments.
-    :section      - parent section, defaults to current <a href='sections.html'>section</a> of *PROJECT*.
-    :cuefn        - time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
-    :shuffle      - time <a href='cue-functions.html#shuffle'>shuffle function</a>, defaults to section value.
-    :shift        - time shift in seconds, default 0.0
-    :tempo        - tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
-    :unit         - time-signature unit, defauts to section value.
-    :bars         - bars per phrase, defauts to section value.
-    :beats        - beats per bar, defauts to section value.
-    :subbeats     - sub beats per beat, defauts to section value.
+    name          - Part name
+    instruments   - Instrument or list of instruments.
+    :section      - Parent section, defaults to current <a href='sections.html'>section</a> of *PROJECT*.
+    :cuefn        - Time <a href='cue-functions.html'>cue function</a>, defaults to parent section value.
+    :shuffle      - Time <a href='cue-functions.html#shuffle'>shuffle function</a>, defaults to section value.
+    :shift        - Metric-expression, time shift in seconds, default 0.0
+    :tempo        - Tempo in BPM, see <a href='time-signature.html'>time-signature</a>, defaults to section value.
+    :unit         - Time-signature unit, defauts to section value.
+    :bars         - Bars per phrase, defauts to section value.
+    :beats        - Beats per bar, defauts to section value.
+    :subbeats     - Sub beats per beat, defauts to section value.
     :render-once  - Boolean, if true generate events only on first repetition, default nil.
     :transposable - Boolean, if true part is subject to transpose and invert modifications, default t.
     :reversible   - Boolean, if true part is subject to retrograde modification, default t.

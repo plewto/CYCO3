@@ -52,25 +52,25 @@
     should be unquoted for STRUMMER.
     
     	
-        name          - symbol
-        instrument    - instrument.  NOTE: A Strummer part only takes a single instrument.
-        :section      - parent section, defaults to current section of *PROJECT*.
-        :cuefn        - cue-function, defaults to section value.
-        :shuffle      - shuffle-function, defaults to section-value.
-        :shift        - time offset in seconds, default 0.0.
-        :tempo        - tempo in BPS, defaults to section value.
-        :unit         - time-signature unit, defaults to section value.
-        :bars         - bar count, defaults to section value.
-        :beats        - beats per bar, defaults to section value.
-        :subbeats     - subbeats per beat, defaults to section value.
-        :render-once  - boolean, if true render events one time only, otherwise
+        name          - Symbol
+        instrument    - Instrument.  NOTE: A Strummer part only takes a single instrument.
+        :section      - Parent section, defaults to current section of *PROJECT*.
+        :cuefn        - Cue-function, defaults to section value.
+        :shuffle      - Shuffle-function, defaults to section-value.
+        :shift        - Metric-expression, time offset added to each event, default 0.
+        :tempo        - Tempo in BPS, defaults to section value.
+        :unit         - Time-signature unit, defaults to section value.
+        :bars         - Bar count, defaults to section value.
+        :beats        - Beats per bar, defaults to section value.
+        :subbeats     - Subbeats per beat, defaults to section value.
+        :render-once  - Boolean, if true render events one time only, otherwise
                         repeat events every bars as needed to fill parent section.
-        :transposable - boolean, if true part is subject to transpose and
+        :transposable - Boolean, if true part is subject to transpose and
                         invert transformations.
-        :reversible   - boolean, if true part is subject to retrograde
+        :reversible   - Boolean, if true part is subject to retrograde
                         transformations. 
-        :chord-model  - sets chord-model, defaults to section value.
-        :remarks      - optional remarks text.
+        :chord-model  - Sets chord-model, defaults to section value.
+        :remarks      - Optional remarks text.
         :events       - List of events, see below.
   </pre>
   <H3 class="heading">Event Specifications</H3>

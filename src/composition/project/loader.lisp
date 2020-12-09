@@ -6,8 +6,9 @@
 (in-package :cyco)
 
 
+(global *current-lpf-filename* nil)  ;; ISSUE: Dont like this as a global.
+
 (let ((current-project-main-file nil)
-      (current-filename nil)
       (frmt "Loading project file ~A~%")
       
       (load-project-docstring
@@ -37,9 +38,8 @@ See LPF for a convenient shortcut.")
       
      (lpf-docstring
          "LPF is a short-cut for load-project-file.  When used without an argument
-it reloads the most recent project-file.")
+it reloads the most recent project-file.  Do not quote the argument."))
 
-      )
       
   (flet ((default-project-name (name)
 	   (string-downcase
@@ -85,19 +85,21 @@ it reloads the most recent project-file.")
 	(if project-file-name
 	    (let* ((project-path (path-parent current-project-main-file))
 		   (fqn (join-path project-path project-file-name :as-file)))
-	      (setf current-filename fqn)
+	      (setf *current-lpf-filename* fqn)
 	      (if *enable-banners*
 		  (format t frmt fqn))
 	      (load fqn)))))
-
+  
     (defmacro lpf (&optional name)
       `(if ',name
-	   (load-project-file ',name)
-	 (if current-filename
-	     (progn
-	       (format t frmt current-filename)
-	       (load current-filename))
-	   (cyco-composition-error 'lpf ',name "Section does not exists."))))
+	   (progn
+	     (load-project-file ',name)
+	     (setf *current-lpf-filename* ',name))
+	 (if *current-lpf-filename*
+	     (progn 
+	       (format t frmt *current-lpf-filename*)
+	       (load-project-file *current-lpf-filename*))
+	   (cyco-composition-error 'lpf ',name "Section does not exixts."))))
 
-    (dismiss current-filename)
+
     (setf (documentation 'lpf 'function) lpf-docstring)))

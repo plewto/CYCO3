@@ -1,8 +1,15 @@
 ;;;; CYCO  example ex1
 ;;;;
 ;;;; Example 1 is a simple Russian folk song "Moscow Nights"
+;;;; As scored the piece consist of a 7-bar phrase.   This example
+;;;; is divided into 3 sections.
+;;;;   1) "preroll" - a metronome count-in and program-changes
+;;;;   2) "A"  - The piece as scored.
+;;;;   3) "B"  - clone of section A but inverted.
+;;;;
 ;;;; See score.png
 ;;;;
+
 
 
 ;;; Force CYCO version 3.
@@ -19,8 +26,11 @@
 ;;; Create project named ex1
 ;;;
 ;;; The title and remarks values are optional.
-;;; Normally the title whould serve as the projet's name but here they
-;;; are seperate.
+;;; Normally the title should serve as the project's name but here they
+;;; are separate.
+;;;
+;;; The tempo, bars and beats values are defaults for the remainder
+;;; of the project.
 ;;;
 
 (project ex1
@@ -39,6 +49,18 @@
 (lpf a)
 (lpf b)
 
+
+;;; Before creating the main MIDI file the section-order must be specified.
+;;;
+;;; The section names are listed in order.  (b :invert c5) indicates
+;;; section b is to be inverted aqrounds c5 (middle-C).
+;;; 
+
 (section-order '(preroll a (b :invert c5)))
+
+;;; Write the main MIDI file.
+;;; The file is placed in the MIDI folder na dhas the name
+;;; ex1-main.mid
+;;;
 
 (project->midi)

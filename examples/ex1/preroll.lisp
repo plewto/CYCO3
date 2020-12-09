@@ -21,4 +21,4 @@
 
 ;;; Write the preroll section to a MIDI file.
 ;;;
-(->midi preroll)
+;;; (->midi preroll)

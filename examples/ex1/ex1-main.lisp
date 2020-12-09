@@ -41,4 +41,4 @@
 
 (section-order '(preroll a (b :invert c5)))
 
-;; (project->midi)
+(project->midi)

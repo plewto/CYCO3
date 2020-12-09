@@ -35,9 +35,11 @@ by calling LP without an argument.")
 The name argument is a symbol which is converted to a lowercase string.
 See LPF for a convenient shortcut.")
       
-      (lpf-docstring
+     (lpf-docstring
          "LPF is a short-cut for load-project-file.  When used without an argument
-it reloads the most recent project-file."))
+it reloads the most recent project-file.")
+
+      )
       
   (flet ((default-project-name (name)
 	   (string-downcase
@@ -74,11 +76,12 @@ it reloads the most recent project-file."))
     
     (defun load-project-file (name)
       load-project-file-docstring
-      (let ((project-file-name (cond ((symbolp name)
-				      (string-downcase (->string name)))
-				     ((stringp name)
-				      name)
-				     (t (cyco-type-error 'load-project-file '(string symbol) name)))))
+      (let ((project-file-name
+	     (cond ((symbolp name)
+		    (string-downcase (->string name)))
+		   ((stringp name)
+		    name)
+		   (t (cyco-type-error 'load-project-file '(string symbol) name)))))
 	(if project-file-name
 	    (let* ((project-path (path-parent current-project-main-file))
 		   (fqn (join-path project-path project-file-name :as-file)))
@@ -86,16 +89,15 @@ it reloads the most recent project-file."))
 	      (if *enable-banners*
 		  (format t frmt fqn))
 	      (load fqn)))))
-    
-    (defun lpf (&optional name)
-      lpf-docstring
-      (if name
-	  (load-project-file name)
-	(if current-filename
-	    (progn 
-	      (format t frmt current-filename)
-	      (load current-filename))
-	  (cyco-composition-error 'lpf name
-				  "Section does not exists")))) ))
-  
-  
+
+    (defmacro lpf (&optional name)
+      `(if ',name
+	   (load-project-file ',name)
+	 (if current-filename
+	     (progn
+	       (format t frmt current-filename)
+	       (load current-filename))
+	   (cyco-composition-error 'lpf ',name "Section does not exists."))))
+
+    (dismiss current-filename)
+    (setf (documentation 'lpf 'function) lpf-docstring)))

@@ -34,10 +34,10 @@
 ;;; Use LPF (Load Project File) to load remaining project files.
 ;;;
 
-(lpf 'orchestra)
-(lpf 'preroll)
-(lpf 'a)
-(lpf 'b)
+(lpf orchestra)
+(lpf preroll)
+(lpf a)
+(lpf b)
 
 (section-order '(preroll a (b :invert c5)))
 

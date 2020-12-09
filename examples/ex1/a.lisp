@@ -134,9 +134,16 @@
 
 ;;; Individual parts may ne muted or soloed
 
-(mute a-metronome   nil )
+(group piano-group (list a-piano-left a-piano-right))
+
+
+(mute piano-group   :mute)
+
+(mute a-metronome   nil  )
 (mute a-melody      nil  )
-(mute a-piano-left  :solo  )
+(mute a-piano-left  nil  )
 (mute a-piano-right nil  )
+
+
 
 (->midi a :repeat 2)

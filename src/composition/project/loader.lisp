@@ -97,7 +97,7 @@ it reloads the most recent project-file.  Do not quote the argument."))
 	     (setf *current-lpf-filename* ',name))
 	 (if *current-lpf-filename*
 	     (progn 
-	       (format t frmt *current-lpf-filename*)
+	       (format t "Reloading ~A~%" *current-lpf-filename*)
 	       (load-project-file *current-lpf-filename*))
 	   (cyco-composition-error 'lpf ',name "Section does not exixts."))))
 

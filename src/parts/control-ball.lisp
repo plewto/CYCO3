@@ -132,7 +132,7 @@
 	(put control-ball :beats beats)
 	(put control-ball :subbeats subbeats)
 	(put control-ball :cue-function cuefn)
-	(put control-ball :shuffle-function (or shuffle #'no-shuffle))
+	(put control-ball :shuffle-function shuffle)
 	(put control-ball :render-once render-once)
 	(put control-ball :transposable nil)
 	(put control-ball :reversible nil)

@@ -74,7 +74,7 @@ instruments   - Instrument or list of instruments.
 :section      - Parent section, defaults to current section of *project*
 :cuefn        - Cuing function, defaults to BAR
 :shuffle      - Shuffle function, defaults to NO-SHUFFLE
-:shift        - float, offset added to all events times, default 0.0
+:shift        - metric-expression, time-shift added to each event, default 0.0
 :tempo        - float, defaults to section value.
 :unit         - symbol, time-signature unit, defaults to section value.
 :bars         - int, bar count, defaults to section value.

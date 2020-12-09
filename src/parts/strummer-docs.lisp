@@ -69,7 +69,7 @@ instrument    - Single instance of INSTRUMENT.
 :section      - Parent section, defaults to current section of *PROJECT*
 :cuefn        - The cuing function, defaults to parent section value.
 :shuffle      - The shuffle function, defaults to parent section value.
-:shift        - Time offset in seconds, default 0.
+:shift        - Metric-expression, Time shift added to each event, default 0.
 :tempo        - Temp in BPM, defaults to parent section value.
 :unit         - Time signature unit, defaults to parent section value.
 :bars         - Length in bars, defaults to parent section value.

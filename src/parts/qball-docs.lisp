@@ -36,6 +36,7 @@ instruments - Pattern of instruments. A single instrument or list
         are scaled by the current tempo.
 :amp  - Note amplitudes, A single value or list of values are converted to 
         a Cycle. 
+:shift - metric-expression, time added to each event, default 0.0
 :reset-on-repeat - Boolean.  If true all patterns are reset on each 
         repetition and the qball will produce the same results on
         each call to render-once.  If false the patterns are not reset

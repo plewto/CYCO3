@@ -31,6 +31,9 @@ instruments - List of instruments
 
 :time    - Event time in format required by cuing function.
            The cuing function is inherited from the parent Section.
+:cuefun  - Time cue function, defaults to section value.
+:shuffle - Time shuffle function, defaults to section value.
+:shift   - Metric-expression, time-shift added to each event, default 0.
 :section - Parent section, defaults to current-section of *project*
 :remarks - text
 :render-once - If true program events are only rendered once by render-n

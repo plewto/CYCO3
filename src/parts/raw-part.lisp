@@ -32,11 +32,11 @@ Raw-parts can not have sub-parts."))
 :bars - number of bars per phrase, defaults to parent section value.
 :beats - number of beats per bar, defaults to parent section value.
 :render-once - bool, if true the part events are rendered only once
-when the section is rendered.  For example if the section has length of 4 bars
-and the part has a length of 2, the part is repeated twice unless render-once
-is true.   Default nil.
-:transposable - bool, if nil the part is immune to transpose and invert 
-operations.
+      when the section is rendered.  For example if the section has length of 4 bars
+      and the part has a length of 2, the part is repeated twice unless render-once
+      is true.   Default nil.
+:transposable - bool, if nil the part is immune to transpose and invert operations.
+:shift   - metric-expression, this shift added to each event.
 :section - parent section, defaults to current section of *project*
 :remarks - optional remarks text.
 

@@ -14,7 +14,7 @@
 (metronome a-metronome)
 
 
-;;; Use the flute instrument for the melody line.
+;;; Use the flute instrument for the melody.
 ;;;
 ;;; The time clauses have the form (bar beat sub-beat)
 ;;; where sub-beat is the sixteenth note within the beat.
@@ -55,9 +55,10 @@
 ;;; Add piano left-hand part.
 ;;;
 ;;; This part shows two ways to specify a chord.
-;;; 1) As a literal list 0f offsets IE (0 12) means play the two notes an octave apart.
-;;; 2) [solo] is a symbolic chord name, solo is the equivalent to the offset list (0).
+;;;   1) As a literal list of offsets IE (0 12) means play two notes an octave apart.
+;;;   2) [solo] is a symbolic chord name, solo is the equivalent to the offset list (0).
 ;;; See chord-models
+;;;
 ;;; As with :time, :dur and :amp, a :chord value remains in effect until explicitly
 ;;; changed.
 ;;;
@@ -103,8 +104,8 @@
 ;;; of the chord.   In this case the minor (0 3 7) chord is played
 ;;; as (3 7 12).
 ;;;
-;;; The :oct 1 clause at time (7 1 1) adds an octave to the inveted
-;;; major chord  (0 4 7) is played as (4 7 12 16).
+;;; The :oct 1 clause at time (7 1 1) adds an octave to the inverted
+;;; major chord,  (0 4 7) is played as (4 7 12 16).
 ;;;
 
 (simple-part a-piano-right piano
@@ -132,18 +133,41 @@
 	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0    )
 	       (:time (7 1 1) :key f4  :chord [maj] :inv 1 :oct 1 :dur h.)))
 
-;;; Individual parts may ne muted or soloed
 
+;;; A group allows multiple parts to be muted or soloed as a unit.
+;;; Here the piano-group is composed of the left and right hand parts.
+;;;
 (group piano-group (list a-piano-left a-piano-right))
 
 
-(mute piano-group   :mute)
+;;; Individual parts and groups may be muted or soloed.
+;;; The mute function takes two arguments.  The first is a part-or-group.
+;;; The second is one of the following.
+;;;
+;;;    :MUTE   - Mute the part or group.
+;;;    :UNMUTE - Unmute the part or group.
+;;;    :SOLO   - Unmute the part or group while muting all other parts.
+;;;    nil     - Mute state remains the same.
+;;;
+;;; Generally groups are listed before individual parts.  This allows the
+;;; the group state to be set and then make exceptions to the individual
+;;; parts.
 
-(mute a-metronome   nil  )
+(mute piano-group   nil )
+
+(mute a-metronome   :mute)
 (mute a-melody      nil  )
 (mute a-piano-left  nil  )
 (mute a-piano-right nil  )
 
 
+;;; Create section MIDI file.
+;;; Section MIDI files are often more useful then the main MIDI file. This
+;;; is particularly true for transferring tracks to a DAW or for rehearsal.
+;;;
+;;; The first line writes a one-pass MIDI file to a.mid   The second line
+;;; writes to an alternative filename and repeats the section 8 times.
+;;;
 
-(->midi a :repeat 2)
+(->midi a)
+(->midi a :filename "practice-a" :repeat 8)

@@ -57,6 +57,8 @@ tandem."))
 	   (unmute part)))
 	((eq state :solo)
 	 (setf (mute-state group) :solo)
+	 (dolist (part (children (parent group)))
+	   (mute part :mute))
 	 (dolist (g (property (parent group) :groups))
 	   (if (not (eq g group))
 	       (mute g :mute)))
@@ -99,7 +101,6 @@ within in the section.
       (if (not sec)
 	  (cyco-composition-error
 	   'make-group
-	   ;;(name (or section "current-section")))
 	   "No default section")
 	(let* ((members (find-parts 'make-group name sec
 				    (->list member-names)))

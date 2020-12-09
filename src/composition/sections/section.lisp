@@ -184,7 +184,6 @@ same name.
     (dolist (child (children mother))
       (let ((child-daughter (clone child :new-parent daughter)))
 	(copy-time-signature child child-daughter)))
-    (put daughter :groups (clone (property mother :groups)))
     (reset daughter)
     daughter))
 	 

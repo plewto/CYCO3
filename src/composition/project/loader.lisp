@@ -85,7 +85,6 @@ it reloads the most recent project-file.  Do not quote the argument."))
 	(if project-file-name
 	    (let* ((project-path (path-parent current-project-main-file))
 		   (fqn (join-path project-path project-file-name :as-file)))
-	      (setf *current-lpf-filename* fqn)
 	      (if *enable-banners*
 		  (format t frmt fqn))
 	      (load fqn)))))

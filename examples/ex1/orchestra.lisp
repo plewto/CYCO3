@@ -14,14 +14,14 @@
 (prune-orchestra)
 
 ;;; Define the instruments using the general-midi plugin.  We are using a
-;;; piano, flute and metronome.
+;;; piano, flute, vibes and  a metronome.
 ;;;
 
 
 ;;; Create the piano instrument on channel 1.
 ;;; General-MIDI defines a few different pianos.  In this case the specific
 ;;; program is 'piano1 which is the "Acoustic Piano".  To see a list of
-;;; of available programs enter (?general-midi-programs).
+;;; of available programs enter (?general-midi).
 ;;;
 
 (general-midi-instrument piano
@@ -31,6 +31,7 @@
 ;;; Create the flute and vibes instruments on channel 2 and 3.  
 ;;; There is no need to specify a value for :program since both instrument
 ;;; names exactly match a general-midi program.
+;;;
 
 (general-midi-instrument flute
 			 :channel 2
@@ -40,7 +41,7 @@
 			 :channel 3)
 
 
-;;; Creates an instrument to use as metronome on channel 16 using the 
+;;; Creates an instrument for use as a metronome on channel 16 using the 
 ;;; general-midi woodblock.  The woodblock is bound to the global
 ;;; *METRONOME* instrument.
 ;;;

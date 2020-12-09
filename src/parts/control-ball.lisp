@@ -10,7 +10,6 @@
 	  (append +part-properties+
 		  '(
 		    :controller
-		    :cue-function
 		    :end-cue
 		    :final-value
 		    :final-value-time-shift
@@ -20,8 +19,7 @@
 		    :start-cue
 		    :time-interval
 		    :trim
-		    :value-pattern
-		    )))
+		    :value-pattern)))
 
 (defclass control-ball (part) nil)
 

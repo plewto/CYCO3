@@ -12,9 +12,7 @@
 		    :cue-cycle
 		    :dynamic-pattern
 		    :key-pattern
-		    :reset-on-repeat
-		    :shuffle-function
-		    )))
+		    :reset-on-repeat)))
 
 (defclass qball (part) nil)
 

@@ -16,7 +16,7 @@
 (preroll
  :bars 1
  :beats 4
- :instruments (list piano flute vibes *metronome*)))
+ :instruments (list piano flute vibes *metronome*))
 
 ;;; Write the preroll section to a MIDI file.
 ;;;

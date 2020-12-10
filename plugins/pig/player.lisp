@@ -37,6 +37,10 @@
       (read-response server
 		     (send command :server server :data (list dirname)))))
 
+  (defun rescan-media-directory (&key id (server *pig-server*))
+    (let ((command (player-address "rescan" id)))
+      (read-response server (send command :server server))))
+  
   (defun dump-media-list (&key id (server *pig-server*))
     (let ((response (read-response server (send (player-address "q-media-list" id) :server server))))
       (if response

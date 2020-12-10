@@ -9,8 +9,7 @@
 		:load-plugin-file
 		:sformat
 		:str+
-		:->list
-		))
+		:->list))
 
 (in-package :pig)
 
@@ -27,53 +26,72 @@
 (load-plugin-file 'player)
 (load-plugin-file 'documentation)
 
-(export '(add-media-directory
-	  chain
-	  channel-filter
-	  clear-media-list
-	  clear-midi-channels
-	  connect
-	  delete-operator
-	  disconnect
-	  distributor
-	  dump-media-list
-	  initialize
-	  is-playing
-	  set-pig-player-id
-	  make-pig-player
-	  midi-input
-	  midi-output
-	  new-operator
-	  panic
-	  pig-proxy
-	  ping
-	  play
-	  query-channel-mode
-	  query-midi-channels
-	  query-midi-receivers
-	  query-midi-transmitters
-	  query-operators
-	  query-roots
-	  refresh
-	  resume
-	  select-media
-	  set-midi-channels
-	  set-midi-device
-	  set-pig-server
-	  stop)
-	:pig)
 
-(import '(add-media-directory
-	  clear-media-list
-	  dump-media-list
-	  is-playing
-	  play
-	  resume
-	  select-media
-	  set-pig-server
-	  set-pig-player-id
-	  stop)
-	:cyco)
+(cyco:constant +exports+ '(add-media-directory
+			   chain
+			   channel-filter
+			   clear-media-list
+			   clear-midi-channels
+			   connect
+			   delete-operator
+			   disconnect
+			   distributor
+			   dump-media-list
+			   initialize
+			   is-playing
+			   set-pig-player-id
+			   make-pig-player
+			   midi-input
+			   midi-output
+			   new-operator
+			   panic
+			   pig-proxy
+			   ping
+			   play
+			   query-channel-mode
+			   query-midi-channels
+			   query-midi-receivers
+			   query-midi-transmitters
+			   query-operators
+			   query-roots
+			   refresh
+			   rescan-media-directory
+			   resume
+			   select-media
+			   set-midi-channels
+			   set-midi-device
+			   set-pig-server
+			   stop))
 
-	  
+
+(cyco:constant +cyco-imports+  '(add-media-directory
+				 rescan-media-directory
+				 clear-media-list
+				 dump-media-list
+				 is-playing
+				 play
+				 resume
+				 select-media
+				 set-pig-server
+				 set-pig-player-id
+				 stop))
+
+(export +exports+ :pig)
+(import +cyco-imports+ :cyco)
+
+
+(in-package :cyco)
+
+(defun ?pig (&optional all)
+  (if all
+      (progn
+	(format t "PIG plugin exports~%")
+	(dolist (item pig::+exports+)
+	  (format t "   PIG:~A~%" item)))
+    (progn
+      (format t "PIG plugin cyco imports~%")
+      (dolist (item pig::+cyco-imports+)
+	(format t "   ~A~%" item))
+      (format t "Use (?pig :all) to display all exported symbols from :PIG package.~%"))))
+
 	  

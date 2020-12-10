@@ -8,8 +8,7 @@
 
 (constant +control-ball-properties+
 	  (append +part-properties+
-		  '(
-		    :controller
+		  '(:controller
 		    :end-cue
 		    :final-value
 		    :final-value-time-shift
@@ -68,11 +67,12 @@
 		   instrument-list
 		 (invalid-instrument-error part-name))))
 
-	 (validate-controller (part-name controller)
-	     (or (and (numberp controller)(<= 0 controller)(< controller 128))
-		 (eq controller :pressure)
-		 (eq controller :bend)
-		 (invalid-controller-error controller part-name)))
+	 (validate-controller (controller)
+	     (cond ((and (numberp controller)(<= 0 controller)(< controller 128))
+		    (truncate controller))
+		   ((eq controller :pressure) :pressure)
+		   ((eq controller :bend) :bend)
+		   (t (get-controller-number controller :default 1))))
 
 	 ;; nil
 	 ;; pattern object
@@ -99,23 +99,22 @@
 						     curve-type
 						     (sformat "CONTROL-BALL ~A" (name control-ball))))))) )
 
-  (defun make-control-ball (name controller instruments start end &key
-			  section
-			  cuefn
-			  shuffle
-			  shift
-			  tempo unit bars beats subbeats
-			  render-once
-			  interval
-			  pattern
-			  trim
-			  reset-on-repeat
-			  remarks
-			  initial
-			  final)
+  (defun make-control-ball (name instruments controller start end &key
+				 section
+				 cuefn
+				 shuffle
+				 shift
+				 tempo unit bars beats subbeats
+				 render-once
+				 interval
+				 pattern
+				 trim
+				 remarks
+				 initial
+				 final)
     (let ((parent (validate-section name section))
 	  (instrument-list (validate-instruments name instruments))
-	  (controller-type (validate-controller name controller)))
+	  (controller-type (validate-controller controller)))
       (if (not (and parent instrument-list controller-type))
 	  (return-from make-control-ball nil))
       (let ((control-ball (make-instance 'control-ball
@@ -124,8 +123,7 @@
 				  :remarks (->string (or remarks ""))
 				  :transient t)))
 	(connect parent control-ball)
-	
-	(put control-ball :controller controller)
+	(put control-ball :controller controller-type)
 	(put control-ball :tempo tempo)
 	(put control-ball :unit unit)
 	(put control-ball :bars bars)
@@ -144,7 +142,7 @@
 	(put control-ball :end-cue end)
 	(put control-ball :time-interval (or interval 's))
 	(put control-ball :shift (scale-time-parameter (or shift 0.0) control-ball))
-	(put control-ball :reset-on-repeat reset-on-repeat)
+	(put control-ball :reset-on-repeat t)
 	(let ((v (car initial))
 	      (time-shift (or (cdr initial) 0)))
 	  (put control-ball :initial-value v)
@@ -160,7 +158,7 @@
 (setf (documentation 'make-control-ball 'function) +control-ball-docstring+)
 
 
-(defmacro control-ball (name controller instruments start end &key
+(defmacro control-ball (name instruments controller start end &key
 		      section
 		      cuefn
 		      shuffle
@@ -170,7 +168,6 @@
 		      interval
 		      pattern
 		      trim
-		      reset-on-repeat
 		      remarks
 		      initial
 		      final)
@@ -190,7 +187,6 @@
 			      :interval ,interval
 			      :pattern ,pattern
 			      :trim ,trim
-			      :reset-on-repeat ,reset-on-repeat
 			      :initial ,initial
 			      :final ,final
 			      :remarks ,remarks)))
@@ -236,22 +232,22 @@
 	 (final-time-shift (property mother :final-value-time-shift))
 	 (final (if final-value (cons final-value final-time-shift)))
 	 (daughter (make-control-ball name
-			    (property mother :controller)
-			    (property mother :instruments)
-			    (property mother :start-cue)
-			    (property mother :end-cue)
-			    :section parent
-			    :cuefn (property mother :cue-function)
-			    :shuffle (property mother :shuffle-function)
-			    :shift (property mother :shift)
-			    :render-once (property mother :render-once)
-			    :interval (property mother :time-interval)
-			    :pattern (property mother :value-pattern)
-			    :reset-on-repeat (property mother :reset-on-repeat)
-			    :trim (property mother :trim)
-			    :initial initial
-			    :final final
-			    :remarks (remarks mother))))
+				      (property mother :instruments)
+				      (property mother :controller)
+				      
+				      (property mother :start-cue)
+				      (property mother :end-cue)
+				      :section parent
+				      :cuefn (property mother :cue-function)
+				      :shuffle (property mother :shuffle-function)
+				      :shift (property mother :shift)
+				      :render-once (property mother :render-once)
+				      :interval (property mother :time-interval)
+				      :pattern (property mother :value-pattern)
+				      :trim (property mother :trim)
+				      :initial initial
+				      :final final
+				      :remarks (remarks mother))))
     (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     daughter)) 

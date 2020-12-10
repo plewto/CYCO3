@@ -54,7 +54,7 @@
 
   (defmethod render-once ((control-ball control-ball) &key (offset 0.0))
     (if (muted-p control-ball)(return-from render-once '()))
-    (if (property control-ball :reset-on-repeat)(reset control-ball))
+    (reset control-ball)
     (let* ((midi-events '())
 	   (cuefn (property control-ball :cue-function))
 	   (shuffle (property control-ball :shuffle-function))
@@ -84,7 +84,6 @@
 
 
 (defmethod render-n ((control-ball control-ball)(n integer) &key (offset 0.0))
-  (reset control-ball)
   (let ((period (phrase-duration control-ball))
 	(midi-events '()))
     (dotimes (i (if (property control-ball :render-once) 1 n))

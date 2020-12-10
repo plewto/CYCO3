@@ -10,8 +10,13 @@
 (constant +control-ball-docstring+
 	  "Creates new instance of CONTROL-BALL.
 name        - symbol, part name
-controller  - MIDI controller number (0..127) inclusive, :PRESSURE or :BEND
 instruments - Instrument or list of instruments.
+controller  - Event type, one of:
+                1) Integer, MIDI controller number 0, 1, 2, ..., 127
+                2) Symbolic controller name, see (?controllers)
+                3) keyword :PRESSURE - generate channel pressure events.
+                4) keyword :BEND - generate pitch bend events.
+              If invalid, prints warning and defaults to cc 1.
 start       - Start time, must be in a format accepted by cuefn.
 end         - End time, must be in a format accepted by cuefn.
 :section    - Parent section, defaults to current section of *PROJECT*
@@ -30,7 +35,6 @@ end         - End time, must be in a format accepted by cuefn.
 :final      - cons (value shift), default nil
 :remarks    - Optional remarks text
 :render-once     - Boolean, if true do not repeat, default false.
-:reset-on-repeat - Boolean, if true reset pattern on repeat, default t.
 
 ;; The pattern argument specifies the controller values to be generated and must 
 ;; either be nil or a PATTERN which produces numbers only.   All data values

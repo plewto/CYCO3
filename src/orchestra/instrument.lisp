@@ -16,7 +16,7 @@
 
 (defclass instrument (cyco-node)
   ((channel-index
-    :type integer
+    :type t
     :accessor instrument-channel-index
     :initform nil))
   (:documentation

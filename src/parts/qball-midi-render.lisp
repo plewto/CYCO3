@@ -35,6 +35,7 @@
 	    midi-events)))
  
   (defmethod render-once ((qball qball) &key (offset 0.0))
+    (format t "DEBUG qball.render-once name = ~A~%" (name qball))
       (if (muted-p qball)(return-from render-once '()))
       (if (property qball :reset-on-repeat)
 	  (reset qball)
@@ -55,6 +56,7 @@
 	(sort-midi-events midi-events))) )
 
 (defmethod render-n ((qball qball)(n integer) &key (offset 0.0))
+  (format t "DEBUG qball.render-n name = ~A  n = ~A~%" (name qball) n)
   (reset qball)
   (let ((period (phrase-duration qball))
 	(midi-events '()))

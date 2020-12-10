@@ -81,13 +81,13 @@
 				     :remarks (->string (or remarks ""))
 				     :transient t)))
       (connect parent new-qball)
-      (init-time-signature new-qball)
       (put new-qball :instruments instrument-pattern)
       (put new-qball :tempo tempo)
       (put new-qball :unit unit)
       (put new-qball :bars bars)
       (put new-qball :beats beats)
       (put new-qball :subbeats subbeats)
+      (init-time-signature new-qball)
       (put new-qball :cue-function cuefn)
       (put new-qball :shuffle-function shuffle)
       (put new-qball :render-once render-once)
@@ -100,6 +100,7 @@
       (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
       (put new-qball :shift (scale-time-parameter (or shift 0) new-qball))
       (put new-qball :reset-on-repeat reset-on-repeat)
+
       (reset new-qball)
       new-qball))) 
 

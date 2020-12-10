@@ -16,8 +16,14 @@
       (maphash #'(lambda (k v)
 		   (push (cons k v) acc))
 	       controller-table)
-      acc))
+      (sort acc #'(lambda (a b)(< (cdr a)(cdr b))))))
 
+  (defun ?controllers ()
+    (format t "Symbolic MIDI controller names~%")
+    (dolist (ctrl (defined-controllers))
+      (format t "    ~12A --> ~3D~%" (car ctrl)(cdr ctrl))))
+
+  
   (defun get-controller-number (name &key (default nil))
     (or (gethash (->symbol name) controller-table)
 	(progn

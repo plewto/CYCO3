@@ -54,11 +54,14 @@
 
 (defun ?? ()
   "Displays list of available inspection functions."
-  (format t "(? object)    Displays info about object.~%")
-  (format t "(?a symbol)   Shortcut for (apropos symbol)~%")
-  (format t "(?d symbol)   Shortcut for (describe symbol)~%")
-  (format t "(?o)          Displays orchestra tree.~%")
-  (format t "(?p)          Displays current project structure.~%")
+  (format t "(? object)      Displays info about object.~%")
+  (format t "(?a symbol)     Shortcut for (apropos symbol)~%")
+  (format t "(?d symbol)     Shortcut for (describe symbol)~%")
+  (format t "(?o)            Displays orchestra tree.~%")
+  (format t "(?p)            Displays current project structure.~%")
+  (format t "(?chords)       Display chord table, takes optional argument.~%")
+  (format t "(?channels)     Display MIDI channel usage.~%")
+  (format t "(?controllers)  Display assigned MIDI controllers.~%")
   (format t "(?kmap inst)  Displays instrument's keynumber-map documentation.~%")
   (format t "(?pmap inst)  Displays instrument's program map documentation.~%"))
 

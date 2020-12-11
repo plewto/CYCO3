@@ -26,16 +26,3 @@ once all previous values have been returned."))
     (setf (slot-value q 'value) val)
     val))
 
-(defun ramp (start end &key (steps 16) &allow-other-keys)
-  "Creates linear ramp pattern from numeric range.
-start - initial value.
-end - final value.
-:steps - number of steps, default 16.
-Returns Pattern.
-The ending value is never reached."
-  (let* ((delta (float (- end start)))
-	 (increment (/ delta steps)))
-    (line :of (range start end :by increment))))
-  
-(defun iramp (start end &key (steps 16) &allow-other-keys)
-  (line :of (irange start end steps)))

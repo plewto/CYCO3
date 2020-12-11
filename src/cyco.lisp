@@ -102,6 +102,7 @@
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
+		   "src/patterns/pseudo-patterns"
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"

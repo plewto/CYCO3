@@ -65,7 +65,33 @@ cycle repeats."))
 		      (flatten (copies cycles (rotate (append curve-1 curve-2) phase)))))
 	 
 	 (compare (value threshold high low)
-		  (if (< value threshold) low high)))
+		  (if (< value threshold) low high))
+
+
+	 (isaw-curve (amp1 amp2 cycles steps phase)
+		     (let* ((segment-length (truncate (/ steps cycles)))
+			    (segment (irange amp1 amp2 segment-length))
+			    (curve (flatten (copies cycles segment))))
+		       (setf curve (reverse curve))
+		       (while (< (length curve) steps)
+			 (push amp2 curve))
+		       (rotate (reverse curve) phase)))
+
+	 (itri-curve (amp1 amp2 cycles steps phase)
+		     (let* ((cycle-steps (/ steps cycles))
+			    (half (truncate (/ cycle-steps 2)))
+			    (half-2 (if (evenp half) half (1+ half)))
+			    (curve-1 (irange amp1 amp2 half))
+			    (curve-2 (cdr (irange amp2 amp1 (1+ half-2))))
+			    (curve (flatten (copies cycles (append curve-1 curve-2))))
+			    )
+		       (while (< (length curve) steps)
+			 (push amp1 curve))
+		       (rotate (reverse curve) phase)))
+	 
+	 
+
+	 )
 
   (defun sawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with sawtooth contour.  Note amp2 
@@ -77,6 +103,23 @@ amp2 - peak amplitude.
 :phase  - phase shift in degrees, default 0.
 Returns Pattern."
     (cycle :of (saw-curve amp1 amp2 cycles steps phase)))
+
+
+  (defun isawtooth (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
+    "Creates integer pattern with sawtooth contour.  
+Unlike the general sawtooth function, the initial and final values of isawtooth 
+are guaranteed to be amp1 and amp2 respectively.  However the wave-shape may be distorted.
+In particular step sizes may not be uniform and values may repeat.
+
+amp1    - Integer, initial amplitude.
+amp2    - Integer, final amplitude.
+:cycles - Integer, number of sawtooth cycles.  For best results cycles should be 
+          a factor of steps and be less then or equal to steps/2.  Default 1.
+:steps  - Integer, length of pattern, default 16.
+:phase  - Integer, phase shift in degrees, default 0
+Returns pattern."
+    (cycle :of (isaw-curve amp1 amp2 cycles steps phase)))
+
   
   (defun triangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
     "Creates numeric pattern with triangle contour.
@@ -87,6 +130,22 @@ amp2 - peak amplitude.
 :phase  - phase shift in degrees, default 0.
 Returns Pattern."
       (cycle :of (tri-curve amp1 amp2 cycles steps phase)))
+
+  
+  (defun itriangle (amp1 amp2 &key (cycles 1)(steps 16)(phase 0) &allow-other-keys)
+    "Creates integer pattern with triangle contour.
+Unlike the general triangle function, the initial and final values of itriangle
+are guaranteed to be amp1 and amp2 respectively.  However the wave-shape may be distorted.
+In particular steps sizes may not be uniform and some values may be repeated.
+
+amp1    - Integer, initial amplitude.
+amp2    - Integer, final amplitude.
+:cycles - Integer, number of sawtooth cycles.  For best results cycles should be 
+          a factor of steps and be less then or equal to steps/2.  Default 1.
+:steps  - Integer, length of pattern, default 16.
+:phase  - Integer, phase shift in degrees, default 0
+Returns pattern."
+    (cycle :of (itri-curve amp1 amp2 cycles steps phase)))
 
 
   (defun pulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5) &allow-other-keys)
@@ -100,4 +159,23 @@ amp2 - maximum amplitude.
 Returns pulse Pattern."
     (let* ((saw (saw-curve 0.0 1.0 cycles steps phase))
 	   (pulse (mapcar #'(lambda (v)(compare v width amp2 amp1)) saw)))
-      (cycle :of pulse))))
+      (cycle :of pulse)))
+
+  (defun ipulse (amp1 amp2 &key (cycles 1)(steps 16)(phase 0)(width 0.5) &allow-other-keys)
+    "Creates integer pulse pattern.
+amp1    - Integer, initial amplitude.
+amp2    - Integer, final amplitude.
+:cycles - Integer, number of sawtooth cycles.  For best results cycles should be 
+          a factor of steps and be less then or equal to steps/2.  Default 1.
+:steps  - Integer, length of pattern, default 16.
+:phase  - Integer, phase shift in degrees, default 0
+:width  - Float, pulse width 0.0 <= width <= 1.0, default 0.5
+Returns pulse pattern."
+
+    (let* ((curve (reverse (saw-curve 0.0 1.0 cycles steps 0))))
+      (while (< (length curve) steps)
+	(push 1.0 curve))
+      (setf curve (mapcar #'(lambda (v)(compare v width (truncate amp1)(truncate amp2)))
+			  curve))
+      (cycle :of (rotate curve phase)))) )
+  

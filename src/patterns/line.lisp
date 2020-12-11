@@ -37,3 +37,5 @@ The ending value is never reached."
 	 (increment (/ delta steps)))
     (line :of (range start end :by increment))))
   
+(defun iramp (start end &key (steps 16) &allow-other-keys)
+  (line :of (irange start end steps)))

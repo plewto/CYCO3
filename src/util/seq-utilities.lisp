@@ -219,9 +219,9 @@ start - Integer, the starting value.
 end   - Integer, the ending value.
 steps - Integer, length of result. 0 <= steps.
 
-Always returns list of length steps such that the car is start and the
-final element is end.   The resulting step sizes are not guaranteed to be 
-consistent and the list may contain duplicate values."
+Always returns monotonic list of length steps such that the car is 
+start and the final element is end.   The resulting step sizes are 
+not guaranteed to be consistent and the list may contain duplicate values."
     (cond ((zerop steps)
 	   '())
 	  ((= steps 1)

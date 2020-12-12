@@ -8,7 +8,7 @@
 ;;;;       |
 ;;;;       +-- PART
 ;;;;            |
-;;;;            +-- CONTROL-BALL
+;;;;            +-- CONTROLLERS
 ;;;;            +-- PROGRAMS
 ;;;;            +-- QBALL
 ;;;;            |    |
@@ -22,8 +22,7 @@
 (in-package :cyco-part)
 
 (constant +part-specific-properties+ 
-	  '(
-	    :chord-model
+	  '(:chord-model
 	    :cue-function
 	    :group
 	    :instruments
@@ -32,8 +31,7 @@
 	    :reversible
 	    :shift
 	    :shuffle-function
-	    :transposable
-	    ))
+	    :transposable))
 	  
 (constant +part-properties+
 	  (append +time-signature-properties+

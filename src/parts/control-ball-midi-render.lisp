@@ -5,10 +5,13 @@
 
 (in-package :cyco-part)
 
-(labels ((mapping-function (control-ball)
-	    (let ((controller (property control-ball :controller)))
-	      (cond ((eq controller :bend) #'bend->midi-data)
-		    (t #'norm->midi-data))))
+(labels (
+
+
+	 ;; (mapping-function (control-ball)
+	 ;;    (let ((controller (property control-ball :controller)))
+	 ;;      (cond ((eq controller :bend) #'bend->midi-data)
+	 ;; 	    (t #'norm->midi-data))))
 				   
 	 (get-channel-index-list (control-ball)
 	    (mapcar #'channel-index (property control-ball :instruments)))
@@ -16,41 +19,59 @@
 	 (create-message (controller channel-index data)
 	    (cond ((integerp controller)
 		   (midi-control-change channel-index controller data))
-		  ((eq controller :pressure)
-		   (midi-channel-pressure channel-index data))
-		  (t (let ((lsb (aref data 0))
-			   (msb (aref data 1)))
-		       (midi-pitch-bend channel-index lsb msb)))))
+		  (t
+		   (midi-channel-pressure channel-index data))))
 	 
+	 ;; (render-single-events (control-ball start-time end-time)
+	 ;;    (let* ((data-mapping-function (mapping-function control-ball))
+	 ;; 	   (controller (property control-ball :controller))
+	 ;; 	   (midi-events '())
+	 ;; 	   (initial-norm-value (property control-ball :initial-value))
+	 ;; 	   (final-norm-value (property control-ball :final-value))
+	 ;; 	   (channel-index-list (and (or initial-norm-value final-norm-value)
+	 ;; 				    (get-channel-index-list control-ball))) )
+	 ;;      (if initial-norm-value
+	 ;; 	  (let* ((value (funcall data-mapping-function initial-norm-value))
+	 ;; 		 (shift (let* ((n (or (property control-ball :initial-value-time-shift) 0.01))
+	 ;; 			       (scale (if (numberp n)
+	 ;; 					  1.0
+	 ;; 					(float (beat-duration control-ball)))))
+	 ;; 			  (* scale (metric-expression n))))
+	 ;; 		 (time (max 0 (- start-time shift))))
+	 ;; 	    (dolist (ci channel-index-list)
+	 ;; 	      (push (cons time (create-message controller ci value)) midi-events))))
+	 ;;      (if final-norm-value
+	 ;; 	  (let* ((value (funcall data-mapping-function final-norm-value))
+	 ;; 		 (shift (let* ((n (or (property control-ball :final-value-time-shift) 0.01))
+	 ;; 			       (scale (if (numberp n)
+	 ;; 					  1.0
+	 ;; 					(float (beat-duration control-ball)))))
+	 ;; 			  (* scale (metric-expression n))))
+	 ;; 		 (time (+ end-time shift)))
+	 ;; 	    (dolist (ci channel-index-list)
+	 ;; 	      (push (cons time (create-message controller ci value)) midi-events))))
+	 ;;      midi-events))
+
 	 (render-single-events (control-ball start-time end-time)
-	    (let* ((data-mapping-function (mapping-function control-ball))
-		   (controller (property control-ball :controller))
-		   (midi-events '())
-		   (initial-norm-value (property control-ball :initial-value))
-		   (final-norm-value (property control-ball :final-value))
-		   (channel-index-list (and (or initial-norm-value final-norm-value)
-					    (get-channel-index-list control-ball))) )
-	      (if initial-norm-value
-		  (let* ((value (funcall data-mapping-function initial-norm-value))
-			 (shift (let* ((n (or (property control-ball :initial-value-time-shift) 0.01))
-				       (scale (if (numberp n)
-						  1.0
-						(float (beat-duration control-ball)))))
-				  (* scale (metric-expression n))))
-			 (time (max 0 (- start-time shift))))
-		    (dolist (ci channel-index-list)
-		      (push (cons time (create-message controller ci value)) midi-events))))
-	      (if final-norm-value
-		  (let* ((value (funcall data-mapping-function final-norm-value))
-			 (shift (let* ((n (or (property control-ball :final-value-time-shift) 0.01))
-				       (scale (if (numberp n)
-						  1.0
-						(float (beat-duration control-ball)))))
-				  (* scale (metric-expression n))))
-			 (time (+ end-time shift)))
-		    (dolist (ci channel-index-list)
-		      (push (cons time (create-message controller ci value)) midi-events))))
-	      midi-events)) )
+			       (let* ((controller (property control-ball :controller))
+				      (midi-events '())
+				      (initial-value (property control-ball :initial-value))
+				      (final-value (property control-ball :final-value))
+				      (channel-index-list (get-channel-index-list control-ball)))
+				 (if initial-value
+				     (let* ((shift (scale-time-parameter (property control-ball :initial-value-time-shift)
+									 control-ball))
+					    (time (max 0 (- start-time shift))))
+				       (dolist (ci channel-index-list)
+					 (push (cons time (create-message controller ci initial-value)) midi-events))))
+				 (if final-value
+				     (let* ((shift (scale-time-parameter (property control-ball :final-value-time-shift)
+									 control-ball))
+					    (time (+ end-time shift)))
+				       (dolist (ci channel-index-list)
+					 (push (cons time (create-message controller ci final-value) midi-events)))))))
+
+	 )
 
   (defmethod render-once ((control-ball control-ball) &key (offset 0.0))
     (if (muted-p control-ball)(return-from render-once '()))
@@ -68,19 +89,18 @@
 	   (channel-index-list (get-channel-index-list control-ball))
 	   (pattern (property control-ball :value-pattern))
 	   (controller (property control-ball :controller))
-	   (trim-count (property control-ball :trim))
-	   (data-map-function (mapping-function control-ball)))
+	   (trim-count (property control-ball :trim)))
+	   ;; (data-map-function (mapping-function control-ball)))
       (if pattern
 	  (while (<= current-time end-time)
-	    (let* ((norm-value (next pattern))
-		   (data (funcall data-map-function norm-value))
+	    (let* ((data (limit (round (next pattern)) 0 127))
 		   (time (+ current-time time-shift)))
 	      (dolist (ci channel-index-list)
 		(push (cons time (create-message controller ci data)) midi-events))
 	      (setf current-time (+ current-time time-interval)))))
       (setf midi-events (append (elide midi-events :start (or trim-count 0))
 				(render-single-events control-ball start-time end-time)))
-      (sort-midi-events midi-events))) )
+      (sort-midi-events midi-events))) ) 
 
 
 (defmethod render-n ((control-ball control-ball)(n integer) &key (offset 0.0))

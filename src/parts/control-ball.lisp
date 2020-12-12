@@ -1,7 +1,7 @@
 ;;;; CYCO parts control-ball.lisp
 ;;;;
 ;;;; Defines CONTROL-BALL class for generating MIDI controller,
-;;;; pressure and bend events.
+;;;; and channel-pressure events.
 ;;;;
 
 (in-package :cyco-part)
@@ -35,7 +35,6 @@
 	    (cyco-composition-error 'make-control-ball
 				    (sformat "No default project while creating CONTROL-BALL ~A"
 					     part-name)))
-
 
 	 (invalid-instrument-error (part-name)
 	    (cyco-type-error 'make-control-ball "Instrument or list of instruments"
@@ -71,12 +70,11 @@
 	     (cond ((and (numberp controller)(<= 0 controller)(< controller 128))
 		    (truncate controller))
 		   ((eq controller :pressure) :pressure)
-		   ((eq controller :bend) :bend)
 		   (t (get-controller-number controller :default 1))))
 
 	 ;; nil
 	 ;; pattern object
-	 ;; (:RAMP amp1 amp2 )
+	 ;; (:RAMP amp1 amp2)
 	 ;; (:sawtooth amp1 amp2 :phase)
 	 ;; (:triangle amp1 amp2 :phase)
 	 ;; (:pulse amp1 amp2 :phase :width)
@@ -87,13 +85,13 @@
 				(curve-type (car pattern))
 				(args (append (cdr pattern)(list :steps steps))))
 			   (cond ((eq curve-type :ramp)
-				  (apply #'ramp args))
+				  (apply #'iramp args))
 				 ((eq curve-type :sawtooth)
-				  (apply #'sawtooth args))
+				  (apply #'isawtooth args))
 				 ((eq curve-type :triangle)
-				  (apply #'triangle args))
+				  (apply #'itriangle args))
 				 ((eq curve-type :pulse)
-				  (apply #'pulse args))
+				  (apply #'ipulse args))
 				 (t (cyco-type-error 'make-control-ball
 						     "curve type, one of :RAMP :SAWTOOTH :TRIANGLE or :PULSE"
 						     curve-type

@@ -138,11 +138,3 @@ Generate single-cycle triangle curve
 Generate 2 pulse cycles with 33% pulse-width
 
       :time (1 1 1)(2 1 1) s :value 0 128 :cycle 2 :phase 0 :width .33 :pulse")
-
-
-
-
-
-
-    
-

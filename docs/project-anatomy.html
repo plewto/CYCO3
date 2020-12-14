@@ -91,7 +91,7 @@
     project file.<br>  
     
     Otherwise consider using a dedicated orchestra file and load it
-    with <nobr>(LPF 'orchestra)</nobr>
+    with <nobr>(LPF orchestra)</nobr>
   </p>
   <p class="body">
     <strong>Regardless of where the orchestra is defined, it is important
@@ -181,10 +181,10 @@
     (project foo :tempo 120 :bars 2)  ;; Create project object, bind it to *PROJECT*,
                                       ;; sets default tempo and bar count.
     (prune-orchestra)                 ;; Clear orchestra of old instruments.
-    (lpf 'orchestra)                  ;; Load project file defining orchestra
-    (lpf 'verse)                      ;; Load section files...
-    (lpf 'chorus) 
-    (lpf 'bridge)
+    (lpf orchestra)                   ;; Load project file defining orchestra
+    (lpf verse)                       ;;   Do not quote the argumen to LPF
+    (lpf chorus) 
+    (lpf bridge)
     (section-order '((verse :x 2) chorus bridge verse)) 
     (project->midi) 
   </pre>

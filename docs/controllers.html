@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>controllers</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/controllers.png" alt="controllers"/>
+  <h1 class="banner">Controllers Parts</h1>
+  <p class="body">
+    <b>Controllers</b> is a type of part for generating MIDI
+    control-change events.  Single events, ramps and LFO like cycles may be
+    created.
+  </p>
+  
+  <!-- (MAKE-CONTROLLERS name instruments &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-CONTROLLERS name instruments &key ...)</b><br>
+  
+  <!-- (CONTROLLERS name instruments &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CONTROLLERS name instruments &key ...)</b><br>
+  <pre class="description">
+    MAKE-CONTROLLERS and CONTROLLERS are identical except the
+    later binds the new part to the symbol name while the later does not.  The
+    name argument should be a quoted symbol for MAKE-CONTROLLERS and unquoted
+    for CONTROLLERS.
+    
+    name         - Symbol               
+    instruments  - Instrument or list of instruments.                      
+    :section     - Parent section, defaults to current section of 8PROJECT*                   
+    :cuefn       - Function, time cue function. Defaults to section value.                 
+    :shuffle     - Function, time shuffle function . Defaults to section value.                  
+    :tempo       - Integer, tempo in BPM. Defaults to section value.                  
+    :unit        - Symbol, time-signature beat-unit. Defaults to section value.                 
+    :bars        - Integer, time-signature bars per phrase. Defaults to section value.                 
+    :beats       - Integer, time-signature beats per bar. Defaults to section value.                  
+    :subbeats    - Integer, time-signature sub-beats per beat.                    
+    :shift       - Metric-expression, time shift added to all events, default 0.                 
+    :render-once - Boolean, if true do not repeat events within section, default nil.
+    :no-thin     - Boolean, if true do not remove duplicate controller events, default nil.
+    :remarks     - String, optional text.                   
+    :events      - List, see below.
+    
+    
+    
+    Events are specified as a nested list of event 'clauses'.
+    
+        ((clause-1 clause-2 ...)
+         (clause-x clause-y ...)
+          ......................)
+    
+        where a clause is a keyword followed by a prescribed number of
+        arguments.
+    
+            :command arguments...
+    
+    Commands fall into two general categories:
+    
+        1) Those that set the 'environment' include the following
+           :reset :time :value :ctrl :cycles :phase & :width
+    
+           The values set by these commands remain in effect until explicitly
+           changed. 
+    
+       2) Those that generate events include
+          :cc :ramp :saw :tri & :pulse
+    
+          Once the event(s) have been generated these commands are cleared.
+    
+    
+    :reset  - Sets all values to defaults
+    
+    :time   - :TIME start end interval
+    
+              start and end are the initial and final times over which the
+              events occur.  The format must be accepted by the cue function.
+    
+              interval is a metric-expression that sets the rate at which
+              events occur.
+    
+              The special value '* reuses the current value.
+              Additionally the start time may have the value '< which set it
+              to the current end time.
+    
+    
+    :value  - :VALUE start end
+    
+              The initial and final controller values.   Both are integers
+              0 <= value < 128.   The special value '* indicates to use the
+              current value.
+              
+    :ctrl   - :CTRL controller-number
+              
+              The controller number either as an integer 0 <= number < 128
+              or as a symbolic name.  Use (?CONTROLLERS) for list of defined
+              controllers.
+    
+    :cycles - Number of cycles, default 1.
+    :phase  - Pattern phase shift in degrees, default 0.
+    :width  - Pulse curve width, 0.0 <= width <= 1.0, default 0.5
+    
+    :cc     - :CC time controller value
+    
+              Generates a single control-change event for each instrument.
+              time - must be in format accepted by the cue function.
+              controller - same as :ctrl above.
+              value - same as :value above.
+    
+    :ramp  - :RAMP
+             
+             Generates linear ramp for each instrument.
+    
+    :saw   - :SAW
+               
+             Generates sawtooth pattern for each instrument.
+             Uses cycles and phase values.
+    
+    :tri   - :TRI
+    
+            Generates triangle pattern for each instrument.
+            Uses cycles and phase values.
+    
+    :pulse - :PULSE
+    
+           Generates pulse pattern for each instrument.
+           Uses cycles, phase and width values.
+    
+    All values effecting the :RAMP, :SAW, :TRI and :PULSE clauses must be set
+    at the time these commands are specified.
+    
+    
+    Examples:
+    
+    Generate single mod wheel event at time (1 1 1) with value 64.
+    
+    
+             :cc (1 1 1) wheel 64
+    
+    
+    Generate ramp between times (1 1 1) and (2 1 1) every 16th note
+    with initial value 0 and final value 128
+    
+            :time (1 1 1)(2 1 1) s :value 0 128 :ctrl wheel :ramp
+    
+    Generate another ramp starting at the end-time of the previous one
+    
+            :time < (3 1 1) s :ramp
+    
+            ;; Note the value 0 128 and ctrl clauses are reused.
+    
+    Generate single-cycle triangle curve
+    
+           :time (1 1 1)(2 1 1) s :value 0 128 :cycle 1 :phase 0 :tri
+    
+    Generate 2 pulse cycles with 33% pulse-width
+    
+          :time (1 1 1)(2 1 1) s :value 0 128 :cycle 2 :phase 0 :width .33 :pulse
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

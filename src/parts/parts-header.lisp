@@ -114,6 +114,7 @@
                 :solo
                 :sort-midi-events
                 :tempo
+		:thin-controller-events
                 :time-signature
                 :transpose
                 :unmute

@@ -5,7 +5,8 @@
 
 (in-package :cyco-part)
 
-(constant +controllers-properties+ +part-properties+)
+(constant +controllers-properties+
+	  (append +part-properties+ '(:no-thin)))
 
 
 (defclass controllers (part)
@@ -197,6 +198,7 @@
 				tempo unit bars beats subbeats
 				render-once
 				remarks
+				no-thin
 				events)
     (let* ((part-name (->cyco-symbol name))
 	   (parent (validate-section part-name section))
@@ -219,6 +221,8 @@
       (put part :render-once render-once)
       (put part :transposable nil)
       (put part :reversible nil)
+      (put part :no-thin no-thin)
+      
       (setf (controllers-states part)
 	    (process-events part (->list events)))
       (reset part)
@@ -231,6 +235,7 @@
 			     shift
 			     tempo unit bars beats subbeats
 			     render-once
+			     no-thin
 			     remarks
 			     events)
    `(progn
@@ -246,6 +251,7 @@
 				   :beats  ,beats 
 				   :subbeats ,subbeats
 				   :render-once ,render-once
+				   :no-thin ,no-thin
 				   :remarks ,remarks
 				   :events ,events)))
 	(defparameter ,name part)
@@ -258,6 +264,7 @@
 	 (daughter (make-controllers name
 				     (property mother :instruments)
 				     :section parent
+				     :no-thin (property mother :no-thin)
 				     :remarks (remarks mother)
 				     :events (clone (property mother :events)))))
     (copy-part-properties mother daughter)

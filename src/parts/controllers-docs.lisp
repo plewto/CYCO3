@@ -23,6 +23,8 @@ instruments  - Instrument or list of instruments.
 :beats       - Integer, beats per bar, defaults to section value.
 :subbeats    - Integer, sub-beats per beat, defaults to section value.
 :render-once - Boolean, if true generate events once, default nil.
+:thin        - Boolean, if true remove redundent controller events, default t.
+:no-thin     - Boolean, if true do not remove redundent controller events, default t.
 :remarks     - Optional remarks text
 :events      - Event specification list, see below.
 

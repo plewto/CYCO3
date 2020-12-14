@@ -78,6 +78,9 @@
 	(setf midi-events
 	      (append midi-events
 		      (generate-curve-events state time-shift channel-index-list))))
+      (if (not (property part :no-thin))
+	  (dolist (channel-index channel-index-list)
+	    (setf midi-events (thin-controller-events midi-events channel-index))))
       (sort-midi-events midi-events))) )
 
 
@@ -93,7 +96,3 @@
 		midi-events))))
     (sort-midi-events midi-events)))
 
-	
-		
-
- 

@@ -8,7 +8,9 @@
 (constant +controllers-docstring+
 	  "Creates new instance of CONTROLLERS part.
 
-A CONTROLLERS is a part for generating MIDI control-change events.
+CONTROLLERS is a part for generating MIDI control-change 
+and channel-pressure events.
+
 Individual or curve events may be generated.
 
 name         - Symbol
@@ -79,6 +81,9 @@ Commands fall into two general categories:
           The controller number either as an integer 0 <= number < 128
           or as a symbolic name.  Use (?CONTROLLERS) for list of defined
           controllers.
+
+          If ctrl has the value PRESSURE, generate channel-pressure events.
+        
 
 :cycles - Number of cycles, default 1.
 :phase  - Pattern phase shift in degrees, default 0.

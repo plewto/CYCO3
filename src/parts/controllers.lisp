@@ -19,32 +19,6 @@
 (defmethod controllers-p ((item t)) nil)
 (defmethod controllers-p ((item controllers)) t)
 
-;;; EVENTS
-
-;;; Persistent clauses
-;;;    :reset
-;;;    :time start end increment
-;;;           * = previous value
-;;;           start = <   set start to previous end time
-;;;    :value start end
-;;;           * = previous value
-;;;           start = <   set start to previous end
-;;;    :ctrl ctrl
-;;;         ctrl an intergewr  0...127
-;;;         ctrl a symbolic controller name --> integer
-;;;    :cycles
-;;;    :phase
-;;;    :width
-;;;
-;;; Event clauses
-;;;   :cc   time ctrl value  ~ single event 
-;;;   :ramp
-;;;   :saw
-;;;   :tri
-;;;   :pulse
-;;;
-;;;  * == current value
-;;;  < start time set to previous end-time
 
 (labels ((real-event-p 
 	  (state)
@@ -101,24 +75,26 @@
 				      (sformat "part name was ~A" (name part))
 				      (sformat "events clause was ~A" clause)
 				      "Illegal controller value"))))
-					  
+
+	 ;; Converts controller-number specification to integer.
+	 ;; The value 'pressure is a special case which returns itself
+	 (convert-controller-number
+	  (ctrl)
+	  (cond ((numberp ctrl)
+		 (limit (round ctrl) 0 127))
+		;; Not sure why this comparison fails.
+		;; Using string comparison as workaround.
+		;; ((eq ctrl 'pressure)
+		;;  'pressure)
+		((string= (->string ctrl) "PRESSURE")
+		 'pressure)
+		(t (get-controller-number ctrl :default 1))))
+	 
 	 (process-controller-type
-	  (part state clause)
+	  (state clause)
 	  (let ((ctrl (second clause)))
 	    (setf (controllers-state-controller state)
-		  (cond ((numberp ctrl)
-			 (limit (round ctrl) 0 127))
-			((eq ctrl '*)
-			 (controllers-state-controller state))
-			(t (let ((cnumber (get-controller-number ctrl :default :error)))
-			     (if (numberp cnumber)
-				 cnumber
-			       (progn 
-				 (cyco-composition-error 'make-controllers
-							 (sformat "part name was ~A" (name part))
-							 (sformat "events clause was ~A" clause)
-							 "Illegal MIDI controller")
-				 0))))))))
+		  (convert-controller-number ctrl))))
 
 	 (process-cycle-count 
 	  (state clause)
@@ -145,9 +121,8 @@
 		 (value-spec (or (fourth clause) 0))
 		 (time (+ (funcall cuefn part time-spec)
 			  (funcall shuffle time-spec)))
-		 (controller-number (if (numberp ctrl-spec)
-					(limit ctrl-spec 0 127)
-				      (get-controller-number ctrl-spec :default 1)))
+		 (controller-number (convert-controller-number ctrl-spec))
+		 
 		 (value (limit (round value-spec) 0 127)))
 	    (setf (controllers-state-single-event state)
 		  (list time controller-number value))))
@@ -162,7 +137,7 @@
 	     ((eq command :reset)(reset state))
 	     ((eq command :time) (process-times part state clause))
 	     ((eq command :value) (process-values part state clause))
-	     ((eq command :ctrl) (process-controller-type part state clause))
+	     ((eq command :ctrl) (process-controller-type state clause))
 	     ((eq command :cycles) (process-cycle-count state clause))
 	     ((eq command :phase) (process-phase state clause))
 	     ((eq command :width) (process-pulse-width state clause))

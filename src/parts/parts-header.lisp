@@ -157,12 +157,12 @@
 (src-load "strummer-state")
 (src-load "strummer")
 (src-load "strummer-midi-render")
-
-
 (src-load "controllers-docs")
 (src-load "controllers-state")
 (src-load "controllers")
 (src-load "controllers-render")
+
+(src-load "pressure")
 
 
 (export '(*strummer-render-trace*

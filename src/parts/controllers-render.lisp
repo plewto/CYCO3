@@ -20,15 +20,17 @@
 	  (let ((event-list '())
 		(specification (controllers-state-single-event state)))
 	    (if (null specification)(return-from generate-single-event))
-	    (let ((time (+ time-shift (car specification)))
-		  (controller (second specification))
-		  (value (third specification)))
+	    (let* ((time (+ time-shift (car specification)))
+		   (controller (second specification))
+		   (value (third specification))
+		   (message-function (if (numberp controller)
+					 #'(lambda (ci value)(midi-control-change ci controller value))
+				       #'midi-channel-pressure)))
 	      (dolist (ci channel-index-list)
-		(push (cons time (midi-control-change ci controller value))
-		      event-list)))
+		(push (cons time (funcall message-function ci value)) event-list)))
 	    event-list))
 
-	 
+
 	 (generate-curve-events
 	  (state time-shift channel-index-list)
 	  (let ((curve (controllers-state-curve state)))
@@ -57,11 +59,12 @@
 				      :cycles cycles :phase phase :width width))
 			     (t (iramp value1 value2 :steps steps))))
 		   (value-list (next pattern :all)))
-	      (loop for time in time-list for value in value-list
-		    do (dolist (ci channel-index-list)
-			 (push
-			  (cons time (midi-control-change ci controller value))
-			  event-list)))
+	      (let ((message-function (if (numberp controller)
+					  #'(lambda (ci value)(midi-control-change ci controller value))
+					#'midi-channel-pressure)))
+		(loop for time in time-list for value in value-list
+		      do (dolist (ci channel-index-list)
+			   (push (cons time (funcall message-function ci value)) event-list))))
 	      event-list))) )
 
   

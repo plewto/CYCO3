@@ -220,3 +220,23 @@ Event times are considered identical if their difference is less then time-fuzz.
 	 (= (length event-list-1)
 	    (length event-list-2))
 	 (compare-event-list event-list-1 event-list-2 time-fuzz))))
+
+
+(defun thin-controller-events (midi-events channel-index)
+  "Removes duplicate controller events."
+  (let ((acc '())
+	(current-values (->vector (copies 128 -1))))
+    (dolist (event midi-events)
+      (let ((message (cdr event)))
+	(if (and (midi-control-change-p message)
+		 (= (channel-index message) channel-index))
+	    (let ((controller-number (data message 0))
+		  (value (data message 1)))
+	      (if (not (= (aref current-values controller-number) value))
+		  (progn
+		    (setf (aref current-values controller-number) value)
+		    (push event acc))))
+	  (push event acc))))
+    (sort-midi-events acc)))
+
+

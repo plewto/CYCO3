@@ -1,6 +1,11 @@
 ;;;; CYCO parts controllers.lisp
 ;;;;
-;;;; CONTROLLERS is a part class for generating MIDI control change events.
+;;;; Defines the CONTROLLERS and BENDER classes.
+;;;;
+;;;; CONTROLLERS is a part for generating MIDI control-change and
+;;;; channel-pressure events.
+;;;; 
+;;;; BENDER is a part for generating MIDI pitch-bend events.
 ;;;;
 
 (in-package :cyco-part)
@@ -35,7 +40,14 @@
 	  (state)
 	  (or (controllers-state-curve state)
 	      (controllers-state-single-event state)))
-	 
+
+	 ;; clause ~ (:time start end interval)
+	 ;;   Where start and end are time-specification as required by
+	 ;;   by the part's cue function, and interval is a metric-expression.
+	 ;;
+	 ;;   Special value '* indicates to reuse the current value.
+	 ;;   Special start value '< sets start time to current end time.
+	 ;;
 	 (process-times 
 	  (part state clause)
 	  (let* ((cuefn (property part :cue-function))
@@ -49,7 +61,6 @@
 				    (controllers-state-end-time state))
 				   (t (funcall cuefn part start-spec)
 				      (funcall shuffle start-spec))))
-		 
 		 (end-time (if (or (eq end-spec '*)(null end-spec))
 			       (controllers-state-end-time state)
 			     (+ (funcall cuefn part end-spec)
@@ -65,7 +76,10 @@
 	    (setf (controllers-state-end-time state) end-time)
 	    (setf (controllers-state-time-interval state) time-interval)
 	    t))
-	 
+
+	 ;; clause ~ (:value start end)
+	 ;;   Where values are integer MIDI data,  0 <= n < 128.
+	 ;;
 	 (process-controller-values 
 	  (part state clause)
 	  (let* ((start-spec (second clause))
@@ -88,6 +102,9 @@
 				      (sformat "events clause was ~A" clause)
 				      "Illegal controller value"))))
 
+	 ;; clause ~ (:value start end)
+	 ;;   Where start and end are signed normalized floats, -1.0 <= n <= +1.0
+	 ;;
 	 (process-bender-values
 	  (part state clause)
 	  (let* ((start-spec (second clause))
@@ -110,8 +127,12 @@
 				      (sformat "events clause was ~A" clause)
 				      "Illegal bender value"))))
 
+	
 	 ;; Converts controller-number specification to integer.
-	 ;; The value 'pressure is a special case which returns itself
+	 ;;    Where ctrl is integer MIDI controller number, 0 <= ctrl < 128,
+	 ;;    a symbolic controller name,
+	 ;;    or the special case symbol 'pressure.
+	 ;;
 	 (convert-controller-number
 	  (ctrl)
 	  (cond ((numberp ctrl)
@@ -130,25 +151,35 @@
 	    (setf (controllers-state-controller state)
 		  (convert-controller-number ctrl))))
 
+	 ;; clause ~ (:cycles n)
+	 ;;    Where n is positive wave-cycle count.
+	 ;;
 	 (process-cycle-count 
 	  (state clause)
 	  (setf (controllers-state-cycles state)
 		(abs (round (or (second clause) 1))))
 	  t)
 
+	 ;; clause ~ (:phase deg)
+	 ;;    Where deg is phase shift in degrees.
+	 ;;
 	 (process-phase
 	  (state clause)
 	  (setf (controllers-state-phase state)
 		(rem (round (or (second clause) 0)) 360))
 	  t)
 
+	 ;; clause ~ (:width w)
+	 ;;    Where w is pulse width.  0.0 < w < 1.0
+	 ;;
 	 (process-pulse-width 
 	  (state clause)
 	  (setf (controllers-state-width state)
 		(limit (or (second clause) 0.5) 0.0 1.0))
 	  t)
 
-	 ;; :cc time controller-number value
+	 ;; clause ~ (:cc time controller-number value)
+	 ;;
 	 (add-single-controller-event
 	  (part state clause)
 	  (let* ((cuefn (property part :cue-function))
@@ -163,7 +194,8 @@
 	    (setf (controllers-state-single-event state)
 		  (list time controller-number value))))
 
-	 ;; :bend time value
+	 ;; clause ~ (:bend time value)
+	 ;;
 	 (add-single-bend-event
 	  (part state clause)
 	  (let* ((cuefn (property part :cue-function))
@@ -181,6 +213,8 @@
 	  (setf (controllers-state-curve state) curve-type)
 	  t)
 
+	 ;; Handles clauses common to both CONTROLLERS and BENDER.
+	 ;;
 	 (dispatch-common-clauses
 	  (part state clause)
 	  (let ((command (car clause)))
@@ -420,6 +454,15 @@
 
 (setf (documentation 'make-controllers 'function) +controllers-docstring+)
 (setf (documentation 'controllers 'function)
-      "CONTROLLERS and MAKE-CONTROLLERS are identical except the former
-binds the part to the symbol name while the later does not.  The name 
-argument should be quoted symbol for MAKE-CONTROLLER and unquoted for CONTROLLERS.")
+      "MAKE-CONTROLLERS and CONTROLLERS are identical except the later
+binds the part to the symbol name while the former does not.  The name 
+argument should be a quoted symbol for MAKE-CONTROLLER and unquoted for 
+CONTROLLERS.")
+
+(setf (documentation 'make-bender 'function) +bender-docstring+)
+(setf (documentation 'bender 'function)
+      "MAKE-BENDER and CONTROLLERS are identical except the later
+binds the part to the symbol name while the former does not.  The name 
+argument should be a quoted symbol for MAKE-CONTROLLER and unquoted for 
+BENDER.")
+

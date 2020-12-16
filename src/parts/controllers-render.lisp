@@ -1,7 +1,7 @@
 ;;;; CYCO parts controllers-render.lisp
 ;;;;
-;;;; Defines MIDI render methods for controllers and bender parts.
-
+;;;; Defines MIDI render methods for CONTROLLERS and BENDER classes.
+;;;;
 
 (in-package :cyco-part)
 
@@ -15,6 +15,7 @@
 	      (push (+ shift time) acc)
 	      (setf time (+ time increment)))
 	    (reverse acc)))
+
 	 
 	 (generate-single-controller-event
 	  (state time-shift channel-index-list)
@@ -68,6 +69,8 @@
 			   (push (cons time (funcall message-function ci value)) event-list))))
 	      event-list)))
 
+	 ;; Bend values are signed normalized floats.
+	 ;;
 	 (generate-single-bend-event
 	  (state time-shift channel-index-list)
 	  (let ((clause (controllers-state-single-event state)))

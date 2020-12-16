@@ -114,6 +114,7 @@
                 :solo
                 :sort-midi-events
                 :tempo
+		:thin-bend-events
 		:thin-controller-events
                 :time-signature
                 :transpose
@@ -166,8 +167,11 @@
 
 
 (export '(*strummer-render-trace*
+	  bender
+	  bender-p
 	  controllers
 	  controllers-p
+	  make-bender
 	  make-controllers
 	  make-metronome
 	  make-programs
@@ -187,8 +191,11 @@
 	  strummer-p) :cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
+	  cyco-part:bender
+	  cyco-part:bender-p
           cyco-part:controllers
           cyco-part:controllers-p
+	  cyco-part:make-bender
           cyco-part:make-controllers
           cyco-part:make-metronome
           cyco-part:make-programs

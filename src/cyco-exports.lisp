@@ -302,6 +302,7 @@
 	  tbeats
 	  tempo
 	  tempo!
+	  thin-bend-events
 	  thin-controller-events
 	  tick-duration
 	  ticks-per-beat

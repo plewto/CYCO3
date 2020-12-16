@@ -223,7 +223,7 @@ Event times are considered identical if their difference is less then time-fuzz.
 
 
 (defun thin-controller-events (midi-events channel-index)
-  "Removes duplicate controller events."
+  "Removes redundant controller events."
   (let ((acc '())
 	(current-values (->vector (copies 128 -1))))
     (dolist (event midi-events)
@@ -239,4 +239,19 @@ Event times are considered identical if their difference is less then time-fuzz.
 	  (push event acc))))
     (sort-midi-events acc)))
 
-
+(defun thin-bend-events (midi-events channel-index)
+  "Removes redundant bend events."
+  (let ((acc '())
+	(current-value (cons -1 -1)))
+    (dolist (event midi-events)
+      (let ((message (cdr event)))
+	(if (and (midi-pitch-bend-p message)
+		 (= (channel-index message) channel-index))
+	    (if (not (and (= (data message 0)(car current-value))
+			  (= (data message 1)(cdr current-value))))
+		(progn
+		  (setf current-value (cons (data message 0)(data message 1)))
+		  (push event acc)))
+	  (push event acc))))
+    (sort-midi-events acc)))
+	    

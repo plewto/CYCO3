@@ -23,7 +23,7 @@
 (defclass bender (part)
   ((states
     :type list
-    :accessor controllers-states
+    :accessor bender-states
     :initform '())))
 
 (defgeneric bender-p (item))
@@ -88,6 +88,28 @@
 				      (sformat "events clause was ~A" clause)
 				      "Illegal controller value"))))
 
+	 (process-bender-values
+	  (part state clause)
+	  (let* ((start-spec (second clause))
+		 (end-spec (third clause))
+		 (start-value (cond ((or (eq start-spec '*)(null start-spec))
+				     (controllers-state-start-value state))
+				    ((eq start-spec '<)
+				     (controllers-state-end-value state))
+				    (t start-spec)))
+		 (end-value (if (or (eq end-spec '*)(null end-spec))
+				(controllers-state-end-value state)
+			      end-spec)))
+	    (if (and (numberp start-value)(numberp end-value))
+		(setf (controllers-state-start-value state)
+		      (float (limit start-value -1 1))
+		      (controllers-state-end-value state)
+		      (float (limit end-value -1 1)))
+	      (cyco-composition-error 'make-bender
+				      (sformat "part name was ~A" (name part))
+				      (sformat "events clause was ~A" clause)
+				      "Illegal bender value"))))
+
 	 ;; Converts controller-number specification to integer.
 	 ;; The value 'pressure is a special case which returns itself
 	 (convert-controller-number
@@ -137,11 +159,23 @@
 		 (time (+ (funcall cuefn part time-spec)
 			  (funcall shuffle time-spec)))
 		 (controller-number (convert-controller-number ctrl-spec))
-		 
 		 (value (limit (round value-spec) 0 127)))
 	    (setf (controllers-state-single-event state)
 		  (list time controller-number value))))
 
+	 ;; :bend time value
+	 (add-single-bend-event
+	  (part state clause)
+	  (let* ((cuefn (property part :cue-function))
+		 (shuffle (property part :shuffle-function))
+		 (time-spec (second clause))
+		 (value-spec (third clause))
+		 (time (+ (funcall cuefn part time-spec)
+			  (funcall shuffle time-spec)))
+		 (value (float (limit value-spec -1 +1))))
+	    (setf (controllers-state-single-event state)
+		  (list time :bend value))))
+	 
 	 (add-curve-event
 	  (curve-type state)
 	  (setf (controllers-state-curve state) curve-type)
@@ -167,27 +201,58 @@
 	  (let ((command (car clause)))
 	    (or (dispatch-common-clauses part state clause)
 		(cond
-		 ((eq command :value) (process-controller-values part state clause))
-		 ((eq command :ctrl) (process-controller-type state clause))
-		 ((eq command :cc) (add-single-controller-event part state clause))
+		 ((eq command :value)
+		  (process-controller-values part state clause))
+		 ((eq command :ctrl)
+		  (process-controller-type state clause))
+		 ((eq command :cc)
+		  (add-single-controller-event part state clause))
 		 (t (cyco-composition-error
 		     'make-controllers
 		     (sformat "Invalid controllers clause ~A" clause)))))))
+
+	 (dispatch-bender-clauses
+	  (part state clause)
+	  (let ((command (car clause)))
+	    (or (dispatch-common-clauses part state clause)
+		(cond ((eq command :value)(process-bender-values part state clause))
+		      ((eq command :bend)
+		       (add-single-bend-event part state clause))
+		      (t (cyco-composition-error
+		     'make-bender
+		     (sformat "Invalid controllers clause ~A" clause)))))))
 	 
-	 (process-controllers-events (part event-list)
-			 (let* ((acc '())
-				(state (make-controllers-state)))
-			   (reset state)
-			   (dolist (event event-list)
-			     (soft-reset state)
-			     (setf (controllers-state-source state) event)
-			     (dolist (clause (partition-list event))
-			       (dispatch-controllers-clauses part state clause)
-			       (if (real-event-p state)
-				   (progn 
-				     (push (clone state) acc)
-				     (soft-reset state)))))
-			   (reverse acc))) )
+	 (process-controllers-events 
+	  (part event-list)
+	  (let* ((acc '())
+		 (state (make-controllers-state)))
+	    (reset state)
+	    (dolist (event event-list)
+	      (soft-reset state)
+	      (setf (controllers-state-source state) event)
+	      (dolist (clause (partition-list event))
+		(dispatch-controllers-clauses part state clause)
+		(if (real-event-p state)
+		    (progn 
+		      (push (clone state) acc)
+		      (soft-reset state)))))
+	    (reverse acc)))
+
+	 (process-bender-events 
+	  (part event-list)
+	  (let* ((acc '())
+		 (state (make-controllers-state)))
+	    (reset state)
+	    (dolist (event event-list)
+	      (soft-reset state)
+	      (setf (controllers-state-source state) event)
+	      (dolist (clause (partition-list event))
+		(dispatch-bender-clauses part state clause)
+		(if (real-event-p state)
+		    (progn
+		      (push (clone state) acc)
+		      (soft-reset state)))))
+	    (reverse acc))) )
 			   
   (defun make-controllers (name instruments &key
 			        section
@@ -221,11 +286,48 @@
       (put part :transposable nil)
       (put part :reversible nil)
       (put part :no-thin no-thin)
-      
       (setf (controllers-states part)
 	    (process-controllers-events part (->list events)))
       (reset part)
+      part))
+
+  (defun make-bender (name instruments &key
+			        section
+				cuefn
+				shuffle
+				shift
+				tempo unit bars beats subbeats
+				render-once
+				remarks
+				no-thin
+				events)
+    (let* ((part-name (->cyco-symbol name))
+	   (parent (validate-section part-name section))
+	   (part (make-instance 'bender
+				:properties +controllers-properties+
+				:name part-name
+				:remarks (->string (or remarks ""))
+				:transient t)))
+      (connect parent part)
+      (put part :instruments (->list instruments))
+      (put part :cue-function cuefn)
+      (put part :shuffle-function shuffle)
+      (put part :shift (scale-time-parameter (or shift 0) part))
+      (put part :tempo tempo)
+      (put part :unit unit)
+      (put part :bars bars)
+      (put part :beats beats)
+      (put part :subbeats subbeats)
+      (init-time-signature part)
+      (put part :render-once render-once)
+      (put part :transposable nil)
+      (put part :reversible nil)
+      (put part :no-thin no-thin)
+      (setf (bender-states part)
+	    (process-bender-events part (->list events)))
+      (reset part)
       part)) )
+
 	   
  (defmacro controllers (name instruments &key
 			     section
@@ -256,6 +358,37 @@
 	(defparameter ,name part)
 	part)))
 
+
+(defmacro bender (name instruments &key
+		       section
+		       cuefn
+		       shuffle
+		       shift
+		       tempo unit bars beats subbeats
+		       render-once
+		       remarks
+		       no-thin
+		       events)
+  `(progn
+     (part-banner (name ,section) ',name)
+     (let ((part (make-bender ',name ,instruments
+			      :section ,section
+			      :cuefn ,cuefn
+			      :shuffle ,shuffle
+			      :shift ,shift
+			      :tempo  ,tempo 
+			      :unit  ,unit 
+			      :bars  ,bars 
+			      :beats  ,beats 
+			      :subbeats ,subbeats
+			      :render-once ,render-once
+			      :no-thin ,no-thin
+			      :remarks ,remarks
+			      :events ,events)))
+       (defparameter ,name part)
+       part)))
+
+   
 (defmethod clone ((mother controllers) &key new-name new-parent)
   (let* ((frmt (or new-name "~A"))
 	 (name (->symbol (sformat frmt (name mother))))
@@ -269,7 +402,22 @@
     (copy-part-properties mother daughter)
     (copy-time-signature mother daughter)
     daughter))
-    
+
+(defmethod clone ((mother bender) &key new-name new-parent)
+  (let* ((frmt (or new-name "~A"))
+	 (name (->symbol (sformat frmt (name mother))))
+	 (parent (or new-parent (parent mother)))
+	 (daughter (make-bender name
+				(property mother :instruments)
+				:section parent
+				:no-thin (property mother :no-thin)
+				:remarks (remarks mother)
+				:events (clone (property mother :events)))))
+    (copy-part-properties mother daughter)
+    (copy-time-signature mother daughter)
+    daughter))
+
+
 (setf (documentation 'make-controllers 'function) +controllers-docstring+)
 (setf (documentation 'controllers 'function)
       "CONTROLLERS and MAKE-CONTROLLERS are identical except the former

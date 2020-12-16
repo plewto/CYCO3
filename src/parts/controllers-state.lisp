@@ -1,6 +1,7 @@
 ;;;; CYCO parts controllers-state.lisp
 ;;;;
 ;;;; Internal render state for controller class.
+;;;; Doubles as state for bender class.
 ;;;;
 
 (in-package :cyco-part)

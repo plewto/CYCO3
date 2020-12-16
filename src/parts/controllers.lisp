@@ -20,6 +20,17 @@
 (defmethod controllers-p ((item controllers)) t)
 
 
+(defclass bender (part)
+  ((states
+    :type list
+    :accessor controllers-states
+    :initform '())))
+
+(defgeneric bender-p (item))
+(defmethod bender-p ((item t)) nil)
+(defmethod bender-p ((item bender)) t)
+
+
 (labels ((real-event-p 
 	  (state)
 	  (or (controllers-state-curve state)
@@ -52,9 +63,10 @@
 		  (setf end-time temp)))
 	    (setf (controllers-state-start-time state) start-time)
 	    (setf (controllers-state-end-time state) end-time)
-	    (setf (controllers-state-time-interval state) time-interval)))
+	    (setf (controllers-state-time-interval state) time-interval)
+	    t))
 	 
-	 (process-values 
+	 (process-controller-values 
 	  (part state clause)
 	  (let* ((start-spec (second clause))
 		 (end-spec (third clause))
@@ -99,20 +111,23 @@
 	 (process-cycle-count 
 	  (state clause)
 	  (setf (controllers-state-cycles state)
-		(abs (round (or (second clause) 1)))))
+		(abs (round (or (second clause) 1))))
+	  t)
 
 	 (process-phase
 	  (state clause)
 	  (setf (controllers-state-phase state)
-			      (rem (round (or (second clause) 0)) 360)))
+		(rem (round (or (second clause) 0)) 360))
+	  t)
 
 	 (process-pulse-width 
 	  (state clause)
 	  (setf (controllers-state-width state)
-		(limit (or (second clause) 0.5) 0.0 1.0)))
+		(limit (or (second clause) 0.5) 0.0 1.0))
+	  t)
 
 	 ;; :cc time controller-number value
-	 (add-single-event
+	 (add-single-controller-event
 	  (part state clause)
 	  (let* ((cuefn (property part :cue-function))
 		 (shuffle (property part :shuffle-function))
@@ -127,30 +142,39 @@
 	    (setf (controllers-state-single-event state)
 		  (list time controller-number value))))
 
-	 (add-curve-event (curve-type state)
-			  (setf (controllers-state-curve state) curve-type))
-	 	 
-	 (dispatch-event
+	 (add-curve-event
+	  (curve-type state)
+	  (setf (controllers-state-curve state) curve-type)
+	  t)
+
+	 (dispatch-common-clauses
 	  (part state clause)
 	  (let ((command (car clause)))
-	    (cond
-	     ((eq command :reset)(reset state))
-	     ((eq command :time) (process-times part state clause))
-	     ((eq command :value) (process-values part state clause))
-	     ((eq command :ctrl) (process-controller-type state clause))
-	     ((eq command :cycles) (process-cycle-count state clause))
-	     ((eq command :phase) (process-phase state clause))
-	     ((eq command :width) (process-pulse-width state clause))
-	     ((eq command :cc) (add-single-event part state clause))
-	     ((eq command :ramp) (add-curve-event :ramp state))
-	     ((eq command :saw) (add-curve-event :saw state))
-	     ((eq command :tri) (add-curve-event :tri state))
-	     ((eq command :pulse) (add-curve-event :pulse state))
-	     (t (cyco-composition-error
-		 'make-controllers
-		 (sformat "Invalid controllers clause ~A" clause))))))
+	     (cond
+	      ((eq command :reset)(progn (reset state) t))
+	      ((eq command :time) (process-times part state clause))
+	      ((eq command :cycles) (process-cycle-count state clause))
+	      ((eq command :phase) (process-phase state clause))
+	      ((eq command :width) (process-pulse-width state clause))
+	      ((eq command :ramp) (add-curve-event :ramp state))
+	      ((eq command :saw) (add-curve-event :saw state))
+	      ((eq command :tri) (add-curve-event :tri state))
+	      ((eq command :pulse) (add-curve-event :pulse state))
+	      (t nil))))
 	 
-	 (process-events (part event-list)
+	 (dispatch-controllers-clauses
+	  (part state clause)
+	  (let ((command (car clause)))
+	    (or (dispatch-common-clauses part state clause)
+		(cond
+		 ((eq command :value) (process-controller-values part state clause))
+		 ((eq command :ctrl) (process-controller-type state clause))
+		 ((eq command :cc) (add-single-controller-event part state clause))
+		 (t (cyco-composition-error
+		     'make-controllers
+		     (sformat "Invalid controllers clause ~A" clause)))))))
+	 
+	 (process-controllers-events (part event-list)
 			 (let* ((acc '())
 				(state (make-controllers-state)))
 			   (reset state)
@@ -158,7 +182,7 @@
 			     (soft-reset state)
 			     (setf (controllers-state-source state) event)
 			     (dolist (clause (partition-list event))
-			       (dispatch-event part state clause)
+			       (dispatch-controllers-clauses part state clause)
 			       (if (real-event-p state)
 				   (progn 
 				     (push (clone state) acc)
@@ -199,7 +223,7 @@
       (put part :no-thin no-thin)
       
       (setf (controllers-states part)
-	    (process-events part (->list events)))
+	    (process-controllers-events part (->list events)))
       (reset part)
       part)) )
 	   

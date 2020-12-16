@@ -155,30 +155,3 @@
 	    (setf midi-events (thin-bend-events midi-events channel-index))))
       (sort-midi-events midi-events))) )
     
-
-(defmethod render-n ((part controllers)(n integer) &key (offset 0.0))
-  (let* ((period (phrase-duration part))
-	 (midi-events '())
-	 (template (render-once part :offset offset)))
-    (dotimes (i (if (property part :render-once) 1 n))
-      (dolist (event template)
-	(let ((relative-time (car event))
-	      (message (cdr event)))
-	  (push (cons (+ (* i period) relative-time)(clone message))
-		midi-events))))
-    (sort-midi-events midi-events)))
-
-
-
-(defmethod render-n ((part bender)(n integer) &key (offset 0.0))  ;; TODO define more general render-n
-  (let* ((period (phrase-duration part))
-	 (midi-events '())
-	 (template (render-once part :offset offset)))
-    (dotimes (i (if (property part :render-once) 1 n))
-      (dolist (event template)
-	(let ((relative-time (car event))
-	      (message (cdr event)))
-	  (push (cons (+ (* i period) relative-time)(clone message))
-		midi-events))))
-    (sort-midi-events midi-events)))
-

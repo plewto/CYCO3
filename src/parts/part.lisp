@@ -124,4 +124,18 @@ used directly."))
   (dolist (p +part-specific-properties+)
     (put destination p (clone (property source p)))))
   
-  
+(defmethod render-n ((part part)(n integer) &key (offset 0.0))
+  (reset part)
+  (let ((midi-events '())
+	(period (phrase-duration part))
+	(template (render-once part)))
+    (dotimes (i (if (property part :render-once) 1 n))
+      (let ((time-shift (+ offset (* i period))))
+	(dolist (event template)
+	  (let ((relative-time (car event))
+		(message (cdr event)))
+	    (push (cons (+ time-shift relative-time)(clone message))
+		  midi-events)))))
+    (sort-midi-events midi-events)))
+    
+

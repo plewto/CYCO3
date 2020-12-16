@@ -53,17 +53,3 @@
 		(instrument-list (->list (next (property qball :instruments)))) )
 	    (setf midi-events (append midi-events (render-event qball time instrument-list keylist articulation dynamic)))))
 	(sort-midi-events midi-events))) )
-
-(defmethod render-n ((qball qball)(n integer) &key (offset 0.0))
-  (reset qball)
-  (let ((period (phrase-duration qball))
-	(midi-events '()))
-    (dotimes (i (if (property qball :render-once) 1 n))
-      (dolist (event (render-once qball))
-	(let ((relative-time (car event))
-	      (message (cdr event)))
-	  (push (cons (+ offset (* i period) relative-time) (clone message)) midi-events))))
-    (sort-midi-events midi-events)))
-
-
-

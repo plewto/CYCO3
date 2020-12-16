@@ -33,6 +33,7 @@ instruments - List of instruments
            The cuing function is inherited from the parent Section.
 :cuefun  - Time cue function, defaults to section value.
 :shuffle - Time shuffle function, defaults to section value.
+:bars    - Bars per phrase, defaults to section value.
 :shift   - Metric-expression, time-shift added to each event, default 0.
 :section - Parent section, defaults to current-section of *project*
 :remarks - text
@@ -47,7 +48,7 @@ Programs are always a leaf node."))
 					(t (cyco-composition-error 'make-programs
 								   "No default project")))))		  
        
-    (defun make-programs (name instruments &key time cuefn shuffle section remarks render-once shift)
+    (defun make-programs (name instruments &key time cuefn shuffle section bars remarks render-once shift)
       docstring
       (let* ((parent (validate-parent-section section))
 	     (new-programs-part (make-instance 'programs
@@ -55,9 +56,10 @@ Programs are always a leaf node."))
 				 :name name
 				 :remarks (->string (or remarks "")))))   
 	(connect parent new-programs-part)
-	(init-time-signature new-programs-part)
 	(put new-programs-part :cue-function (or cuefn #'bar))
 	(put new-programs-part :shuffle-function (or shuffle #'no-shuffle))
+	(put new-programs-part :bars bars)
+	(init-time-signature new-programs-part)
 	(let ((event-time (+ (funcall (property new-programs-part :cue-function) new-programs-part time)
 			     (funcall (property new-programs-part :shuffle-function) time)))
 	      (midi-events '()))
@@ -89,7 +91,7 @@ Programs are always a leaf node."))
 	  new-programs-part)))))
 	  
 
-(defmacro programs (name instruments &key time cuefn shuffle section remarks render-once shift)
+(defmacro programs (name instruments &key time cuefn shuffle section bars remarks render-once shift)
   "Same as make-programs but binds the programs object to name symbol."
   `(progn
      (part-banner (name ,section) ',name)
@@ -98,6 +100,7 @@ Programs are always a leaf node."))
 			       :section ,section
 			       :cuefn ,cuefn
 			       :shuffle ,shuffle
+			       :bars ,bars
 			       :render-once ,render-once
 			       :shift ,shift
 			       :remarks ,remarks)))
@@ -111,6 +114,7 @@ Programs are always a leaf node."))
 				  :section parent
 				  :cuefn (property mother :cue-function)
 				  :shuffle (property mother :shuffle-function)
+				  :bars (property mother :bars)
 				  :render-once (property mother :render-once)
 				  :remarks (remarks mother))))
     (copy-part-properties mother daughter)
@@ -129,17 +133,6 @@ Programs are always a leaf node."))
 	(push (cons (+ event-time time-shift) message) midi-events)))
     (sort-midi-events midi-events)))
 
-(defmethod render-n ((programs-part programs)(n integer) &key (offset 0.0))
-  (let ((period (duration programs-part))
-	(template (render-once programs-part))
-	(midi-events '()))
-    (dotimes (i (if (property programs-part :render-once) 1 n))
-      (let ((time-shift (+ offset (* i period))))
-	(dolist (event template)
-	  (let ((relative-time (car event))
-		(message (cdr event)))
-	    (push (cons (+ time-shift relative-time) message) midi-events)))))
-    (sort-midi-events midi-events)))
 
 (defmethod connect ((parent programs)(child cyco-node))
   (cyco-type-error

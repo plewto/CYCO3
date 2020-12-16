@@ -163,8 +163,6 @@
 (src-load "controllers")
 (src-load "controllers-render")
 
-(src-load "pressure")
-
 
 (export '(*strummer-render-trace*
 	  bender

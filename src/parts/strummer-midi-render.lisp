@@ -203,15 +203,5 @@
 	      (progn 
 		(format t "~A~%" state)
 		(dump-events state-events)))))
-      midi-events))
+      midi-events)) )
 
-  (defmethod render-n ((part strummer)(n integer) &key (offset 0.0))
-    (let ((period (phrase-duration part))
-	  (template (render-once part))
-	  (midi-events '()))
-      (dotimes (i (if (property part :render-once) 1 n))
-	(dolist (event template)
-	  (let ((reltime (car event))
-		(message (cdr event)))
-	    (push (cons (+ offset (* i period) reltime) message) midi-events))))
-      (sort-midi-events midi-events))) ) 

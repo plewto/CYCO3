@@ -153,19 +153,6 @@ subject to the Section cueing function."))
       (push (cons (+ time-shift (car event)) (cdr event)) midi-events))
     (sort-midi-events midi-events)))
 
-
-(defmethod render-n ((raw-part raw-part)(n integer) &key (offset 0.0))
-  (let ((period (phrase-duration raw-part))
-	(template (render-once raw-part))
-	(midi-events '()))
-    (dotimes (i (if (property raw-part :render-once) 1 n))
-      (let ((time-shift (+ (* i period) offset)))
-	(dolist (event template)
-	  (let ((relative-time (car event))
-		(message (cdr event)))
-	    (push (cons (+ time-shift relative-time) message) midi-events)))))
-    (sort-midi-events midi-events)))
-
 (defmethod connect ((parent raw-part)(child cyco-node))
   (cyco-type-error
    'connect '?

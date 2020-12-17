@@ -1,6 +1,7 @@
 ;;;; test 10-nodes
 ;;;;
 
+
 (let* ((properties '(diet environment limbs sound))
        (animal (make-instance 'cyco-node
 			       :name 'animal
@@ -38,10 +39,8 @@
   (connect animal fish)
   (connect fish trout)
   (connect fish shark)
-
   (put animal 'diet 'food)
   (put animal 'environment 'earth)
-
   (put bird 'environment 'sky)
   (put bird 'limbs 'wing)
   (put bird 'sound 'screach)
@@ -53,9 +52,12 @@
   (put fish 'sound 'none)
   (put trout 'diet 'hooks)
   (put shark 'diet 'trout)
-
   (pass? "name" (eq (name animal) 'animal))
   (pass? "remarks" (string= (remarks animal) "Animal is the root test node."))
+
+  (remarks! animal "New animal remarks")
+  (pass? "remarks!" (string= (remarks animal) "New animal remarks"))
+  
   (pass? "root-p"
 	 (and (root-p animal)
 	      (not (root-p bird))))

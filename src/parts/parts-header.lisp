@@ -31,6 +31,7 @@
                 :chord-inversion
                 :chord-template
                 :clone
+		:command
                 :connect
                 :constant
                 :copies
@@ -69,6 +70,7 @@
                 :line
                 :metric-expression
                 :metric-expression-p
+		:midi-channel-message-p
                 :midi-channel-pressure
                 :midi-control-change
                 :midi-control-change-p
@@ -118,6 +120,7 @@
 		:thin-controller-events
                 :time-signature
                 :transpose
+		:true
                 :unmute
                 :value
                 :while
@@ -162,6 +165,8 @@
 (src-load "controllers-state")
 (src-load "controllers")
 (src-load "controllers-render")
+(src-load "transformer-docs")
+(src-load "transformer")
 
 
 (export '(*strummer-render-trace*
@@ -177,6 +182,7 @@
 	  make-raw-part
 	  make-simple-part
 	  make-strummer
+	  make-transformer
 	  metronome
 	  programs
 	  qball
@@ -186,7 +192,10 @@
 	  simple-part
 	  simple-part-p
 	  strummer
-	  strummer-p) :cyco-part)
+	  strummer-p
+	  transformer
+	  transformer-p)
+	:cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
 	  cyco-part:bender
@@ -201,6 +210,7 @@
           cyco-part:make-raw-part
           cyco-part:make-simple-part
           cyco-part:make-strummer
+	  cyco-part:make-transformer
           cyco-part:metronome
           cyco-part:programs
           cyco-part:qball
@@ -210,7 +220,10 @@
           cyco-part:simple-part
           cyco-part:simple-part-p
           cyco-part:strummer
-          cyco-part:strummer-p) :cyco)
+          cyco-part:strummer-p
+	  cyco-part:transformer
+	  cyco-part:transformer-p)
+	:cyco)
 
 (in-package :cyco)
 

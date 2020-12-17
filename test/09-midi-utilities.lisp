@@ -15,12 +15,8 @@
   (pass? "read-midi-vlv"
 	 (and (consp actual)
 	      (= (car actual)(car expected))
-	      (= (cdr actual)(cdr expected)))
-	 (sformat "Fails due to byte count being 1 less then specified.
-:FAIL:  expected  ~A
-:FAIL:  actual    ~A
-:FAIL:  Unsure if fixing would cause unintended consequences?" expected actual)))
-	      
+	      (= (cdr actual)(cdr expected)))))
+
 
 (let* ((test-array #(0 0 0 0 1 2 3 4 0 0 0 0))
        (expected (cons 180 4))

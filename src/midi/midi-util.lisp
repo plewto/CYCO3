@@ -48,7 +48,7 @@ Returns cons (value . byte-count)"
       (setf byte (aref array offset))
       (push byte acc)
       (setf counter (1+ counter)))
-    (cons (midi-vlv->int (reverse acc)) counter)))
+    (cons (midi-vlv->int (reverse acc)) (1+ counter))))
 
 (defun read-midi-long (array offset)
   "Reads 4 bytes from array starting at offset.

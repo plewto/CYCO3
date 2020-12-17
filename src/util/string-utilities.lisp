@@ -103,15 +103,6 @@ Returns string."
 (defmethod pick ((s string))
   (char s (pick (length s))))
 
-;; inefficient
-;;
-(defmethod permute ((s string))
-  (let ((lst (permute (->list s)))
-	(acc ""))
-    (dolist (c lst)
-      (setf acc (str+ acc (->string c))))
-    acc))
-    
 (defun center-string (text width &optional (shift 0))
   "Returns new string of length width with argument text
 centered.

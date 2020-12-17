@@ -161,18 +161,7 @@ each resulting item is a unique object."
 (defmethod pick ((lst list))
   (pick (->vector lst)))
 
-(defmethod permute ((lst list))
-  (let ((acc '())
-	(pile lst))
-    (flet ((rot ()(setf pile (rotate pile (pick (length pile))))))
-	  (while pile
-	    (rot)
-	    (push (car pile) acc)
-	    (setf pile (cdr pile))))
-    acc))
-	    
-(defmethod permute ((v vector))
-  (->vector (permute (->list v))))
+
 
 (flet ((-range (start end delta)
 	       (let ((acc '())
@@ -286,3 +275,23 @@ Default is to split list at keyword boundaries.
 			 (pri-b (priority (cdr b))))
 		    (> pri-b pri-a))
 		(< time-a time-b))))))
+
+(defmethod permute ((lst list))
+  (let ((acc '())
+	(pile lst))
+    (flet ((rot ()(setf pile (rotate pile (pick (length pile))))))
+	  (while pile
+	    (rot)
+	    (push (car pile) acc)
+	    (setf pile (cdr pile))))
+    acc))
+	    
+(defmethod permute ((v vector))
+  (->vector (permute (->list v))))
+
+(defmethod permute ((s string))
+    (let ((acc "")
+	  (indexes (permute (range 0 (length s)))))
+      (dolist (i indexes)
+	(setf acc (str+ acc (subseq s i (1+ i)))))
+      acc))

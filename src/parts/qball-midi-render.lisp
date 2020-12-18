@@ -7,20 +7,21 @@
 
 (labels ((render-event
 	  (qball time instrument-list key-list articulation dynamic)
-	  (if (or (rest-p articulation)(rest-p dynamic))(return-from render-event nil))
+	  
+	  (if (or (rest-p articulation)(rest-p dynamic))
+	      (return-from render-event nil))
 	  (let ((midi-events '())
 		(articulation-scale (float (if (numberp articulation)
-					       articulation
-					     (let ((m (metric-expression-p articulation)))
-					       (if m
-						   (* m (beat-duration qball))
-						 1))))) )
+					       1.0
+					     (beat-duration qball)))))
 	    (dolist (instrument instrument-list)
 	      (let* ((channel-index (channel-index instrument))
 		     (keynumber-map (property instrument :keynumber-map))
 		     (articulation-map (property instrument :articulation-map))
 		     (dynamic-map (property instrument :dynamic-map))
-		     (duration (* (funcall articulation-map articulation) articulation-scale))
+		     (duration (* articulation-scale
+				  (metric-expression 
+				   (funcall articulation-map articulation))))
 		     (end-time (+ time duration))
 		     (amp (funcall dynamic-map dynamic)))
 		(dolist (k key-list)
@@ -30,8 +31,15 @@
 				 (rest-p duration)
 				 (rest-p amp)))
 			(let ((velocity (norm->midi-data amp)))
-			  (push (cons time (midi-note-on channel-index keynumber velocity)) midi-events)
-			  (push (cons end-time (midi-note-off channel-index keynumber 0)) midi-events)))))))
+			  (push (cons time
+				      (midi-note-on channel-index
+						    keynumber
+						    velocity))
+				midi-events)
+			  (push (cons end-time
+				      (midi-note-off channel-index
+						     keynumber 0))
+				midi-events)))))))
 	    midi-events)))
  
   (defmethod render-once ((qball qball) &key (offset 0.0))
@@ -51,5 +59,11 @@
 		(articulation (next (property qball :articulation-pattern)))
 		(dynamic (next (property qball :dynamic-pattern)))
 		(instrument-list (->list (next (property qball :instruments)))) )
-	    (setf midi-events (append midi-events (render-event qball time instrument-list keylist articulation dynamic)))))
+	    (setf midi-events (append midi-events 
+				      (render-event qball 
+						    time 
+						    instrument-list 
+						    keylist 
+						    articulation 
+						    dynamic)))))
 	(sort-midi-events midi-events))) )

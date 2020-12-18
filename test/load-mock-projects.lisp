@@ -13,4 +13,5 @@
     (format t "  ~A~%" remarks)
     (load-project project-name :project-directory *mock-project-directory*)))
 
-(load-mock-project 1 "Basics")
+;; (load-mock-project 1 "Basics")
+(load-mock-project 2 "Qball")

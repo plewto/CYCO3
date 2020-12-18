@@ -140,7 +140,7 @@
 		   "src/composition/sections/section"
 		   "src/parts/parts-header"
 		   "src/composition/sections/preroll"
-		   ;;"src/composition/sections/endpad"
+		   "src/composition/sections/fin"
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/local-config"

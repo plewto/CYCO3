@@ -4,12 +4,12 @@
 ;; If true failed rest produce an error.
 ;; otherwise failed test displays message and execution continues
 ;;
-(global *test-fail-as-error* nil)
+(global *test-fail-as-error* t)
 
 
 ;; If true passed test do not produce output.
 ;;
-(global *silent-pass* nil)
+(global *silent-pass* t)
 
 (setf *enable-banners* nil)
 
@@ -32,7 +32,7 @@
 (defun not-tested (message)
   (format t "    NOT TESTED: ~a~%" message))
 
-(defun remarks (&rest text)
+(defun test-remarks (&rest text)
   (let ((banner "******************************************************"))
     (format t "~%~A~%" banner)
     (dolist (line (->list text))

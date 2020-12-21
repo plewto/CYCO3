@@ -13,5 +13,24 @@
     (format t "  ~A~%" remarks)
     (load-project project-name :project-directory *mock-project-directory*)))
 
-;; (load-mock-project 1 "Basics")
+
+(defun filter-time-range (time-signature start end events)
+  (let ((mn (bar time-signature start))
+	(mx (bar time-signature end)))
+    (remove-if-not #'(lambda (evn)(and (<= mn (car evn))
+				       (<= (car evn) mx)))
+		   events)))
+
+(defun filter-message-type (predicate channel events)
+  (remove-if-not #'(lambda (evn)
+		     (and (funcall predicate (cdr evn))
+			  (= (1- channel)(channel-index (cdr evn)))))
+		 events))
+		 
+
+
+
+
+(load-mock-project 1 "Basics")
 (load-mock-project 2 "Qball")
+(load-mock-project 3 "Controllers")

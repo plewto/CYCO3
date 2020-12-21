@@ -28,6 +28,8 @@
 		 events))
 		 
 
+(defun monotonic-p (list &optional (compare #'<=))
+  (apply compare list))
 
 
 

@@ -5,15 +5,14 @@
 
 (in-package :cyco-part)
 
-(labels ((get-time-list
+(labels (
+	 (get-time-list
 	  (start end interval shift)
 	  (let* ((acc '())
-		 (diff (float (- end start)))
-		 (increment (/ interval diff))
 		 (time start))
 	    (while (<= time end)
 	      (push (+ shift time) acc)
-	      (setf time (+ time increment)))
+	      (setf time (+ time interval)))
 	    (reverse acc)))
 
 	 

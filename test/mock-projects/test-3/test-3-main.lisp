@@ -27,21 +27,22 @@
 	      (= (data (cdr ev1) 0) 4)
 	      (= (data (cdr ev1) 1) 64))))
 
-
-
-(format t "~%~%*** BUG controllers symbolic time increment is wrong ***~%~%")
-
 (controllers cc2 piano
-	     :events '((:time (1 1 1) (2 1 1) q :value 0 127 :ctrl 4 :ramp)))
+	     :events '((:time (1 1 1) (2 1 1) q :value 0 127 :ctrl 4 :ramp)
+		       (:time (1 2 1) (3 1 1) e)
+		       (:time (1 3 1) (4 1 1) s)
+		       ))
+
 
 (let* ((events (render-once cc2))
        (times (mapcar #'(lambda (evn)(car evn)) events))
        (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events)))
-  (format t "TIMES --> ~A~%" times)
   (pass? "Controllers ramp event"
 	 (and (zerop (car values))
 	      (= (final values) )
 	      (zerop (car times))
+	      (monotonic-p times)
+	      (monotonic-p values)
 	      (= (- (second times)(car times)) (beat-duration cc2))
 	      )))
 

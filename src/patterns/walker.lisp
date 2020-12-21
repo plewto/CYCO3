@@ -44,5 +44,5 @@
 		   (elements w))))))
       
 (defmethod clone ((mother walker) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (walker :of (clone (elements mother))))

@@ -90,7 +90,7 @@
 (defmethod midi-message-p ((message midi-message)) t)
 
 (defmethod clone ((mother midi-message) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   mother)
 
 (defmethod transpose ((message midi-message)(n integer)) message)
@@ -120,7 +120,7 @@
 (defmethod midi-channel-message-p ((object midi-channel-message)) t)
 
 (defmethod channel ((message midi-channel-message) &optional _)
-  (dismiss _)
+  (declare (ignore _))
   (1+ (channel-index message)))
 
 (defmethod data ((message midi-channel-message)(index integer))

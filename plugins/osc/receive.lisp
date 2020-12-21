@@ -8,7 +8,7 @@
 			 (host *local-host*)
 			 (address *osc-receive-address*)
 			 (buffer-length *osc-receive-buffer-length*))
-  (dismiss address)
+  (declare (ignore address))
   (let ((s (socket-connect nil nil
 			   :local-port port
 			   :local-host host

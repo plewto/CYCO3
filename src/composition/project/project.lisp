@@ -193,7 +193,7 @@ a symbol named name."
 ;; NOTE 2: global *project* is not altered.
 ;;
 (defmethod clone ((mother project) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (cyco-error "Cloning of project not supported."
 	      (sformat "Can not clone project ~A" (name mother)))
   mother)

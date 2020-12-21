@@ -70,7 +70,7 @@ tuning - list of open string tunings as absolute key-numbers."
 (defmethod chord-types ((plychrd polychord))
   (let ((acc '()))
     (maphash #'(lambda (k v)
-		 (dismiss v)
+		 (declare (ignore v))
 		 (push k acc))
 	     (chord-table plychrd))
     (sort acc #'string<)))
@@ -94,13 +94,13 @@ tuning - list of open string tunings as absolute key-numbers."
 	 (fret-min
 	  (template)
 	  (apply #'min (remove nil template :test #'(lambda (a b)
-						      (dismiss a)
+						      (declare (ignore a))
 						      (not (integerp b))))))
 	 ;; Returns maximum integer value in list, ignores non-integer items.		       
 	 (fret-max
 	  (template)
 	  (apply #'max (remove nil template :test #'(lambda (a b)
-						      (dismiss a)
+						      (declare (ignore a))
 						      (not (integerp b))))))		  
 	 (get-or-create-chord-family
 	  (plychrd chord-type)

@@ -5,7 +5,6 @@
   (:import-from :cyco
 		:clone
 		:constant
-		:dismiss
 		:format-binary
 		:load-plugin-file
 		:next-1

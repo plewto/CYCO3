@@ -29,7 +29,7 @@ address   - The OSC address on server, defaults to *DEFAULT-OSC-SEND-ADDRESS*"
 			  arguments
 			(list arguments)))) ;; can not use ->list here
 	   (b (apply #'osc:encode-message cmd)))
-      (dismiss s)
+      (declare (ignore s))
       (unwind-protect
       	  (socket-send s b (length b))
       	(when s (socket-close s))))))

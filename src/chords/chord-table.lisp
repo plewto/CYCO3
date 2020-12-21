@@ -32,7 +32,7 @@
 (defmethod chord-types ((chord-table chord-table))
   (let ((acc '()))
     (maphash #'(lambda (a b)
-		 (dismiss b)
+		 (declare (ignore b))
 		 (push a acc))
 	     (chord-table-templates chord-table))
     (sort acc #'(lambda (a b)
@@ -48,7 +48,7 @@
 
 (defmethod chord-template ((chord-table chord-table)(name symbol)(keynumber t))
   "keynumber argument is ignored."
-  (dismiss keynumber)
+  (declare (ignore keynumber))
   (or (gethash name (chord-table-templates chord-table))
       (and
        (progn 

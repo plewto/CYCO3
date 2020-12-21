@@ -51,6 +51,6 @@ its value."))
 	       (cardinality w)))))
 
 (defmethod clone ((mother wrapper) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (wrapper :of (slot-value mother 'function)
 	   :period (slot-value mother 'period)))

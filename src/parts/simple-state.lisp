@@ -45,7 +45,7 @@
   state)
 
 (defmethod clone ((mother simple-state) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (make-simple-state
     :source (simple-state-source mother)
     :time-specification (simple-state-time-specification mother)

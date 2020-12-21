@@ -49,7 +49,7 @@
 (defmethod pattern-p ((obj pattern)) obj)
 
 (defmethod clone ((mother pattern) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (let ((daughter (make-instance (type-of mother) :of (clone (elements mother)))))
     (reset daughter)
     daughter))
@@ -108,7 +108,7 @@
   (sformat "~A :of ~A" (type-of p)(elements p)))
 
 (defmethod ->pattern ((pat pattern) &key pattern-type)
-  (dismiss pattern-type)
+  (declare (ignore pattern-type))
   pat)
 
 (defmethod ->pattern ((obj t) &key (pattern-type 'cycle))

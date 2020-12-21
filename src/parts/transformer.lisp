@@ -22,7 +22,7 @@
    ;;
    (filter
     :type function
-    :initform #'(lambda (part event) (dismiss part) event)
+    :initform #'(lambda (part event) (declare (ignore part)) event)
     :accessor transformer-filter-function
     :initarg :filter)
    ;; The transform function takes the events indicated by the filter
@@ -33,7 +33,7 @@
    ;;
    (transform-function
     :type function
-    :initform #'(lambda (part event) (dismiss part) event)
+    :initform #'(lambda (part event) (declare (ignore part)) event)
     :accessor transformer-transform-function
     :initarg :transform)))
  
@@ -72,9 +72,9 @@
 			      :transient t
 			      :template template
 			      :filter (or filter
-					  #'(lambda (part event)(dismiss part event) (list event)))
+					  #'(lambda (part event)(declare (ignore part)) (list event)))
 			      :transform (or transform
-					     #'(lambda (part event)(dismiss part)(list event))))))
+					     #'(lambda (part event)(declare (ignore part))(list event))))))
 			      
     (connect parent part)
     (init-time-signature part)

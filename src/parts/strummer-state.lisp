@@ -69,7 +69,7 @@
 
       
 (defmethod clone ((mother strummer-state) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (make-strummer-state
    :source (strummer-state-source mother)
    :time-specification (strummer-state-time-specification mother)

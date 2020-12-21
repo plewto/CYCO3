@@ -35,7 +35,7 @@
 
 	 (resolve-chord 
 	  (strummer state instrument)
-	  (dismiss strummer state instrument)
+	  (declare (ignore strummer state instrument))
 	  '(dummy not list))
 
 	 (purge-rest 

@@ -63,7 +63,7 @@ Note: (retrograde coin) flips head/tail probability."))
     (value c)))
 
 (defmethod clone ((mother coin) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (coin :p (probability mother)
 	:head (clone (car (elements mother)))
 	:tail (clone (second (elements mother)))

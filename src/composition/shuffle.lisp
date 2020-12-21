@@ -15,7 +15,7 @@ the cue function currently in use.
 The default no-shuffle function always returns 0.0"))
        
   (defun no-shuffle (time-specification)
-    (dismiss time-specification)
+    (declare (ignore time-specification))
     0.0)
   (setf (documentation 'null-shuffle-function 'function) docstring))
 

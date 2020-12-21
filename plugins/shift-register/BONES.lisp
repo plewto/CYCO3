@@ -99,7 +99,7 @@ taps    - Selects feedback taps.  The binary representation directly
 			:prerun prerun)))
 
 (defmethod clone ((sr shift-register) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (shift-register (sr-seed sr)
 		  (sr-taps sr)
 		  :mask (sr-mask sr)

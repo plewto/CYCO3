@@ -43,7 +43,6 @@
                 :data
                 :defines-chord-p
                 :disconnect
-                :dismiss
                 :dump-events
                 :duration
                 :dynamic

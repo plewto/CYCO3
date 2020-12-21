@@ -242,7 +242,7 @@ By default splits list on presence of keywords
 (split-list '(1 2 3 4)                     --> (1 2 3 4) nil"
   (let ((pos (position nil (nthcdr start lst)
 		       :test #'(lambda (a b)
-				 (dismiss a)
+				 (declare (ignore a))
 				 (funcall test b)))))
     (if pos
 	(let* ((index (+ pos start))

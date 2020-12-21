@@ -117,7 +117,7 @@ subbeats"))
   (property time-signature :tsubbeat-duration)) 
 
 (defmethod tick-duration ((time-signature time-signature) &key unit)
-  (dismiss unit)
+  (declare (ignore unit))
   (property time-signature :tick-duration))
 
 (defmethod ticks-per-beat ((time-signature time-signature))

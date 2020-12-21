@@ -40,7 +40,7 @@
 				     nil))) )
 	     (let* ((ci (channel-index instrument))
 		    (fn #'(lambda (time &key (program 0) bank)
-			    (dismiss bank)
+			    (declare (ignore bank))
 			    (let ((pnum (cond ((eq program :doc)
 					       (docfn))
 					      ((numberp program)

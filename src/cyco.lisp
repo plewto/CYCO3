@@ -8,11 +8,6 @@
 
 (in-package :cyco)
 
-
-(defun dismiss (&rest args)
-  "Informs SBCL compiler that arguments may be ignored."
-  args)
-
 (defun set-cyco-prompt ())
 
 (defmacro constant (name value &optional (docstring ""))
@@ -40,7 +35,7 @@
 
 (defmacro constant-function (name value)
   `(defun ,name (&rest args)
-     (dismiss args)
+     (declare (ignore args))
      (format nil "Returns constant ~A" ,value)
      ,value))
 

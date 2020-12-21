@@ -88,7 +88,6 @@
 	  dice
 	  dice-p
 	  disconnect
-	  dismiss
 	  dump-chords
 	  dump-events
 	  dump-smf-track-chunk

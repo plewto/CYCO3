@@ -45,7 +45,7 @@ remarks - optional explanation."
 
   (defmethod meta-channel ((channel integer) &optional resolve)
     "In range integer channel numbers map to themselves."
-    (dismiss resolve)
+    (declare (ignore resolve))
     (if (and (plusp channel)(<= channel 16))
 	channel
       (cyco-value-error 'meta-channel channel)))

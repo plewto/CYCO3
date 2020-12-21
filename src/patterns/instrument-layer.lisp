@@ -24,11 +24,11 @@ Use Case:
   (elements q))
 
 (defmethod next-n ((q instrument-layer)(_ t))
-  (dismiss _)
+  (declare (ignore _))
   (next-1 q))
 
 (defmethod next ((q instrument-layer) &optional (_ nil))
-  (dismiss _)
+  (declare (ignore _))
   (next-1 q))
 		 
 (defmethod instrument-layer-p ((object instrument-layer)) t)

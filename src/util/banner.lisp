@@ -18,7 +18,7 @@
 		     (multiple-value-bind
 			 (second minute hour date month year day-of-week dst-p tz)
 			 (decode-universal-time (get-universal-time))
-		       (dismiss second day-of-week dst-p tz)
+		       (declare (ignore second day-of-week dst-p tz))
 		       (list (cons :year year)
 			     (cons :month month)
 			     (cons :date date)

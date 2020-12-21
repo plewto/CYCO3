@@ -41,7 +41,7 @@
 
 
 (defmethod clone ((mother controllers-state) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (make-controllers-state
    :source (controllers-state-source mother)
    :start-time (controllers-state-start-time mother)

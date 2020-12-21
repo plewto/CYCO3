@@ -4,7 +4,7 @@
 (in-package :cyco)
 
 (defmethod clone ((mother string) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   mother)
 
 (defmethod final ((s string))

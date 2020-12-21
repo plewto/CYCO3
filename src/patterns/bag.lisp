@@ -59,6 +59,6 @@
   bag)
 
 (defmethod clone ((mother bag) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (bag :of (clone (seed mother))
        :final (clone (final-value mother))))

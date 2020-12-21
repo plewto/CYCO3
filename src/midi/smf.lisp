@@ -42,7 +42,7 @@ division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
 	   (length (smf-tracks midi-file))))
 
 (defmethod clone ((mother smf) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (let* ((frm (smf-format (smf-header mother)))
 	 (div (smf-division (smf-header mother)))
 	 (tracks (clone (smf-tracks mother)))

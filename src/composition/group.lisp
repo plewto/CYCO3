@@ -119,7 +119,7 @@ within in the section.
 
 
 (defmethod clone ((mother group) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (cyco-error
    "Cloning of groups not supported."
    (sformat "Can not clone group ~A" (name mother)))

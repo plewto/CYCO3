@@ -158,11 +158,11 @@ If the optional resolve argument is true the result is the actual
 MIDI channel, an integer between 1 and 16 inclusive."))
 
 (defmethod channel ((object null) &optional resolve)
-  (dismiss resolve)
+  (declare (ignore resolve))
   1)
 
 (defmethod channel ((n integer) &optional resolve)
-  (dismiss resolve)
+  (declare (ignore resolve))
   n)
 
 (defgeneric channel! (instrument channel)
@@ -223,21 +223,21 @@ method has not been defined, it returns the mother argument.
               ignored."))
 
 (defmethod clone ((mother t) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   mother)
 
 (defmethod clone ((mother hash-table) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (let ((dst (make-hash-table :size (hash-table-count mother))))
     (maphash #'(lambda (k v)(setf (gethash k dst)(clone v))) mother)
     mother))
 
 (defmethod clone ((mother cons) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (cons (clone (car mother))(clone (cdr mother))))
 
 (defmethod clone ((mother vector) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (->vector (clone (->list mother))))
 
 (defgeneric cnth (n seq)
@@ -603,7 +603,7 @@ The :elide argument determine how end-values are treated.
 (palindrome '(A B C D) :elide :both)  --> (A B C D C B)"))
 
 (defmethod palindrome (object &key elide)
-  (dismiss elide)
+  (declare (ignore elide))
   (clone object))
 
 (defgeneric parent (node)

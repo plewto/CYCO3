@@ -15,7 +15,7 @@
   retrograde)
   
 (defmethod clone ((mother section-render-mode) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (make-section-render-mode
    :section-name (section-render-mode-section-name mother)
    :shift (section-render-mode-shift mother)

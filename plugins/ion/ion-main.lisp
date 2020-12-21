@@ -48,7 +48,7 @@
 (program-number! *metronome* 127)
 (articulation-map! *metronome*
 		   #'(lambda (d)
-		       (dismiss d)
+		       (declare (ignore d))
 		       0.01))
 
 

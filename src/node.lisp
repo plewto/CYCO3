@@ -135,7 +135,7 @@ not."))
 	    (has-property-p (parent node) key))))
 
 (defmethod put ((node cyco-node)(key t)(_ t))
-  (dismiss _)
+  (declare (ignore _))
   (cyco-type-error 'put 'symbol key))
 
 (labels ((assert-valid-property (node key)
@@ -181,7 +181,7 @@ not."))
     (print-tree c (1+ depth))))
   
 (defmethod clone ((mother cyco-node) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (cyco-type-error 'clone '?cyco-node mother))
   
 (defmethod ->string ((n cyco-node))

@@ -50,7 +50,7 @@
 Any stage may be desginated as a 'feedback-stage'.  Upon a shift operation 
 the feedback value is determined by taking the sum of all feedback stages
 plus the insert value.  If the sum is odd the feedback value is 1.  For an
-odd sum the feedback is 0.
+even sum the feedback is 0.
 
 Shift Register values have a tendency to blow-up producing very high
 results.  The following function composition limits the results to a
@@ -101,7 +101,7 @@ taps    - Selects feedback taps.  The binary representation directly
 			:prerun prerun)))
 
 (defmethod clone ((sr bsr) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   (bsr (sr-seed sr)
 		  (sr-taps sr)
 		  :mask (sr-mask sr)

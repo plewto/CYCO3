@@ -207,11 +207,11 @@ name        - Symbol
 	    :transient nil
 	    :channel 1
 	    :program 0
-	    :keynumber-map #'(lambda (&rest _)(dismiss _) +REST+)
+	    :keynumber-map #'(lambda (&rest _)(declare (ignore _)) +REST+)
 	    :dynamic-map (basic-dynamic-map :scale 0.0)
 	    :articulation-map (constant-articulation-map 'r)
 	    :remarks "Null instrument ~~ Does not produce any events.")
-(program-map! null-instrument #'(lambda (&rest _)(dismiss _) nil))
+(program-map! null-instrument #'(lambda (&rest _)(declare (ignore _)) nil))
 
 (setf *metronome* (make-instrument '*metronome*
 				   :parent *root-instrument*
@@ -257,7 +257,7 @@ not effect by prune-orchestra unless the :force argument is true."))
 	      (cons end (midi-note-off channel-index actual-key-number 64)))))))
 	
 (defmethod clone ((mother instrument) &key new-name new-parent)
-  (dismiss new-name new-parent)
+  (declare (ignore new-name new-parent))
   mother)
 
 (defmethod connect ((parent-instrument instrument)(child-instrument cyco-node))

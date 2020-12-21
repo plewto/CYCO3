@@ -29,7 +29,6 @@
 		:cyco-error
 		:cyco-warning
 		:defines-chord-p
-		:dismiss
 		:dump-chords
 		:keyname
 		:keynumber
@@ -60,7 +59,7 @@
 ;; Returns mean keynumber of chord template, ignoring rest.
 ;;
 (defun mean-keynumber (lst)
-  (let* ((ulst (remove nil lst :test #'(lambda (a b)(dismiss a)(rest-p b))))
+  (let* ((ulst (remove nil lst :test #'(lambda (a b)(declare (ignore a))(rest-p b))))
 	 (sum (apply #'+ (keynumber ulst)))
 	 (count (length ulst)))
     (if (zerop count)
@@ -71,7 +70,7 @@
 ;;
 (defun remove-rest-then-sort (template)
   (sort (remove nil (keynumber template)
-		:test #'(lambda (a b)(dismiss a)(minusp b)))
+		:test #'(lambda (a b)(declare (ignore a))(minusp b)))
 	#'<))
 
 ;; Remove all rest and duplicate key-numbers from list.

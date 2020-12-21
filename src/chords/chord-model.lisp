@@ -40,7 +40,7 @@
   (error (sformat "DUMP-CHORDS not implemented for ~A" (type-of chord-model))))
 
 (defmethod chord-template ((chord-model abstract-chord-model)(name t)(keynumber t))
-  (dismiss keynumber)
+  (declare (ignore keynumber))
   (error (sformat "CHORD-TEMPLATE not implemented for ~A" (type-of chord-model))))
 
 (defmethod chord-description ((chord-model abstract-chord-model)(chord-name t))

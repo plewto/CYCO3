@@ -17,7 +17,7 @@
     :initform nil
     :initarg :chord-type)
    (variants
-    :type vector 			;; of key-numbers.
+    :type t ;; vector
     :accessor variants
     :initform nil
     :initarg :variations)))

@@ -11,7 +11,7 @@
     :initform nil
     :initarg :chord-type)
    (pitch-classes
-    :type vector
+    :type t ;; vector
     :accessor pitch-classes
     :initform nil
     :initarg :pitch-classes)))

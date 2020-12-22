@@ -20,13 +20,12 @@
 	  (time state instrument-list)
 	  (let ((acc '())
 		(controller-number (simple-state-controller-number state))
-		(normalized-value (simple-state-controller-value state)))
+		(midi-value (simple-state-controller-value state)))
 	    (if controller-number
-		(let ((midi-value (norm->midi-data normalized-value)))
-		  (dolist (instrument instrument-list)
-		    (push (cons time
-				(midi-control-change (channel-index instrument) controller-number midi-value))
-			  acc))))
+		(dolist (instrument instrument-list)
+		  (push (cons time
+			      (midi-control-change (channel-index instrument) controller-number midi-value))
+			acc)))
 	    acc))
 
 	 (render-program-events 
@@ -50,9 +49,8 @@
 	  (let ((acc '())
 		(pressure (simple-state-pressure state)))
 	    (if pressure
-		(let ((midi-value (norm->midi-data pressure)))
-		  (dolist (instrument instrument-list)
-		    (push (cons time (midi-channel-pressure (channel-index instrument) midi-value)) acc))))
+		(dolist (instrument instrument-list)
+		  (push (cons time (midi-channel-pressure (channel-index instrument) pressure)) acc)))
 	    acc))
 
 	 (playable-p 

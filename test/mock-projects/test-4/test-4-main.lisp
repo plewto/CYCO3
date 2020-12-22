@@ -12,6 +12,7 @@
 (section alpha :bars 4)
 
 ;;; Basics
+;;;
 
 (simple-part s1 (list piano organ)
 	     :bars 4
@@ -35,6 +36,7 @@
 
 ;;; Chords 
 ;;;
+
 (simple-part s2 piano
 	     :bars 4
 	     :events '((:time (1 2 1) :key 40 :chord [maj] :inv 0 :oct 0 :dur w)))
@@ -65,3 +67,37 @@
   (pass? "Simple-part chord test 5"
    	 (equal (remove-duplicates (sort keys-oct-1 #'<)) '(60 64 67 72))))
 	     
+
+;;; Controlers, pressure and bend.
+;;;
+
+(simple-part s3 organ
+	     :bars 4 :events '((:time (1 1 1) :cc 2 0)
+			       (:time (1 1 3) :cc foot 64)
+			       (:time (1 2 1) :pressure 64)
+			       (:time (1 3 1) :bend 0.0)
+			       (:time (1 4 1) :program default)))
+(let* ((events (render-once s3))
+       (msg1 (cdr (first events)))
+       (ctrl-1 (data msg1 0))
+       (cc-1 (data msg1 1))
+       (msg2 (cdr (second events)))
+       (ctrl-2 (data msg2 0))
+       (cc-2 (data msg2 1))
+       (msg3 (cdr (third events)))
+       (pressure (data msg3 0))
+       (msg4 (cdr (fourth events)))
+       (low (data msg4 0))
+       (high (data msg4 1))
+       (msg5 (cdr (fifth events)))
+       (program (data msg5 0)))
+  (pass? "Simple-part test 6"
+	 (and (= ctrl-1 2)
+	      (= cc-1 0)
+	      (= ctrl-2 4)
+	      (= cc-2 64)
+	      (= pressure 64)
+	      (zerop (midi-data->bend low high))
+	      (= program (general-midi-program 'organ1)))))
+
+      

@@ -11,8 +11,7 @@
   shift ;; time offset in seconds
   count ;; <= 0 --> skip
   transpose
-  invert
-  retrograde)
+  invert)
   
 (defmethod clone ((mother section-render-mode) &key new-name new-parent)
   (declare (ignore new-name new-parent))
@@ -20,7 +19,6 @@
    :section-name (section-render-mode-section-name mother)
    :shift (section-render-mode-shift mother)
    :count (section-render-mode-count mother)
-   :retrograde (section-render-mode-retrograde mother)
    :transpose (section-render-mode-transpose mother)
    :invert (section-render-mode-invert mother)))
 
@@ -34,14 +32,13 @@
 			      (sformat "Section ~A does not exists" section-name)))))
 (defmethod section-order ((section-name symbol) &key (project *project*))
   "Adds named section to the project section-order list.
-All modifiers have default values, shift=0.0, count=1, transpose=0, invert=nil, retrograde=nil."
+All modifiers have default values, shift=0.0, count=1, transpose=0, invert=nil."
   (if (find-child project section-name)
       (let ((render-mode (make-section-render-mode :section-name section-name
 						   :shift 0.0
 						   :count 1
 						   :transpose 0
-						   :invert nil
-						   :retrograde nil)))
+						   :invert nil)))
 	(section-order render-mode project))
     (cyco-composition-error 'section-order
 			    (sformat "Section ~A does not exists" section-name))))
@@ -67,7 +64,7 @@ All modifiers have default values, shift=0.0, count=1, transpose=0, invert=nil, 
 Elements of section-name-list may either be a simple section-name or
 a list of form:
 
-     (section-name :x n :trans tx :invert kn :retro b :shift time)
+     (section-name :x n :trans tx :invert kn :shift time)
 
 All elements except section-name are optional.  The additional clauses
 modify how the section is rendered.
@@ -75,18 +72,15 @@ modify how the section is rendered.
     :x n        - repeat n times, default 1.  If less then 1 the section is skipped.
     :trans tx   - transpose amount in half-steps, default 0.
     :invert kn  - key inversion pivot-key, default nil.
-    :retro flag - reverse events, default nil
     :shift time - time offset in seconds, default 0.0.
 
-:trans and :invert are ignored by sections/parts whose :transposable property is nil.
-:retro is ignored by sections/parts whose :reversible property is nil."
+:trans and :invert are ignored by sections/parts whose :transposable property is nil."
     
     (dolist (mode-specification section-name-list)
       (let* ((spec (->list mode-specification))
 	     (section-name (car spec))
 	     (count (or (second (member :x spec)) 1))
 	     (shift (or (second (member :shift spec)) 0.0))
-	     (retro (or (second (member :retro spec)) nil))
 	     (transpose (or (second (member :trans spec)) 0))
 	     (invert (second (member :invert spec))))
 	(validate mode-specification section-name count transpose invert)
@@ -94,7 +88,6 @@ modify how the section is rendered.
 						 :shift (float shift)
 						 :count count
 						 :transpose transpose
-						 :retrograde retro
 						 :invert (if invert (keynumber invert) nil))
 		       :project project)))))
 

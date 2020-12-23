@@ -27,7 +27,7 @@ The filter should return true for events to be processed.
 
 The transform function has the form  (lambda part event) -> event(s)
 and takes the same arguments as the filter-function and returns 
-a new event cons or a list of events.")
+a list of events.")
 
 
 

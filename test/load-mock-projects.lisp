@@ -38,8 +38,10 @@
 (defun ~= (a b &optional (epsilon 0.0001))
   (<= (abs (- a b)) epsilon))
 
-(load-mock-project 1 "Basics")
-(load-mock-project 2 "Qball")
-(load-mock-project 3 "Controllers")
-(load-mock-project 4 "Simple-part")
-(load-mock-project 5 "strummer")
+;; (load-mock-project 1 "Basics")
+;; (load-mock-project 2 "Qball")
+;; (load-mock-project 3 "Controllers")
+;; (load-mock-project 4 "Simple-part")
+;; (load-mock-project 5 "Strummer")
+(load-mock-project 6 "Transformer")
+

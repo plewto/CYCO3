@@ -6,6 +6,7 @@
 	 :project-directory (join-path *mock-project-directory* "test-6"))
 
 (plugin general-midi)
+(prune-orchestra)
 (general-midi-instrument piano :channel 1 :program 'piano1)
 (general-midi-instrument organ :channel 2 :program 'organ1)
 

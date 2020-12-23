@@ -7,6 +7,7 @@
 
 (plugin general-midi)
 (plugin guitar-chords)
+(prune-orchestra)
 (general-midi-instrument piano :channel 1 :program 'piano1)
 (general-midi-instrument organ :channel 1 :program 'organ1)
 

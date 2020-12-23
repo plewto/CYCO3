@@ -66,13 +66,6 @@
 				(process-chord-as-template state chord-specification)
 			      (process-chord-by-name part state event clause chord-specification))))
 
-	   (parse-controller-number
-	    (clause)
-	    (let ((controller-spec (second clause)))
-	      (if (and (integerp controller-spec)(<= 0 controller-spec)(< controller-spec 128))
-		  controller-spec
-		(get-controller-number controller-spec :default 1))))
-
 	   (dispatch-event
 	    (part state event clause)
 	    (let ((command (validate-argument-count part event clause argument-count-table)))
@@ -99,7 +92,7 @@
 		(setf (simple-state-pressure state)
 		      (expect-integer part event clause :position 1 :min 0 :max 127)))
 	       ((eq command :cc)
-		(let ((controller-number (parse-controller-number clause))
+		(let ((controller-number (get-controller-number (second clause) :default 1))
 		      (value (expect-integer part event clause :position 2 :min 0 :max 127)))
 		  (if (and controller-number value)
 		      (setf (simple-state-controller-number state) controller-number

@@ -18,10 +18,9 @@
 	 (render-control-change 
 	  (time state channel-index)
 	  (let ((controller-number (strummer-state-controller-number state))
-		(normalized-value (strummer-state-controller-value state)))
-	    (if (and controller-number normalized-value)
-		(let ((midi-data (norm->midi-data normalized-value)))
-		  (cons time (midi-control-change channel-index controller-number midi-data)))
+		(value (strummer-state-controller-value state)))
+	    (if (and controller-number value)
+		  (cons time (midi-control-change channel-index controller-number value))
 	      nil)))
 	 
 	 (render-program-change 

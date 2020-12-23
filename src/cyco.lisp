@@ -225,3 +225,5 @@ a warning message is displayed and CYCO terminates."
   (cyco-banner)
   (set-cyco-prompt)
   nil)
+
+(plugin dev)

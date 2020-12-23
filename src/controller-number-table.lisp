@@ -30,11 +30,17 @@
 	  (cyco-error
 	   (sformat "Undefined controller ~A, using default ~A" name default))
 	  default))))
-    
-(define-controller 'bank-select  0)
-(define-controller 'wheel  1)
-(define-controller 'breath  2)
-(define-controller 'foot  4)
-(define-controller 'port-time  5)
-(define-controller 'volume  7)
-(define-controller 'pan  10)
+
+
+(defun initialize-controller-numbers ()
+  (loop for n from 0 below 128
+	do (define-controller n n))
+  (define-controller 'bank-select  0)
+  (define-controller 'wheel  1)
+  (define-controller 'breath  2)
+  (define-controller 'foot  4)
+  (define-controller 'port-time  5)
+  (define-controller 'volume  7)
+  (define-controller 'pan  10))
+
+(initialize-controller-numbers)

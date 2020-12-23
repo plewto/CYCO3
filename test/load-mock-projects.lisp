@@ -6,6 +6,8 @@
 
 (format t "~%~%Loading mock projects from ~A~%~%" *mock-project-directory*)
 
+(plugin general-midi)
+(plugin guitar-chords)
 
 (defun load-mock-project (test-number &optional (remarks ""))
   (let ((project-name (->symbol (sformat "test-~A" test-number))))
@@ -36,8 +38,8 @@
 (defun ~= (a b &optional (epsilon 0.0001))
   (<= (abs (- a b)) epsilon))
 
-;; (load-mock-project 1 "Basics")
-;; (load-mock-project 2 "Qball")
-;; (load-mock-project 3 "Controllers")
+(load-mock-project 1 "Basics")
+(load-mock-project 2 "Qball")
+(load-mock-project 3 "Controllers")
 (load-mock-project 4 "Simple-part")
-;; (load-mock-project 5 "strummer")
+(load-mock-project 5 "strummer")

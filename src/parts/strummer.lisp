@@ -263,11 +263,11 @@
 	    (let ((value (expect-normalized-float strummer event clause :signed t)))
 	      (setf (strummer-state-bend state) value)))
 
-	   ;; :cc ctrl value    0 <= ctrl <= 127,  0.0 <= value <= 1.0
+	   ;; :cc ctrl value    0 <= ctrl < 128,  0 <= value < 128
 	   (process-controller 
 	    (strummer state event clause)
-	    (let ((controller-number (expect-integer strummer event clause :position 1 :min 0 :max 127 :default 0))
-		  (value (expect-normalized-float strummer event clause :position 2)))
+	    (let ((controller-number (get-controller-number (second clause) :default 1))
+		  (value (expect-integer strummer event clause :position 2 :min 0 :max 127 :default 0)))
 	      (setf (strummer-state-controller-number state) (or controller-number 0)
 		    (strummer-state-controller-value state) value)))
 

@@ -113,7 +113,7 @@
          chord regardless of the current key-number.
     
     
-    :INVERSION degree   -12 <= degree <= +12
+    :INVERSION degree   -12 &le; degree &le; +12
     :INV degree
     
         Modifies the chords list by rotating the note order.  For positive 
@@ -121,29 +121,29 @@
         the end, negative value rotate the oposite directin and transpose
         down.   For minor chord (0 3 7)
     
-        degree -1   --> (7 0 3)    
-        degree  0   --> (0 3 7)     no change
-        degree +1   --> (3 7 12)    first inversion 
-        degree +2   --> (7 12 15)   second inversion.
+        degree -1   --&gt; (7 0 3)    
+        degree  0   --&gt; (0 3 7)     no change
+        degree +1   --&gt; (3 7 12)    first inversion 
+        degree +2   --&gt; (7 12 15)   second inversion.
     
         :INVERSION and :INV are identical.
     
     
-    :OCTAVE n          -3 <= octave <= +3
+    :OCTAVE n          -3 &le; octave &le; +3
     :OCT n      
     
         Adds an octave copy of the first note to the end of the 
         chord template   For chord (0 3 7)
     
-        degree  -1 octave -1  --> (0 3 7 -12)
-        degree   0 octave +1  --> (0 3 7 12)
-        degreee +1 octave +1  --> (3 7 12 15)
+        degree  -1 octave -1  --&gt; (0 3 7 -12)
+        degree   0 octave +1  --&gt; (0 3 7 12)
+        degreee +1 octave +1  --&gt; (3 7 12 15)
     
         The octave value is applied after inversion.   For original 
         chord template  (0 3 7)
     
-        :inversion 1  --> (3 7 0)
-        :octave 1     --> (3 7 0 15)
+        :inversion 1  --&gt; (3 7 0)
+        :octave 1     --&gt; (3 7 0 15)
     
         :OCTAVE and :OCT are identical.
     
@@ -168,18 +168,18 @@
     
     
     
-    :PRESSURE value      0.0 <= value <= 1.0
+    :PRESSURE value      0.0 &le; value &le; 1.0
     
        Generate single MIDI channel-pressure event.
     
     
-    :CC controller-number value     0 <= controller-number < 128,  0.0 <= value <= 1.0
+    :CC controller-number value     0 &le; controller-number &lt; 128,  0.0 &le; value &le; 1.0
     
        Generate single MIDI control-change event.
     
     
     
-    :BEND value           -1.0 <= value <= +1.0
+    :BEND value           -1.0 &le; value &le; +1.0
     
        Generate single MIDI pitch bend event.
         
@@ -306,9 +306,9 @@
     (simple-part example-7 piano
                  :events '((:time (1 1 1) :cc 4 0.5)      ;; MIDI control change
                                                           ;;    controller number 4
-                                                          ;;    value 0.5 --> MIDI 64
+                                                          ;;    value 0.5 --&gt; MIDI 64
                            (:time (2 1 1) :pressure 0.75) ;; MIDI channel pressure
-                                                          ;;    value 0.75 --> ~ MIDI 95
+                                                          ;;    value 0.75 --&gt; ~ MIDI 95
                            (:time (3 1 1) :bend -0.5      ;; MIDI pitch bend
                                                           ;;    -1.0 &lt;&equals; value &lt;&equals; +1.0
   </pre>

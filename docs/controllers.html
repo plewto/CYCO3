@@ -93,25 +93,25 @@
               events occur.
     
               The special value '* reuses the current value.
-              Additionally the start time may have the value '< which set it
+              Additionally the start time may have the value '&lt; which set it
               to the current end time.
     
     
     :value  - :VALUE start end
     
               The initial and final controller values.   Both are integers
-              0 <= value < 128.   The special value '* indicates to use the
+              0 &le; value &lt; 128.   The special value '* indicates to use the
               current value.
               
     :ctrl   - :CTRL controller-number
               
-              The controller number either as an integer 0 <= number < 128
+              The controller number either as an integer 0 &le; number &lt; 128
               or as a symbolic name.  Use (?CONTROLLERS) for list of defined
               controllers.
     
     :cycles - Number of cycles, default 1.
     :phase  - Pattern phase shift in degrees, default 0.
-    :width  - Pulse curve width, 0.0 <= width <= 1.0, default 0.5
+    :width  - Pulse curve width, 0.0 &le; width &le; 1.0, default 0.5
     
     :cc     - :CC time controller value
     
@@ -158,7 +158,7 @@
     
     Generate another ramp starting at the end-time of the previous one
     
-            :time < (3 1 1) s :ramp
+            :time &lt; (3 1 1) s :ramp
     
             ;; Note the value 0 128 and ctrl clauses are reused.
     

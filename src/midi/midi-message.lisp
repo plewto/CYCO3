@@ -214,7 +214,23 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value keynumber)
 			       (assert-midi-data-value pressure))))
-	     
+
+(defmethod duplicate-channel-message ((message midi-note-on) &key channel data1 data2)
+  (midi-note-on (1- (or channel (channel message)))
+		(or data1 (data message 0))
+		(or data2 (data message 1))))
+
+(defmethod duplicate-channel-message ((message midi-note-off) &key channel data1 data2)
+  (midi-note-off (1- (or channel (channel message)))
+		 (or data1 (data message 0))
+		 (or data2 (data message 1))))
+
+(defmethod duplicate-channel-message ((message midi-poly-pressure) &key channel data1 data2)
+  (midi-poly-pressure (1- (or channel (channel message)))
+		      (or data1 (data message 0))
+		      (or data2 (data message 1))))
+
+
 ;;; ---------------------------------------------------------------------- 
 ;;;			    MIDI-CONTROL-CHANGE
   
@@ -233,6 +249,11 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value controller-number)
 			       (assert-midi-data-value value))))
+
+(defmethod duplicate-channel-message ((message midi-control-change) &key channel data1 data2)
+  (midi-control-change (1- (or channel (channel message)))
+		       (or data1 (data message 0))
+		       (or data2 (data message 1))))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			   MIDI-CHANNEL-PRESSURE
@@ -253,6 +274,12 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value pressure) 0)))
 
+(defmethod duplicate-channel-message ((message midi-channel-pressure) &key channel data1 data2)
+  (declare (ignore data2))
+  (midi-channel-pressure (1- (or channel (channel message)))
+			 (or data1 (data message 0))))
+
+
 ;;; ---------------------------------------------------------------------- 
 ;;;			    MIDI-PROGRAM-CHANGE
 
@@ -272,6 +299,10 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value program-number) 0)))
 
+(defmethod duplicate-channel-message ((message midi-program-change) &key channel data1 data2)
+  (declare (ignore data2))
+  (midi-program-change (1- (or channel (channel message)))
+		       (or data1 (data message 0))))
 
 ;;; ---------------------------------------------------------------------- 
 ;;;			      MIDI-PITCH-BEND
@@ -290,3 +321,8 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
 		 :channel-index (assert-midi-channel-index channel-index)
 		 :data (vector (assert-midi-data-value low-byte)
 			       (assert-midi-data-value high-byte))))
+
+(defmethod duplicate-channel-message ((message midi-pitch-bend) &key channel data1 data2)
+  (midi-pitch-bend (1- (or channel (channel message)))
+		   (or data1 (data message 0))
+		   (or data2 (data message 1))))

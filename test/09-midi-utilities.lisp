@@ -71,6 +71,27 @@
        (and (= (bpm->microseconds 60) 1e6)
 	    (= (bpm->microseconds 120) (/ 1e6 2))))
 
+
+;; duplicate-channel-message test
+;;
+(let ((sources (list (midi-note-on 1 60 64)
+		     (midi-note-off 2 60 64)
+		     (midi-poly-pressure 3 60 64)
+		     (midi-channel-pressure 4 64)
+		     (midi-control-change 5 64 64)
+		     (midi-program-change 6 64)
+		     (midi-pitch-bend 7 0 0))))
+  (dolist (s sources)
+    (let ((dup (duplicate-channel-message s)))
+      (pass? (sformat "duplicate-channel-message ~A" s)
+	     (and (= (channel-index dup)(channel-index s))
+		  (= (data dup 0)(data s 0))
+		  (= (data dup 1)(data s 1))
+		  (not (eq dup s)))))))
+	 
+
+
+
 (not-tested 'read-midi-data)
 (not-tested 'signed-norm->midi-data)
 (not-tested 'read-signed-midi-data)

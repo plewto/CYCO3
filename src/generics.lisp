@@ -283,6 +283,12 @@ description - Optional text."))
    "Severs connection between child and its parent, if any. 
 After a disconnect the child becomes a root node."))
 
+(defgeneric duplicate-channel-message (message &key channel data1 data2)
+  (:documentation
+   "Returns new MIDI-CHANNEL-MESSAGE of the same type as message
+with optional channel and data byte chganges."))
+
+
 (defgeneric dump-chords (chord-model)
   (:documentation
    "Displays list of chords defined by chord-model."))

@@ -399,7 +399,7 @@
   </pre>
   <H2 class="heading">Pseudo Patterns</H2>
   <p class="body">
-    The following are special case patterns have numeric values only.
+    The following special case patterns have numeric values only.
     They may not contain nested patterns.
   </p>
   <a id="ramp"></a>
@@ -412,7 +412,7 @@
     Special case LINE pattern, produces linear sequence from start to end values 
     
     start  - Initial value.
-    end    - Final value.  The final value is beaver reached.
+    end    - Final value.  The final value is never reached.
     :steps - Number of steps, default 16.
     
     Returns LINE pattern.
@@ -489,6 +489,29 @@
     
         (param foo (pulse 0 1 :width 0.8 :phase 90))
         (next foo :all) -> (0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <H4 class="heading">Integer patterns</H4>
+  <p class="body">
+    <b>IRAMP, ISAWTOOTH, ITRIANGLE</b> and <b>IPULSE</b> are
+    integer versions of the patterns above.   They each take the same arguments
+    as the corresponding patterns.  Unlike the non-integer versions they all
+    guarantee the ending value will appear in the result.   However the resulting
+    sequence may have uneven step-sizes and my not be strictly monotonic.
+  </p>
+  <pre class="code">
+    
+    
+        ;; ramp produces consistent step sizes but ending value is missing.
+        ;;
+        (next (ramp  0 9 :steps 10) :all) --&gt; (0 0.9 1.8 2.7 3.6 4.5 5.4 6.3 7.2 8.1)
+    
+        ;; iramp produces ending value but steps size may be inconsistent and 
+        ;; some values may be repeated.
+        ;;
+        (next (iramp 0 9 :steps 10) :all) --&gt; (0 1 2 3 4 5 6 7 8 9)
+        (next (iramp 0 9 :steps 12) :all) --&gt; (0 1 2 2 3 4 5 6 7 7 8 9)
+        (next (iramp 0 9 :steps  5) :all) --&gt; (0 2 4 7 9)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

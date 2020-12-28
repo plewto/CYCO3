@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Transformer</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/transformer.png" alt="transformer"/>
+  <h1 class="banner">Transformer</h1>
+  <p class="body">
+    A <b>TRANSFORMER</b> is a part which modifies selected events
+    from another part.  There are three steps to setting up a transformer.
+  </p>
+  <ol>
+    <li>Select a part to process.  The source part is not modified and may be
+  muted.</li>
+    <li>Designate a function to select MIDI events to process.  The default is to
+   process all events.</li>
+    <li>Designate a function to transform selected events.  The default is to 
+  return selected events unchanged.</li>
+  </ol>
+  
+  <!-- (MAKE-TRANSFORMER name source &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-TRANSFORMER name source &key ...)</b><br>
+  
+  <!-- (TRANSFORMER name source &keys ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TRANSFORMER name source &keys ...)</b><br>
+  <pre class="description">
+    MAKE-TRANSFORMER and TRANSFORMER are identical except TRANSFORMER binds
+    the new part to the symbol name while MAKE-TRANSFORMER does not.  The name
+    argument should be quoted for MAKE-TRANSFORMER and unquoted for
+    TRANSFORMER.
+    
+    
+    name         - Name for transformer part.
+    source       - The part to be modified.
+    :filter      - Function to select MIDI events to modify,  see below.
+                   The default is to select all events.
+    :transform   - Function to modify selected events, see below.
+                   The default returns selected events unchanged.
+    :render-once - Boolean, if true do not repeat events within section,
+                   default nil.
+    :remarks     - Optional remarks text.
+  </pre>
+  <pre class="description">
+    
+    The filter function has the form 
+    
+         (lambda part event) --&gt; bool
+    
+    Where part is the TRANSFORMER instance and event is a cons 
+      
+         (time . midi-message)
+    
+         Where time is the relative event time in seconds.  
+               The part argument may be used to further process the time value.
+    
+               midi-message is the original message.
+    
+         The filter function should return true for events to be processed.
+  </pre>
+  <pre class="description">
+    
+    The transform function has form 
+    
+        (lambda part event) --&gt; event-list
+    
+        Where part and event are the same as the filter function.
+        The transform function should return (a possibly empty) list of MIDI
+        events. 
+    
+        The default is to return the argument event unchanged 
+        (lambda part event) --&gt; (list event)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

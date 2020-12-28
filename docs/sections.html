@@ -114,7 +114,7 @@
     Possible states are:
             
     :mute   - mute part or all members of a group. 
-    :unmute - unmute part or all members of a part.
+    :unmute - unmute part or all members of a group.
     :solo   - unmute this group or part, mute all sibling groups and parts.
     nil     - maintain current mute status.
   </pre>
@@ -251,11 +251,13 @@
         ;;    For illustration assume the parts verse-kick,
         ;;    verse-snare, verse-bass and verse-piano have
         ;;    been created.
-        
-        ;; Create part groups.  Groups are used for the purpose of 
-        ;;     muting or soloing collections of parts.  These group 
-        ;;     objects are bound to PERCUSSION and INSTRUMENTS respectively.
-        
+        ;;    ...
+        ;;    ...
+    
+    
+        ;; Create optional groups.  
+        ;;
+    
         (group percussion '(verse-kick verse-snare))
         (group instruments '(verse-bass verse-piano))
         

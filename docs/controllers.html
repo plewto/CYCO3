@@ -14,7 +14,7 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=transformer.html class="navigation">Next: transformer </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/controllers.png" alt="controllers"/>
   <h1 class="banner">Controllers Parts</h1>
@@ -109,6 +109,9 @@
               or as a symbolic name.  Use (?CONTROLLERS) for list of defined
               controllers.
     
+              To produce MIDI channel pressure events, use ctrl PRESSURE.
+    
+    
     :cycles - Number of cycles, default 1.
     :phase  - Pattern phase shift in degrees, default 0.
     :width  - Pulse curve width, 0.0 &le; width &le; 1.0, default 0.5
@@ -170,8 +173,38 @@
     
           :time (1 1 1)(2 1 1) s :value 0 128 :cycle 2 :phase 0 :width .33 :pulse
   </pre>
+  <a id="bender"></a>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <p class="body">
+    A <b>BENDER</b> part generates MIDI pitch-bend events.  In use
+    it is nearly identical with CONTROLLERS.
+  </p>
+  
+  <!-- (MAKE-BENDER name instruments &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-BENDER name instruments &key ...)</b><br>
+  
+  <!-- (BENDER name instruments &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(BENDER name instruments &key ...)</b><br>
+  <pre class="description">
+    MAKE-BENDER and BENDER are identical except BENDER binds the
+    new part to the symbol name while MAKE-BENDER does not.  Quote the name
+    argument to MAKE-BENDER and leave it unquoted for BENDER.
+    
+    Bender's events list is nearly identical to that of CONTROLLERS.  The main
+    differences are:
+    
+       1) There is no :CTRL command.
+       2) All values are normalized-signed -1.0 &le; value &le; +1.0
+       3) For single events, the :CC command has been replaced with :BEND
+    
+          :BEND value
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=qball.html class="navigation">Previous: qball </a> &nbsp;<a href=transformer.html class="navigation">Next: transformer </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

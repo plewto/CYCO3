@@ -95,7 +95,7 @@
   </p>
   <p class="body">
     <strong>Regardless of where the orchestra is defined, it is important
-    to call (PRUNE-ORCHESTRA) prior to creating it.</strong>
+    to call<br>(PRUNE-ORCHESTRA) prior to creating it.</strong>
   </p>
   <p class="body">
     An orchestra definition mostly consist of a series of INSTRUMENT
@@ -144,9 +144,6 @@
         :invert pivot - Applies key inversion around pivot key.
                         Sections and Parts whose :TRANSPOSABLE property 
                         is nil are not effected.
-        :retro flag   - If flag is true play the section in reverse.
-                        Sections and Parts whose :REVERSABLE property 
-                        is nil are not effected.
         :shift time   - Shift start by time seconds.   
                         Normally each section begins immediately after the
                         previous section ends.  The shift option may be 
@@ -158,7 +155,17 @@
     (SECTION-ORDER '(intro (verse :x 2) chorus (verse :x 2 :trans 3) ...))
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <H3 class="heading">Rendering Project to MIDI file</H3>
+  <H4 class="heading">Generating MIDI events</H4>
+  
+  <!-- (RENDER-PROJECT &optional (project *PROJECT*)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RENDER-PROJECT &optional (project *PROJECT*))</b><br>
+  <pre class="description">
+    Converts project to list of <a href='midi-events.html'>MIDI events</a>.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <H4 class="heading">Writing project to MIDI file</H4>
   
   <!-- (PROJECT->MIDI &key (project *PROJECT*)(filename nil)) -->
   <!--  -->
@@ -173,7 +180,7 @@
     For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <H2 class="heading">Example Project File</H2>
+  <H4 class="heading">Example Project File</H4>
   <pre class="code">
     ;; ~/cyco-projects/foo/foo-main.lisp
         
@@ -182,7 +189,7 @@
                                       ;; sets default tempo and bar count.
     (prune-orchestra)                 ;; Clear orchestra of old instruments.
     (lpf orchestra)                   ;; Load project file defining orchestra
-    (lpf verse)                       ;;   Do not quote the argumen to LPF
+    (lpf verse)                       ;;   Do not quote LPF arguments.
     (lpf chorus) 
     (lpf bridge)
     (section-order '((verse :x 2) chorus bridge verse)) 

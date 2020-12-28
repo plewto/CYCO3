@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>Preroll & Endpad sections</title>
+      <title>Preroll & Fin sections</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -52,29 +52,32 @@
         :beats       - Defaults to project's beats.
         :subbeats    - Defaults to project's subbeats.
   </pre>
-  <a id="endpad"></a>
+  <a id="fin"></a>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <p class="body">
-    <b>Endpadd</b> is a specialized section for terminating a MIDI file.  It produces 
-    a specified number of silent bars to allow space for final decay tails.
+    A <b>FIN</b> section adds a prescribed interval of silence,
+    usually at the end of a composition, to provide space for any final decay
+    tails.
   </p>
   
-  <!-- (MAKE-ENDPAD  &key ...) -->
+  <!-- (MAKE-FIN  name &key project bars beats) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(MAKE-ENDPAD  &key ...)</b><br>
+  <b class="definition">(MAKE-FIN  name &key project bars beats)</b><br>
   
-  <!-- (ENDPAD  &key ...) -->
+  <!-- (FIN  name &key project bars beats) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(ENDPAD  &key ...)</b><br>
+  <b class="definition">(FIN  name &key project bars beats)</b><br>
   <pre class="description">
-    MAKE-ENDPAD and ENDPAD are identical except the later binds the new
-    section to the symbol 'ENDPAD while the later does not.
+    MAKE-FIN and FIN are identical except FIN binds the new
+    section to the symbol name, while MAKE-FIN does not.  Quote the name
+    argument for MAKE-FIN and leave unquoted for FIN.
     
-    :project - defaults TO *PROJECT*
-    :bars    - number of bars, default 2.
-    :beats   - beats, number of beats per bar, defaults to project's value.
+    name     - Section name
+    :project - Parent project, defaults to *PROJECT*
+    :bars    - Number of bars, defaults to project value.
+    :beats   - Number of beats per bar, defaults to project value.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=sections.html class="navigation">Previous: sections </a> &nbsp;<a href=parts.html class="navigation">Next: parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

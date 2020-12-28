@@ -21,7 +21,8 @@
   (defun ?controllers ()
     (format t "Symbolic MIDI controller names~%")
     (dolist (ctrl (defined-controllers))
-      (format t "    ~12A --> ~3D~%" (car ctrl)(cdr ctrl))))
+      (if (not (string= (->string (car ctrl))(->string (cdr ctrl))))
+	  (format t "    ~12A --> ~3D~%" (car ctrl)(cdr ctrl)))))
 
   
   (defun get-controller-number (name &key (default nil))

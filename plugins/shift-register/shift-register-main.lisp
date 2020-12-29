@@ -10,8 +10,7 @@
 		:next-1
 		:pattern
 		:value
-		:while
-		))
+		:while))
 
 (in-package :cyco-sr)
 
@@ -24,23 +23,18 @@
 (defgeneric shift-register-period (shift-register &key prerun guard))
 
 
-
 (load-plugin-file "bsr")
-
 
 (export '(bsr
 	  dump
 	  shift-register-p
 	  shift-register-feedback
 	  shift-1
-	  shift-register-period
-	  
-	  dump)
+	  shift-register-period)
 	:cyco-sr)
 
 (import '(cyco-sr:shift-register-p
-	  bsr
-	  )  :cyco)
+	  bsr)  :cyco)
 
 (in-package :cyco)
 

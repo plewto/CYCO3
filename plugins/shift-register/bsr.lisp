@@ -36,7 +36,7 @@
     :initform #xffff
     :initarg :base)
    (bias
-    :type initarg
+    :type integer
     :accessor sr-bias
     :initform 0
     :initarg :bias)

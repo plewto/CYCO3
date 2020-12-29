@@ -88,6 +88,35 @@
         (lambda part event) --&gt; (list event)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <H4 class="heading">Example 1</H4>
+  <p class="body">
+    Duplicate events on another channel.
+  </p>
+  <pre class="code">
+       TODO NOT TESTED
+    
+        ;; Create source part
+        ;;
+        (qball piano-part piano ....)
+    
+        ;; Create transformation
+        ;; 
+        (let ((input-channel (channel piano))
+              (output-channel 7))
+           (transformer new-piano piano-part
+    
+              :filter #'(lambda (part event)
+                          (declare (ignore part))
+                          (let ((message (cdr event)))
+                             (and (midi-channel-message-p message)
+                                  (= (channel message) input-channel))))
+    
+             :transform #'(lambda (part event)
+                             (declare (ignore part))
+                             (list (cons time (duplicate-channel-message (cdr event) 
+                                                                         :channel output-channel))))))
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

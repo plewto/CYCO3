@@ -109,6 +109,18 @@
   <b class="definition">(MIDI-DATA->BEND lsb msb)</b><br>
   <p class="summery">Converts MIDI pitch bend data values to signed normalized form.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  
+  <!-- (DUPLICATE-CHANNEL-MESSAGE message &key channel data1 data2) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(DUPLICATE-CHANNEL-MESSAGE message &key channel data1 data2)</b><br>
+  <pre class="description">
+    Returns copy of message with optional channel and data byte changes.
+    
+    Defined for MIDI-NOTE-ON, MIDI-NOTE-OFF, MIDI-POLY-PRESSURE, MIDI-CHANNEL-PRESSURE
+                MIDI-CONTROL-CHANGE, MIDI-PROGRAM-CHANGE and MIDI-PITCH-BEND.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=metrics.html class="navigation">Previous: metrics </a> &nbsp;<a href=channel-names.html class="navigation">Next: channel-names </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

@@ -2,7 +2,10 @@
 ;;;;
 ;;;; CYCO pattern to generate hailstone sequence.
 ;;;; https://en.wikipedia.org/wiki/Collatz_conjecture
+;;;; https://oeis.org/A061641
 ;;;;
+
+(in-package :cyco)
 
 (defclass hailstone (pattern)
   ((even-rule
@@ -99,7 +102,8 @@ seed  - Initial value
 :odd  - Function for odd values  v1 = (odd v0), default (lambda (n)(1+ (* 3 n)))
 :hook - Value hook function, default (lambda (n) n)
 
-
-")
+     (print (next (hailstone 29) :all))
+ 
+     --> (88 44 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1) ")
 				   
 	   

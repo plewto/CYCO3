@@ -97,13 +97,16 @@
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
-		   "src/patterns/pseudo-patterns"
+		   ;; "src/patterns/pseudo-patterns"  ;; DEPRECIATED
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"
 		   "src/patterns/wrapper"
 		   "src/patterns/walker"
 		   "src/patterns/instrument-layer"
+		   "src/generators/generator"
+		   "src/generators/envelope"
+		   :break
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"
@@ -226,3 +229,6 @@ a warning message is displayed and CYCO terminates."
   nil)
 
 
+;;; TODO for developement only, remove
+;;;
+(defun b nil (build-cyco))

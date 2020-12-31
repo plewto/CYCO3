@@ -106,6 +106,7 @@
 		   "src/patterns/instrument-layer"
 		   "src/generators/generator"
 		   "src/generators/envelope"
+		   "src/generators/lfo"
 		   :break
 		   "src/node"
 		   "src/midi/midi-message"

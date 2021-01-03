@@ -65,7 +65,7 @@
 	    (lfo-pointer lfo) pointer))))
 
 
-(defun lfo (&key (curve (triangle-curve 0 16)) (hook #'(lambda (n) n)) &allow-other-keys)
+(defun lfo (&key (curve (triangle-curve 0 127)) (hook #'(lambda (n) n)) &allow-other-keys)
   (let ((gen (make-instance 'lfo
 			    :hook hook
 			    :curve curve)))
@@ -121,7 +121,7 @@ The resulting curve may have slight distortions.   Specifically
 
 (setf (documentation 'lfo 'function)
       "Generator which warps numeric list.
-:curve - Numeric wave-table, defaults to triangle wave-shape.
+:curve - Numeric wave-table, defaults to triangle wave-shape between 0 and 127.
 :hook  - hook function applied to value, default identity (lambda (n)) --> n
 
 Examples

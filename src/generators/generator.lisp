@@ -26,7 +26,7 @@
 (defmethod next-1 ((gen generator)) (value gen))
 
 
-(defmethod next-n ((gen generator)(n integer))
+(defmethod next-n ((gen generato\r)(n integer))
   (loop for i from 1 to n
 	collect (next-1 gen)))
 

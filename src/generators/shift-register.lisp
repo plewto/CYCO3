@@ -40,6 +40,17 @@
   sr)
 
 
+(defmethod clone ((mother shift-register) &key new-name new-parent)
+  (declare (ignore new-name new-parent))
+  (let ((daughter (shift-register (shift-register-seed mother)
+				  (shift-register-taps mother)
+				  :mask (shift-register-mask mother)
+				  :prerun (shift-register-prerun mother)
+				  :hook (value-hook mother))))
+    (setf (current-value daughter)
+	  (current-value mother))
+    daughter))
+
 (defmethod shift-register-feedback ((sr shift-register))
   (let* ((mask (shift-register-mask sr))
 	 (v (logand (current-value sr) mask))
@@ -62,9 +73,6 @@
   (format t "Register  ~A  decimal ~4D~%" (format-binary (current-value sr))(current-value sr))
   (format t "Taps      ~A~%" (format-binary (shift-register-taps sr)))
   (format t "Feedback  ~A~%" (shift-register-feedback sr)))
-
-
-;;; TODO implement sshift-register clone
 
 
 (setf (documentation 'shift-register 'function)

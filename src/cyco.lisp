@@ -108,7 +108,7 @@
 		   "src/generators/envelope"
 		   "src/generators/lfo"
 		   "src/generators/shift-register"
-		   :break
+		   "src/generators/hailstone"
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"

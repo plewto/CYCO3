@@ -63,6 +63,9 @@
   (format t "Feedback  ~A~%" (shift-register-feedback sr)))
 
 
+;;; TODO implement sshift-register clone
+
+
 (setf (documentation 'shift-register 'function)
       "Creates new instance of SHIFT-REGISTER generator.
 

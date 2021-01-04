@@ -39,3 +39,11 @@ value  - number,
   "Predicate, true if b evenly divides a, b != 0"
   (let ((q (truncate (/ (float a) b))))
     (= a (* q b))))
+
+(defun parity (n &key (bits 64))
+  (let ((s (format-binary n :bits bits))
+	(acc 0))
+    (dotimes (i (length s))
+      (setf acc (+ acc (if (char= (char s i) #\1) 1 0))))
+    (if (evenp acc) 0 1)))
+    

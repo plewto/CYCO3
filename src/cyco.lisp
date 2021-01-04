@@ -97,7 +97,7 @@
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
-		   ;; "src/patterns/pseudo-patterns"  ;; DEPRECIATED
+		   "src/patterns/pseudo-patterns"  ;; DEPRECIATED
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"
@@ -107,6 +107,7 @@
 		   "src/generators/generator"
 		   "src/generators/envelope"
 		   "src/generators/lfo"
+		   "src/generators/shift-register"
 		   :break
 		   "src/node"
 		   "src/midi/midi-message"

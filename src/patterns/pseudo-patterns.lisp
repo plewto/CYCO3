@@ -4,6 +4,8 @@
 ;;;; contours.
 ;;;;
 
+(cyco-warning "PSEUDO-PATTERNS is DEPRECIATED")
+
 (in-package :cyco)
 
 (labels ((rotate (curve phase)

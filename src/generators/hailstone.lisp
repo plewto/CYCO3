@@ -28,7 +28,8 @@
 (defun hailstone (seed &key
 		       (even #'(lambda (n)(/ n 2)))
 		       (odd #'(lambda (n)(1+ (* 3 n))))
-		       (hook #'(lambda (n) n)))
+		       (hook #'(lambda (n) n))
+		       &allow-other-keys)
   (reset (make-instance 'hailstone
 			:hook hook
 			:even even

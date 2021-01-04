@@ -109,6 +109,7 @@
 		   "src/generators/lfo"
 		   "src/generators/shift-register"
 		   "src/generators/hailstone"
+		   "src/generators/recaman"
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"

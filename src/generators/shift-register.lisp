@@ -25,7 +25,8 @@
     :initform 0
     :initarg :prerun)))
    
-(defun shift-register (seed taps &key mask (prerun 0) (hook #'(lambda (n) n)))
+(defun shift-register (seed taps &key mask (prerun 0) (hook #'(lambda (n) n))
+			    &allow-other-keys)
   (reset (make-instance 'shift-register
 		 :hook hook
 		 :seed seed

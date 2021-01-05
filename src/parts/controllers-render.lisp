@@ -42,24 +42,27 @@
 		   (interval (controllers-state-time-interval state))
 		   (cycles (controllers-state-cycles state))
 		   (phase (controllers-state-phase state))
-		   (width (controllers-state-width state))
+		   (width (truncate (* 100 (controllers-state-width state))))
 		   (time-list (get-time-list time1 time2 interval time-shift))
 		   (steps (length time-list))
 		   (value1 (controllers-state-start-value state))
 		   (value2 (controllers-state-end-value state))
 		   (controller (controllers-state-controller state))
-		   (pattern (cond
-			     ((eq curve :saw)
-			      (isawtooth value1 value2 :steps steps
-					 :cycles cycles :phase phase))
-			     ((eq curve :tri)
-			      (itriangle value1 value2 :steps steps
-					 :cycles cycles :phase phase))
-			     ((eq curve :pulse)
-			      (ipulse value1 value2 :steps steps
-				      :cycles cycles :phase phase :width width))
-			     (t (iramp value1 value2 :steps steps))))
-		   (value-list (next pattern :all)))
+		   (generator (cond
+			       ((eq curve :saw)
+				(lfo :curve (sawtooth-curve value1 value2 :steps steps
+							    :cycles cycles :phase phase)))
+			       ((eq curve :tri)
+				(lfo :curve (triangle-curve value1 value2 :steps steps
+							    :cycles cycles :phase phase)))
+
+			       ((eq curve :pulse)
+				(lfo :curve (pulse-curve value1 value2 :steps steps
+							 :cycles cycles :phase phase
+							 :width width)))
+			       (t (let ((delta (/ (float (- value2 value1)) (1- steps))))
+				    (ramp value1 value2 :by delta)))))
+		   (value-list (mapcar #'round (next generator steps))))
 	      (let ((message-function (if (numberp controller)
 					  #'(lambda (ci value)(midi-control-change ci controller value))
 					#'midi-channel-pressure)))
@@ -96,25 +99,28 @@
 		     (interval (controllers-state-time-interval state))
 		     (cycles (controllers-state-cycles state))
 		     (phase (controllers-state-phase state))
-		     (width (controllers-state-width state))
+		     (width (truncate (* 100 (controllers-state-width state))))
 		     (time-list (get-time-list time1 time2 interval time-shift))
 		     (steps (length time-list))
 		     (norm-value1 (controllers-state-start-value state))
 		     (norm-value2 (controllers-state-end-value state))
 		     (value1 (norm->14bit norm-value1))
 		     (value2 (norm->14bit norm-value2))
-		     (pattern (cond
-			       ((eq curve :saw)
-				(isawtooth value1 value2 :steps steps
-					   :cycles cycles :phase phase))
-			       ((eq curve :tri)
-				(itriangle value1 value2 :steps steps
-					   :cycles cycles :phase phase))
-			       ((eq curve :pulse)
-				(ipulse value1 value2 :steps steps
-					:cycles cycles :phase phase :width width))
-			       (t (iramp value1 value2 :steps steps))))
-		     (value-list (next pattern :all))
+		     (generator (cond
+				 ((eq curve :saw)
+				  (lfo :curve (sawtooth-curve value1 value2 :steps steps
+							      :cycles cycles :phase phase)))
+				 ((eq curve :tri)
+				  (lfo :curve (triangle-curve value1 value2 :steps steps
+							      :cycles cycles :phase phase)))
+				 
+				 ((eq curve :pulse)
+				  (lfo :curve (pulse-curve value1 value2 :steps steps
+							   :cycles cycles :phase phase
+							   :width width)))
+				 (t (let ((delta (/ (float (- value2 value1))(1- steps))))
+				      (ramp value1 value2 :by delta)))))
+		     (value-list (mapcar #'round (next generator steps)))
 		     (lsb-list (mapcar #'(lambda (v)(logand v #x7f)) value-list))
 		     (msb-list (mapcar #'(lambda (v)(logand (ash v -7) #x7f)) value-list)))
 		(loop for time in time-list for lsb in lsb-list for msb in msb-list

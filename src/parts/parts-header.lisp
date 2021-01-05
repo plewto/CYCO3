@@ -59,12 +59,12 @@
                 :instrument-layer
                 :instrument-p
                 :invert
-                :ipulse
-                :iramp
-                :isawtooth
-                :itriangle
+                :pulse-curve
+                :sawtooth-curve
+                :triangle-curve
                 :keynumber
                 :keynumber-map
+		:lfo
                 :limit
                 :line
                 :metric-expression
@@ -99,8 +99,8 @@
                 :program-map
                 :project-p
                 :property
-                :pulse
                 :put
+		:ramp
                 :range
                 :remarks
                 :render-n

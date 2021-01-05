@@ -128,6 +128,7 @@
 	  keynumber-map
 	  keynumber-map!
 	  keynumber-p
+	  lfo
 	  limit
 	  line
 	  line-p
@@ -247,7 +248,7 @@
 	  prune
 	  prune-orchestra
 	  prune-project
-	  pulse
+	  pulse-curve
 	  push-event
 	  put
 	  ramp
@@ -273,7 +274,7 @@
 	  rl
 	  root-p
 	  rotate
-	  sawtooth
+	  sawtooth-curve
 	  section-order
 	  section-p
 	  set-basic-program-map
@@ -307,7 +308,7 @@
 	  ticks-per-beat
 	  time-signature
 	  transpose
-	  triangle
+	  triangle-curve
 	  true
 	  tsubbeat-duration
 	  tsubbeats

@@ -69,32 +69,60 @@
     (setf (current-value gen)(1+ (current-value gen)))))
 
 
-(defclass down-counter (generator)
+(defclass countdown (generator)
   ((initial-value
     :type integer
     :accessor initial-value
     :initform 16
-    :initarg :seed)))
+    :initarg :seed)
+   (action
+    :type function
+    :accessor countdown-action
+    :initform #'(lambda (gen) gen)
+    :initarg :action)
+   (multi-trigger
+    :type t
+    :initform nil
+    :initarg :multi-trigger)
+   (has-fired
+    :type t
+    :initform nil)))
 
-(defmethod reset ((gen down-counter))
-  (setf (current-value gen)
-	(initial-value gen))
+(defmethod reset ((gen countdown))
+  (setf (current-value gen)(initial-value gen)
+	(slot-value gen 'has-fired) nil)
   gen)
 
-(defun down-counter (n &key (hook #'(lambda (n) n)) &allow-other-keys)
-  (reset (make-instance 'down-counter :seed n :hook hook)))
+(defun countdown (n &key
+		    (action #'(lambda (generator) generator))
+		    (multi-trigger nil)
+		    (hook #'(lambda (n) n)) &allow-other-keys)
+  (reset (make-instance 'countdown :seed n
+			:action action
+			:multi-trigger multi-trigger
+			:hook hook)))
 
-(defmethod clone ((mother down-counter) &key new-name new-parent)
+(defmethod clone ((mother countdown) &key new-name new-parent)
   (declare (ignore new-name new-parent))
-  (let ((daughter (down-counter (initial-value mother)
-				:hook (value-hook mother))))
+  (let ((daughter (countdown (initial-value mother)
+			     :action (countdown-action mother)
+			     :multi-trigger (slot-value mother 'multi-trigger)
+			     :hook (value-hook mother))))
     (setf (current-value daughter)
 	  (current-value mother))
     daughter))
 
 
-(defmethod next-1 ((gen down-counter))
+(defmethod next-1 ((gen countdown))
   (prog1
       (value gen)
-    (setf (current-value gen)
-	  (max (1- (current-value gen)) 0))))
+    (let* ((v0 (current-value gen))
+	   (v1 (max (1- v0) 0)))
+      (setf (current-value gen) v1)
+      (if (zerop v1)
+	  (if (or (not (slot-value gen 'has-fired))
+		  (slot-value gen 'multi-trigger))
+	      (progn
+		(setf (slot-value gen 'has-fired) t)
+		(funcall (countdown-action gen) gen)))))))
+	  

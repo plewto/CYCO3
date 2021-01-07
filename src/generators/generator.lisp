@@ -14,7 +14,11 @@
     :type number
     :initform 0
     :accessor current-value
-    :initarg :seed)))
+    :initarg :seed))
+  (:documentation
+   "A Generator is a pattern like object for producing numeric sequences.
+Unlike true patterns, generators may not contain nested elements, they 
+may however be nested within patterns."))
   
 
 (defmethod value ((gen generator))
@@ -130,10 +134,30 @@
 		(setf (slot-value gen 'has-fired) t)
 		(funcall (countdown-action gen) gen))))
       vout)))
-	 
-	
-;;; TEST ~ REMOVE BELOW THIS LINE
-;;;
 
-(param gen (countdown 3 :action #'(lambda (n)(print 'ACTION) n) :multi-trigger t))
 
+(setf (documentation 'constant-value 'function)
+      "Returns generator with constant value
+(param foo (constant-value x))
+(next foo) --> x")
+
+
+
+(setf (documentation 'counter 'function)
+      "Returns generator which counts up from 0
+(param foo (counter))
+(next foo 5) --> (0 1 2 3 4)")
+
+(setf (documentation 'countdown 'function)
+      "Returns generator which counts down to 0.
+An optional function my be executed when count reaches 0.
+
+n       - Integer, initial value
+:action - Function called once counter reaches 0.
+          The function must have the form (lambda (gen) ) where gen 
+          is this instance of countdown.  The action function is 
+          used for its side-effects.
+:hook   - Function applied to output value, default (lambda (n) n)
+:multi-trigger - Boolean, if false the action function is executed 
+                 only one time.  If true action is called every time
+                 next-1 is called and the current value is 0.")

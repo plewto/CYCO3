@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>CYCO Patterns</title>
+      <title>Patterns</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -14,10 +14,34 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=generators.html class="navigation">Next: generators </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/patterns.png" alt="patterns"/>
-  <h1 class="banner">CYCO Patterns</h1>
+  <h1 class="banner">Patterns</h1>
+  <ul>
+    <li>Quick Jump</li>
+    <li><a href='#next-1'>next-1</a></li>
+    <li><a href='#next-n'>next-n</a></li>
+    <li><a href='#next'>next</a></li>
+    <li><a href='#value'>value</a></li>
+    <li><a href='#reset'>reset</a></li>
+    <li><a href='#pattern-p'>pattern-p</a></li>
+    <li><a href='#cardinality'>cardinality</a></li>
+    <li><a href='#remaining'>remaining</a></li>
+    <li><a href='#to-pattern'>to-pattern</a></li>
+    <li><a href='#transpose'>transpose</a></li>
+    <li><a href='#invert'>invert</a></li>
+    <li><a href='#retrograde'>retrograde</a></li>
+    <li><a href='#clone'>clone</a></li>
+    <li><a href='#line'>line</a></li>
+    <li><a href='#cycle'>cycle</a></li>
+    <li><a href='#bag'>bag</a></li>
+    <li><a href='#dice'>dice</a></li>
+    <li><a href='#coin'>coin</a></li>
+    <li><a href='#wrapper'>wrapper</a></li>
+    <li><a href='#walker'>walker</a></li>
+    <li><a href='#nested-patterns'>nested-patterns</a></li>
+  </ul>
   <p class="body">
     A <strong>PATTERN</strong> is a generator which returns a sequence of values in some
     prescribed manner.  The two most
@@ -37,7 +61,7 @@
     (LINE :of '(A B C)) --> A B C C C C C...
   </pre>
   <a id="functions"></a>
-  <H2 class="heading">Functions on Patterns</H2>
+  <H3 class="heading">Functions on Patterns</H3>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next-1"></a>
   
@@ -397,124 +421,8 @@
         (param foo (dice :of (list (cycle :of '(A B C))(line :of '(1 2 3)))))
         (next foo 16) --> 1 2 A 3 B C 3 A 3 B C 3 A B 3...
   </pre>
-  <H2 class="heading">Pseudo Patterns</H2>
-  <p class="body">
-    The following special case patterns have numeric values only.
-    They may not contain nested patterns.
-  </p>
-  <a id="ramp"></a>
-  
-  <!-- (RAMP start end &key steps) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(RAMP start end &key steps)</b><br>
-  <pre class="description">
-    Special case LINE pattern, produces linear sequence from start to end values 
-    
-    start  - Initial value.
-    end    - Final value.  The final value is never reached.
-    :steps - Number of steps, default 16.
-    
-    Returns LINE pattern.
-    
-        (param foo (ramp 0 8 :steps 8))
-        (next foo :all) --> (0 1.0 2.0 3.0 4.0 5.0 6.0 7.0)
-  </pre>
-  <a id="sawtooth"></a>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  
-  <!-- (SAWTOOTH amp1 amp2 &key cycles steps phase) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(SAWTOOTH amp1 amp2 &key cycles steps phase)</b><br>
-  <pre class="description">
-    Special case CYCLE for producing numeric sawtooth pattern.
-    
-    amp1    - Minimum value.
-    amp2    - Maximum value.  The maximum value is never reached.
-    :cycles - Int, number of sawtooth cycles, default 1.
-    :steps  - Int, number of points, default 16.
-    :phase  - Int, phase shift in degrees, default 0.
-    
-    Returns CYCLE pattern.
-    
-        (param foo (sawtooth 0 10 :steps 10 :phase 0))
-        (next foo :all) --> (0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0)
-  </pre>
-  <a id="triangle"></a>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  
-  <!-- (TRIANGLE amp1 amp2 &key cycles steps phase) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(TRIANGLE amp1 amp2 &key cycles steps phase)</b><br>
-  <pre class="description">
-    Special case CYCLE for producing numeric triangle pattern.
-    
-    amp1    - Minimum value.
-    amp2    - Maximum value.
-    :cycles - Int, number of triangle cycles, default 1.
-    :steps  - Int, number of points, default 16.
-    :phase  - Int, phase shift in degrees, default 0.
-    
-    Returns CYCLE pattern.
-    
-        (param foo (triangle 0 10 :steps 10 :phase 0))
-        (next foo :All) --> (0 2.0 4.0 6.0 8.0 10 8.0 6.0 4.0 2.0)
-  </pre>
-  <a id="pulse"></a>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  
-  <!-- (PULSE amp1 amp2 &key cycles  width steps phase) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(PULSE amp1 amp2 &key cycles  width steps phase)</b><br>
-  <pre class="description">
-    Special case CYCLE for producing numeric pulse pattern.
-    
-    amp1    - Minimum value.
-    amp2    - Maximum value.
-    :cycles - Int, number of pulse cycles, default 1.
-    :width  - Float, pulse width 0.0 &lt;&equals; width &lt;&equals; 1.0, default 0.5
-    :steps  - Int, number of points, default 16.
-    :phase  - Int, phase shift in degrees, default 0.
-    
-    Returns CYCLE pattern.
-    
-        (param foo (pulse 0 1))
-        (next foo :all) -> (0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1)
-    
-        (param foo (pulse 0 1 :width 0.8))
-        (next foo :all) -> (0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1)
-    
-        (param foo (pulse 0 1 :width 0.8 :phase 90))
-        (next foo :all) -> (0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0)
-  </pre>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <H4 class="heading">Integer patterns</H4>
-  <p class="body">
-    <b>IRAMP, ISAWTOOTH, ITRIANGLE</b> and <b>IPULSE</b> are
-    integer versions of the patterns above.   They each take the same arguments
-    as the corresponding patterns.  Unlike the non-integer versions they all
-    guarantee the ending value will appear in the result.   However the resulting
-    sequence may have uneven step-sizes and my not be strictly monotonic.
-  </p>
-  <pre class="code">
-    
-    
-        ;; ramp produces consistent step sizes but ending value is missing.
-        ;;
-        (next (ramp  0 9 :steps 10) :all) --&gt; (0 0.9 1.8 2.7 3.6 4.5 5.4 6.3 7.2 8.1)
-    
-        ;; iramp produces ending value but steps size may be inconsistent and 
-        ;; some values may be repeated.
-        ;;
-        (next (iramp 0 9 :steps 10) :all) --&gt; (0 1 2 3 4 5 6 7 8 9)
-        (next (iramp 0 9 :steps 12) :all) --&gt; (0 1 2 2 3 4 5 6 7 7 8 9)
-        (next (iramp 0 9 :steps  5) :all) --&gt; (0 2 4 7 9)
-  </pre>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=generators.html class="navigation">Next: generators </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

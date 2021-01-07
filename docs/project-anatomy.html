@@ -17,18 +17,21 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=projects.html class="navigation">Previous: projects </a> &nbsp;<a href=sections.html class="navigation">Next: sections </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/project.png" alt="project"/>
-  <h1 class="banner">Anatomy of a CYCO Project</h1>
-  <p class="body">
-    Briefly the primary tasks of the main project file are:
+  <p class="footnote">
+    Image creadt: Eadweard Muybridge
   </p>
+  <h1 class="banner">Anatomy of a CYCO Project</h1>
   <ul>
-    <li>Create a PROJECT object.</li>
-    <li>Define an orchestra.</li>
-    <li>Load section files.</li>
-    <li>Set section play order.</li>
-    <li>Generate MIDI files.</li>
+    <li>Quick Jump</li>
+    <li><a href='#create-project'>Creating a project</a></li>
+    <li><a href='#orchestra'>Defining the orchestra</a></li>
+    <li><a href='#section-files'>Section files</a></li>
+    <li><a href='#section-order'>Section order</a></li>
+    <li><a href='#render'>Creating MIDI file</a></li>
+    <li><a href='#example'>Example</a></li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="create-project"></a>
   <H3 class="heading">Creating the Project Object</H3>
   <p class="body">
     The project object is responsible for setting default values and in general 
@@ -71,6 +74,7 @@
         :output-directory  - String, defaults to *DEFAULT-PROJECT-OUTPUT-DIRECTORY*
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="orchestra"></a>
   <H3 class="heading">Defining an Orchestra</H3>
   <p class="body">
     CYCO does not have an 'orchestra' object perse, instead the term implies
@@ -106,6 +110,7 @@
     orchestra tree.
   </p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="section-files"></a>
   <H3 class="heading">Loading Section Files</H3>
   <p class="body">
     Sections represent major divisions of a composition.  In all but the simplest case 
@@ -117,6 +122,7 @@
     of *PROJECT*.
   </p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="section-order"></a>
   <H3 class="heading">Setting Section Order</H3>
   <p class="body">
     Prior to creating a MIDI file the section-order must be established with 
@@ -155,6 +161,7 @@
     (SECTION-ORDER '(intro (verse :x 2) chorus (verse :x 2 :trans 3) ...))
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="render"></a>
   <H4 class="heading">Generating MIDI events</H4>
   
   <!-- (RENDER-PROJECT &optional (project *PROJECT*)) -->
@@ -180,6 +187,7 @@
     For project Foo the resulting file is ~/cyco-projects/foo/MIDI/foo.mid
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="example"></a>
   <H4 class="heading">Example Project File</H4>
   <pre class="code">
     ;; ~/cyco-projects/foo/foo-main.lisp

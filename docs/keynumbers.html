@@ -18,6 +18,18 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/keynumbers.png" alt="keynumbers"/>
   <h1 class="banner">CYCO Key-Numbers</h1>
+  <ul>
+    <li>Quick Jump</li>
+    <li><a href='#keynumber-function'>keynumber</a></li>
+    <li><a href='#pitch-class'>pitch-class</a></li>
+    <li><a href='#octave'>octave</a></li>
+    <li><a href='#keyname'>keyname</a></li>
+    <li><a href='#rest-p'>rest-p</a></li>
+    <li><a href='#keynumber-p'>keynumber-p</a></li>
+    <li><a href='#defkeynumber'>defkeynumber</a></li>
+    <li><a href='#transpose'>transpose</a></li>
+    <li><a href='#invert'>invert</a></li>
+  </ul>
   <p class="body">
     CYCO uses the MIDI keynumbers between 0 and 127 inclusive.  All negative 
     values are treated as a rest.  An attempt is made to transpose all values above 127 to an equivalent 
@@ -150,6 +162,7 @@
     (KEYNAME 58)     --> AS4
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="rest-p"></a>
   
   <!-- (REST-P item) -->
   <!--  -->
@@ -157,6 +170,7 @@
   <b class="definition">(REST-P item)</b><br>
   <p class="summery">Predicate, returns T if item is a rest.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="keynumber-p"></a>
   
   <!-- (KEYNUMBER-P item) -->
   <!--  -->
@@ -164,6 +178,7 @@
   <b class="definition">(KEYNUMBER-P item)</b><br>
   <p class="summery">Predicate, returns T if item may be treated as a keynumber.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="defkeynumber"></a>
   
   <!-- (DEFKEYNUMBER symbol value) -->
   <!--  -->

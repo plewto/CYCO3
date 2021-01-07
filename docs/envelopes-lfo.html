@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Envelopes & LFOs</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=generators.html class="navigation">Previous: generators </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <img class="center" src="images/envelope.png" alt="envelope"/>
+  <h1 class="banner">Envelopes & LFOs</h1>
+  <ul>
+    <li>Quick Jump</li>
+    <li><a href='#asr-envelope'>asr-envelope</a></li>
+    <li><a href='#lfo'>lfo</a></li>
+    <li><a href='#curves'>sawtooth, triangle & pulse curves</a></li>
+  </ul>
+  <a id="ramp"></a>
+  
+  <!-- (RAMP a b &key by hook) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RAMP a b &key by hook)</b><br>
+  <p class="summery">Returns function that produces linear sequence.</p>
+  <pre class="description">
+    
+    a     - Initial value
+    b     - Final value
+    :by   - Increment, default 1.
+    :hook - Value hook function, default (lambda (n) n)
+    
+    (param foo (ramp 0 5))
+    (next foo 10) --&gt; (0 1 2 3 4 5 5 5 5 5)
+    
+    (param foo (ramp 0 10 :by 1.5))
+    (next foo 10) --&gt; (0 1.5 3.0 4.5 6.0 7.5 9.0 10 10 10)
+    
+    
+    (param foo (ramp 10 0 :by -1 :hook #'(lambda (n)(* n n))))
+    (next foo 12) --&gt; (100 81 64 49 36 25 16 9 4 1 0 0)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="asr-envelope"></a>
+  
+  <!-- (ASR-ENVELOPE a b &key attack decay sustain cycle hook) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(ASR-ENVELOPE a b &key attack decay sustain cycle hook)</b><br>
+  <p class="summery">Returns generator that produces attack-sustain-release envelope.</p>
+  <pre class="description">
+    
+    a        - Initial value
+    b        - Peak value
+    :attack  - attack stage increment, default 1
+    :decay   - decay stage decrement, default 1
+    :sustain - Integer, number of sustain steps, default 4
+    :cycle   - Boolean, if true, automatically reset after final decay value,
+               default nil
+    :hook    - Function, as in general generator hook, default (lambda (n) n)
+    
+    Examples:
+    
+    (param env (asr-envelope 0 12))
+    (next env 30) --&gt; (0 1 2 3 4 5 6 7 8 9 10 11 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0)
+    
+    (param env (asr-envelope 0 12 :attack 2 :sustain 8))
+    (next env 30) --&gt; (0 2 4 6 8 10 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0)
+    
+    (param env (asr-envelope 0 12 :attack 2 :sustain 2 :decay 3 :cycle t))
+    (next env 30) --&gt; (0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="lfo"></a>
+  <img class="center" src="images/lfo.png" alt="lfo"/>
+  
+  <!-- (LFO &key curve hook) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(LFO &key curve hook)</b><br>
+  <p class="summery">Returns generator which produces arbitrary cyclical sequences.</p>
+  <pre class="description">
+    
+    :curve - Numeric list, defaults to triangle wave.
+    :hook  - Function applied to output value, default (lambda (n) n)
+    
+    The following functions may be used with the LFO curve argument.
+  </pre>
+  <a id="curves"></a>
+  
+  <!-- (SAWTOOTH-CURVE amp1 amp2 &key cycles steps phase) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SAWTOOTH-CURVE amp1 amp2 &key cycles steps phase)</b><br>
+  
+  <!-- (TRIANGLE-CURVE amp1 amp2 &key cycles steps phase) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TRIANGLE-CURVE amp1 amp2 &key cycles steps phase)</b><br>
+  
+  <!-- (PULSE-CURVE amp1 amp2 &key cycles steps width phase) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(PULSE-CURVE amp1 amp2 &key cycles steps width phase)</b><br>
+  <pre class="description">
+    
+    Each of these functions returns a numeric list with appropriate contour.  
+    Note that there may be some distortion in the curves, specifically the common 
+    difference may not be uniform and certain values may be repeated.
+    
+    amp1    - Initial amplitude
+    amp2    - Peak amplitude
+    :cycles - Number of wave cycles, default 1.
+    :steps  - Number of points, defaults to difference between amp1 and amp2.
+    :phase  - Phase shift in degrees, default 0.
+    :width  - (Pulse only) pulse width percent 0 &le; width &le; 100, default 50.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=generators.html class="navigation">Previous: generators </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

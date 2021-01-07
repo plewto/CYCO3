@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Generators</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Previous: patterns </a> &nbsp;<a href=envelopes-lfo.html class="navigation">Next: envelopes-lfo </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <h1 class="banner">Generators</h1>
+  <ul>
+    <li>Quick Jump</li>
+    <li><a href='#functions'>Generic functions</a></li>
+    <li><a href='#reset'>reset</a></li>
+    <li><a href='#clone'>clone</a></li>
+    <li><a href='#next-1'>next-1</a></li>
+    <li><a href='#next-n'>next-n</a></li>
+    <li><a href='#next'>next</a></li>
+    <li><a href='#value-hook'>value-hook</a></li>
+    <li><a href='#value'>value</a></li>
+    <li><a href='#current-value'>current-value</a></li>
+    <li><a href='#constant'>constant</a></li>
+    <li><a href='#counter'>counter</a></li>
+    <li><a href='#countdown'>countdown</a></li>
+  </ul>
+  <p class="body">
+    A <b>Generator</b> is similar to a Pattern except they
+    only produce numeric results and may not have nested components.
+    Generators may however be elements of a pattern.
+  </p>
+  <p class="body">
+    The generator methods <b>VALUE</b>, <b>NEXT-1</b> and <b>NEXT</b> function the same
+    for generators and patterns, except there is no :ALL or :REST option for
+    the generator version of NEXT.  Additionally generators have a value-hook function which is
+    applied to the 'natural' value before being returned by the VALUE
+    method.
+  </p>
+  <a id="functions"></a>
+  <H3 class="heading">Functions on Generators</H3>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="reset"></a>
+  
+  <!-- (RESET generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RESET generator)</b><br>
+  <p class="summery">Resets generator to initial state, returns generator.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="clone"></a>
+  
+  <!-- (CLONE generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CLONE generator)</b><br>
+  <p class="summery">Returns new generator which is an exact copy of the original.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="next-1"></a>
+  
+  <!-- (NEXT-1 generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NEXT-1 generator)</b><br>
+  <p class="summery">Returns the next value from generator.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="next-n"></a>
+  
+  <!-- (NEXT-N generator n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NEXT-N generator n)</b><br>
+  <p class="summery">Returns list of next n generator values.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="next"></a>
+  
+  <!-- (NEXT generator &optional n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(NEXT generator &optional n)</b><br>
+  <p class="summery">Returns next value from generator.</p>
+  <pre class="description">
+    By default NEXT acts exactly like NEXT-1.  If the optional n argument is an integer
+    it behaves like (NEXT-n generator n) and returns a list of n values.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="value-hook"></a>
+  
+  <!-- (VALUE-HOOK generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(VALUE-HOOK generator)</b><br>
+  <p class="summery">Returns the hook function applied to the current-value.<br>
+  The default function is the identity (lambda (n) n)</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="value"></a>
+  
+  <!-- (VALUE generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(VALUE generator)</b><br>
+  <p class="summery">Returns the current-value of the generator after application of the 
+  hook-function.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="current-value"></a>
+  
+  <!-- (CURRENT-VALUE generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CURRENT-VALUE generator)</b><br>
+  <p class="summery">Returns the internal value of the generator.  CURRENT-VALUE does not 
+  apply the value-hook function.</p>
+  <H3 class="heading">Basic Generator Types</H3>
+  <a id="constant"></a>
+  
+  <!-- (CONSTANT-VALUE n) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(CONSTANT-VALUE n)</b><br>
+  <p class="summery">Returns a generator which produces a constant value.</p>
+  <pre class="description">
+    
+    (param foo (constant-value 3))
+    (next foo 5) --&gt; (3 3 3 3 3)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="counter"></a>
+  
+  <!-- (COUNTER &key hook) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(COUNTER &key hook)</b><br>
+  <p class="summery">Returns generator to produce sequence of whole numbers 0,1,2,...</p>
+  <pre class="description">
+    
+    (param foo (counter))
+    (next foo 10) --&gt; (0 1 2 3 4 5 6 7 8 9)
+    
+    ;; The hook function may be used to modify the results.
+    ;;
+    (param foo (counter :hook #'(lambda (n)(+ 100 (* 2 n)))))
+    (next foo 10) --&gt; (100 102 104 106 108 110 112 114 116 118)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="countdown"></a>
+  
+  <!-- (COUNTDOWN n &key action hook multi-trigger ) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(COUNTDOWN n &key action hook multi-trigger )</b><br>
+  <p class="summery">Returns generator to count down from n.  Once zero has been reached the 
+  action function is executed.</p>
+  <pre class="description">
+    
+    n       - Integer, the initial value. The counters value is never negative.
+    :action - Function executed once the counter reaches zero.  The function
+              must take a single argument which is the generator itself and is 
+              used solely for side effect.   The default action does nothing
+              (lambda (generator) generator).
+    :multi-trigger - Boolean if nil the action function is only called once
+                     after the counter reaches zero.   If true the action
+                     function is executed each time the counter produces a new
+                     value after it has reached zero.
+     
+    :hook   - Function, same as the general generator value-hook.
+              Default (lambda (n) n)
+    
+    Examples:
+    
+    (defun action (generator)
+       (declare (ignore generator))
+       (print 'FIRE))
+    
+    (param foo (countdown 5))
+    (next foo 10) --&gt; (5 4 3 2 1 0 0 0 0 0)
+    
+    
+    (param foo (countdown 5 :action #'action :multi-trigger nil))
+    (next foo 3) --&gt; (5 4 3)
+    (next foo)   --&gt; 2
+    (next foo)   --&gt; FIRE
+                        1
+    (value foo)  --&gt; 0
+    (next foo 3) --&gt; (0 0 0)
+    
+    
+    (param foo (countdown 5 :action #'action :multi-trigger t))
+    (next foo 3) --&gt; (5 4 3)
+    (next foo)   --&gt; 2
+    (next foo)   --&gt; FIRE
+                        1
+    (next foo)   --&gt; FIRE
+                        0
+    (next foo)   --&gt; FIRE
+                        0
+  </pre>
+  <H5 class="heading">Functions on COUNTDOWN generator</H5>
+  
+  <!-- (INITIAL-VALUE countdown) --&gt; n -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(INITIAL-VALUE countdown) --&gt; n</b><br>
+  
+  <!-- (COUNTDOWN-ACTION countdown) --&gt; function -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(COUNTDOWN-ACTION countdown) --&gt; function</b><br>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Previous: patterns </a> &nbsp;<a href=envelopes-lfo.html class="navigation">Next: envelopes-lfo </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

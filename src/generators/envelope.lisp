@@ -177,7 +177,7 @@ Examples
 	       (value (min ceiling (+ (current-value env) delta))))
 	  (if (= value ceiling)
 	      (setf (asr-state env) :sustain
-		    (slot-value env 'sustain-counter) (1- (slot-value env 'sustain-reset))))
+		    (slot-value env 'sustain-counter)(slot-value env 'sustain-reset)))
 	  (setf (current-value env) value)))
        
        
@@ -194,7 +194,7 @@ Examples
        (next-sustain
 	(env)
 	(let ((count (slot-value env 'sustain-counter)))
-	  (if (plusp count)
+	  (if (not (plusp (- count 2)))
 	      (setf (asr-state env) :decay)
 	    (setf (slot-value env 'sustain-counter)(1- count))))) )
 

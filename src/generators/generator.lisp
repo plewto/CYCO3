@@ -113,16 +113,27 @@
     daughter))
 
 
-(defmethod next-1 ((gen countdown))
-  (prog1
-      (value gen)
-    (let* ((v0 (current-value gen))
+(flet ((not-fired-p (gen)
+		    (not (slot-value gen 'has-fired)))
+       
+       (multi-trigger-p (gen)
+			(slot-value gen 'multi-trigger)))
+  
+  (defmethod next-1 ((gen countdown))
+    (let* ((vout (value gen))
+	   (v0 (current-value gen))
 	   (v1 (max (1- v0) 0)))
       (setf (current-value gen) v1)
-      (if (zerop v1)
-	  (if (or (not (slot-value gen 'has-fired))
-		  (slot-value gen 'multi-trigger))
+      (if (zerop v0)
+	  (if (or (not-fired-p gen)(multi-trigger-p gen))
 	      (progn
 		(setf (slot-value gen 'has-fired) t)
-		(funcall (countdown-action gen) gen)))))))
-	  
+		(funcall (countdown-action gen) gen))))
+      vout)))
+	 
+	
+;;; TEST ~ REMOVE BELOW THIS LINE
+;;;
+
+(param gen (countdown 3 :action #'(lambda (n)(print 'ACTION) n) :multi-trigger t))
+

@@ -248,7 +248,7 @@
 	  prune
 	  prune-orchestra
 	  prune-project
-	  pulse-curve
+	  pulse
 	  push-event
 	  put
 	  ramp
@@ -274,7 +274,7 @@
 	  rl
 	  root-p
 	  rotate
-	  sawtooth-curve
+	  sawtooth
 	  section-order
 	  section-p
 	  set-basic-program-map
@@ -308,7 +308,7 @@
 	  ticks-per-beat
 	  time-signature
 	  transpose
-	  triangle-curve
+	  triangle
 	  true
 	  tsubbeat-duration
 	  tsubbeats

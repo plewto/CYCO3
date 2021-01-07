@@ -59,9 +59,9 @@
                 :instrument-layer
                 :instrument-p
                 :invert
-                :pulse-curve
-                :sawtooth-curve
-                :triangle-curve
+                :pulse
+                :sawtooth
+                :triangle
                 :keynumber
                 :keynumber-map
 		:lfo

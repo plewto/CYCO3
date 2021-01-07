@@ -12,7 +12,7 @@
 	 (compare (value threshold high low)
 		  (if (< value threshold) low high)))
 
-  (defun sawtooth-curve (amp1 amp2 &key (cycles 1) steps (phase 0) &allow-other-keys)
+  (defun sawtooth (amp1 amp2 &key (cycles 1) steps (phase 0) &allow-other-keys)
     (setf steps (or steps (abs (- amp2 amp1))))
     (let* ((segment-length (truncate (/ steps cycles)))
 	   (segment (irange amp1 amp2 segment-length))
@@ -22,7 +22,7 @@
       (rotate (reverse curve) phase)))
 
 
-  (defun triangle-curve (amp1 amp2 &key (cycles 1) steps (phase 0) &allow-other-keys)
+  (defun triangle (amp1 amp2 &key (cycles 1) steps (phase 0) &allow-other-keys)
     (setf steps (or steps (abs (- amp2 amp1))))
     (let* ((cycle-steps (/ steps cycles))
 	   (half (truncate (/ cycle-steps 2)))
@@ -35,8 +35,8 @@
       (rotate (reverse curve) phase)))
 
 
-  (defun pulse-curve (amp1 amp2 &key (cycles 1) steps (phase 0)(width 50) &allow-other-keys)
-    (let* ((saw (sawtooth-curve 0 100 :cycles cycles :steps steps :phase phase)))
+  (defun pulse (amp1 amp2 &key (cycles 1) steps (phase 0)(width 50) &allow-other-keys)
+    (let* ((saw (sawtooth 0 100 :cycles cycles :steps steps :phase phase)))
       (mapcar #'(lambda (v)(compare v width amp1 amp2)) saw))) )
 
     
@@ -44,7 +44,7 @@
   ((curve
     :type list
     :accessor lfo-curve
-    :initform (triangle-curve 0 16)
+    :initform (triangle 0 16)
     :initarg :curve)
    (pointer
     :type integer
@@ -65,7 +65,7 @@
 	    (lfo-pointer lfo) pointer))))
 
 
-(defun lfo (&key (curve (triangle-curve 0 127)) (hook #'(lambda (n) n)) &allow-other-keys)
+(defun lfo (&key (curve (triangle 0 127)) (hook #'(lambda (n) n)) &allow-other-keys)
   (let ((gen (make-instance 'lfo
 			    :hook hook
 			    :curve curve)))
@@ -80,7 +80,7 @@
     daughter))
 
 
-(setf (documentation 'sawtooth-curve 'function)
+(setf (documentation 'sawtooth 'function)
       "Returns numeric list with sawtooth contour.
 amp1     - trough amplitude
 amp2     - peak amplitude
@@ -92,7 +92,7 @@ The resulting curve may have slight distortions.   Specifically
 1) Increment values may not be consistent.
 2) The curve may contain padding values.")
 
-(setf (documentation 'triangle-curve 'function)
+(setf (documentation 'triangle 'function)
       "Returns numeric list with triangle contour.
 amp1     - trough amplitude
 amp2     - peak amplitude
@@ -105,7 +105,7 @@ The resulting curve may have slight distortions.   Specifically
 2) The curve may contain padding values.")
 
 
-(setf (documentation 'pulse-curve 'function)
+(setf (documentation 'pulse 'function)
       "Returns numeric list with pulse contour.
 amp1     - trough amplitude
 amp2     - peak amplitude
@@ -127,7 +127,7 @@ The resulting curve may have slight distortions.   Specifically
 Examples
 
    (next (lfo) 16) --> (0 2 4 6 8 10 12 14 16 14 11 9 7 5 2 0)
-   (next (lfo :curve (pulse-curve 0 1 :steps 8)) 16) --> (1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0)")
+   (next (lfo :curve (pulse 0 1 :steps 8)) 16) --> (1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0)")
 
 
 

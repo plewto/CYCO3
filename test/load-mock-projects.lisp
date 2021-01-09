@@ -28,11 +28,6 @@
 		     (and (funcall predicate (cdr evn))
 			  (= (1- channel)(channel-index (cdr evn)))))
 		 events))
-		 
-
-(defun monotonic-p (list &optional (compare #'<=))
-  (apply compare list))
-
 
 
 (defun ~= (a b &optional (epsilon 0.0001))

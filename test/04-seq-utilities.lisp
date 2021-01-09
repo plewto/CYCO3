@@ -54,7 +54,7 @@
   	    (1+ (gethash selected frequency-table)))))
   (maphash #'(lambda (key count)
 	       (let ((relative-frequency (float (/ count test-runs))))
-		 (pass? (sformat "permute ~A" key)
+		 (pass? (sformat "permute ~A   **** TEST IS PROBABILISTIC, EXPECT AN OCCASIONAL FAIL ****" key)
 			(and (<= 0.10 relative-frequency)
 			     (<= relative-frequency 0.2)))))
 	   frequency-table))

@@ -13,6 +13,9 @@
 
 (setf *enable-banners* nil)
 
+(defun monotonic-p (list &optional (test #'<=))
+  (apply test list))
+
 
 (defun fail (test-name reason)
   (let ((message (sformat ":FAIL: test ~A : ~A" test-name reason)))

@@ -118,3 +118,121 @@
 	      (equal (cdr expect) actual-2)
 	      (equal (cdr expect) actual-3))))
 	
+;; LFO
+;;
+
+(let* ((curve '(0 1 2))
+       (gen (lfo :curve curve :hook #'(lambda (n)(* n n))))
+       (expect '(0 1 4 0 1 4 0 1 4))
+       (actual (next gen (length expect))))
+  (pass? "LFO test 1"
+	 (equal expect actual)))
+
+(flet ((diff (data)
+	     (loop for i from 0 to (- (length data) 2)
+		   collect (- (nth (1+ i) data)(nth i data)))))
+  (let* ((steps 10)
+	 (saw (sawtooth 0 9 :cycles 1 :steps steps)))
+    (pass? "sawtooth test 1"
+	   (and (= (length saw) steps)
+		(monotonic-p saw)
+		(= (mean (diff saw)) 1.0))))
+
+  (let* ((steps 30)
+	 (saw (sawtooth 0 9 :cycles 1 :steps steps)))
+    (pass? "sawtooth test 2"
+	   (and (= (length saw) steps)
+		(monotonic-p saw)
+		(every #'(lambda (n)(<= n 1))(diff saw)))))
+
+  (let* ((steps 30)
+	 (saw (sawtooth 0 9 :cycles 2 :steps steps))
+	 (first (subseq saw 0 (/ steps 2)))
+	 (second (subseq saw (/ steps 2))))
+    (pass? "sawtooth test 3, cycles"
+	   (and (= (length saw) steps)
+		(monotonic-p first)
+		(every #'(lambda (n)(<= n 1))(diff saw))
+		(equal first second))))
+
+  (let* ((steps 30)
+	 (saw (sawtooth 0 9 :cycles 1 :steps steps :phase 180))
+	 (first (subseq saw 0 (/ steps 2)))
+	 (second (subseq saw (/ steps 2))))
+    (pass? "sawtooth test 4, phase"
+	   (and (monotonic-p first)
+		(= (final first) 9)
+		(monotonic-p second)
+		(zerop (car second)))))
+
+  (let* ((steps 30)
+	 (half (1+ (/ steps 2)))
+	 (tri (triangle 0 9 :cycles 1 :steps steps))
+	 (first (subseq tri 0 half))
+	 (second (subseq tri half)))
+    (pass? "triangle test 1"
+	   (and (monotonic-p first)
+		(monotonic-p (reverse second)))))
+
+
+  (let* ((steps 30)
+	 (wave (pulse 0 9 :steps steps))
+	 (low 0)
+	 (high 0))
+    (dolist (v wave)
+      (if (zerop v)
+	  (setf low (1+ low))
+	(setf high (1+ high))))
+    (pass? "pulse test 1"
+	   (and (every #'(lambda (a)(member a '(0 9))) wave)
+		(= low high)
+		(every #'(lambda (n)(= n 9)) (subseq wave 0 (/ steps 3)))
+		(every #'zerop (subseq wave (truncate (* 2/3 steps)))))))
+		
+  
+  (let* ((steps 31)
+	 (wave (pulse 0 9 :steps steps :width 20))
+	 (low 0)
+	 (high 0))
+    (dolist (v wave)
+      (if (zerop v)
+	  (setf low (1+ low))
+	(setf high (1+ high))))
+    (pass? "pulse test 1"
+	   (and (every #'(lambda (a)(member a '(0 9))) wave)
+		(= (truncate (/ (float low) high)) 4)))))
+ 
+
+;; Shift Register
+;;
+
+(let* ((sr (shift-register #b0001 #b1000 :mask #b1111))
+       (expect '(1 2 4 8))
+       (actual (next sr (length expect))))
+  (pass? "shift-register test 1"
+	 (equal expect actual)))
+
+(let* ((sr (shift-register #b0001 #b1010 :mask #b1111))
+       (expect '(1 2 5 10 4 8))
+       (actual (next sr (length expect))))
+  (pass? "shift-register test 2"
+	 (equal expect actual)))
+
+
+;; Hailstone
+;;
+
+(let* ((hs (hailstone 10))
+       (expect '(10 5 16 8 4 2 1 4))
+       (actual (next hs (length expect))))
+  (pass? "Hailstone"
+	 (equal expect actual)))
+
+;; Recaman
+;;
+
+(let* ((rec (recaman 0))
+       (expect '(0 1 3 6 2 7 13 20 12 21 11 22 10 23 9))
+       (actual (next rec (length expect))))
+  (pass? "Recaman"
+	 (equal expect actual)))

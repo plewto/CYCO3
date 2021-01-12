@@ -23,7 +23,7 @@
        (ch1 (channel-index (cdr ev1)))
        (ev2 (second events))
        (ch2 (channel-index (cdr ev2))))
-  (pass? "Controllers single events with layerd instruments."
+  (pass? "Controllers single events with layerd instruments.  Test 1"
 	 (and (= (length events) 2)
 	      (or (= ch1 0)(= ch1 1))
 	      (not (= ch1 ch2))
@@ -40,14 +40,17 @@
 
 (let* ((events (render-once cc2))
        (times (mapcar #'(lambda (evn)(car evn)) events))
-       (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events)))
-  (pass? "Controllers ramp event"
-	 (and (monotonic-p times)
-	      (zerop (car values))
-	      (= (final values))
-	      (monotonic-p values)
-	      (zerop (car times))
-	      (eq (- (second times)(first times))(beat-duration cc2)))))
+       (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events))
+       (time-increment (- (second times)(first times)))
+       (expected-increment (beat-duration cc2)))
+  (pass? "Controllers ramp event.  Test 2"
+	 (and
+	  (monotonic-p times)
+	  (zerop (car values))
+	  (= (final values) 127)
+	  (monotonic-p values)
+	  (zerop (car times))
+	  (= time-increment expected-increment))))
 
 ;; Pressure ramp
 ;;   ignore cc events between (1 1 1) and (2 1 1)
@@ -61,7 +64,7 @@
 (let* ((events (filter-message-type #'midi-channel-pressure-p 1 (render-once pr1)))
        (times (mapcar #'(lambda (evn)(car evn)) events))
        (values (mapcar #'(lambda (evn)(data (cdr evn) 0)) events)))
-  (pass? "Pressure ramp events"
+  (pass? "Pressure ramp events. Test 3"
 	 (and (monotonic-p values)
 	      (= (car values) 10)
 	      (= (final values) 64)
@@ -83,7 +86,7 @@
 				  (msb (data msg 1)))
 			     (midi-data->bend lsb msb)))
 		       events)))
-  (pass? "Single bender event"
+  (pass? "Single bender event. Test 4"
 	 (and (zerop (car times))
 	      (= 1.0 (car values))
 	      (= (length times)(length values) 2))))
@@ -100,7 +103,7 @@
 					     (msb (data msg 1)))
 					(midi-data->bend lsb msb)))
 		       events)))
-  (pass? "Bender ramp test"
+  (pass? "Bender ramp test. Test 5"
 	 (and (zerop (car times))
 	      (~= (final times)(bar b2 '(2 1 1)))
 	      (monotonic-p times)

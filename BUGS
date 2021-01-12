@@ -76,3 +76,14 @@ BUG 0007 2020.09.23 Status OPEN
 BUG 0008 2020.11.21 Status OPEN
 
     The persistent project name file for the LP macro is being corrupted.
+
+
+--------------------------------------------------------------------
+BUG 0009 2021.01.12  Status OPEN
+
+    The function (SOFTWARE-VERSION) does not return a consistent format
+    under SBCL and CLISP.   This causes issues when setting various
+    global values in util/paths.lisp    As coded SBCL works as expected
+    but CLIPS elisits a warning.  On linux this does not pose any problems
+    but would cause CYCO to fail under windows.  
+

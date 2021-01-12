@@ -6,8 +6,19 @@
 
 (in-package :cyco)
 
+
+
 ;; Set path parameters for current platform.
 ;;
+;; BUG 0009 PORTABILITY
+;; Testing shows SBCL and CLISP versions of (software-type) are
+;; not consistent.  SBCL returns a simple one-word 'Linux', CLISP
+;; returns much more.  Under posix systems this should not
+;; pose any problems.
+;;
+;; See possible solution see:
+;; https://stackoverflow.com/questions/4372568/how-can-i-determine-the-operating-system-and-hostname-using-common-lisp  
+;; 
 (let ((platform (software-type)))
   (cond ((string= platform "Linux")
 	 (setf *os-path-root* "/"
@@ -21,6 +32,7 @@
 (defun absolute-path-p (namestring)
   "Predicate, true if namestring indicates an absolute file name."
   (starts-with-p (->string namestring) *os-path-root*))
+
 
 (defun user-home ()
   "Returns path to user's home directory."
@@ -43,6 +55,8 @@
   "Partition path namestring into components
 (partition-path '/a/b/c') --> ('a' 'b' 'c')"
   (split-string (namestring fname) *os-path-separator*))
+
+
 
 (defun split-path (fname)
   "Split path namestring into parent and file components.
@@ -90,6 +104,9 @@ If final argument is :as-file treat result as regular file and not directory.
       (join-path-list (butfinal args) :as-file)
     (join-path-list args)))
 
+
+
+
 (defun append-filename-extension (fname extension)
   "Appends extension to file name.
 Do not append if filename already ends with extension.
@@ -106,7 +123,6 @@ Do not append if filename already ends with extension.
 	(str+ fname extension)
       fname)))
 
-
 ;; Split extension from filename
 ;; (split-extension "foo.bar") --> ("foo" ".bar")
 ;; (split-extension "foobar")  --> ("foobar" "")
@@ -118,4 +134,5 @@ Do not append if filename already ends with extension.
 	      (tail (subseq fname index)))
 	  (list head tail))
       (list fname ""))))
+
 

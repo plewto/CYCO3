@@ -97,7 +97,6 @@
 		   "src/patterns/pattern"
 		   "src/patterns/line"
 		   "src/patterns/cycle"
-		   ;; "src/patterns/pseudo-patterns"  ;; DEPRECIATED
 		   "src/patterns/coin"
 		   "src/patterns/bag"
 		   "src/patterns/dice"
@@ -144,8 +143,8 @@
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/local-config"
-		   "src/cyco-exports"
-		   )))
+		   "src/cyco-exports")))
+		   
  
   (defun ld (filename &key (verbose t)(print nil))
     "Loads CYCO source file."

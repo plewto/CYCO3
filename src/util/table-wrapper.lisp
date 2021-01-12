@@ -12,7 +12,7 @@
 	       out-of-bounds-value)
 	      (t (nth n table))))))
 
-(defmethod wrap ((table simple-vector) &key out-of-bounds-value)
+(defmethod wrap ((table vector) &key out-of-bounds-value)
   (let ((limit (length table)))
     #'(lambda (n)
 	(cond ((or (minusp n)(>= n limit))

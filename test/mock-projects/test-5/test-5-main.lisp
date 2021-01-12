@@ -43,9 +43,17 @@
 				  (low (data msg 0))
 				  (high (data msg 1)))
 			     (midi-data->bend low high)))
-		       events)))
+		       events))
+       (diff (loop for v in values
+		   for u in '(-1.0 0.0 1.0)
+		   collect (- v u))))
+  ;; Passes SBCL  Fails CLISP
+  ;; (pass? "bend, strummer test 2"
+  ;; 	 (equal values '(-1.0 0.0 1.0))))
   (pass? "bend, strummer test 2"
-	 (equal values '(-1.0 0.0 1.0))))
+	 (every #'zerop diff)))
+
+  
 
 ;; programs
 ;;

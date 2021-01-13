@@ -18,21 +18,21 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/nodes.png" alt="nodes"/>
   <h1 class="banner">Nodes and Trees</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#name'>name</a></li>
-    <li><a href='#remarks'>remarks</a></li>
-    <li><a href='#root-p'>root-p</a></li>
-    <li><a href='#find-child'>find-child</a></li>
-    <li><a href='#path-to-root'>path-to-root</a></li>
-    <li><a href='#disconnect'>disconnect</a></li>
-    <li><a href='#connect'>connect</a></li>
-    <li><a href='#prune'>prune</a></li>
-    <li><a href='#has-property-p'>has-property-p</a></li>
-    <li><a href='#put'>put</a></li>
-    <li><a href='#property'>property</a></li>
-    <li><a href='#local-properties'>local-properties</a></li>
-    <li><a href='#print-tree'>print-tree</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#name'>name</a></li>
+      <li><a href='#remarks'>remarks</a></li>
+      <li><a href='#root-p'>root-p</a></li>
+      <li><a href='#find-child'>find-child</a></li>
+      <li><a href='#path-to-root'>path-to-root</a></li>
+      <li><a href='#disconnect'>disconnect</a></li>
+      <li><a href='#connect'>connect</a></li>
+      <li><a href='#prune'>prune</a></li>
+      <li><a href='#has-property-p'>has-property-p</a></li>
+      <li><a href='#put'>put</a></li>
+      <li><a href='#property'>property</a></li>
+      <li><a href='#local-properties'>local-properties</a></li>
+      <li><a href='#print-tree'>print-tree</a></li>
   </ul>
   <p class="body">
     The <i>CYCO-NODE</i> class is used to construct various trees.  Each node is 
@@ -49,7 +49,7 @@
     parent.  It is not possible for a node to define a property which has not
     been established at the time it was constructed.
   </p>
-  <H2 class="heading">Node Functions</H2>
+  <H3 class="heading">Node Functions</H3>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="name"></a>
   
@@ -142,26 +142,29 @@
     disconnected regardless of their transient value.
   </pre>
   <p class="footnote">
+    
     An aside: why all this transient nonsense?<br><br>
     	
-    	    Typically CYCO is customized by defining a default orchestra tree
-    		matching the available local equipment.  These are more or less
-    		permanent instruments corresponding to physical hardware or virtual
-    		synthesizers and are defined in configuration 
-                    <a href='plugins.html'>plugins</a> file. <br><br>
+    	    Typically CYCO is customized by defining a default orchestra
+    		tree matching available local equipment.  These are
+    		more or less permanent instruments corresponding to
+    		physical hardware or virtual synthesizers and are by defined
+    		 <a href='plugins.html'>plugins</a><br><br>
     		
-    		During the composition phase child instruments are defined under
-    		these permanent instruments.  IE a bass instrument may be
-    		allocated to a specific hardware synth.   As the composition is
-    		developed it is usual to repeatedly reload the various project
-    		files.  These in turn define specific instruments.  If the
-    		orchestra tree is not pruned each reload would add
-    		needless duplicate instruments to the tree.  On the other hand it
-    		is desirable to keep the permanent instruments in place.   The
-    		transient flag is used to distinguish these two classes of
-    		instruments.   Non-transient instruments are established by
-    		configuration.  Transient instruments are created each time a
-    		project is loaded.  The project is responsible for pruning the
+    		During the composition phase child instruments are defined
+    		under these permanent instruments.  IE a bass instrument
+    		may be allocated to a specific hardware synth.  As the
+    		composition is developed it is usual to repeatedly reload
+    		the various project files.  These in turn define specific
+    		instruments.  If the orchestra is not pruned each
+    		reload would add needless duplicate instruments.
+    		On the other hand it is desirable to keep the
+    		permanent instruments in place.  The transient flag is used 
+    		distinguish these two cases.<br><br>
+    
+    		Non-transient instruments are established by configuration.
+    		Transient instruments are created each time a project is
+    		loaded.  The project is responsible for pruning the
     		orchestra tree prior to creating new instruments.
   </p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>

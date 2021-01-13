@@ -14,13 +14,13 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=raw-part.html class="navigation">Previous: raw-part </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <h1 class="banner">Simple Parts</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#events'>events</a></li>
-    <li><a href='#examples'>examples</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#events'>events</a></li>
+      <li><a href='#examples'>examples</a></li>
   </ul>
   <p class="body">
     A SIMPLE-PART provides straight forward specifications
@@ -28,8 +28,8 @@
     controller, channel-pressure, pitch-bend and program events.
   </p>
   <p class="body">
-    The <a href='strummer.html'>STRUMMER</a> is an extended
-    SUPER-PART which provides greater chord manipulation and other features.
+    The <a href='strummer.html'>STRUMMER</a> is similer to 
+    SIMPLE-PART but provides greater chord manipulation features.
   </p>
   
   <!-- (MAKE-SIMPLE-PART name instruments &key ...) -->
@@ -83,7 +83,7 @@
   
    :KEY :PRESSURE :CC :BEND :PROGRAM :BANK</li>
   </ol>
-  <H5 class="heading">Available Clauses</H5>
+  <H3 class="heading">Available Clauses</H3>
   <pre class="code">
     
     :RESET
@@ -91,12 +91,18 @@
          Resets all persistent values to their defaults.
     
     
+  </pre>
+  <a id="time"></a>
+  <pre class="code">
+    
     :TIME time-specification
     
          Sets event time.  time-specification must be in a format accepted by
          the cue and shuffle functions.   For the default BAR function the
          time format is a list (BAR BEAT SUBBEAT).
-    
+  </pre>
+  <a id="chord"></a>
+  <pre class="code">
     
     :CHORD chord-name or transpose-list
     
@@ -117,7 +123,9 @@
          For absolute chord-tables the chord list is taken as the actual 
          key-numbers.  The chord list (60 64 67) will produce a C-major 
          chord regardless of the current key-number.
-    
+  </pre>
+  <a id="inversion"></a>
+  <pre class="code">
     
     :INVERSION degree   -12 &le; degree &le; +12
     :INV degree
@@ -204,7 +212,7 @@
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="examples"></a>
-  <H2 class="heading">Examples</H2>
+  <H3 class="heading">Examples</H3>
   <pre class="code">
     
     
@@ -213,10 +221,10 @@
     ;;
     
     (simple-part example-1 piano
-    	     :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
-    		       (:time (1 2 1) :key e5)
-    		       (:time (1 3 1) :key g5)
-    		       (:time (1 4 1) :key c5 :chord [maj] :dur w)))
+                 :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
+                           (:time (1 2 1) :key e5)
+                           (:time (1 3 1) :key g5)
+                           (:time (1 4 1) :key c5 :chord [maj] :dur w)))
     
     
     --------------------------------------------------------------
@@ -225,10 +233,10 @@
     ;; list of keynumber offsets.
     ;;
     (simple-part example-2 piano
-    	     :events '((:time (1 1 1) :key c5 :chord (0) :dur q :amp mf)
-    		       (:time (1 2 1) :key e5)
-    		       (:time (1 3 1) :key g5)
-    		       (:time (1 4 1) :key c5 :chord (0 3 7) :dur w)))
+                 :events '((:time (1 1 1) :key c5 :chord (0) :dur q :amp mf)
+                           (:time (1 2 1) :key e5)
+                           (:time (1 3 1) :key g5)
+                           (:time (1 4 1) :key c5 :chord (0 3 7) :dur w)))
     
     
     --------------------------------------------------------------
@@ -238,19 +246,19 @@
     
     (plugin guitar-chords)
     (simple-part example-3 piano
-    	     :chord-model *guitar-chord-model*
-    	     :events '((:time (1 1 1) :key c0 :chord [maj] :dur w :amp mf)
-    		       (:time (2 1 1) :key c1)
-    		       (:time (3 1 1) :key c2)))
+                 :chord-model *guitar-chord-model*
+                 :events '((:time (1 1 1) :key c0 :chord [maj] :dur w :amp mf)
+                           (:time (2 1 1) :key c1)
+                           (:time (3 1 1) :key c2)))
     
     
     --------------------------------------------------------------
     With the guitar chord model the keynumber octave selects a variation of the chord.
-    If you need to specify specific notes to play list them directly.
+    If you need to specify specific notes, list them directly.
     
     (simple-part example-4 piano
                  :chord-model *guitar-chord-model*
-    	     :events '((:time (1 1 1) :key c0 :chord (a4 c5 e5) :dur w :amp mf)))
+                 :events '((:time (1 1 1) :key c0 :chord (a4 c5 e5) :dur w :amp mf)))
     
     In the above example the chord list (a4 c5 e5) is interpreted by the guitar chord 
     model as the absolute notes to be played.   The keynumber c0 could have been 
@@ -283,14 +291,14 @@
       (let ((beat (second time-specification))
             (sub (or (third time-specification) 1)))
         (if (and (member beat '(2 4))(= sub 1))
-    	0.25
+            0.25
           0.0)))
     
     (simple-part example-6 piano
-    	     :shuffle #'shuffle-function
-    	     :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
-    		       (:time (1 2 1) :key e5)
-    		       (:time (1 3 1) :key g5)
+                 :shuffle #'shuffle-function
+                 :events '((:time (1 1 1) :key c5 :chord [solo] :dur q :amp mf)
+                           (:time (1 2 1) :key e5)
+                           (:time (1 3 1) :key g5)
                            (:time (1 4 1) :key c6)))
     
     The above generates events at times
@@ -320,7 +328,7 @@
                                                           ;;    -1.0 &lt;&equals; value &lt;&equals; +1.0
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=chords.html class="navigation">Previous: chords </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=raw-part.html class="navigation">Previous: raw-part </a> &nbsp;<a href=strummer.html class="navigation">Next: strummer </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

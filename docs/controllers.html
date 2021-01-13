@@ -18,9 +18,9 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/controllers.png" alt="controllers"/>
   <h1 class="banner">Controllers Parts</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#bender'>bender</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#bender'>bender</a></li>
   </ul>
   <p class="body">
     <b>Controllers</b> is a type of part for generating MIDI
@@ -83,17 +83,15 @@
        2) Those that generate events include
           :cc :ramp :saw :tri & :pulse
     
-          Once the event(s) have been generated these commands are cleared.
-    
     
     :reset  - Sets all values to defaults
     
     :time   - :TIME start end interval
     
               start and end are the initial and final times over which the
-              events occur.  The format must be accepted by the cue function.
+              events occur.  The format must be accepted by the <a href='cue-functions.html'>cue</a> function.
     
-              interval is a metric-expression that sets the rate at which
+              interval is a <a href='metrics.html'>metric-expression</a> that sets the rate at which
               events occur.
     
               The special value '* reuses the current value.

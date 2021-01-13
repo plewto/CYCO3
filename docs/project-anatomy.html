@@ -21,14 +21,14 @@
     Image creadt: Eadweard Muybridge
   </p>
   <h1 class="banner">Anatomy of a CYCO Project</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#create-project'>Creating a project</a></li>
-    <li><a href='#orchestra'>Defining the orchestra</a></li>
-    <li><a href='#section-files'>Section files</a></li>
-    <li><a href='#section-order'>Section order</a></li>
-    <li><a href='#render'>Creating MIDI file</a></li>
-    <li><a href='#example'>Example</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#create-project'>Creating a project</a></li>
+      <li><a href='#orchestra'>Defining the orchestra</a></li>
+      <li><a href='#section-files'>Section files</a></li>
+      <li><a href='#section-order'>Section order</a></li>
+      <li><a href='#render'>Creating MIDI file</a></li>
+      <li><a href='#example'>Example</a></li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="create-project"></a>
@@ -162,7 +162,7 @@
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="render"></a>
-  <H4 class="heading">Generating MIDI events</H4>
+  <H3 class="heading">Generating MIDI events</H3>
   
   <!-- (RENDER-PROJECT &optional (project *PROJECT*)) -->
   <!--  -->
@@ -172,7 +172,7 @@
     Converts project to list of <a href='midi-events.html'>MIDI events</a>.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <H4 class="heading">Writing project to MIDI file</H4>
+  <H3 class="heading">Writing project to MIDI file</H3>
   
   <!-- (PROJECT->MIDI &key (project *PROJECT*)(filename nil)) -->
   <!--  -->
@@ -188,7 +188,7 @@
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="example"></a>
-  <H4 class="heading">Example Project File</H4>
+  <H3 class="heading">Example Project File</H3>
   <pre class="code">
     ;; ~/cyco-projects/foo/foo-main.lisp
         
@@ -203,7 +203,7 @@
     (section-order '((verse :x 2) chorus bridge verse)) 
     (project->midi) 
   </pre>
-  <H4 class="heading">Miscellaneous Comments</H4>
+  <H3 class="heading">Miscellaneous Comments</H3>
   <ul>
     <li>Individual sections may also be rendered to MIDI files.
    These are often more useful then a full project render.</li>

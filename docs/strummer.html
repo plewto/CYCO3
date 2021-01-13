@@ -17,16 +17,16 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=simple-part.html class="navigation">Previous: simple-part </a> &nbsp;<a href=qball.html class="navigation">Next: qball </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <h1 class="banner">Strummer Parts</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#events'>events</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#events'>events</a></li>
   </ul>
   <p class="body">
     A <i>STRUMMER</I> is like an extended version of
     <a href='simple-part.html'>SIMPLE-PART</a>.   Much of the 
     documentation for SIMPLE-PART also applies to STRUMMER.
   </p>
-  <H5 class="heading">Features</H5>
+  <H3 class="heading">Features</H3>
   <ul>
     <li>Alternate chord models</li>
     <li>Chord inversion</li>
@@ -54,7 +54,7 @@
     The name argument to MAKE-STRUMMER should be a quoted-symbol and
     should be unquoted for STRUMMER.
     
-    	
+            
         name          - Symbol
         instrument    - Instrument.  NOTE: A Strummer part only takes a single instrument.
         :section      - Parent section, defaults to current section of *PROJECT*.
@@ -86,7 +86,7 @@
   <ol>
     <li>Those that set some persistent value.  The value remain in
          effect until explicitly changed.  These include:<br><br>
-  		  
+                    
          :RESET  :TIME  :CHORD    :INVERSION  :OCTAVE  :STRUM  :STRUM*  :DIRECTION<br>
          :END-TOGETHER  :AMP*     :GRACE-AMP  :GRACE-DURATION  :GRACE-DELAY<br>
          :AMP    :CRES  :AMP-BLUR :AMP-LIMIT  :INV :OCT<br><br></li>
@@ -95,7 +95,7 @@
   
          :KEY  :GRACE  :BEND  :CC  :PROGRAM  :BANK</li>
   </ol>
-  <H5 class="heading">Available Clauses</H5>
+  <H3 class="heading">Available Clauses</H3>
   <pre class="code">
     
     :RESET
@@ -104,7 +104,7 @@
               
     :TIME time-specification
     
-        Same as <a href='simple-part.html'>simple-part</a>
+        Same as <a href='simple-part.html#time'>simple-part</a>
     
     :CHORD chord-type
     
@@ -141,34 +141,34 @@
                           
                       (:key c5 :chord (0 4 7))
     
-    :INVERSION degree        -12 &let; degree &let; +12
+    :INVERSION degree        -12 &le; degree &le; +12
     :INV degree
     
-         Same as <a href='simple-part.html'>simple-part</a> 
+         Same as <a href='simple-part.html#inversion'>simple-part</a> 
           
          :INVERSION and :INV are identical. 
     
     
-    :OCTAVE n                -3 &let; n &let; +3
+    :OCTAVE n                -3 &le; n &le; +3
     :OCT n
     
-        Same as <a href='simple-part.html'>simple-part</a>   
+        Same as <a href='simple-part.html#inversion'>simple-part</a>   
     
         :OCTAVE and :OCT are identical.
     
     :STRUM delay
     
           Sets delay time between successive chord notes.  Delay may either
-          be in seconds or a metric-expression.
+          be in seconds or a <a href='metrics.html'>metric-expression</a>.
               
           Example, strum c-major chord with 0.01 seconds between each note
               
           (:key c5 :chord [maj] :strum 0.01)
     
-    :STRUM* acceleration    0.1 &let; acceleration &let; 8.0
+    :STRUM* acceleration    0.1 &le; acceleration &le; 8.0
     
          Adds an acceleration factor to successive strummed notes.  A value
-             of 1.0 produces a uniform time between strummed notes.
+         of 1.0 produces a uniform time between notes.
              
              (:key c5 :chord (0 4 7 12) :strum 0.01 :strum* 1.0)
              
@@ -212,7 +212,7 @@
         Specifies if strummed note off events should occur at the same time
         or be staggered in the order they are played.  
     
-    :AMP* scale            0.25 &let; scale &let; 4.0
+    :AMP* scale            0.25 &le; scale &le; 4.0
         
         Sets an amp-scaling factor for successive strummed notes.  A scale
         value of 1.0 produces all notes with the same amplitude.  Scales
@@ -225,7 +225,7 @@
         g5 time 0.02 amp 0.81A
         c6 time 0.03 amp 0.73A
     
-     :GRACE-AMP* scale         0.1 &let; scale &let; 4.0
+     :GRACE-AMP* scale         0.1 &le; scale &le; 4.0
     
         Sets grace note amplitude relative to the nominal amplitude.
     
@@ -265,7 +265,7 @@
         After count events the amplitude holds at the end value until
         explicitly changed.
     
-    :AMP-BLUR factor    0.0 &let; n &let; 1.0 
+    :AMP-BLUR factor    0.0 &le; n &le; 1.0 
       
         Apply dynamic randomization 
     

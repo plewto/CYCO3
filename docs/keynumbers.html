@@ -14,26 +14,26 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/keynumbers.png" alt="keynumbers"/>
   <h1 class="banner">CYCO Key-Numbers</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#keynumber-function'>keynumber</a></li>
-    <li><a href='#pitch-class'>pitch-class</a></li>
-    <li><a href='#octave'>octave</a></li>
-    <li><a href='#keyname'>keyname</a></li>
-    <li><a href='#rest-p'>rest-p</a></li>
-    <li><a href='#keynumber-p'>keynumber-p</a></li>
-    <li><a href='#defkeynumber'>defkeynumber</a></li>
-    <li><a href='#transpose'>transpose</a></li>
-    <li><a href='#invert'>invert</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#keynumber-function'>keynumber</a></li>
+      <li><a href='#pitch-class'>pitch-class</a></li>
+      <li><a href='#octave'>octave</a></li>
+      <li><a href='#keyname'>keyname</a></li>
+      <li><a href='#rest-p'>rest-p</a></li>
+      <li><a href='#keynumber-p'>keynumber-p</a></li>
+      <li><a href='#defkeynumber'>defkeynumber</a></li>
+      <li><a href='#transpose'>transpose</a></li>
+      <li><a href='#invert'>invert</a></li>
   </ul>
   <p class="body">
     CYCO uses the MIDI keynumbers between 0 and 127 inclusive.  All negative 
-    values are treated as a rest.  An attempt is made to transpose all values above 127 to an equivalent 
-    pitch in the 0-127 range.
+    values are treated as a rest.  Keynumbers greater then 127 are transposed to an equivalent
+    pitch in the top octave.
   </p>
   <ul>
     <li>Negative integers are treated as a rest.</li>
@@ -258,7 +258,7 @@
     (INVERT 'snare-hit ignore) --> snare-hit
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=index.html class="navigation">Previous: index </a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=dynamics.html class="navigation">Next: dynamics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

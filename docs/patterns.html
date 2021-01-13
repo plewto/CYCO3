@@ -18,32 +18,32 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/patterns.png" alt="patterns"/>
   <h1 class="banner">Patterns</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#next-1'>next-1</a></li>
-    <li><a href='#next-n'>next-n</a></li>
-    <li><a href='#next'>next</a></li>
-    <li><a href='#value'>value</a></li>
-    <li><a href='#reset'>reset</a></li>
-    <li><a href='#pattern-p'>pattern-p</a></li>
-    <li><a href='#cardinality'>cardinality</a></li>
-    <li><a href='#remaining'>remaining</a></li>
-    <li><a href='#to-pattern'>to-pattern</a></li>
-    <li><a href='#transpose'>transpose</a></li>
-    <li><a href='#invert'>invert</a></li>
-    <li><a href='#retrograde'>retrograde</a></li>
-    <li><a href='#clone'>clone</a></li>
-    <li><a href='#line'>line</a></li>
-    <li><a href='#cycle'>cycle</a></li>
-    <li><a href='#bag'>bag</a></li>
-    <li><a href='#dice'>dice</a></li>
-    <li><a href='#coin'>coin</a></li>
-    <li><a href='#wrapper'>wrapper</a></li>
-    <li><a href='#walker'>walker</a></li>
-    <li><a href='#nested-patterns'>nested-patterns</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#next-1'>next-1</a></li>
+      <li><a href='#next-n'>next-n</a></li>
+      <li><a href='#next'>next</a></li>
+      <li><a href='#value'>value</a></li>
+      <li><a href='#reset'>reset</a></li>
+      <li><a href='#pattern-p'>pattern-p</a></li>
+      <li><a href='#cardinality'>cardinality</a></li>
+      <li><a href='#remaining'>remaining</a></li>
+      <li><a href='#to-pattern'>to-pattern</a></li>
+      <li><a href='#transpose'>transpose</a></li>
+      <li><a href='#invert'>invert</a></li>
+      <li><a href='#retrograde'>retrograde</a></li>
+      <li><a href='#clone'>clone</a></li>
+      <li><a href='#line'>line</a></li>
+      <li><a href='#cycle'>cycle</a></li>
+      <li><a href='#bag'>bag</a></li>
+      <li><a href='#dice'>dice</a></li>
+      <li><a href='#coin'>coin</a></li>
+      <li><a href='#wrapper'>wrapper</a></li>
+      <li><a href='#walker'>walker</a></li>
+      <li><a href='#nested-patterns'>nested-patterns</a></li>
   </ul>
   <p class="body">
-    A <strong>PATTERN</strong> is a generator which returns a sequence of values in some
+    A <strong>PATTERN</strong> returns a sequence of values in some
     prescribed manner.  The two most
     basic pattern types are the <i>cycle</i> and <i>line</i>.
   </p>
@@ -101,7 +101,7 @@
   <p class="summery">Returns next value from pattern.</p>
   <pre class="description">
     By default NEXT acts exactly like NEXT-1.  If the optional n argument is an integer
-    it behaves like (NEXT-n pattern n) and returns a list of n values.
+    it behaves like (NEXT-n pattern n).
     
     If n is the keyword :ALL then a list of all elements are returned.
     If n is the keyword :REST then a list of all remaining elements is returned.
@@ -133,12 +133,12 @@
   <!--  -->
   <!--  -->
   <b class="definition">(RESET pattern)</b><br>
-  <p class="summery">Resets pattern to initial state.</p>
+  <p class="summery">Resets pattern to initial state.  Returns pattern</p>
   <pre class="description">
     (param foo (cycle :of '(A B C D E F)))
     (next foo)   --> A
     (next foo)   --> B
-    (reset foo)
+    (reset foo)  --> foo
     (next foo)   --> A
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
@@ -158,18 +158,18 @@
   <b class="definition">(CARDINALITY pattern)</b><br>
   <p class="summery">Returns number of elements in pattern.</p>
   <pre class="description">
-    Cardinality is not well defined for all pattern types.   For such
-    cases the result is somewhat arbitrary or user specified.
+    Cardinality is not well defined for all pattern types.  For such 
+    cases the result is arbitrary or user defined.
     
     (param foo (cycle :of '(A B C)))
     (cardinality foo) --> 3
     
-    Cardinality is not 'naturally' defined for the coin pattern.
-    Use the :period keyword to set an arbitrary cardinality.
+    The coin pattern is an example without a well defined cardinality.  
+    The :period argument is used to set an arbitrary cardinality.
     
-    (param baz (coin :period 8))
-    (cardinality baz) --> 8
-    (next baz :rest)  --> (T NIL NIL T T NIL T)
+    (param baz (coin :period 4))
+    (cardinality baz) --> 4
+    (next baz :reset) --> (T NIL NIL T T NIL T)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="remaining"></a>
@@ -266,7 +266,7 @@
   <p class="body">
     <br>
   </p>
-  <H2 class="heading">Pattern Types</H2>
+  <H3 class="heading">Pattern Types</H3>
   <a id="line"></a>
   
   <!-- (LINE &key of) -->
@@ -399,7 +399,7 @@
     <br>
   </p>
   <a id="nested-patterns"></a>
-  <H2 class="heading">Nested Patterns</H2>
+  <H3 class="heading">Nested Patterns</H3>
   <p class="body">
     The NEXT-1 method is applied recursively to nested patterns.  This means that most patterns may 
     be nested to any depth.

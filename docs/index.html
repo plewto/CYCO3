@@ -19,8 +19,10 @@
   <img class="center" src="images/logo.png" alt="logo"/>
   <p class="body">
     CYCO is a lisp based music composition language with a rich set pattern 
-    generators and a project centric design.  It was developed using 
-    <a href='http://www.sbcl.org/'>SBCL</a>.  For a background on its developement
+    generators and a project centric design.  
+    
+    
+    For a background on its development
     see <a href='history.html'>history</a>.
   </p>
   <H2 class="heading">Features</H2>
@@ -38,19 +40,14 @@
   <p class="body">
     Briefly, compositions are defined by writing a series of Lisp files in a dedicated 
     <em>Project</em> directory.  Once defined the project is <i>rendered</i> to a standard MIDI files. 
-    An external player is requierd to play the MIDI files.  The included <em>Pig</em> plugin provides
-    remote OSC control over <a href='todo-pigiron-link'>Pigiron</a> for MIDI playback.
+    An external player is required to play the MIDI files.  
   </p>
+  <a id="installation"></a>
+  <H2 class="heading">Installation</H2>
   <p class="body">
-    At any one time there is a single <em>Current Project</em>.  Several short-cut
-    functions are provided to quickly reload the current project, or even a section within the project,
-    while it is under development.
-  </p>
-  <a id="instalation"></a>
-  <H2 class="heading">Instalation</H2>
-  <p class="body">
-    Other then a functional Lisp the basic CYCO installation has no external
-    dependencies.
+    Other then a functional Lisp the only dependency is
+    <a href='https://www.quicklisp.org/beta/'>quicklisp</a>.  Some plugins 
+    and the test suite may have additional dependencies.
   </p>
   <ol>
   <li>

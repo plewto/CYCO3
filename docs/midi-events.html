@@ -22,14 +22,14 @@
     MIDI events are a low-level detail typically not directly 
     manipulated by the user.  This section may be skipped.
   </p>
-  <H2 class="heading">Definitions</H2>
+  <H3 class="heading">Definitions</H3>
   <p class="body">
     A <strong>MIDI EVENT</strong> is a cons of form:
   </p>
   <pre class="code">
     (cons time message)
     	
-    Where time is the relative event-time and message is one of the MIDI
+    Where time is the relative event-time in seconds and message is one of the MIDI
     messages defined below.
   </pre>
   <p class="body">
@@ -51,7 +51,7 @@
     note-on is transmitted before the note-off.   If note-off messages were
     transmitted first there would be a high potential for stuck notes.
   </p>
-  <H2 class="heading">MIDI Channels</H2>
+  <H3 class="heading">MIDI Channels</H3>
   <a id="channel-index"></a>
   <p class="body">
     MIDI specifies channel numbers between 1 and 16 inclusive.  However the
@@ -64,7 +64,7 @@
     <li><strong>CHANNEL-INDEX</strong> refers to the transmitted range 0-15.</li>
     <li><strong>CHANNEL</strong> the unmodified term <i>channel</i> always refers to the range 1-16.</li>
   </ul>
-  <H2 class="heading">MIDI Message Types</H2>
+  <H3 class="heading">MIDI Message Types</H3>
   <p class="body">
     The following functions return appropriate MIDI message objects.
   </p>

@@ -18,11 +18,11 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/envelope.png" alt="envelope"/>
   <h1 class="banner">Envelopes & LFOs</h1>
-  <ul>
-    <li>Quick Jump</li>
-    <li><a href='#asr-envelope'>asr-envelope</a></li>
-    <li><a href='#lfo'>lfo</a></li>
-    <li><a href='#curves'>sawtooth, triangle & pulse curves</a></li>
+  <ul class='quick-jump'>
+    <li>Quick Jump:</li>
+      <li><a href='#asr-envelope'>asr-envelope</a></li>
+      <li><a href='#lfo'>lfo</a></li>
+      <li><a href='#curves'>sawtooth, triangle & pulse curves</a></li>
   </ul>
   <a id="ramp"></a>
   
@@ -30,7 +30,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(RAMP a b &key by hook)</b><br>
-  <p class="summery">Returns function that produces linear sequence.</p>
+  <p class="summery">Returns generator that produces linear sequence.</p>
   <pre class="description">
     
     a     - Initial value
@@ -72,8 +72,8 @@
     (param env (asr-envelope 0 12))
     (next env 30) --&gt; (0 1 2 3 4 5 6 7 8 9 10 11 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0)
     
-    (param env (asr-envelope 0 12 :attack 2 :sustain 8))
-    (next env 30) --&gt; (0 2 4 6 8 10 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0)
+    (param env (asr-envelope 0 12 :attack 2 :sustain 3))
+    (next env 30) --&gt; (0 2 4 6 8 10 12 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0)
     
     (param env (asr-envelope 0 12 :attack 2 :sustain 2 :decay 3 :cycle t))
     (next env 30) --&gt; (0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12)
@@ -96,20 +96,20 @@
   </pre>
   <a id="curves"></a>
   
-  <!-- (SAWTOOTH-CURVE amp1 amp2 &key cycles steps phase) -->
+  <!-- (SAWTOOTH amp1 amp2 &key cycles steps phase) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(SAWTOOTH-CURVE amp1 amp2 &key cycles steps phase)</b><br>
+  <b class="definition">(SAWTOOTH amp1 amp2 &key cycles steps phase)</b><br>
   
-  <!-- (TRIANGLE-CURVE amp1 amp2 &key cycles steps phase) -->
+  <!-- (TRIANGLE amp1 amp2 &key cycles steps phase) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(TRIANGLE-CURVE amp1 amp2 &key cycles steps phase)</b><br>
+  <b class="definition">(TRIANGLE amp1 amp2 &key cycles steps phase)</b><br>
   
-  <!-- (PULSE-CURVE amp1 amp2 &key cycles steps width phase) -->
+  <!-- (PULSE amp1 amp2 &key cycles steps width phase) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(PULSE-CURVE amp1 amp2 &key cycles steps width phase)</b><br>
+  <b class="definition">(PULSE amp1 amp2 &key cycles steps width phase)</b><br>
   <pre class="description">
     
     Each of these functions returns a numeric list with appropriate contour.  

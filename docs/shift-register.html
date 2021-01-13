@@ -48,22 +48,28 @@
     
     seed    - Integer, initial register value.  If the seed is expressed in binary
               it directly indicates the registers initial state.
+    
     taps    - Integer, feedback taps. If taps is expressed i binary it directly 
               indicates which bits are selected for feedback.  
+    
     :mask   - Integer, AND mask applied to register.  The mask value is used 
               to set the registers length.   It may also be used to selectively 
               eliminate stages from contributing to the output value. 
               Defaults to 16-stage #b1111111111111111.
-    :prerun - Integer.  Many register configurations produce an initial
-              sequence of values before settling into a cyclical mode.  Prerun
-              sets the number of times to advance the register after its creation
-              to skip over these initial states.  Default 0.
+    
+    
+    :prerun - Integer.  Many register configurations produce an initial sequence
+              of values before settling into a cyclical mode.  Prerun advances
+              the register to skip over these initial values.   Prerun is 
+              applied both when the register is created and when it is reset.
+              Default 0.
+    
     :hook   - Function.  Shift registers tend to produce values far outside
               what is typically useful.  The value hook function may be used to 
               limit the registers output to a useful range.  Defaults to an 
               identity (lambda (n) n).
   </pre>
-  <H4 class="heading">Examples</H4>
+  <H3 class="heading">Examples</H3>
   <pre class="code">
     
     ;; 4-cell register with 1 feedback tap produces sequence which repeats

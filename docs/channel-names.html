@@ -54,7 +54,7 @@
     	
     	(META-CHANNEL! 'oberheim 1)
     	(META-CHANNEL! 'drum-machine 10)
-    	(META-CHANNEL! 'snare 'drum-machine)  snare defined in terms of drum machine.
+    	(META-CHANNEL! 'snare 'drum-machine)  ;; snare defined in terms of drum machine.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel"></a>
@@ -70,9 +70,9 @@
     	
     	Using examples above:
     	
-    	(META-CHANNEL 'snare)   --> drum-machine
-    	(META-CHANNEL 'snare t) --> 10
-        (META-CHANNEL 3)        --> 3
+    	(META-CHANNEL 'snare)   &rarr; drum-machine
+    	(META-CHANNEL 'snare t) &rarr; 10
+        (META-CHANNEL 3)        &rarr; 3
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="channel-name"></a>
@@ -83,8 +83,8 @@
   <b class="definition">(CHANNEL-NAME channel)</b><br>
   <p class="summery">Returns the primary name for MIDI channel.</p>
   <pre class="description">
-        (CHANNEL-NAME 10) --> drum-machine
-        (CHANNEL-NAME 6)  --> 6, unassigned channels return their integer value.
+        (CHANNEL-NAME 10) &rarr; drum-machine
+        (CHANNEL-NAME 6)  &rarr; 6, unassigned channels return their integer value.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel-assignment-p"></a>

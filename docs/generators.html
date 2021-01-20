@@ -33,7 +33,7 @@
       <li><a href='#countdown'>countdown</a></li>
   </ul>
   <p class="body">
-    A <b>Generator</b> is similar to a Pattern except they
+    <b>Generatosr</b> are similar to Patterns except they
     only produce numeric results and may not have nested components.
     Generators may however be elements of a pattern.
   </p>
@@ -128,7 +128,7 @@
   <pre class="description">
     
     (param foo (constant-value 3))
-    (next foo 5) --&gt; (3 3 3 3 3)
+    (next foo 5) &rarr; (3 3 3 3 3)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="counter"></a>
@@ -141,12 +141,12 @@
   <pre class="description">
     
     (param foo (counter))
-    (next foo 10) --&gt; (0 1 2 3 4 5 6 7 8 9)
+    (next foo 10) &rarr; (0 1 2 3 4 5 6 7 8 9)
     
     ;; The hook function may be used to modify the results.
     ;;
     (param foo (counter :hook #'(lambda (n)(+ 100 (* 2 n)))))
-    (next foo 10) --&gt; (100 102 104 106 108 110 112 114 116 118)
+    (next foo 10) &rarr; (100 102 104 106 108 110 112 114 116 118)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="countdown"></a>
@@ -179,39 +179,39 @@
        (print 'FIRE))
     
     (param foo (countdown 5))
-    (next foo 10) --&gt; (5 4 3 2 1 0 0 0 0 0)
+    (next foo 10) &rarr; (5 4 3 2 1 0 0 0 0 0)
     
     
     (param foo (countdown 5 :action #'action :multi-trigger nil))
-    (next foo 3) --&gt; (5 4 3)
-    (next foo)   --&gt; 2
-    (next foo)   --&gt; FIRE
+    (next foo 3) &rarr; (5 4 3)
+    (next foo)   &rarr; 2
+    (next foo)   &rarr; FIRE
                         1
-    (value foo)  --&gt; 0
-    (next foo 3) --&gt; (0 0 0)
+    (value foo)  &rarr; 0
+    (next foo 3) &rarr; (0 0 0)
     
     
     (param foo (countdown 5 :action #'action :multi-trigger t))
-    (next foo 3) --&gt; (5 4 3)
-    (next foo)   --&gt; 2
-    (next foo)   --&gt; FIRE
+    (next foo 3) &rarr; (5 4 3)
+    (next foo)   &rarr; 2
+    (next foo)   &rarr; FIRE
                         1
-    (next foo)   --&gt; FIRE
+    (next foo)   &rarr; FIRE
                         0
-    (next foo)   --&gt; FIRE
+    (next foo)   &rarr; FIRE
                         0
   </pre>
   <H3 class="heading">Functions on COUNTDOWN generator</H3>
   
-  <!-- (INITIAL-VALUE countdown) --&gt; n -->
+  <!-- (INITIAL-VALUE countdown) &rarr; n -->
   <!--  -->
   <!--  -->
-  <b class="definition">(INITIAL-VALUE countdown) --&gt; n</b><br>
+  <b class="definition">(INITIAL-VALUE countdown) &rarr; n</b><br>
   
-  <!-- (COUNTDOWN-ACTION countdown) --&gt; function -->
+  <!-- (COUNTDOWN-ACTION countdown) &rarr; function -->
   <!--  -->
   <!--  -->
-  <b class="definition">(COUNTDOWN-ACTION countdown) --&gt; function</b><br>
+  <b class="definition">(COUNTDOWN-ACTION countdown) &rarr; function</b><br>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=patterns.html class="navigation">Previous: patterns </a> &nbsp;<a href=envelopes-lfo.html class="navigation">Next: envelopes-lfo </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   

@@ -18,7 +18,7 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/logo.png" alt="logo"/>
   <p class="body">
-    CYCO is a lisp based music composition language with a rich set pattern 
+    CYCO is a lisp based music composition language with a rich set of pattern 
     generators and a project centric design.  
     
     
@@ -39,19 +39,22 @@
   <H2 class="heading">Usage Overview</H2>
   <p class="body">
     Briefly, compositions are defined by writing a series of Lisp files in a dedicated 
-    <em>Project</em> directory.  Once defined the project is <i>rendered</i> to a standard MIDI files. 
+    project directory.  Once defined the project is rendered to a standard MIDI files. 
     An external player is required to play the MIDI files.  
+  </p>
+  <a id="dependencies"></a>
+  <H2 class="heading">Dependencies</H2>
+  <p class="body">
+    The basic CYCO installation has no dependencies other then an ANSI Common Lisp,  
+    <a href='http://www.sbcl.org/'>Steel Bank Common Lisp</a> is recomended.  The optional 
+    'pig' plugin requires <a href='https://www.quicklisp.org/beta/'>quicklisp</a> to install osc, usocket and 
+    uiop packages.
   </p>
   <a id="installation"></a>
   <H2 class="heading">Installation</H2>
-  <p class="body">
-    Other then a functional Lisp the only dependency is
-    <a href='https://www.quicklisp.org/beta/'>quicklisp</a>.  Some plugins 
-    and the test suite may have additional dependencies.
-  </p>
   <ol>
   <li>
-  Place cyco3 distribution folder in a convenient location. <br>
+  Place the cyco3 distribution folder in a convenient location. <br>
   <pre>The default location is ~/dev/cyco3</pre></li>
   <li>
   Create the following directories:<br>
@@ -64,26 +67,25 @@
   If you elect to use alternate locations modify the file
          cyco3/src/local-config.lisp accordingly.<br><br></li>
   <li>
-  In a terminal navigate to the cyco3 directory and fire up your favorite Lisp.<br><br></li>
+  In a terminal navigate to the cyco3 directory and start Lisp.<br><br></li>
   <li>
   At the Lisp prompt enter<br>
   <br><strong>(LOAD "src/cyco")</strong>
   <br><br></li>
   <li>
-  After the source files load enter the command <br>
+  After the source files load, enter the command <br>
   <br><strong>(CYCO)</strong>
-<br><br><p class='footnote'>At this point you may run the test suite by entering 
-  (LOAD&nbsp;"test/cyco-test")<br>
-  
-  If you run the test, restart CYCO before proceeding.</p><br><br>
-  </li>
+<br><br></li>
+  <li>
+  Run the optional test suite by entering<br>
+  <br>(load "test/cyco-test")<br><br>If you run the test suite, restart cyco before preceding.<br><br></li>
   <li>
   CYCO is now ready for use.  However you may wish to customize it to
-     match your available MIDI equipment.  You do this by creating plugins
+     match your available MIDI equipment.<br>  You do this by creating <a href='plugins.html'>plugins</a>
      in the ~/.config/cyco/plugins/ directory as detailed elsewhere.  <br><br></li>
   <li>
   If you are using SBCL you have the option of saving the current state of
-     CYCO to an executable.  <br><br>
+     CYCO as an executable.  <br><br>
   <strong>(SNAPSHOT <i>executable-name</i>)</strong><br><br>
   Snapshots are considerably faster then running from source.  After
      starting CYCO from a snapshot you must first enter <strong>(CYCO)</strong> at the initial

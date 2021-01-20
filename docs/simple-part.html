@@ -236,7 +236,7 @@
                  :events '((:time (1 1 1) :key c5 :chord (0) :dur q :amp mf)
                            (:time (1 2 1) :key e5)
                            (:time (1 3 1) :key g5)
-                           (:time (1 4 1) :key c5 :chord (0 3 7) :dur w)))
+                           (:time (1 4 1) :key c5 :chord (0 4 7) :dur w)))
     
     
     --------------------------------------------------------------
@@ -261,8 +261,9 @@
                  :events '((:time (1 1 1) :key c0 :chord (a4 c5 e5) :dur w :amp mf)))
     
     In the above example the chord list (a4 c5 e5) is interpreted by the guitar chord 
-    model as the absolute notes to be played.   The keynumber c0 could have been 
-    anything and is ignored.
+    model as the absolute notes to be played.   The keynumber c0 could have been anything
+    and its value is ignored.  However a :key clause must be present to generate the 
+    events.
     
     
     --------------------------------------------------------------
@@ -321,9 +322,9 @@
     (simple-part example-7 piano
                  :events '((:time (1 1 1) :cc 4 0.5)      ;; MIDI control change
                                                           ;;    controller number 4
-                                                          ;;    value 0.5 --&gt; MIDI 64
+                                                          ;;    value 0.5 &rarr; MIDI 64
                            (:time (2 1 1) :pressure 0.75) ;; MIDI channel pressure
-                                                          ;;    value 0.75 --&gt; ~ MIDI 95
+                                                          ;;    value 0.75 &rarr; ~ MIDI 95
                            (:time (3 1 1) :bend -0.5      ;; MIDI pitch bend
                                                           ;;    -1.0 &lt;&equals; value &lt;&equals; +1.0
   </pre>

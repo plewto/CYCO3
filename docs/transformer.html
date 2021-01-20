@@ -49,7 +49,7 @@
     
     name         - Name for transformer part.
     source       - The part to be modified.
-    :filter      - Function to select MIDI events to modify,  see below.
+    :filter      - Function to select MIDI events to be modified,  see below.
                    The default is to select all events.
     :transform   - Function to modify selected events, see below.
                    The default returns selected events unchanged.
@@ -61,7 +61,7 @@
     
     The filter function has the form 
     
-         (lambda part event) --&gt; bool
+         (lambda part event) &rarr; bool
     
     Where part is the TRANSFORMER instance and event is a cons 
       
@@ -72,20 +72,20 @@
     
                midi-message is the original message.
     
-         The filter function should return true for events to be processed.
+         The filter function should return true for selected events.
   </pre>
   <pre class="description">
     
     The transform function has form 
     
-        (lambda part event) --&gt; event-list
+        (lambda part event) &rarr; event-list
     
         Where part and event are the same as the filter function.
         The transform function should return (a possibly empty) list of MIDI
         events. 
     
         The default is to return the argument event unchanged 
-        (lambda part event) --&gt; (list event)
+        (lambda part event) &rarr; (list event)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <H4 class="heading">Example 1</H4>
@@ -93,28 +93,31 @@
     Duplicate events on another channel.
   </p>
   <pre class="code">
-       TODO NOT TESTED
+       
+    ;; Create source part
+    ;;
+    (qball piano-part piano
+           :cue '((1 1 1)(1 2 1))
+           :key '(c4 c5))
     
-        ;; Create source part
-        ;;
-        (qball piano-part piano ....)
-    
-        ;; Create transformation
-        ;; 
-        (let ((input-channel (channel piano))
-              (output-channel 7))
-           (transformer new-piano piano-part
-    
-              :filter #'(lambda (part event)
-                          (declare (ignore part))
-                          (let ((message (cdr event)))
-                             (and (midi-channel-message-p message)
-                                  (= (channel message) input-channel))))
-    
-             :transform #'(lambda (part event)
-                             (declare (ignore part))
-                             (list (cons time (duplicate-channel-message (cdr event) 
-                                                                         :channel output-channel))))))
+    ;; Create transform
+    ;;
+    (let ((input-channel (channel piano))
+          (output-channel 7))
+      (transformer new-piano piano-part
+    	       
+                   :filter #'(lambda (part event)
+                               (declare (ignore part))
+                               (let ((message (cdr event)))
+                                 (and (midi-channel-message-p message)
+                                      (= (channel message) input-channel))))
+    	       
+                   :transform #'(lambda (part event)
+                                  (declare (ignore part))
+    			      (let ((time (car event))
+    				    (message (cdr event)))
+    				(list (cons time 
+                                                (duplicate-channel-message message :channel output-channel)))))))
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=controllers.html class="navigation">Previous: controllers </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

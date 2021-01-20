@@ -25,7 +25,7 @@
     A <i>Program map</i> is a function for actualizing program changes for an instrument.
   </p>
   <pre class="code">
-    (lambda time &key bank program) --> MIDI event list.
+    (lambda time &key bank program) &rarr; MIDI event list.
   </pre>
   <p class="body">
     The exact return format is not specified other then it be a (possibly empty)
@@ -38,8 +38,8 @@
     for the :program argument.
   </p>
   <ul>
-    <li>:doc     --> Print documentation and return an empty list.</li>
-    <li>:default --> Use the instrument's program-number property.</li>
+    <li>:doc     &rarr; Print documentation and return an empty list.</li>
+    <li>:default &rarr; Use the instrument's program-number property.</li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   

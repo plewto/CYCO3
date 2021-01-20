@@ -51,14 +51,14 @@
     A <strong>CYCLE</strong> returns elements in a cyclical manner.
   </p>
   <pre class="code">
-    (CYCLE :of '(A B C)) --> A B C A B C A B C A...
+    (CYCLE :of '(A B C)) &rarr; A B C A B C A B C A...
   </pre>
   <p class="body">
     A <strong>LINE</strong> returns elements in sequence.  Once all elements have been
     returned it continues to return the final element.
   </p>
   <pre class="code">
-    (LINE :of '(A B C)) --> A B C C C C C...
+    (LINE :of '(A B C)) &rarr; A B C C C C C...
   </pre>
   <a id="functions"></a>
   <H3 class="heading">Functions on Patterns</H3>
@@ -74,8 +74,8 @@
     NEXT-1 is called recursively on nested patterns.
     	
     	(param foo (cycle :of '(A B C)))
-    	(next-1 foo) --> A
-    	(next-1 foo) --> B
+    	(next-1 foo) &rarr; A
+    	(next-1 foo) &rarr; B
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next-n"></a>
@@ -86,10 +86,10 @@
   <b class="definition">(NEXT-N pattern n)</b><br>
   <p class="summery">Returns list of next n pattern values.</p>
   <pre class="description">
-    (param foo (cycle :of '(A B C D)))
-     (next-1 foo)   --> A
-     (next-n foo 2) --> (B C)
-     (next-1 foo)   --> D
+     (param foo (cycle :of '(A B C D)))
+     (next-1 foo)   &rarr; A
+     (next-n foo 2) &rarr; (B C)
+     (next-1 foo)   &rarr; D
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="next"></a>
@@ -107,11 +107,11 @@
     If n is the keyword :REST then a list of all remaining elements is returned.
     
         (param foo (cycle :of '(A B C D E F G H)))
-        (next foo)       --> A
-        (next foo)       --> B
-        (next foo 3)     --> (C D E)
-        (next foo :rest) --> (F G H)
-        (next foo :all)  --> (A B C D E F G H)
+        (next foo)       &rarr; A
+        (next foo)       &rarr; B
+        (next foo 3)     &rarr; (C D E)
+        (next foo :rest) &rarr; (F G H)
+        (next foo :all)  &rarr; (A B C D E F G H)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="value"></a>
@@ -123,8 +123,8 @@
   <p class="summery">Returns current value of pattern.</p>
   <pre class="description">
     (param foo (cycle :of '(A B C)))
-    (next foo)  --> A
-    (value foo) --> A
+    (next foo)  &rarr; A
+    (value foo) &rarr; A
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="reset"></a>
@@ -136,10 +136,10 @@
   <p class="summery">Resets pattern to initial state.  Returns pattern</p>
   <pre class="description">
     (param foo (cycle :of '(A B C D E F)))
-    (next foo)   --> A
-    (next foo)   --> B
-    (reset foo)  --> foo
-    (next foo)   --> A
+    (next foo)   &rarr; A
+    (next foo)   &rarr; B
+    (reset foo)  &rarr; foo
+    (next foo)   &rarr; A
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="pattern-p"></a>
@@ -162,14 +162,14 @@
     cases the result is arbitrary or user defined.
     
     (param foo (cycle :of '(A B C)))
-    (cardinality foo) --> 3
+    (cardinality foo) &rarr; 3
     
     The coin pattern is an example without a well defined cardinality.  
     The :period argument is used to set an arbitrary cardinality.
     
     (param baz (coin :period 4))
-    (cardinality baz) --> 4
-    (next baz :reset) --> (T NIL NIL T T NIL T)
+    (cardinality baz) &rarr; 4
+    (next baz :rest) &rarr; (T NIL NIL T T NIL T)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="remaining"></a>
@@ -183,12 +183,12 @@
     Remaining is not well defined for all pattern types.
     
     (param foo (cycle :of '(A B C D E F G)))
-    (next foo 3)    --> (A B C)
-    (remaining foo) --> 4
+    (next foo 3)    &rarr; (A B C)
+    (remaining foo) &rarr; 4
     
     (param baz (coin :period 8))
-    (next baz 2)    --> (nil nil)
-    (remaining baz) --> 6
+    (next baz 2)    &rarr; (nil nil)
+    (remaining baz) &rarr; 6
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="to-pattern"></a>
@@ -205,10 +205,10 @@
     
     (param foo '(A B C))
     (param baz (->pattern foo))
-    (cycle-p baz) --> t
+    (cycle-p baz) &rarr; t
     
     (param bez (->pattern foo :pattern-type 'line))
-    (next bez 6)  --> (A B C C C C)
+    (next bez 6)  &rarr; (A B C C C C)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="transpose"></a>
@@ -221,7 +221,7 @@
   <pre class="description">
     (param foo (cycle :of '(60 61 62)))
     (transpose foo 4)
-    (next foo :all) --> (64 65 66)
+    (next foo :all) &rarr; (64 65 66)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="invert"></a>
@@ -234,7 +234,7 @@
   <pre class="description">
     (param foo (cycle :of '(60 61 62)))
     (invert foo 61)
-    (next foo :all) --> (62 61 59)
+    (next foo :all) &rarr; (62 61 59)
     
     The pivot argument may be a symbolic key-number.
     (invert foo 'c6)
@@ -250,7 +250,7 @@
   <pre class="description">
     (param foo (cycle :of '(A B C)))
     (retrograde foo)
-    (next foo :all) --> (C B A)
+    (next foo :all) &rarr; (C B A)
     
     Retrograde is not defined for all pattern types.  Where
     undefined the pattern is unaltered.
@@ -279,7 +279,7 @@
     thereafter it returns the final value indefinitely.
     
      (param foo (line :of '(A B C)))
-     (next foo 8) --> A B C C C C C C...
+     (next foo 8) &rarr; A B C C C C C C...
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="cycle"></a>
@@ -290,11 +290,11 @@
   <b class="definition">(CYCLE &key of)</b><br>
   <p class="summery">Creates new CYCLE pattern.</p>
   <pre class="description">
-    A CYCLE returns its elements in sequence.  Once the final element has been 
+     A CYCLE returns its elements in sequence.  Once the final element has been 
      reached the cycle repeats.
     
      (param foo (cycle :of '(A B C)))
-     (next foo 8) --> A B C A B C A B...
+     (next foo 8) &rarr; A B C A B C A B...
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="bag"></a>
@@ -309,12 +309,12 @@
     returned a bag returns the final element indefinitely. 
     
     (param foo (bag :of '(A B C) :final 'end)))
-    (next foo 8) --> B A C END END END END END
+    (next foo 8) &rarr; B A C END END END END END
     
     The final element my itself be a pattern.
     
     (param foo (bag :of '(A B C) :final (cycle :of '(ape bat)))
-    (next foo 8) --> C A B APE BAT APE BAT APE
+    (next foo 8) &rarr; C A B APE BAT APE BAT APE
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="dice"></a>
@@ -328,7 +328,7 @@
     A DICE returns its elements randomly with replacement.
     
     (param foo (dice :of '(A B C)))
-    (next foo 8) --> B C B A C C A B
+    (next foo 8) &rarr; B C B A C C A B
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="coin"></a>
@@ -355,7 +355,7 @@
     The default behavior returns nil or t with equal probability.
     
     (param foo (coin))
-    (next foo 10) --> T T NIL T T NIL NIL NIL T NIL
+    (next foo 10) &rarr; T T NIL T T NIL NIL NIL T NIL
     
     The RETROGRADE method swaps head/tail probability.
         
@@ -379,7 +379,7 @@
     Using wrapper to simulate a cycle.
     
     (param foo (wrapper :of #'(lambda (n)(* n 2)) :period 4))
-    (next foo 10) --> 0 2 4 6 0 2 4 6 0 2 
+    (next foo 10) &rarr; 0 2 4 6 0 2 4 6 0 2 
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="walker"></a>
@@ -393,7 +393,7 @@
     A WALKER produces a random walk over its elements.
     
     (param foo (walker :of '(A B C D)))
-    (next foo 8) --> D C B A B C B A
+    (next foo 8) &rarr; D C B A B C B A
   </pre>
   <p class="body">
     <br>
@@ -409,17 +409,17 @@
         ;; A LINE with nested CYCLE.
         ;;
         (param foo (line :of (list 'A 'B 'C (cycle :of '(1 2 3)))))
-        (next foo 10) --> A B C 1 2 3 1 2 3 1...  
+        (next foo 10) &rarr; A B C 1 2 3 1 2 3 1...  
         
         ;; A CYCLE with nested LINE.
         ;;
         (param foo (cycle :of (list 'A 'B (line :of '(1 2 3)))))
-        (next foo 15) --> A B 1 A B 2 A B 3 A B 3 A B 3...
+        (next foo 15) &rarr; A B 1 A B 2 A B 3 A B 3 A B 3...
     
         ;; A DICE of CYCLE and LINE.
         ;;
         (param foo (dice :of (list (cycle :of '(A B C))(line :of '(1 2 3)))))
-        (next foo 16) --> 1 2 A 3 B C 3 A 3 B C 3 A B 3...
+        (next foo 16) &rarr; 1 2 A 3 B C 3 A 3 B C 3 A B 3...
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=channel-names.html class="navigation">Previous: channel-names </a> &nbsp;<a href=generators.html class="navigation">Next: generators </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

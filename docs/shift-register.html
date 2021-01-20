@@ -49,7 +49,7 @@
     seed    - Integer, initial register value.  If the seed is expressed in binary
               it directly indicates the registers initial state.
     
-    taps    - Integer, feedback taps. If taps is expressed i binary it directly 
+    taps    - Integer, feedback taps. If taps is expressed in binary it directly 
               indicates which bits are selected for feedback.  
     
     :mask   - Integer, AND mask applied to register.  The mask value is used 
@@ -76,39 +76,44 @@
     ;; every 4 values.
     ;;
     (param sr1 (shift-register #b0001 #b1000 :mask #b1111))
-    (print (next sr1 6)) --&gt; (1 2 4 8 1 2)
+    
+    (print (next sr1 6)) &rarr; (1 2 4 8 1 2)
     
     ;; Adding a tap at zero 0 increases the cycle length to 15.
     ;;
     (param sr2 (shift-register #b0001 #b1001 :mask #b1111))
-    (print (next sr2 16)) --&gt; (1 3 7 15 14 13 10 5 11 6 12 9 2 4 8 1)
+    
+    (print (next sr2 16)) &rarr; (1 3 7 15 14 13 10 5 11 6 12 9 2 4 8 1)
     
     ;; Adding tap at cell 1 again alters the sequence.
     ;;
     (param sr3 (shift-register #b0001 #b1011 :mask #b1111))
-    (print (next sr3 16)) --&gt; (1 3 6 13 10 4 8 1 3 6 13 10 4 8 1 3)
+    
+    (print (next sr3 16)) &rarr; (1 3 6 13 10 4 8 1 3 6 13 10 4 8 1 3)
     
     
-    ;; Longer registers are more likely to produce more complex results.
+    ;; Longer registers are more likely to produce complex results.
     ;;
     (param sr4 (shift-register #b000001 #b110000 :mask #b111111))
-    (print (next sr4 65)) --&gt; (1 2 4 8 16 33 3 6 
-                                  12 24 49 34 5 10 20 41
-                                  19 39 15 30 61 58 52 40
-                                  17 35 7 14 28 57 50 36
-                                  9 18 37 11 22 45 27 55
-                                  46 29 59 54 44 25 51 38 
-                                  13 26 53 42 21 43 23 47 
-                                  31 63 62 60 56 48 32 1 2)
+    
+    (print (next sr4 65)) &rarr; (1 2 4 8 16 33 3 6 
+                              12 24 49 34 5 10 20 41
+                              19 39 15 30 61 58 52 40
+                              17 35 7 14 28 57 50 36
+                              9 18 37 11 22 45 27 55
+                              46 29 59 54 44 25 51 38 
+                              13 26 53 42 21 43 23 47 
+                              31 63 62 60 56 48 32 1 2)
     
     ;; Use hook function to limit resulting values
     ;;
     (param sr5 (shift-register #b000001 #b110010 :mask #b111111 
                                :hook #'(lambda (n)(+ 59 (rem n 24)))
                                :prerun 16))
-    (print (keyname (next sr5 24))) --&gt; (F5 B5 G5 B4 G5 C5 CS5 E5 A5 
-                                            GS6 FS6 A6 G6 C5 D5 D6 CS6 
-                                            E5 AS5 FS5 AS6 F5 B5 G5)
+    
+    (print (keyname (next sr5 24))) &rarr; (F5 B5 G5 B4 G5 C5 CS5 E5 A5 
+                                        GS6 FS6 A6 G6 C5 D5 D6 CS6 
+                                        E5 AS5 FS5 AS6 F5 B5 G5)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=envelopes-lfo.html class="navigation">Previous: envelopes-lfo </a> &nbsp;<a href=more-generators.html class="navigation">Next: more-generators </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

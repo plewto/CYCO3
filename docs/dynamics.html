@@ -34,26 +34,26 @@
   <H2 class="heading">Symbolic Dynamic Values</H2>
   <p class="body">
     Symbolically dynamic values use the common music notation P, MF, F etc.
-    These symbols are extended with '-' and '+' suffixes for a finer grained resolution.
+    These symbols are extended<br>with '-' and '+' suffixes for a finer grained resolution.
   </p>
   <pre class="code">
-    PPPP --&gt; 0.047244094
-    PPP  --&gt; 0.1496063
-    PP   --&gt; 0.2519685
-    P    --&gt; 0.35433072
-    MP   --&gt; 0.4566929
-    MF   --&gt; 0.5590551
-    F    --&gt; 0.6614173
-    FF   --&gt; 0.7637795
-    FFF  --&gt; 0.86614174
-    FFFF --&gt; 0.96850395
+    PPPP &rarr; 0.047244094
+    PPP  &rarr; 0.1496063
+    PP   &rarr; 0.2519685
+    P    &rarr; 0.35433072
+    MP   &rarr; 0.4566929
+    MF   &rarr; 0.5590551
+    F    &rarr; 0.6614173
+    FF   &rarr; 0.7637795
+    FFF  &rarr; 0.86614174
+    FFFF &rarr; 0.96850395
     
     '-' suffix decreases value by ~ 0.39
     '+' suffix increases value by ~ 0.31
     
-    (dynamic 'f-) --&gt; 0.62204725  
-    (dynamic 'f ) --&gt; 0.6614173 
-    (dynamic 'f+) --&gt; 0.6929134
+    (dynamic 'f-) &rarr; 0.62204725  
+    (dynamic 'f ) &rarr; 0.6614173 
+    (dynamic 'f+) &rarr; 0.6929134
   </pre>
   <H3 class="heading">Dynamic Functions</H3>
   <p class="body">
@@ -68,11 +68,11 @@
   <b class="definition">(DYNAMIC item)</b><br>
   <p class="summery">Returns numeric dynamic value.</p>
   <pre class="description">
-    (DYNAMIC -100) --> -1  a rest
-    (DYNAIMC 0.5)  --> 0.5
-    (DYNAMIC 1.4)  --> 1.0  clipped to 1.
-    (DYNAMIC 'MP)  --> ~0.457
-    (DYNAMIC '(0.1 0.2 (R MP MF))) --> (0.2 0.2 (-1 0.457 0.560))
+    (DYNAMIC -100) &rarr; -1  a rest
+    (DYNAIMC 0.5)  &rarr; 0.5
+    (DYNAMIC 1.4)  &rarr; 1.0  clipped to 1.
+    (DYNAMIC 'MP)  &rarr; ~0.457
+    (DYNAMIC '(0.1 0.2 (R MP MF))) &rarr; (0.2 0.2 (-1 0.457 0.560))
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="dynamic-name"></a>
@@ -83,10 +83,10 @@
   <b class="definition">(DYNAMIC-NAME item)</b><br>
   <p class="summery">Returns symbolic dynamic value.</p>
   <pre class="description">
-    (DYNAMIC-NAME -1.2) --> R
-    (DYNAMIC-NAME 0.5)  --> MP+
-    (DYNAMIC-NAME 'mf)  --> MF
-    (DYNAMIC-NAME '(-1.0 0.5 (MF F))) --> (R MP+ (MF F))
+    (DYNAMIC-NAME -1.2) &rarr; R
+    (DYNAMIC-NAME 0.5)  &rarr; MP+
+    (DYNAMIC-NAME 'mf)  &rarr; MF
+    (DYNAMIC-NAME '(-1.0 0.5 (MF F))) &rarr; (R MP+ (MF F))
     
     The result of DYNAMIC-NAME may have slight rounding errors.  
     That is for a dynamic value foo, the result of 
@@ -106,7 +106,7 @@
   <p class="summery">Defines user dynamic value</p>
   <pre class="description">
     (DEFDYNAMIC 'piano-crossover 0.33)
-    (DYNAMIC 'piano-crossover) --> 0.33
+    (DYNAMIC 'piano-crossover) &rarr; 0.33
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="dynamic-p"></a>
@@ -125,9 +125,9 @@
   <b class="definition">(DYNAMIC-&gt;VELOCITY n)</b><br>
   <p class="summery">Converts dynamic value to MIDI velocity.</p>
   <pre class="description">
-    (DYNAMIC->VELOCITY 0.5) --> 64
-    (DYNAMIC->VELOCITY 'F)  --> 84
-    (DYNAMIC->VELOCITY 'R)  --> 0
+    (DYNAMIC->VELOCITY 0.5) &rarr; 64
+    (DYNAMIC->VELOCITY 'F)  &rarr; 84
+    (DYNAMIC->VELOCITY 'R)  &rarr; 0
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Previous: keynumbers </a> &nbsp;<a href=metrics.html class="navigation">Next: metrics </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;

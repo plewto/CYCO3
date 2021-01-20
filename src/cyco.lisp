@@ -109,6 +109,8 @@
 		   "src/generators/shift-register"
 		   "src/generators/hailstone"
 		   "src/generators/recaman"
+		   "src/generators/bones"
+		   "src/generators/logistic"
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"

@@ -49,6 +49,7 @@
 	  beats!
 	  bend->midi-data
 	  bool
+	  bones
 	  bpm->beat-period
 	  bpm->microseconds
 	  build-cyco
@@ -136,6 +137,7 @@
 	  load-profile-file
 	  load-sub-profile
 	  local-properties
+	  logistic-generator
 	  make-ghost
 	  make-instrument
 	  markov-add-link

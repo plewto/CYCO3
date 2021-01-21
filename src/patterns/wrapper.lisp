@@ -50,7 +50,6 @@ its value."))
 	  (rem (+ (pointer w) 1)
 	       (cardinality w)))))
 
-(defmethod clone ((mother wrapper) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother wrapper) &key &allow-other-keys)
   (wrapper :of (slot-value mother 'function)
 	   :period (slot-value mother 'period)))

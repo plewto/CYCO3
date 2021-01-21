@@ -25,19 +25,17 @@
   gen)
 
 
-(defun hailstone (seed &key
-				 (even #'(lambda (n)(/ n 2)))
-				 (odd #'(lambda (n)(1+ (* 3 n))))
-				 (hook #'(lambda (n) n))
-				 &allow-other-keys)
+(defun hailstone (seed &key (even #'(lambda (n)(/ n 2)))
+		       (odd #'(lambda (n)(1+ (* 3 n))))
+		       (hook #'(lambda (n) n))
+		       &allow-other-keys)
   (reset (make-instance 'hailstone
 			:hook hook
 			:even even
 			:odd odd
 			:seed seed)))
 
-(defmethod clone ((mother hailstone) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother hailstone) &key &allow-other-keys)
   (let ((daughter (hailstone (slot-value mother 'initial-value)
 				       :even (slot-value mother 'even-rule)
 				       :odd (slot-value mother 'odd-rule)

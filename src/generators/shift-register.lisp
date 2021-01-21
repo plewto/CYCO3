@@ -40,8 +40,7 @@
   sr)
 
 
-(defmethod clone ((mother shift-register) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother shift-register) &key &allow-other-keys)
   (let ((daughter (shift-register (shift-register-seed mother)
 				  (shift-register-taps mother)
 				  :mask (shift-register-mask mother)

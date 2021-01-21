@@ -20,8 +20,7 @@
 (defmethod reset ((bones bones))
   bones)
 
-(defmethod clone ((mother bones) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother bones) &key &allow-other-keys)
   (let ((daughter (bones :function (slot-value mother 'random-function)
 			 :hook (value-hook mother))))
     (reset daughter)))

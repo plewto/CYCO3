@@ -3,8 +3,7 @@
 
 (in-package :cyco)
 
-(defmethod clone ((mother string) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother string) &key &allow-other-keys)
   mother)
 
 (defmethod final ((s string))

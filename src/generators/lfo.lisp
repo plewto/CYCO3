@@ -72,8 +72,7 @@
     (reset gen)))
 
 
-(defmethod clone ((mother lfo) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother lfo) &key &allow-other-keys)
   (let ((daughter (lfo :curve (lfo-curve mother)
 		       :hook (value-hook mother))))
     (setf (lfo-pointer daughter)(lfo-pointer mother))

@@ -48,8 +48,7 @@
 
 (defmethod pattern-p ((obj pattern)) obj)
 
-(defmethod clone ((mother pattern) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother pattern) &key &allow-other-keys)
   (let ((daughter (make-instance (type-of mother) :of (clone (elements mother)))))
     (reset daughter)
     daughter))

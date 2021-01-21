@@ -46,8 +46,7 @@ may however be nested within patterns."))
 (defun constant-value (n &key &allow-other-keys)
   (make-instance 'constant-value :seed n))
 
-(defmethod clone ((mother constant-value) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother constant-value) &key &allow-other-keys)
   (constant-value (value mother))) 
 
 
@@ -61,8 +60,7 @@ may however be nested within patterns."))
 (defun counter (&key (hook #'(lambda (n) n)) &allow-other-keys)
   (reset (make-instance 'counter :hook hook)))
 
-(defmethod clone ((mother counter) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother counter) &key &allow-other-keys)
   (let ((daughter (counter :hook (value-hook mother))))
     (setf (current-value daughter)(current-value mother))
     daughter))
@@ -106,8 +104,7 @@ may however be nested within patterns."))
 			:multi-trigger multi-trigger
 			:hook hook)))
 
-(defmethod clone ((mother countdown) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother countdown) &key &allow-other-keys)
   (let ((daughter (countdown (initial-value mother)
 			     :action (countdown-action mother)
 			     :multi-trigger (slot-value mother 'multi-trigger)

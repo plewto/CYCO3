@@ -28,8 +28,7 @@
 (defun recaman (seed &key (hook #'(lambda (n) n)) &allow-other-keys)
   (reset (make-instance 'recaman :seed seed :hook hook)))
 
-(defmethod clone ((mother recaman) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother recaman) &key &allow-other-keys)
   (let ((daughter (recaman (slot-value mother 'initial-value)
 				     :hook (value-hook mother))))
     (setf (current-value daughter)(current-value mother)

@@ -255,9 +255,9 @@ not effect by prune-orchestra unless the :force argument is true."))
 	     (channel-index (channel-index instrument)))
 	(list (cons start (midi-note-on channel-index actual-key-number velocity))
 	      (cons end (midi-note-off channel-index actual-key-number 64)))))))
-	
-(defmethod clone ((mother instrument) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+
+
+(defmethod clone ((mother instrument) &key &allow-other-keys)
   mother)
 
 (defmethod connect ((parent-instrument instrument)(child-instrument cyco-node))

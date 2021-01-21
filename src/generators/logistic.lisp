@@ -37,8 +37,7 @@
     (next-1 gen))
   gen)
 
-(defmethod clone ((mother logistic-generator) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother logistic-generator) &key &allow-other-keys)
   (let ((daughter (logistic-generator
 		   :prerun (logistic-prerun mother)
 		   :seed (slot-value mother 'seed)

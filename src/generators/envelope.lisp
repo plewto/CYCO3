@@ -37,8 +37,7 @@
   ramp)
 
 
-(defmethod clone ((mother ramp) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother ramp) &key &allow-other-keys)
   (let ((daughter (ramp (ramp-floor mother)
 			(ramp-ceiling mother)
 			:by (ramp-increment mother)
@@ -156,8 +155,7 @@ Examples
 		   :sustain sustain)))
 
 
-(defmethod clone ((mother asr-envelope) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother asr-envelope) &key &allow-other-keys)
   (let ((daughter (asr-envelope (asr-floor mother)
 				(asr-ceiling mother)
 				:attack (asr-attack mother)

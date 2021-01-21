@@ -13,8 +13,7 @@
   transpose
   invert)
   
-(defmethod clone ((mother section-render-mode) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother section-render-mode) &key &allow-other-keys)
   (make-section-render-mode
    :section-name (section-render-mode-section-name mother)
    :shift (section-render-mode-shift mother)

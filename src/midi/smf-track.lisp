@@ -16,8 +16,7 @@
     :initform '()
     :initarg :events)))
 	    
-(defmethod clone ((mother smf-track) &key (new-name "~A") new-parent)
-  (declare (ignore new-parent))
+(defmethod clone ((mother smf-track) &key new-name)
   (let ((daughter (make-instance
 		   'smf-track
 		   :name (sformat new-name (name mother)))))

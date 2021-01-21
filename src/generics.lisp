@@ -206,12 +206,13 @@ Other chord-models may ignore this value."))
   (:documentation
    "Returns list of chord types defined by chord-model."))
 
-(defgeneric clone (mother &key new-name new-parent)
+(defgeneric clone (mother &key &allow-other-keys)
   (:documentation
    "Creates copy of mother.
 Clone is defined for all types. However, for types where a specific clone
 method has not been defined, it returns the mother argument.
 
+The following optional keyword arguments may be available
 
 :new-name   - Format string, inclusion of the format ~A directive inserts 
               the mother's name into the result.  For object types which do not
@@ -222,22 +223,18 @@ method has not been defined, it returns the mother argument.
               which do not have a parent/child relationship, new-parent is 
               ignored."))
 
-(defmethod clone ((mother t) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother t) &key &allow-other-keys)
   mother)
 
-(defmethod clone ((mother hash-table) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother hash-table) &key &allow-other-keys)
   (let ((dst (make-hash-table :size (hash-table-count mother))))
     (maphash #'(lambda (k v)(setf (gethash k dst)(clone v))) mother)
     mother))
 
-(defmethod clone ((mother cons) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother cons) &key &allow-other-keys)
   (cons (clone (car mother))(clone (cdr mother))))
 
-(defmethod clone ((mother vector) &key new-name new-parent)
-  (declare (ignore new-name new-parent))
+(defmethod clone ((mother vector) &key &allow-other-keys)
   (->vector (clone (->list mother))))
 
 (defgeneric cnth (n seq)

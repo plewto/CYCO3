@@ -26,13 +26,15 @@
 	      (string-downcase (join-path name (sformat "~A-main.lisp" name) :as-file)))
 	     
 	     (find-plugin-location
-	      (main-name path-list)
+	      (main-name path-list &optional verbose)
 	      (if (not path-list)
 		  nil
 	      (let* ((fqn (join-path (car path-list) main-name :as-file))
 		     (found (probe-file fqn)))
+		(if verbose
+		    (format t "Probing plugin directory ~S   found ~A~%" fqn (bool found)))
 		(or (and found fqn)
-		    (find-plugin-location main-name (cdr path-list)))))))
+		    (find-plugin-location main-name (cdr path-list) verbose))))))
   
       (defun push-plugin-search-path (directory)
 	"Add new directory to plugin search-path.
@@ -54,10 +56,10 @@ memory.  Instead it simply marks them as never having been loaded."
 	(dolist (item search-path)
 	  (format t "    ~A~%" item)))
       
-      (defun find-plugin (name)
+      (defun find-plugin (name &optional verbose)
 	"Locates directory for named plugin.
 A nil result indicates a matching plugin can not be found."
-	(find-plugin-location (format-name name) search-path))
+	(find-plugin-location (format-name name) search-path verbose))
       
       (defun load-plugin-file (name)
 	"Loads a file relative to the current plugin."
@@ -70,16 +72,17 @@ A nil result indicates a matching plugin can not be found."
 	    (cyco-error
 	     (sformat "Plugin file ~A does not exists" fqn)))))
       
-      (defun load-plugin (name &optional reload)
+      (defun load-plugin (name &key reload verbose)
 	"Loads the main plugin file.  
 
-name - quoted symbol
-reload - Boolean, if true the plugin is reloaded whether it has been
-previously loaded or not. 
+name     - quoted symbol
+:reload  - Boolean, if true the plugin is reloaded whether it has been
+           previously loaded or not.
+:verbose - If true display main-file search attempts. 
 
 See PLUGIN macro"
 	(if (or reload (not (member name registry)))
-	     (let ((main (find-plugin name)))
+	     (let ((main (find-plugin name verbose)))
 	       (if main
 		   (progn
 		     (format t "Loading plugin ~A~%" main)
@@ -90,12 +93,12 @@ See PLUGIN macro"
 		 (cyco-error
 		  (sformat "Could not find plugin: ~A" name))))))
       
-      (defmacro plugin (name &optional reload)
+      (defmacro plugin (name &key reload verbose)
 	"Loads named plugin
 
 PLUGIN is a convenience macro for LOAD-PLUGIN.   With plugin there is 
 no need to quote the name argument."
-	`(load-plugin ',name ,reload))
+	`(load-plugin ',name :reload ,reload :verbose ,verbose))
 
       (defun ?plugins ()
 	"List all plugins

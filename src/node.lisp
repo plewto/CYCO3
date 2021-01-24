@@ -85,10 +85,10 @@ are removed from a tree by the prune method while non-transient nodes are
 not."))
 
     
-(defmethod name! ((node cyco-node)(new-name symbol))
+(defmethod set-name ((node cyco-node)(new-name symbol))
   (setf (name node) new-name))
 
-(defmethod remarks! ((node cyco-node)(text string))
+(defmethod set-remarks ((node cyco-node)(text string))
   (setf (remarks node) text))
 
 (defmethod root-p ((node cyco-node))

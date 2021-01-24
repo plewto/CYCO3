@@ -71,7 +71,7 @@ name       - Symbol
 				:remarks (->string
 					  (or remarks
 					      (sformat "General MIDI program ~A" program))))))
-    (program-number! inst program-number)
+    (set-program-number inst program-number)
     inst))
 
 (defmacro general-midi-instrument (name &key

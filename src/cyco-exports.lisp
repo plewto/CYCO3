@@ -39,13 +39,12 @@
 	  bar
 	  bar-duration
 	  bars
-	  bars!
 	  basic-articulation-map
 	  basic-dynamic-map
 	  basic-keynumber-map
 	  beat-duration
 	  beats
-	  beats!
+	  set-beats
 	  bend->midi-data
 	  bool
 	  bones
@@ -55,7 +54,7 @@
 	  butfinal
 	  cardinality
 	  channel
-	  channel!
+	  set-channel
 	  channel-index
 	  child-of-p
 	  chord-model-p
@@ -94,7 +93,7 @@
 	  dynamic
 	  dynamic->velocity
 	  dynamic-map
-	  dynamic-map!
+	  set-dynamic-map
 	  dynamic-name
 	  dynamic-p
 	  elide
@@ -125,7 +124,7 @@
 	  keyname
 	  keynumber
 	  keynumber-map
-	  keynumber-map!
+	  set-keynumber-map
 	  keynumber-p
 	  lfo
 	  limit
@@ -210,7 +209,7 @@
 	  mute-all
 	  muted-p
 	  name
-	  name!
+	  set-name
 	  next
 	  next-1
 	  next-n
@@ -234,12 +233,12 @@
 	  print-tree
 	  priority
 	  program-bank
-	  program-bank!
+	  set-program-bank
 	  program-change-events
 	  program-map
-	  program-map!
+	  set-program-map
 	  program-number
-	  program-number!
+	  set-program-number
 	  project->midi
 	  project-p
 	  properties
@@ -259,7 +258,7 @@
 	  read-signed-midi-data
 	  remaining
 	  remarks
-	  remarks!
+	  set-remarks
 	  render-midi-message
 	  render-n
 	  render-once
@@ -278,6 +277,7 @@
 	  section-order
 	  section-p
 	  set-articulation-map
+	  set-bars
 	  set-basic-program-map
 	  set-cyco-prompt
 	  set-meta-channel
@@ -287,7 +287,7 @@
 	  slice
 	  smf
 	  smf-track
-	  smf-track!
+	  set-smf-track
 	  smf-track-count
 	  soft-reset
 	  solo
@@ -298,12 +298,12 @@
 	  strummer-p
 	  subbeat-duration
 	  subbeats
-	  subbeats!
+	  set-subbeats
 	  symbolic-keynumber-map
 	  tbeat-duration
 	  tbeats
 	  tempo
-	  tempo!
+	  set-tempo
 	  thin-bend-events
 	  thin-controller-events
 	  tick-duration
@@ -315,7 +315,7 @@
 	  tsubbeat-duration
 	  tsubbeats
 	  unit
-	  unit!
+	  set-unit
 	  unmute
 	  unmute-all
 	  walker

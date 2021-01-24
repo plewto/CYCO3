@@ -63,7 +63,7 @@ subbeats"))
   (defun time-signature (&key name parent tempo unit bars beats subbeats)
     (let ((new-time-signature (make-instance 'time-signature
 					     :properties +time-signature-properties+)))
-      (name! new-time-signature  (->symbol (or name
+      (set-name new-time-signature  (->symbol (or name
 					       (prog1
 						   (sformat "time-signature-~D" instance-counter)
 						 (setf instance-counter (1+ instance-counter))))))
@@ -127,29 +127,29 @@ subbeats"))
   (truncate (/ (ticks-per-beat time-signature)
 	       (subbeats time-signature))))
 
-(defmethod tempo! ((time-signature time-signature)(value number))
+(defmethod set-tempo ((time-signature time-signature)(value number))
   (put time-signature :tempo value)
   (init-time-signature time-signature))
 
-(defmethod unit! ((time-signature time-signature)(value symbol))
+(defmethod set-unit ((time-signature time-signature)(value symbol))
   (put time-signature :unit value)
   (init-time-signature time-signature))
 
-(defmethod bars! ((time-signature time-signature)(value number))
+(defmethod set-bars ((time-signature time-signature)(value number))
   (put time-signature :bars value)
   (init-time-signature time-signature))
 
-(defmethod beats! ((time-signature time-signature)(value number))
+(defmethod set-beats ((time-signature time-signature)(value number))
   (put time-signature :beats value)
   (init-time-signature time-signature))
 
-(defmethod subbeats! ((time-signature time-signature)(value number))
+(defmethod set-subbeats ((time-signature time-signature)(value number))
   (put time-signature :subbeats value)
   (init-time-signature time-signature))
 
 (defmethod clone ((mother time-signature) &key new-name new-parent)
   (let ((daughter (time-signature)))
-    (name! daughter (if new-name
+    (set-name daughter (if new-name
 			(->symbol (sformat new-name (name mother)))))
     (dolist (p (local-properties mother))
       (put daughter (car p)(cdr p)))

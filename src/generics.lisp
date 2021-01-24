@@ -124,7 +124,7 @@ See ->list"))
   (:documentation
    "Returns time-signature bar count."))
 
-(defgeneric bars! (time-signature value)
+(defgeneric set-bars (time-signature value)
   (:documentation
    "Sets time-signature bar count."))
 
@@ -136,7 +136,7 @@ See ->list"))
   (:documentation
    "Returns time-signature beat count."))
 
-(defgeneric beats! (time-signature value)
+(defgeneric set-beats (time-signature value)
   (:documentation
    "Sets time-signature beat count."))
 
@@ -165,7 +165,7 @@ MIDI channel, an integer between 1 and 16 inclusive."))
   (declare (ignore resolve))
   n)
 
-(defgeneric channel! (instrument channel)
+(defgeneric set-channel (instrument channel)
   (:documentation
    "Sets instrument's MIDI channel.  
 channel may be a symbolic meta-channel or an integer between 1 and 16 
@@ -285,7 +285,6 @@ After a disconnect the child becomes a root node."))
    "Returns new MIDI-CHANNEL-MESSAGE of the same type as message
 with optional channel and data byte chganges."))
 
-
 (defgeneric dump-chords (chord-model)
   (:documentation
    "Displays list of chords defined by chord-model."))
@@ -323,7 +322,7 @@ display the event.
   (:documentation
    "Returns instrument's dynamic-map function."))
 
-(defgeneric dynamic-map! (instrument mapfn)
+(defgeneric set-dynamic-map (instrument mapfn)
   (:documentation
    "Sets instrument's dynamic-map function."))
 
@@ -397,7 +396,7 @@ Keyname will not return names for user defined keynumbers."))
   (:documentation
    "Returns instrument's keynumber-map function."))
 
-(defgeneric keynumber-map! (instrument keynumber-map)
+(defgeneric set-keynumber-map (instrument keynumber-map)
   (:documentation
    "Sets instrument's keynumber-map function."))
 
@@ -560,7 +559,7 @@ are muted.  A nil value leaves the current state as is."))
 (defmethod name ((s symbol)) (symbol-name s))
 (defmethod name ((s string)) s)
 
-(defgeneric name! (object new-name)
+(defgeneric set-name (object new-name)
   (:documentation
    "Sets name of object."))
 
@@ -670,7 +669,7 @@ instrument.
 NOTE: This is not a 'bank' of programs, rather it is the name of a bank on some 
 external MIDI device."))
 
-(defgeneric program-bank! (instrument program-bank)
+(defgeneric set-program-bank (instrument program-bank)
   (:documentation
    "Sets instruments program bank."))
 
@@ -686,7 +685,7 @@ The result may also include note events for 'key-switched' instruments."))
   (:documentation
    "Returns an instrument's program-map function."))
 
-(defgeneric program-map! (instrument program-function)
+(defgeneric set-program-map (instrument program-function)
   (:documentation
    "Sets instrument's program-map function."))
 
@@ -697,7 +696,7 @@ format, though integers between 0 and 127 are generally treated as MIDI
 program numbers.  The exact format is dictated by the program-map 
 function."))
 
-(defgeneric program-number! (instrument program-number)
+(defgeneric set-program-number (instrument program-number)
   (:documentation
    "Returns instrument's program-number."))
 
@@ -745,7 +744,7 @@ or pattern-like object."))
   (:documentation
    "Returns object's remarks text."))
 
-(defgeneric remarks! (node text)
+(defgeneric set-remarks (node text)
   (:documentation
    "Sets object's remarks text."))
 
@@ -830,7 +829,7 @@ of sequence."))
    "Low-level method, returns indexed track from MIDI file.
 NOTE: At least for now CYCO only supports single-track MIDI files."))
 
-(defgeneric smf-track! (midi-file track &optional track-number)
+(defgeneric set-smf-track (midi-file track &optional track-number)
   (:documentation
    "Low-level method to set MIDI file track.
 NOTE: At least for now CYCO only supports single-track MIDI files."))
@@ -860,7 +859,7 @@ specific object type."))
   (:documentation
    "Returns time-signature sub-beat count."))
 
-(defgeneric subbeats! (time-signature value)
+(defgeneric set-subbeats (time-signature value)
   (:documentation
    "Sets time-signature sub-beat count."))
 
@@ -876,7 +875,7 @@ specific object type."))
   (:documentation
    "Returns time-signature tempo in BPM."))
 
-(defgeneric tempo! (time-signature tempo-bpm)
+(defgeneric set-tempo (time-signature tempo-bpm)
   (:documentation
    "Sets time signature tempo in BPM."))
 
@@ -910,7 +909,7 @@ amount - integer, transposition amount."))
   (:documentation
    "Returns the time-signature beat unit."))
 
-(defgeneric unit! (time-signature beat-unit)
+(defgeneric set-unit (time-signature beat-unit)
   (:documentation
    "Sets time-signature beat-unit."))
 

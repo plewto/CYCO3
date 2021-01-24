@@ -68,7 +68,7 @@ property of the instrument."))
 						       (channel-index instrument)
 						       (program-number instrument)))))
 				    (t nil)))))
-	(program-map! instrument map-function)
+	(set-program-map instrument map-function)
 	map-function))))
 
 
@@ -122,7 +122,7 @@ Map entry format has the form
 							   (channel-index instrument)
 							   pnum))))
 					(t (warnfn pnum)))))))
-	  (program-map! instrument map-function)
+	  (set-program-map instrument map-function)
 	  map-function))))) 
 
 

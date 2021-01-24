@@ -42,22 +42,22 @@ other instruments."))
 
 (defmethod instrument-p ((instrument instrument)) t)
 
-(defmethod program-map! ((instrument instrument)(pmap function))
+(defmethod set-program-map ((instrument instrument)(pmap function))
   (put instrument :program-map pmap))
 
-(defmethod program-map! ((instrument instrument)(pmap null))
+(defmethod set-program-map ((instrument instrument)(pmap null))
   (set-basic-program-map instrument))
 
-(defmethod program-number! ((instrument instrument)(pnumber integer))
+(defmethod set-program-number ((instrument instrument)(pnumber integer))
   (put instrument :program-number pnumber))
 
-(defmethod program-number! ((instrument instrument)(pnumber symbol))
+(defmethod set-program-number ((instrument instrument)(pnumber symbol))
   (put instrument :program-number pnumber))
 
-(defmethod program-bank! ((instrument instrument)(bank integer))
+(defmethod set-program-bank ((instrument instrument)(bank integer))
   (put instrument :program-bank bank))
 
-(defmethod program-bank! ((instrument instrument)(bank symbol))
+(defmethod set-program-bank ((instrument instrument)(bank symbol))
   (put instrument :program-bank bank))
 
 (defmethod program-map ((instrument instrument))
@@ -73,13 +73,13 @@ other instruments."))
   (let ((pmap (program-map instrument)))
     (funcall pmap (float time) :bank bank :program program)))
 
-(defmethod keynumber-map! ((instrument instrument)(mapfn function))
+(defmethod set-keynumber-map ((instrument instrument)(mapfn function))
   (put instrument :keynumber-map mapfn))
 
 (defmethod keynumber-map ((instrument instrument))
   (property instrument :keynumber-map))
 
-(defmethod dynamic-map! ((instrument instrument)(mapfn function))
+(defmethod set-dynamic-map ((instrument instrument)(mapfn function))
   (put instrument :dynamic-map mapfn))
 
 (defmethod dynamic-map ((instrument instrument))
@@ -98,18 +98,18 @@ other instruments."))
 		    (1- (meta-channel channel))
 		  (progn
 		    (cyco-value-error
-		     'instrument.channel!
+		     'instrument.set-channel
 		     (sformat "Undefined channel ~A" channel))
 		    0)))))
 
-  (defmethod channel! ((instrument instrument)(channel t))
+  (defmethod set-channel ((instrument instrument)(channel t))
     (setf (gethash :channel (property-table instrument)) channel)
     (set-channel-index instrument channel)
     channel)
 
   (defmethod put ((instrument instrument)(key symbol)(value t))
     (if (eq key :channel)
-	(channel! instrument value)
+	(set-channel instrument value)
       (call-next-method))
     value))
 
@@ -126,12 +126,12 @@ other instruments."))
 				   :properties +instrument-properties+
 				   :transient nil)))
 	  (set-basic-program-map root)
-	  (program-number! root 0)
-	  (program-bank! root 0)
-	  (keynumber-map! root +default-keynumber-map+)
-	  (dynamic-map! root +default-dynamic-map+)
+	  (set-program-number root 0)
+	  (set-program-bank root 0)
+	  (set-keynumber-map root +default-keynumber-map+)
+	  (set-dynamic-map root +default-dynamic-map+)
 	  (set-articulation-map root +default-articulation-map+)
-	  (channel! root 1)
+	  (set-channel root 1)
 	  root))
 
 (let ((docstring 
@@ -169,11 +169,11 @@ name        - Symbol
 				     :properties +instrument-properties+
 				     :transient transient
 				     :remarks (->string (or remarks "")))))
-      (if channel (channel! instrument channel))
-      (if program (program-number! instrument program))
-      (if bank (program-bank! instrument bank))
-      (if keynumber-map (keynumber-map! instrument keynumber-map))
-      (if dynamic-map (dynamic-map! instrument dynamic-map))
+      (if channel (set-channel instrument channel))
+      (if program (set-program-number instrument program))
+      (if bank (set-program-bank instrument bank))
+      (if keynumber-map (set-keynumber-map instrument keynumber-map))
+      (if dynamic-map (set-dynamic-map instrument dynamic-map))
       (if articulation-map (set-articulation-map instrument articulation-map))
       (set-basic-program-map instrument)
       (connect parent instrument)
@@ -211,7 +211,7 @@ name        - Symbol
 	    :dynamic-map (basic-dynamic-map :scale 0.0)
 	    :articulation-map (constant-articulation-map 'r)
 	    :remarks "Null instrument ~~ Does not produce any events.")
-(program-map! null-instrument #'(lambda (&rest _)(declare (ignore _)) nil))
+(set-program-map null-instrument #'(lambda (&rest _)(declare (ignore _)) nil))
 
 (setf *metronome* (make-instrument '*metronome*
 				   :parent *root-instrument*

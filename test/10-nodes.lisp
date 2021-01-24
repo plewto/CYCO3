@@ -55,8 +55,8 @@
   (pass? "name" (eq (name animal) 'animal))
   (pass? "remarks" (string= (remarks animal) "Animal is the root test node."))
 
-  (remarks! animal "New animal remarks")
-  (pass? "remarks!" (string= (remarks animal) "New animal remarks"))
+  (set-remarks animal "New animal remarks")
+  (pass? "set-remarks" (string= (remarks animal) "New animal remarks"))
   
   (pass? "root-p"
 	 (and (root-p animal)

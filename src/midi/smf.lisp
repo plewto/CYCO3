@@ -57,7 +57,7 @@ division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
 (defmethod smf-track ((midi-file smf) &optional (index 0))
   (aref (smf-tracks midi-file) index))
 
-(defmethod smf-track! ((midi-file smf)(track smf-track) &optional (index 0))
+(defmethod set-smf-track ((midi-file smf)(track smf-track) &optional (index 0))
   (setf (aref (smf-tracks index)) track))
 
 (defmethod render-smf ((midi-file smf) &key (pad 1.0))

@@ -323,7 +323,7 @@ new-prefix  - prefix added to each name."
     (let* ((old-name (->string (name child)))
 	   (suffix (subseq old-name prefix-trim))
 	   (new-name (str+ new-prefix suffix)))
-      (name! child (->symbol new-name)))))
+      (set-name child (->symbol new-name)))))
 
 
 (constant +NULL-SECTION+ (make-instance 'section

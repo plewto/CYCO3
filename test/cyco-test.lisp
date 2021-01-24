@@ -59,4 +59,4 @@
 (load-test "10-nodes")
 (load-test "11-generators")
 (load-test "12-channels")
-;; (load "test/load-mock-projects")
+(load "test/load-mock-projects")

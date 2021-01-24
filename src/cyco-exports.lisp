@@ -34,7 +34,6 @@
 	  append-filename-extension
 	  approximate
 	  articulation-map
-	  articulation-map!
 	  bag
 	  bag-p
 	  bar
@@ -278,6 +277,7 @@
 	  sawtooth
 	  section-order
 	  section-p
+	  set-articulation-map
 	  set-basic-program-map
 	  set-cyco-prompt
 	  set-meta-channel

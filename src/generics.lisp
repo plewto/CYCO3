@@ -109,7 +109,7 @@ See ->list"))
   (:documentation
    "Returns object's articulation-map."))
 
-(defgeneric articulation-map! (object mapfn)
+(defgeneric set-articulation-map (object mapfn)
   (:documentation
    "Sets object's articulation-map"))
 

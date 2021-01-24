@@ -25,7 +25,7 @@
     <li>Quick Jump:</li>
       <li><a href='#set-meta-channel'>set-meta-channel</a></li>
       <li><a href='#meta-channel'>meta-channel</a></li>
-      <li><a href='#channel-name'>channel-name</a></li>
+      <li><a href='#meta-channel-names'>meta-channel-names</a></li>
       <li><a href='#meta-channel-assignment-p'>meta-channel-assignment-p</a></li>
       <li><a href='#?channels'>?channels</a></li>
       <li><a href='#define-controller'>define-controller</a></li>
@@ -75,17 +75,13 @@
         (META-CHANNEL 3)        &rarr; 3
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="channel-name"></a>
+  <a id="meta-channel-names"></a>
   
-  <!-- (CHANNEL-NAME channel) -->
+  <!-- (META-CHANNEL-NAMES channel) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(CHANNEL-NAME channel)</b><br>
-  <p class="summery">Returns the primary name for MIDI channel.</p>
-  <pre class="description">
-        (CHANNEL-NAME 10) &rarr; drum-machine
-        (CHANNEL-NAME 6)  &rarr; 6, unassigned channels return their integer value.
-  </pre>
+  <b class="definition">(META-CHANNEL-NAMES channel)</b><br>
+  <p class="summery">Returns list of names for channel.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel-assignment-p"></a>
   

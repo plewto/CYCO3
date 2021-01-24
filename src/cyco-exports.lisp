@@ -58,7 +58,6 @@
 	  channel
 	  channel!
 	  channel-index
-	  channel-name
 	  child-of-p
 	  chord-model-p
 	  chord-template
@@ -147,6 +146,7 @@
 	  mean
 	  meta-channel
 	  meta-channel-assignment-p
+	  meta-channel-names
 	  metric
 	  metric-expression
 	  metric-expression-p

@@ -23,7 +23,7 @@
   </p>
   <ul class='quick-jump'>
     <li>Quick Jump:</li>
-      <li><a href='#meta-channel!'>meta-channel!</a></li>
+      <li><a href='#set-meta-channel'>set-meta-channel</a></li>
       <li><a href='#meta-channel'>meta-channel</a></li>
       <li><a href='#channel-name'>channel-name</a></li>
       <li><a href='#meta-channel-assignment-p'>meta-channel-assignment-p</a></li>
@@ -34,12 +34,12 @@
       <li><a href='#get-controller-number'>get-controller-number</a></li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="meta-channel!"></a>
+  <a id="set-meta-channel"></a>
   
-  <!-- (META-CHANNEL! name channel &optional remarks) -->
+  <!-- (SET-META-CHANNEL name channel &optional remarks) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(META-CHANNEL! name channel &optional remarks)</b><br>
+  <b class="definition">(SET-META-CHANNEL name channel &optional remarks)</b><br>
   <p class="summery">Makes symbolic assignment to a MIDI channel.</p>
   <pre class="description">
         A meta-channel may be defined in terms of another channel 
@@ -52,9 +52,9 @@
     	
     	Examples:
     	
-    	(META-CHANNEL! 'oberheim 1)
-    	(META-CHANNEL! 'drum-machine 10)
-    	(META-CHANNEL! 'snare 'drum-machine)  ;; snare defined in terms of drum machine.
+    	(SET-META-CHANNEL 'oberheim 1)
+    	(SET-META-CHANNEL 'drum-machine 10)
+    	(SET-META-CHANNEL 'snare 'drum-machine)  ;; snare defined in terms of drum machine.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="meta-channel"></a>

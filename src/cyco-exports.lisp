@@ -146,7 +146,6 @@
 	  markov-walk
 	  mean
 	  meta-channel
-	  meta-channel!
 	  meta-channel-assignment-p
 	  metric
 	  metric-expression
@@ -281,6 +280,7 @@
 	  section-p
 	  set-basic-program-map
 	  set-cyco-prompt
+	  set-meta-channel
 	  set-symbolic-program-map
 	  sformat
 	  signed-norm->midi-data

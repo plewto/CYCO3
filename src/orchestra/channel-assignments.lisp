@@ -27,7 +27,7 @@
 
   (reset-channel-assignments)
   
-  (defun meta-channel! (name value &optional (remarks ""))
+  (defun set-meta-channel (name value &optional (remarks ""))
     "Define new meta MIDI channel.
 name  - Symbol 
 value - The channel's value may either be an absolute MIDI channel 
@@ -56,7 +56,7 @@ remarks - optional explanation."
  
   (labels ((resolve-channel (target-name name depth)
 			   (if (zerop depth)
-			       (cyco-error 'meta-channel! name "Circular channel assignment")
+			       (cyco-error 'set-meta-channel name "Circular channel assignment")
 			     (let* ((p (cdr (assoc name assignments)))
 				    (chan (and p (meta-channel-value p))))
 			       (if (and (integerp chan)(plusp chan)(<= chan 16))

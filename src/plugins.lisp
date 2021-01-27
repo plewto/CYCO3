@@ -93,12 +93,12 @@ See PLUGIN macro"
 		 (cyco-error
 		  (sformat "Could not find plugin: ~A" name))))))
       
-      (defmacro plugin (name &key reload verbose)
+      (defmacro plugin (name &optional reload)
 	"Loads named plugin
 
 PLUGIN is a convenience macro for LOAD-PLUGIN.   With plugin there is 
 no need to quote the name argument."
-	`(load-plugin ',name :reload ,reload :verbose ,verbose))
+	`(load-plugin ',name :reload ,reload :verbose nil))
 
       (defun ?plugins ()
 	"List all plugins

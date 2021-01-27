@@ -46,18 +46,16 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="plugin"></a>
   
-  <!-- (PLUGIN name &key reload verbose) -->
+  <!-- (PLUGIN name &optional reload) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(PLUGIN name &key reload verbose)</b><br>
+  <b class="definition">(PLUGIN name &optional reload)</b><br>
   <p class="summery">Loads plugin.</p>
   <pre class="description">
     name should be an unquoted symbol.
     	
     Once a plugin has been loaded it is not reloaded unless the optional
     reload flag is true.
-    
-    If verbose is true, print search locations for main plugin file.
     	
     A plugin may load another plugin.
   </pre>

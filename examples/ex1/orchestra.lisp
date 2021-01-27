@@ -18,27 +18,20 @@
 ;;;
 
 
-;;; Create the piano instrument on channel 1.
-;;; General-MIDI defines a few different pianos.  In this case the specific
-;;; program is 'piano1 which is the "Acoustic Piano".  To see a list of
-;;; of available programs enter (?general-midi).
+;;; Create the piano instrument on channel 1 using general-midi
+;;; Use (?general-midi) for list available general-midi programs.
 ;;;
 
-(general-midi-instrument piano
-			 :channel 1
-			 :program 'piano1)
+(general-midi-instrument piano :channel 1)
+			 
 
 ;;; Create the flute and vibes instruments on channel 2 and 3.  
-;;; There is no need to specify a value for :program since both instrument
-;;; names exactly match a general-midi program.
 ;;;
 
-(general-midi-instrument flute
-			 :channel 2
+(general-midi-instrument flute :channel 2
 			 :keynumber-map (basic-keynumber-map :transpose 12))
 
-(general-midi-instrument vibes
-			 :channel 3)
+(general-midi-instrument vibes :channel 3)
 
 
 ;;; Creates an instrument for use as a metronome on channel 16 using the 

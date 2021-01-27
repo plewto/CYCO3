@@ -53,11 +53,9 @@
 
 ;;; Before creating the main MIDI file the section-order must be specified.
 ;;;
-;;; The section names are listed in order.  (b :invert c5) indicates
-;;; section b is to be inverted aqrounds c5 (middle-C).
 ;;; 
 
-(section-order '(preroll a (b :invert c5)))
+(section-order '(preroll a b))
 
 ;;; Write the main MIDI file.
 ;;; The file is placed in the MIDI folder and names ex1-main.mid

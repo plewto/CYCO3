@@ -4,7 +4,7 @@
 ;;;; 
 
 
-;;; Creates section B by cloning A.
+;;; Creates section B as clone of A.
 ;;;
 (param b (clone a :new-name "B"))
 
@@ -23,7 +23,7 @@
 
 
 ;;; Replace the original flute instrument with vibes.
-;;;
+;;; 
 (put b-melody :instruments (list vibes))
 
 

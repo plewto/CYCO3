@@ -10,8 +10,8 @@
 
 (plugin general-midi)
 (prune-orchestra)
-(general-midi-instrument piano :channel 1 :program 'piano1)
-(general-midi-instrument organ :channel 2 :program 'organ1)
+(general-midi-instrument piano :channel 1)
+(general-midi-instrument organ :channel 2)
 
 (section alpha :bars 2)
 

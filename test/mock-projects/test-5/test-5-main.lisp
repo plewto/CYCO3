@@ -8,8 +8,8 @@
 (plugin general-midi)
 (plugin guitar-chords)
 (prune-orchestra)
-(general-midi-instrument piano :channel 1 :program 'piano1)
-(general-midi-instrument organ :channel 1 :program 'organ1)
+(general-midi-instrument piano :channel 1)
+(general-midi-instrument organ :channel 1)
 
 (section alpha :bars 4)
 
@@ -64,7 +64,7 @@
 (let* ((events (render-once st03))
        (values (mapcar #'(lambda (evn)(data (cdr evn) 0)) events)))
   (pass? "programs, strummer test 3"
-	 (equal values (list (general-midi-program 'organ1) 19))))
+	 (equal values (list (general-midi-program 'organ) 19))))
 
 
 ;; simple chords

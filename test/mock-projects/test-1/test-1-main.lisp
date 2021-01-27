@@ -17,7 +17,7 @@
 (project test-1 :tempo 60 :bars 4 :beats 4
 	 :project-directory (join-path *mock-project-directory* "test-1"))
 
-(plugin general-midi)4
+(plugin general-midi)
 
 (lpf orchestra)
 (lpf preroll)

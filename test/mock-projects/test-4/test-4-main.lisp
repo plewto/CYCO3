@@ -7,8 +7,8 @@
 
 (plugin general-midi)
 (prune-orchestra)
-(general-midi-instrument piano :channel 1 :program 'piano1)
-(general-midi-instrument organ :channel 2 :program 'organ1)
+(general-midi-instrument piano :channel 1)
+(general-midi-instrument organ :channel 2)
 
 (section alpha :bars 4)
 
@@ -99,6 +99,6 @@
 	      (= cc-2 64)
 	      (= pressure 64)
 	      (zerop (midi-data->bend low high))
-	      (= program (general-midi-program 'organ1)))))
+	      (= program (general-midi-program 'organ)))))
 
       

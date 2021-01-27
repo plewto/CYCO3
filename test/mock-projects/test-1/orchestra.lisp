@@ -3,9 +3,9 @@
 
 (prune-orchestra)
 
-(general-midi-instrument piano :program 'piano1 :channel 1)
-(general-midi-instrument bass :program 'bass-pick :channel 2)
-(general-midi-instrument organ :program 'organ1 :channel 3)
+(general-midi-instrument piano :channel 1)
+(general-midi-instrument bass :channel 2)
+(general-midi-instrument organ :channel 3)
 (general-midi-metronome :program 'woodblock :channel 16)
 
 

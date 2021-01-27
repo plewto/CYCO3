@@ -20,7 +20,7 @@
 ;;    channels and program numbers.
 ;;
 (let* ((program-events (remove-if-not #'(lambda (event)(midi-program-change-p (cdr event))) -preroll-events-))
-       (expect '((0 0)(1 34)(2 16)(15 115))))  ;; (channel-index program-number)
+       (expect '((0 0)(1 32)(2 16)(15 115))))  ;; (channel-index program-number)
   (pass? "Mock project test-1  preroll section, program-change events"
 	 (and (= (length program-events) 4)
 	      (every #'(lambda (q)(and (zerop (car q))(midi-program-change-p (cdr q)))) program-events)))

@@ -7,9 +7,9 @@
 
 (plugin general-midi)
 (prune-orchestra)
-(general-midi-instrument piano :channel 1 :program 'piano1)
-(general-midi-instrument organ :channel 2 :program 'organ1)
-(general-midi-instrument sax   :channel 3 :program 'sax-alto)
+(general-midi-instrument piano :channel 1)
+(general-midi-instrument organ :channel 2)
+(general-midi-instrument sax   :channel 3 :program 'alto-sax)
 (general-midi-instrument oboe  :channel 4)
 (general-midi-instrument trumpet :channel 5)
 (general-midi-instrument trombone :channel 6)

@@ -4,25 +4,16 @@
 
 (prune-orchestra)
 
-(general-midi-instrument piano
-			 :channel 1
-			 :program 'piano1
+(general-midi-instrument piano :channel 1
 			 :keynumber-map (basic-keynumber-map :transpose -12))
+
+(general-midi-instrument vibes :channel 2)
+
+(general-midi-instrument synth :channel 3 :program 'synth-bass)
 			 
+(general-midi-instrument guitar :channel 4 :program 'eguitar-4)
 
-(general-midi-instrument vibes
-			 :channel 3)
-
-
-(general-midi-instrument music-box
-			 :channel 3
-			 :program 'mbox)
-
-
-
-
-(general-midi-metronome :channel 16
-			:program 'woodblock)
+(general-midi-metronome :channel 16 :program 'woodblock)
 
 
 			 

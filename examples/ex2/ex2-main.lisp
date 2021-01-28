@@ -15,7 +15,11 @@
 (lpf preroll)
 (lpf a)
 (lpf b)
+(lpf c)
+(lpf d)
+(lpf e)
+(lpf f)
 
+(section-order '(preroll  a (b :x 2) c (d :x 2) e f))
 
-(section-order '(preroll  a  (b :x 2)))
 (project->midi)

@@ -1,4 +1,4 @@
-;;;; CYCO examples ex2 a.lisp
+;;;; CYCO examples ex2 section a
 ;;;;
 
 (section a :bars 8)
@@ -44,7 +44,12 @@
        :key (dice :of (cons 'maracas (copies 8 'cabasa)))
        :amp 'p)
 
+(qball a-clave gm-woodblock
+       :bars 1
+       :key 'clave
+       :cue '((1 2 3)(1 3 3)))
 
 
 (->midi a)
+(->midi a :filename "practice-a" :repeat 8)
   

@@ -431,9 +431,9 @@
 				     (property mother :instruments)
 				     :section parent
 				     :no-thin (property mother :no-thin)
-				     :remarks (remarks mother)
-				     :events (clone (property mother :events)))))
+				     :remarks (remarks mother))))
     (copy-part-properties mother daughter)
+    (setf (controllers-states daughter)(clone (controllers-states mother)))
     (copy-time-signature mother daughter)
     daughter))
 
@@ -445,9 +445,9 @@
 				(property mother :instruments)
 				:section parent
 				:no-thin (property mother :no-thin)
-				:remarks (remarks mother)
-				:events (clone (property mother :events)))))
+				:remarks (remarks mother))))
     (copy-part-properties mother daughter)
+    (setf (bender-states daughter)(clone (bender-states mother)))
     (copy-time-signature mother daughter)
     daughter))
 

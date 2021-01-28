@@ -1,7 +1,14 @@
 ;;;; CYCO examples ex2 section b
+;;;; Section B adds a vibraphone to the basic motif.
 ;;;;
 
+;; Create section B as a clone of A.
+;; 
 (param b (clone a :new-name "B"))
+
+;; The bulk rename is included only for illustration.  It is needed only if
+;; the cloned parts are to be assigned to variables.
+;;
 (bulk-rename-parts b 1 "B")
 
 
@@ -29,4 +36,4 @@
 
 
 (->midi b)
-(->midi b :filename "practice-b" :repeat 16)
+(->midi b :filename "loop-b" :repeat 16)

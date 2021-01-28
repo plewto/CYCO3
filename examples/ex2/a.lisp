@@ -1,8 +1,24 @@
 ;;;; CYCO examples ex2 section a
 ;;;;
+;;;; Section A defines the basic motif, "a-bass" using a piano, and a few
+;;;; simple percussion parts.   The percussion is intentionally mixed low. 
+;;;;
 
+;; Creates the section object.
+;;
 (section a :bars 8)
 
+;; Add MIDI controller events to set all instrument volumes
+;; to the maximum.
+;; 
+(controllers preroll-volume (list piano vibes gm-snare synth guitar)
+	     :bars 8
+	     :events '((:cc (1 1 1) volume 127)))
+
+
+;; Defines the main motif.  Both the piano and kick-drum share the same
+;; cue-list.
+;;
 (let ((cue-list '((1 1 1)(1 1 3)(1 4 1)(1 4 3)
 		  (2 1 1)(2 1 3)(2 4 1)(2 4 3)
 		  (3 1 1)(3 1 3)(3 4 1)(3 4 3)
@@ -34,14 +50,14 @@
 (qball a-snare gm-snare
        :bars 1
        :cue '((1 2 1)(1 4 1))
-       :key (dice :of '(x1 x1 x1 x2))
+       :key (dice :of '(x1 x1 x1 x2))  ;; select random snare sound for variation.
        :amp 'pp)
        
 (qball a-shaker gm-shaker
        :bars 1
        :cue '((1 1 1)(1 1 3)(1 2 1)(1 2 3)
 	      (1 3 1)(1 3 3)(1 4 1)(1 4 3))
-       :key (dice :of (cons 'maracas (copies 8 'cabasa)))
+       :key (dice :of (cons 'maracas (copies 8 'cabasa))) ;; select random shaker sound for variation.
        :amp 'p)
 
 (qball a-clave gm-woodblock
@@ -50,6 +66,11 @@
        :cue '((1 2 3)(1 3 3)))
 
 
+;; Write the section file to the MIDI directory.
+;;
 (->midi a)
-(->midi a :filename "practice-a" :repeat 8)
+
+;; Writes an alternate section file which loops 8 times.
+;;
+(->midi a :filename "loop-a" :repeat 8)
   

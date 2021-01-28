@@ -1,5 +1,9 @@
 ;;;; CYCO example ex2 section f  -- fade out
 ;;;;
+;;;; Section F is a clone of section E but adds volume fades to all parts.
+;;;; Two fades are defined with slightly different rates.   The piano,
+;;;; vibes and percussion fade out earlier then the synth and guitar.
+;;;;
 
 (param f (clone e :new-name "F"))
 

@@ -1,12 +1,13 @@
 ;;;; CYCO examples ex2 preroll.lisp
 ;;;;
+;;;; Defines the initial 'preroll' to send initial program-change events
+;;;; and provide a count-in metronome.
+;;;;
 
 (preroll
  :bars 1
  :instruments (list piano vibes synth guitar *metronome*))
 
-(controllers preroll-volume (list piano vibes gm-snare synth guitar)
-	     :bars 8
-	     :events '((:cc (1 1 1) volume 127)))
-
+;; Save section to MIDI file.
+;;
 (->midi preroll)

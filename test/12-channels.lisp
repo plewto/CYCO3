@@ -11,7 +11,7 @@
 
 
 
-(pass? "meta-channel test 1"
+(pass? "meta-channel test 12.1"
        (and (= (meta-channel 3) 3)
 	    (= (meta-channel 'alpha) 1)
 	    (= (meta-channel 'beta) 2)
@@ -20,7 +20,7 @@
 	    (eq (meta-channel 'rim-shot nil) 'snare)
 	    (= (meta-channel 'rim-shot t) 10)))
 
-(pass? "meta-channel test 2"
+(pass? "meta-channel test 12.2"
        (and (every #'meta-channel-assignment-p (range 1 17))
 	    (every #'meta-channel-assignment-p '(alpha beta drums snare))
 	    (not (meta-channel-assignment-p 17))

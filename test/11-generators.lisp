@@ -3,24 +3,22 @@
 
 (let* ((val 3)
        (gen (constant-value val)))
-  (pass? "constant-value"
+  (pass? "constant-value 11.1"
 	 (every #'(lambda (n)(= n val))(next gen 10))))
        
-
-
 ;; COUNTER
 ;;
 
 (let* ((gen (counter))
        (expect '(0 1 2 3 4))
        (actual (next gen 5)))
-  (pass? "counter"
+  (pass? "counter 11.2"
 	 (equal expect actual)))
 
 (let* ((gen (counter :hook #'(lambda (n)(* n n))))
        (expect '(0 1 4 9 16))
        (actual (next gen 5)))
-  (pass? "counter with hook"
+  (pass? "counter with hook 11.3"
 	 (equal expect actual)))
 
 
@@ -31,20 +29,20 @@
     (let* ((gen1 (countdown 3))
 	   (expect '(3 2 1 0 0))
 	   (actual (next gen1 5)))
-      (pass? "countdown test 1"
+      (pass? "countdown test 11.4"
 	     (equal expect actual)))
     
     (let* ((gen2 (countdown 3 :action #'action-hook :multi-trigger nil))
 	   (expect '(3 2 1 0 0))
 	   (actual (next gen2 5)))
-      (pass? "countdown test 2 with single action"
+      (pass? "countdown with single action 11.5"
 	     (and (equal expect actual)
 		  (= action-counter 1))))
 
     (setf action-counter 0)
     (let* ((gen3 (countdown 3 :action #'action-hook :multi-trigger t)))
       (next gen3 5)
-      (pass? "countdown test 3 with multi action"
+      (pass? "countdown with multi action 11.6"
       	     (= action-counter 2))) ))
 
 ;; RAMP
@@ -53,30 +51,30 @@
 (let* ((ramp1 (ramp 0 10))
        (expect '(0 1 2 3 4 5 6 7 8 9 10 10 10))
        (actual (next ramp1 (length expect))))
-  (pass? "Ramp test 1"
+  (pass? "Ramp 11.7"
 	 (equal expect actual)))
 
 (let* ((ramp2 (ramp 0 10 :by 2))
        (expect '(0 2 4 6 8 10 10 10))
        (actual (next ramp2 (length expect))))
-  (pass? "Ramp test 2"
+  (pass? "Ramp 11.8"
 	 (equal expect actual)))
 
 (let* ((ramp3 (ramp 10 0 :by 2))
        (expect '(10 8 6 4 2 0 0))
        (actual (next ramp3 (length expect))))
-  (pass? "Ramp test 3, auto increment sign correction"
+  (pass? "Ramp auto increment sign correction 11.9"
 	 (equal expect actual)))
 
 (let* ((ramp4 (ramp 0 10 :by 3))
        (actual (next ramp4 6)))
-  (pass? "Ramp test 4, end-points with non-uniform increments"
+  (pass? "Ramp end-points with non-uniform increments 11.10"
 	 (and (= (car actual) 0)
 	      (= (final actual) 10))))
 
 (let* ((ramp5 (ramp 10 0 :by -3))
        (actual (next ramp5 6)))
-  (pass? "Ramp test 4, end-points with non-uniform negative increments"
+  (pass? "Ramp end-points with non-uniform negative increments 11.11"
 	 (and (= (car actual) 10)
 	      (- (final actual) 0))))
 
@@ -90,7 +88,7 @@
        (actual-attack (next asr1 (length expect-attack)))
        (actual-sustain (next asr1 (length expect-sustain)))
        (actual-decay (next asr1 (length expect-decay))))
-  (pass? "asr test 1"
+  (pass? "asr test 11.12"
 	 (and (equal expect-attack actual-attack)
 	      (equal expect-sustain actual-sustain)
 	      (equal expect-decay actual-decay))))
@@ -102,7 +100,7 @@
        (actual-attack (next asr2 (length expect-attack)))
        (actual-sustain (next asr2 (length expect-sustain)))
        (actual-decay (next asr2 (length expect-decay))))
-  (pass? "asr test 2"
+  (pass? "asr test 11.13"
 	 (and (equal expect-attack actual-attack)
 	      (equal expect-sustain actual-sustain)
 	      (equal expect-decay actual-decay)
@@ -113,7 +111,7 @@
        (actual-1 (next asr3 (length expect)))
        (actual-2 (next asr3 (1- (length expect))))
        (actual-3 (next asr3 (1- (length expect)))))
-  (pass? "asr test 3, cycle mode enabled"
+  (pass? "asr cycle mode enabled 11.14"
 	 (and (equal expect actual-1)
 	      (equal (cdr expect) actual-2)
 	      (equal (cdr expect) actual-3))))
@@ -125,7 +123,7 @@
        (gen (lfo :curve curve :hook #'(lambda (n)(* n n))))
        (expect '(0 1 4 0 1 4 0 1 4))
        (actual (next gen (length expect))))
-  (pass? "LFO test 1"
+  (pass? "LFO test 11.15"
 	 (equal expect actual)))
 
 (flet ((diff (data)
@@ -133,14 +131,14 @@
 		   collect (- (nth (1+ i) data)(nth i data)))))
   (let* ((steps 10)
 	 (saw (sawtooth 0 9 :cycles 1 :steps steps)))
-    (pass? "sawtooth test 1"
+    (pass? "sawtooth test 11.16"
 	   (and (= (length saw) steps)
 		(monotonic-p saw)
 		(= (mean (diff saw)) 1.0))))
 
   (let* ((steps 30)
 	 (saw (sawtooth 0 9 :cycles 1 :steps steps)))
-    (pass? "sawtooth test 2"
+    (pass? "sawtooth test 11.17"
 	   (and (= (length saw) steps)
 		(monotonic-p saw)
 		(every #'(lambda (n)(<= n 1))(diff saw)))))
@@ -149,7 +147,7 @@
 	 (saw (sawtooth 0 9 :cycles 2 :steps steps))
 	 (first (subseq saw 0 (/ steps 2)))
 	 (second (subseq saw (/ steps 2))))
-    (pass? "sawtooth test 3, cycles"
+    (pass? "sawtooth cycles 11.18"
 	   (and (= (length saw) steps)
 		(monotonic-p first)
 		(every #'(lambda (n)(<= n 1))(diff saw))
@@ -159,7 +157,7 @@
 	 (saw (sawtooth 0 9 :cycles 1 :steps steps :phase 180))
 	 (first (subseq saw 0 (/ steps 2)))
 	 (second (subseq saw (/ steps 2))))
-    (pass? "sawtooth test 4, phase"
+    (pass? "sawtooth phase 11.19"
 	   (and (monotonic-p first)
 		(= (final first) 9)
 		(monotonic-p second)
@@ -170,7 +168,7 @@
 	 (tri (triangle 0 9 :cycles 1 :steps steps))
 	 (first (subseq tri 0 half))
 	 (second (subseq tri half)))
-    (pass? "triangle test 1"
+    (pass? "triangle 11.20"
 	   (and (monotonic-p first)
 		(monotonic-p (reverse second)))))
 
@@ -183,7 +181,7 @@
       (if (zerop v)
 	  (setf low (1+ low))
 	(setf high (1+ high))))
-    (pass? "pulse test 1"
+    (pass? "pulse test 11.21"
 	   (and (every #'(lambda (a)(member a '(0 9))) wave)
 		(= low high)
 		(every #'(lambda (n)(= n 9)) (subseq wave 0 (/ steps 3)))
@@ -198,7 +196,7 @@
       (if (zerop v)
 	  (setf low (1+ low))
 	(setf high (1+ high))))
-    (pass? "pulse test 1"
+    (pass? "pulse test 11.22"
 	   (and (every #'(lambda (a)(member a '(0 9))) wave)
 		(= (truncate (/ (float low) high)) 4)))))
  
@@ -209,13 +207,13 @@
 (let* ((sr (shift-register #b0001 #b1000 :mask #b1111))
        (expect '(1 2 4 8))
        (actual (next sr (length expect))))
-  (pass? "shift-register test 1"
+  (pass? "shift-register 11.23"
 	 (equal expect actual)))
 
 (let* ((sr (shift-register #b0001 #b1010 :mask #b1111))
        (expect '(1 2 5 10 4 8))
        (actual (next sr (length expect))))
-  (pass? "shift-register test 2"
+  (pass? "shift-register 11.24"
 	 (equal expect actual)))
 
 
@@ -225,7 +223,7 @@
 (let* ((hs (hailstone 10))
        (expect '(10 5 16 8 4 2 1 4))
        (actual (next hs (length expect))))
-  (pass? "Hailstone"
+  (pass? "Hailstone 11.25"
 	 (equal expect actual)))
 
 ;; Recaman
@@ -234,5 +232,5 @@
 (let* ((rec (recaman 0))
        (expect '(0 1 3 6 2 7 13 20 12 21 11 22 10 23 9))
        (actual (next rec (length expect))))
-  (pass? "Recaman"
+  (pass? "Recaman 11.26"
 	 (equal expect actual)))

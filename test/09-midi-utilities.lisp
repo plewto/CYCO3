@@ -6,13 +6,13 @@
     (let* ((value (car test-case))
 	   (expected (second test-case))
 	   (actual (int->midi-vlv value)))
-      (pass? (sformat "int->midi-vlv ~A" (car test-case))
+      (pass? (sformat "int->midi-vlv 9.1 ~A" (car test-case))
 	     (equal expected actual)))))
 
 (let* ((test-array #(1 1 1 131 72 1 1 1))
        (actual (read-midi-vlv test-array 3))
        (expected (cons 456 2)))
-  (pass? "read-midi-vlv"
+  (pass? "read-midi-vlv 9.2"
 	 (and (consp actual)
 	      (= (car actual)(car expected))
 	      (= (cdr actual)(cdr expected)))))
@@ -21,7 +21,7 @@
 (let* ((test-array #(0 0 0 0 1 2 3 4 0 0 0 0))
        (expected (cons 180 4))
        (actual (read-midi-long test-array 4)))
-  (pass? "read-midi-long"
+  (pass? "read-midi-long 9.3"
 	 (and (consp actual)
 	      (= (car expected)(car actual))
 	      (= (cdr expected)(cdr actual)))))
@@ -32,7 +32,7 @@
   (let* ((bend (car test-case))
 	 (expected (second test-case))
 	 (actual (bend->midi-data bend)))
-    (pass? (sformat "bend->midi-data ~A" bend)
+    (pass? (sformat "bend->midi-data 9.4 ~A" bend)
 	   (and (vectorp actual)
 		(= (length actual) 2)
 		(= (aref actual 0)(aref expected 0))
@@ -46,7 +46,7 @@
   (while (< offset (length test-array))
     (let ((actual (read-midi-bend test-array offset))
 	  (expect (nth (truncate (/ offset 2)) expected)))
-      (pass? (sformat "read-midi-bend offset = ~A" offset)
+      (pass? (sformat "read-midi-bend 9.5 offset = ~A" offset)
 	     (and (consp actual)
 		  (= (car actual)(car expect))
 		  (= (cdr actual)(cdr expect))))
@@ -63,11 +63,11 @@
 	(fail (sformat "norm->midi-data  midi-data->norm  ~A" (1- value)) ""))))
 	   
 
-(pass? "bpm->beat-period"
+(pass? "bpm->beat-period 9.6"
        (and (= (bpm->beat-period 60) 1.0)
 	    (= (bpm->beat-period 120) 0.5)))
 
-(pass? "bpm->microseconds"
+(pass? "bpm->microseconds 9.7"
        (and (= (bpm->microseconds 60) 1e6)
 	    (= (bpm->microseconds 120) (/ 1e6 2))))
 
@@ -83,14 +83,11 @@
 		     (midi-pitch-bend 7 0 0))))
   (dolist (s sources)
     (let ((dup (duplicate-channel-message s)))
-      (pass? (sformat "duplicate-channel-message ~A" s)
+      (pass? (sformat "duplicate-channel-message 9.8 ~A" s)
 	     (and (= (channel-index dup)(channel-index s))
 		  (= (data dup 0)(data s 0))
 		  (= (data dup 1)(data s 1))
 		  (not (eq dup s)))))))
-	 
-
-
 
 (not-tested 'read-midi-data)
 (not-tested 'signed-norm->midi-data)

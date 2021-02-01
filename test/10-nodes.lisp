@@ -52,45 +52,44 @@
   (put fish 'sound 'none)
   (put trout 'diet 'hooks)
   (put shark 'diet 'trout)
-  (pass? "name" (eq (name animal) 'animal))
-  (pass? "remarks" (string= (remarks animal) "Animal is the root test node."))
+  (pass? "name 10.1" (eq (name animal) 'animal))
+  (pass? "remarks 10.2" (string= (remarks animal) "Animal is the root test node."))
 
   (set-remarks animal "New animal remarks")
-  (pass? "set-remarks" (string= (remarks animal) "New animal remarks"))
+  (pass? "set-remarks 10.3" (string= (remarks animal) "New animal remarks"))
   
-  (pass? "root-p"
+  (pass? "root-p 10.4"
 	 (and (root-p animal)
 	      (not (root-p bird))))
-  (pass? "child-of-p"
+  (pass? "child-of-p 10.5"
 	 (and (child-of-p bird crow)
 	      (not (child-of-p bird shark))))
-  (pass? "find-child"
+  (pass? "find-child 10.6"
 	 (and (eq (find-child bird crow) crow)
 	      (eq (find-child fish 'trout) trout)
 	      (not (find-child bird fish))
 	      (not (find-child bird 'fish))))
-  (pass? "path-to-root"
+  (pass? "path-to-root 10.7"
 	 (equal (path-to-root shark) (list shark fish animal)))
-
 
   (progn
     (disconnect crow)
-    (pass? "disconnect" (not (child-of-p bird crow)))
+    (pass? "disconnect 10.8" (not (child-of-p bird crow)))
     (connect bird crow)
-    (pass? "connect" (child-of-p bird crow)))
+    (pass? "connect 10.9" (child-of-p bird crow)))
 
   (let ((alice (make-instance 'cyco-node :name 'alice :transient t))
 	(bob (make-instance 'cyco-node :name 'bob :transient t)))
     (connect crow alice)
     (connect trout bob)
     (prune animal)
-    (pass? "prune"
+    (pass? "prune 10.10"
 	   (and (root-p alice)
 		(root-p bob)
 		(not (root-p crow)))))
 
   (prune animal :force)
-  (pass? "force prune"
+  (pass? "force prune 10.11"
 	 (every #'root-p (list animal bird crow hawk fish trout shark)))
 
   ;; rebuild tree
@@ -101,18 +100,17 @@
   (connect fish trout)
   (connect fish shark)
   
-  (pass? "has-property-p"
+  (pass? "has-property-p 10.12"
 	 (and (has-property-p animal 'diet)
 	      (not (has-property-p bird 'foo))
 	      (not (has-property-p nil nil))))
 	      
 
-  (pass? "property"
+  (pass? "property 10.13"
 	 (and (eq (property animal 'diet) 'food)
   	      (eq (property bird 'diet) 'food)    ;; inherited
   	      (eq (property crow 'diet) 'worms))) ;; shadow
 
   (not-tested 'local-properties)
   (not-tested "(CLONE node)")
-  (not-tested "(->STRING node)")
-  )
+  (not-tested "(->STRING node)"))

@@ -36,7 +36,7 @@
 (load-mock-project 1 "Basics")
 (load-mock-project 2 "Qball")
 (load-mock-project 3 "Controllers")
-(load-mock-project 4 "Simple-part")
+;; (load-mock-project 4 "Simple-part")
 (load-mock-project 5 "Strummer")
 (load-mock-project 6 "Transformer")
 (load-mock-project 7 "Groups & mutes")

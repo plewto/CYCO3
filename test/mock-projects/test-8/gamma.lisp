@@ -5,8 +5,8 @@
 
 (section gamma :bars 4)
 
-(simple-part a-trumpet trumpet
+(strummer a-trumpet trumpet
 	     :events '((:time (1 1 1) :key c4)))
 
-(simple-part a-trombone trombone
+(strummer a-trombone trombone
 	     :events '((:time (1 1 1) :key c4)))

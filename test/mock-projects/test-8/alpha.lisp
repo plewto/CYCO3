@@ -6,8 +6,8 @@
 
 (section alpha :bars 4)
 
-(simple-part a-piano piano
+(strummer a-piano piano
 	     :events '((:time (1 1 1) :key c3)))
 
-(simple-part a-organ organ
+(strummer a-organ organ
 	     :events '((:time (4 1 1) :key c6)))

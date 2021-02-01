@@ -16,7 +16,7 @@
 ;; identify
 ;;
 
-(simple-part sa1 piano
+(strummer sa1 piano
 	     :bars 4
 	     :events '((:time (1 1 1) :key 60)))
 
@@ -35,7 +35,7 @@
 ;; time filter
 ;;
 
-(simple-part sa2 piano
+(strummer sa2 piano
 	     :bars 4
 	     :events '((:time (1 1 1) :key 60 :dur q)
 		       (:time (2 1 1) :key 61 :dur q)
@@ -56,7 +56,7 @@
 ;; shift-channel
 ;;
 
-(simple-part sa3 piano
+(strummer sa3 piano
 	     :bars 4
 	     :events '((:time (1 1 1) :key 60 :dur q)
 		       (:time (2 1 1) :key 61 :dur q)

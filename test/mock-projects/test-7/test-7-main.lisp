@@ -16,24 +16,24 @@
 
 (section alpha)
 
-(simple-part a-piano piano
+(strummer a-piano piano
 	     :events '((:time (1 1 1) :key c5)))
 
-(simple-part a-organ organ
+(strummer a-organ organ
 	     :events '((:time (1 1 1) :key c5)))
 
-(simple-part a-sax sax
-	     :events '((:time (1 1 1) :key c5)))
-
-
-(simple-part a-oboe oboe
+(strummer a-sax sax
 	     :events '((:time (1 1 1) :key c5)))
 
 
-(simple-part a-trumpet trumpet
+(strummer a-oboe oboe
 	     :events '((:time (1 1 1) :key c5)))
 
-(simple-part a-trombone trombone
+
+(strummer a-trumpet trumpet
+	     :events '((:time (1 1 1) :key c5)))
+
+(strummer a-trombone trombone
 	     :events '((:time (1 1 1) :key c5)))
 
 

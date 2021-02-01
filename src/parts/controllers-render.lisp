@@ -5,8 +5,7 @@
 
 (in-package :cyco-part)
 
-(labels (
-	 (get-time-list
+(labels ((get-time-list
 	  (start end interval shift)
 	  (let* ((acc '())
 		 (time start))

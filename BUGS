@@ -88,7 +88,11 @@ BUG 0009 2021.01.12  Status OPEN
     but would cause CYCO to fail under windows.  
 
 --------------------------------------------------------------------
-BUG 0010 2021.01.31  Status OPEN
+BUG 0010 2021.01.31  Status CLOSED
 
     Controllers part, generated events all start at relative time 0.
-    
+
+    While parsing the controllers event-lint times, a call is made to
+    both the cue and shuffle functions.   These should have been summed
+    as the eventual event-time.  Instead only the shuffle result (which
+    by default is 0) was being saved.

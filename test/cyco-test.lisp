@@ -9,7 +9,7 @@
 
 ;; If true passed test do not produce output.
 ;;
-(global *silent-pass* t)
+(global *silent-pass* nil)
 
 (setf *enable-banners* nil)
 

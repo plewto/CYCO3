@@ -59,8 +59,9 @@
 				    (controllers-state-start-time state))
 				   ((eq start-spec '<)
 				    (controllers-state-end-time state))
-				   (t (funcall cuefn part start-spec)
-				      (funcall shuffle start-spec))))
+				   (t
+				    (+ (funcall cuefn part start-spec)
+				       (funcall shuffle start-spec)))))
 		 (end-time (if (or (eq end-spec '*)(null end-spec))
 			       (controllers-state-end-time state)
 			     (+ (funcall cuefn part end-spec)

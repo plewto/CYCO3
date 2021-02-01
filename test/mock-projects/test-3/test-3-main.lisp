@@ -56,24 +56,19 @@
 
 ;; Controller ramp starting at non-zero-time
 ;;
-;; (controllers cc3 piano
-;; 	     :events '((:time (2 1 1)(3 1 1) e :value 0 127 :ctrl 4 :ramp)))
+(controllers cc3 piano
+	     :events '((:time (2 1 1)(3 1 1) e :value 0 127 :ctrl 4 :ramp)))
 
-;; (let* ((events (render-once cc3))
-;;        (times (mapcar #'(lambda (evn)(car evn)) events))
-;;        (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events))
-;;        (expected-start-time (bar cc3 '(2 1 1)))
-;;        (actual-start-time (car times)))
-;;   (format t "DEBUG times --> ~A~%" times)
-;;   (format t "DEBUG expected-start ~A~%" expected-start-time)
-  
-;;   (pass? "Controllers ramp start time test, Test 3.3"
-;; 	 (and actual-start-time
-;; 	      (= actual-start-time expected-start-time))))
-	     
-
-
-
+(let* ((events (render-once cc3))
+       (times (mapcar #'(lambda (evn)(car evn)) events))
+       (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events))
+       (expected-start-time (bar cc3 '(2 1 1)))
+       (actual-start-time (car times)))
+  (pass? "Controllers ramp start time test, Test 3.3"
+	 (and actual-start-time
+	      (= actual-start-time expected-start-time)
+	      (monotonic-p times)
+	      (monotonic-p values))))
 
 ;; Pressure ramp
 ;;   ignore cc events between (1 1 1) and (2 1 1)
@@ -119,7 +114,7 @@
 ;; Bender curve
 ;;
 (bender b2 piano
-	:events '((:time (1 1 1)(2 1 1) :value -1.0 1.0 :ramp)))
+	:events '((:time (2 1 1)(3 1 1) :value -1.0 1.0 :ramp)))
 
 (let* ((events (render-once b2))
        (times (mapcar #'(lambda (evn)(car evn)) events))
@@ -128,12 +123,11 @@
 					     (msb (data msg 1)))
 					(midi-data->bend lsb msb)))
 		       events)))
-  (pass? "Bender ramp test. Test 3.6"
-	 (and (zerop (car times))
-	      (~= (final times)(bar b2 '(2 1 1)))
-	      (monotonic-p times)
-	      (= (car values) -1)
-	      (= (final values) 1)
-	      (monotonic-p values))))
+  (pass? "Bender curve. Test 3.6"
+	 (and (monotonic-p times)
+	      (monotonic-p values)
+	      (= (car times) 2.0)
+	      (= (car values) -1.0))))
+
 
 

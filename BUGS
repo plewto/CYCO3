@@ -87,3 +87,8 @@ BUG 0009 2021.01.12  Status OPEN
     but CLIPS elisits a warning.  On linux this does not pose any problems
     but would cause CYCO to fail under windows.  
 
+--------------------------------------------------------------------
+BUG 0010 2021.01.31  Status OPEN
+
+    Controllers part, generated events all start at relative time 0.
+    

@@ -2,7 +2,7 @@
 ;;;;
 
 (version 3)
-(project test-3 :tempo 60 :bars 4
+(project test-3 :tempo 120 :bars 4
 	 :project-directory (join-path *mock-project-directory* "test-3"))
 
 (plugin general-midi)
@@ -23,7 +23,7 @@
        (ch1 (channel-index (cdr ev1)))
        (ev2 (second events))
        (ch2 (channel-index (cdr ev2))))
-  (pass? "Controllers single events with layerd instruments.  Test 1"
+  (pass? "Controllers single events with layerd instruments.  Test 3.1"
 	 (and (= (length events) 2)
 	      (or (= ch1 0)(= ch1 1))
 	      (not (= ch1 ch2))
@@ -33,7 +33,7 @@
 
 
 
-;; Curve events
+;; Curve event
 ;;
 (controllers cc2 piano
 	     :events '((:time (1 1 1) (2 1 1) q :value 0 127 :ctrl 4 :ramp)))
@@ -43,7 +43,7 @@
        (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events))
        (time-increment (- (second times)(first times)))
        (expected-increment (beat-duration cc2)))
-  (pass? "Controllers ramp event.  Test 2"
+  (pass? "Controllers ramp event.  Test 3.2"
 	 (and
 	  (monotonic-p times)
 	  (zerop (car values))
@@ -51,6 +51,29 @@
 	  (monotonic-p values)
 	  (zerop (car times))
 	  (= time-increment expected-increment))))
+
+
+
+;; Controller ramp starting at non-zero-time
+;;
+;; (controllers cc3 piano
+;; 	     :events '((:time (2 1 1)(3 1 1) e :value 0 127 :ctrl 4 :ramp)))
+
+;; (let* ((events (render-once cc3))
+;;        (times (mapcar #'(lambda (evn)(car evn)) events))
+;;        (values (mapcar #'(lambda (evn)(data (cdr evn) 1)) events))
+;;        (expected-start-time (bar cc3 '(2 1 1)))
+;;        (actual-start-time (car times)))
+;;   (format t "DEBUG times --> ~A~%" times)
+;;   (format t "DEBUG expected-start ~A~%" expected-start-time)
+  
+;;   (pass? "Controllers ramp start time test, Test 3.3"
+;; 	 (and actual-start-time
+;; 	      (= actual-start-time expected-start-time))))
+	     
+
+
+
 
 ;; Pressure ramp
 ;;   ignore cc events between (1 1 1) and (2 1 1)
@@ -64,13 +87,15 @@
 (let* ((events (filter-message-type #'midi-channel-pressure-p 1 (render-once pr1)))
        (times (mapcar #'(lambda (evn)(car evn)) events))
        (values (mapcar #'(lambda (evn)(data (cdr evn) 0)) events)))
-  (pass? "Pressure ramp events. Test 3"
+  (pass? "Pressure ramp events. Test 3.4"
 	 (and (monotonic-p values)
 	      (= (car values) 10)
 	      (= (final values) 64)
 	      (monotonic-p times)
 	      (= (car times)(bar pr1 '(2 1 1)))
 	      (= (final times)(bar pr1 '(3 1 1))))))
+
+
 
 
 ;; Single pitch-bend event on two channels.
@@ -86,7 +111,7 @@
 				  (msb (data msg 1)))
 			     (midi-data->bend lsb msb)))
 		       events)))
-  (pass? "Single bender event. Test 4"
+  (pass? "Single bender event. Test 3.5"
 	 (and (zerop (car times))
 	      (= 1.0 (car values))
 	      (= (length times)(length values) 2))))
@@ -103,11 +128,12 @@
 					     (msb (data msg 1)))
 					(midi-data->bend lsb msb)))
 		       events)))
-  (pass? "Bender ramp test. Test 5"
+  (pass? "Bender ramp test. Test 3.6"
 	 (and (zerop (car times))
 	      (~= (final times)(bar b2 '(2 1 1)))
 	      (monotonic-p times)
 	      (= (car values) -1)
 	      (= (final values) 1)
 	      (monotonic-p values))))
+
 

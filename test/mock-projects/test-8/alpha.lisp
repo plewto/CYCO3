@@ -6,8 +6,9 @@
 
 (section alpha :bars 4)
 
-(strummer a-piano piano
-	     :events '((:time (1 1 1) :key c3)))
+(qball a-piano piano
+       :cue '((1 1 1))
+       :key 'd3)
 
 (strummer a-organ organ
-	     :events '((:time (4 1 1) :key c6)))
+	  :events '((:time (4 1 1) :key c6)))

@@ -115,5 +115,18 @@
 	      (invert gk pivot)))
     state))
 
+(defmethod transpose ((state strummer-state)(amount t))
+  (setf (strummer-state-key state)
+	(transpose (strummer-state-key state) amount)
+	(strummer-state-grace-key state)
+	(transpose (strummer-state-grace-key state) amount))
+  state)
 
-
+(defmethod invert ((state strummer-state)(pivot t))
+  (setf (strummer-state-key state)
+	(invert (strummer-state-key state) pivot)
+	(strummer-state-grace-key state)
+	(invert (strummer-state-grace-key state) pivot))
+  state)
+  
+  

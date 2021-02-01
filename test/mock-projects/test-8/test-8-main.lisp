@@ -64,7 +64,6 @@
 						(bar8 (* 8 (bar-duration *project*))))
 					    (and (<= bar5 time)(< time bar8))))
 			   events))
-								  
 		(events-c (remove-if-not
 			   #'(lambda (evn)(let ((time (car evn))
 						(bar8 (* 8 (bar-duration *project*))))
@@ -79,7 +78,7 @@
   ;; time      0            16
   ;; bar       00 10 02 03  04 05 06 07
   ;; section   A1           A2
-  ;;
+  
   (clear-section-order)
   (section-order '(alpha (alpha :trans 7)))
   (pass? "Section transpose, mock project test 8.3"
@@ -102,6 +101,7 @@
 			    for b in keys-a2
 			    collect (- b a))) )
 	   (every #'(lambda (q)(= q 7)) diff)))
+	   
 
   ;; test 8.4 section inversion A
   ;;
@@ -115,7 +115,7 @@
 	 (let* ((events (remove-if-not #'(lambda (evn)(midi-note-on-p (cdr evn)))
 				       (render-project)))
 		(keys (keyname (mapcar #'(lambda (evn)(data (cdr evn) 0)) events))))
-	   (equal keys '(c7 c4))))
+	   (equal keys '(as6 c4))))
 
 
   ;; test 8.5 time shift

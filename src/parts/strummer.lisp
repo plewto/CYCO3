@@ -437,3 +437,16 @@
 	  (clone (strummer-states mother)))
     (reset daughter)
     daughter))
+
+(defmethod transpose ((strummer strummer)(amount t))
+  (if (property strummer :transposable)
+      (dolist (state (strummer-states strummer))
+	(transpose state amount)))
+  strummer)
+
+
+(defmethod invert ((strummer strummer)(pivot t))
+  (if (property strummer :transposable)
+      (dolist (state (strummer-states strummer))
+	(invert state pivot)))
+  strummer)

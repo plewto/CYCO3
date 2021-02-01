@@ -39,6 +39,6 @@
 (load-mock-project 5 "Strummer")
 (load-mock-project 6 "Transformer")
 (load-mock-project 7 "Groups & mutes")
-;; (load-mock-project 8 "Section order")
+(load-mock-project 8 "Section order")
 
 (format t "~%**** All test have succeeded. ****~%")

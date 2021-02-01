@@ -24,7 +24,7 @@
 
 ;;; Replace the original flute instrument with vibes.
 ;;; 
-(put b-melody :instruments (list vibes))
+(put b-melody :instruments vibes)
 
 
 ;;; When cloning a section, groups are not included.  They have to

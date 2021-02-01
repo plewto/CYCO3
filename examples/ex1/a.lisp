@@ -31,7 +31,7 @@
 ;;; explicitly changed.
 ;;;
 
-(simple-part a-melody flute
+(strummer a-melody flute
 	     :events '((:time (1 1 1) :key d5  :dur e  :amp mf )
 		       (:time (1 1 3) :key e5                  )
 		       (:time (1 2 1) :key a5                  )
@@ -63,7 +63,7 @@
 ;;; changed.
 ;;;
 
-(simple-part a-piano-left piano
+(strummer a-piano-left piano
 	     :events
 	     '((:time (1 1 1) :amp f)
 	       (:time (1 1 1) :key d3  :chord (0 12) :dur q )
@@ -108,7 +108,7 @@
 ;;; major chord,  (0 4 7) is played as (4 7 12 16).
 ;;;
 
-(simple-part a-piano-right piano
+(strummer a-piano-right piano
 	     :events
 	     '((:time (1 1 1) :dur e :amp f)
 	       (:time (1 1 1) :key d4 :chord [min]    :inv 1  )

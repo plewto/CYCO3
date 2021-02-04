@@ -36,12 +36,20 @@
   (reset (final-value bag))
   bag)
 
+;; (defmethod next-1 ((bag bag))
+;;   (prog1
+;;       (or (car (elements bag))
+;; 	  (next-1 (final-value bag)))
+;;     (setf (elements bag)
+;; 	  (cdr (elements bag)))))
+
 (defmethod next-1 ((bag bag))
-  (prog1
-      (or (car (elements bag))
-	  (next-1 (final-value bag)))
+  (let ((v (or (car (elements bag))
+	       (next-1 (final-value bag)))))
     (setf (elements bag)
-	  (cdr (elements bag)))))
+	  (cdr (elements bag)))
+    (setf (value bag) v)))
+
 
 (defmethod transpose ((bag bag)(x integer))
   (call-next-method)

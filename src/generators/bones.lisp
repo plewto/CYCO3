@@ -11,9 +11,17 @@
     :initform #'(lambda ()(random 1.0))
     :initarg :function)))
 
-(defun bones (&key (function #'(lambda ()(random 1.0)))(hook #'(lambda (n) n)) &allow-other-keys)
+(defun bones (&key (function #'(lambda ()(random 12)))
+		   (hook #'(lambda (n) n))
+		   (monitor #'(lambda (value)
+				(declare (ignore value))
+				nil))
+		   (action #'(lambda ()))
+		   &allow-other-keys)
   (reset (make-instance 'bones
 			:hook hook
+			:monitor monitor
+			:action action
 			:function function
 			:seed (funcall function))))
 
@@ -21,15 +29,22 @@
   bones)
 
 (defmethod clone ((mother bones) &key &allow-other-keys)
-  (let ((daughter (bones :function (slot-value mother 'random-function)
-			 :hook (value-hook mother))))
-    (reset daughter)))
+  (bones :function (slot-value mother 'random-function)
+	 :hook (value-hook mother)
+	 :monitor (monitor mother)
+	 :action (action mother)))
 
 (defmethod next-1 ((bones bones))
   (prog1
-      (value bones)
+      (progn
+	(if (funcall (monitor bones)(current-value bones))
+	    (funcall (action bones)))
+      (value bones))
     (setf (current-value bones)
 	  (funcall (slot-value bones 'random-function)))))
+
+;; TODO update bones docstring
+
 
 (setf (documentation 'bones 'function)
       "Bones is a random-number generator.
@@ -38,3 +53,4 @@
 :hook     - The value-hook function. Defaults to (lambda (n) n)
 
 The PDF plugin provides several random-number generators suitable for use with bones.")
+

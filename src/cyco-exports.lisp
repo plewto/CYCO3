@@ -31,6 +31,8 @@
 	  ?meta-channels
 	  add-group
 	  alist-p
+	  alloy
+	  asr-envelope
 	  append-filename-extension
 	  approximate
 	  articulation-map
@@ -68,6 +70,7 @@
 	  constant
 	  constant-articulation-map
 	  constant-function
+	  counter
 	  copies
 	  cycle
 	  cycle-p
@@ -105,11 +108,13 @@
 	  flatten
 	  flatten1
 	  float-bar
+	  generator
 	  get-controller-number
 	  ghost
 	  ghost-p
 	  global
 	  group-p
+	  hailstone
 	  has-group-p
 	  hash-property
 	  init-time-signature
@@ -134,7 +139,7 @@
 	  load-profile-file
 	  load-sub-profile
 	  local-properties
-	  logistic-generator
+	  logistic
 	  make-ghost
 	  make-instrument
 	  markov-add-link
@@ -251,6 +256,7 @@
 	  push-event
 	  put
 	  ramp
+	  recaman
 	  read-midi-bend
 	  read-midi-data
 	  read-midi-long
@@ -283,6 +289,7 @@
 	  set-meta-channel
 	  set-symbolic-program-map
 	  sformat
+	  shift-register
 	  signed-norm->midi-data
 	  slice
 	  smf
@@ -298,7 +305,9 @@
 	  strummer-p
 	  subbeat-duration
 	  subbeats
+	  select
 	  set-subbeats
+	  switch
 	  symbolic-keynumber-map
 	  tbeat-duration
 	  tbeats

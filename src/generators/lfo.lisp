@@ -1,6 +1,8 @@
 ;;;; CYCO generators/lfo.lisp
 ;;;;
 
+(in-package :cyco)
+
 (labels ((rotate (curve phase)
 		 (if (zerop (rem phase 360))
 		     curve
@@ -60,24 +62,39 @@
   (prog1
       (value lfo)
     (let* ((curve (lfo-curve lfo))
-	   (pointer (rem (1+ (lfo-pointer lfo))(length curve))))
-      (setf (current-value lfo)(nth pointer curve)
-	    (lfo-pointer lfo) pointer))))
+	   (pointer (rem (1+ (lfo-pointer lfo))(length curve)))
+	   (v (nth pointer curve)))
+      (setf (current-value lfo)
+	    (if (funcall (monitor lfo) v)
+		(funcall (action lfo) lfo v)
+	      v))
+      (setf (lfo-pointer lfo) pointer))))
 
 
-(defun lfo (&key (curve (triangle 0 127)) (hook #'(lambda (n) n)) &allow-other-keys)
+(defun lfo (&key (curve (triangle 0 127))
+		 (hook #'(lambda (n) n))
+		 (monitor #'(lambda (value)
+			      (declare (ignore value))
+			      nil))
+		 (action #'(lambda (lfo value)
+			     (declare (ignore lfo))
+			     value))
+		 &allow-other-keys)
   (let ((gen (make-instance 'lfo
 			    :hook hook
+			    :monitor monitor
+			    :action action
 			    :curve curve)))
     (reset gen)))
 
 
 (defmethod clone ((mother lfo) &key &allow-other-keys)
-  (let ((daughter (lfo :curve (lfo-curve mother)
-		       :hook (value-hook mother))))
-    (setf (lfo-pointer daughter)(lfo-pointer mother))
-    daughter))
+  (lfo :curve (lfo-curve mother)
+       :monitor (monitor mother)
+       :action (action mother)
+       :hook (value-hook mother)))
 
+;; TODO Update LFO docstring
 
 (setf (documentation 'sawtooth 'function)
       "Returns numeric list with sawtooth contour.
@@ -127,6 +144,7 @@ Examples
 
    (next (lfo) 16) --> (0 2 4 6 8 10 12 14 16 14 11 9 7 5 2 0)
    (next (lfo :curve (pulse 0 1 :steps 8)) 16) --> (1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0)")
+
 
 
 

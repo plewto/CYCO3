@@ -2,6 +2,7 @@
 ;;;;
 ;;;; 
 
+(in-package :cyco)
 
 (defclass shift-register (generator)
   ((seed
@@ -25,14 +26,25 @@
     :initform 0
     :initarg :prerun)))
    
-(defun shift-register (seed taps &key mask (prerun 0) (hook #'(lambda (n) n))
+(defun shift-register (seed taps &key
+			    mask
+			    (prerun 0)
+			    (hook #'(lambda (n) n))
+			    (monitor #'(lambda (value)
+					 (declare (ignore value))
+					 nil))
+			    (action #'(lambda (shift-register value)
+					(declare (ignore shift-register))
+					value))
 			    &allow-other-keys)
   (reset (make-instance 'shift-register
-		 :hook hook
-		 :seed seed
-		 :taps taps
-		 :mask (or mask #b1111111111111111)
-		 :prerun prerun)))
+			:hook hook
+			:monitor monitor
+			:action action
+			:seed seed
+			:taps taps
+			:mask (or mask #b1111111111111111)
+			:prerun prerun)))
 
 (defmethod reset ((sr shift-register))
   (setf (current-value sr)(shift-register-seed sr))
@@ -41,14 +53,14 @@
 
 
 (defmethod clone ((mother shift-register) &key &allow-other-keys)
-  (let ((daughter (shift-register (shift-register-seed mother)
-				  (shift-register-taps mother)
-				  :mask (shift-register-mask mother)
-				  :prerun (shift-register-prerun mother)
-				  :hook (value-hook mother))))
-    (setf (current-value daughter)
-	  (current-value mother))
-    daughter))
+  (shift-register (shift-register-seed mother)
+		  (shift-register-taps mother)
+		  :mask (shift-register-mask mother)
+		  :prerun (shift-register-prerun mother)
+		  :monitor (monitor mother)
+		  :action (action mother)
+		  :hook (value-hook mother)))
+
 
 (defmethod shift-register-feedback ((sr shift-register))
   (let* ((mask (shift-register-mask sr))
@@ -63,8 +75,11 @@
 	 (v1 (logior (ash v0 1) fb)))
     (prog1
 	(value sr)
-      (setf (current-value sr)
-	    (logand v1 mask)))))
+      (let ((v-next (logand v1 mask)))
+	(setf (current-value sr)
+	      (if (funcall (monitor sr) v-next)
+		  (funcall (action sr) sr v-next)
+		v-next))))))
 
 (defmethod ? ((sr shift-register))
   (format t "SHIFT-REGISTER~%")
@@ -73,6 +88,8 @@
   (format t "Taps      ~A~%" (format-binary (shift-register-taps sr)))
   (format t "Feedback  ~A~%" (shift-register-feedback sr)))
 
+
+;; TODO update shift-register docstring
 
 (setf (documentation 'shift-register 'function)
       "Creates new instance of SHIFT-REGISTER generator.
@@ -96,3 +113,5 @@ taps    - Integer, feedback taps, taps >= 0.
           outputs have a tendency to 'blow up' and produce very high 
           values.  The hook function may be used to reign in excessive 
           register values.  Defaults to identity (lambda n) --> n.")
+
+

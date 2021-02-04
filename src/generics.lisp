@@ -165,6 +165,11 @@ MIDI channel, an integer between 1 and 16 inclusive."))
   (declare (ignore resolve))
   n)
 
+(defgeneric select (object item)
+  (:documentation
+   "Select item from object."))
+
+
 (defgeneric set-channel (instrument channel)
   (:documentation
    "Sets instrument's MIDI channel.  

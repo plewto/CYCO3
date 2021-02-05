@@ -40,8 +40,10 @@
   (define-controller 'wheel  1)
   (define-controller 'breath  2)
   (define-controller 'foot  4)
-  (define-controller 'port-time  5)
+  (define-controller 'portamento-time  5)
   (define-controller 'volume  7)
-  (define-controller 'pan  10))
+  (define-controller 'pan  10)
+  (define-controller 'expression 11)
+  (define-controller 'portamento 65))
 
 (initialize-controller-numbers)

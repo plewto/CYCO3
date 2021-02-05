@@ -12,8 +12,8 @@
 (defclass fin (section) nil)
 
 (defun make-fin (name &key (project *project*) bars beats)
-  (let ((section (make-instance name
-				:name 'fin
+  (let ((section (make-instance 'fin
+				:name name
 				:properties +fin-properties+
 				:remarks "Pads track ending with silence."
 				:transient t)))
@@ -30,9 +30,9 @@
 
 (defmacro fin (name &key (project *project*) bars beats (auto-prune t))
   `(progn
-     (banner2 ,'name)
-     (if ,auto-prune (prune-project 'fin) :project ,project)
-     (let ((section (make-fin :project ,project :bars ,bars :beats ,beats)))
+     (banner2 (->string ',name))
+     (if ,auto-prune (prune-project ',name :project ,project))
+     (let ((section (make-fin ',name :project ,project :bars ,bars :beats ,beats)))
        (defparameter ,name section)
        section)))
 

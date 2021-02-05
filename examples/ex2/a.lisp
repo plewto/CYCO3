@@ -8,12 +8,12 @@
 ;;
 (section a :bars 8)
 
-;; Add MIDI controller events to set all instrument volumes
-;; to the maximum.
-;; 
-(controllers preroll-volume (list piano vibes gm-snare synth guitar)
-	     :bars 8
-	     :events '((:cc (1 1 1) volume 127)))
+;; ;; Add MIDI controller events to set all instrument volumes
+;; ;; to the maximum.
+;; ;; 
+;; (controllers preroll-volume (list piano vibes gm-snare synth guitar)
+;; 	     :bars 8
+;; 	     :events '((:cc (1 1 1) volume 127)))
 
 
 ;; Defines the main motif.  Both the piano and kick-drum share the same

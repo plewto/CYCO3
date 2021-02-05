@@ -5,16 +5,16 @@
 ;;;; vibes and percussion fade out earlier then the synth and guitar.
 ;;;;
 
-(param f (clone e :new-name "F"))
+(param fade (clone e :new-name "Fade"))
 
-(controllers f-fade-1 (list piano vibes gm-snare)
+(controllers fade-1 (list piano gm-snare guitar)
 	     :bars 8
-	     :events '((:time (4 1 1) (7 3 1) s :ctrl volume :value 127 0 :ramp)))
+	     :events '((:time (4 1 1) (6 3 1) s :ctrl volume :value 127 0 :ramp)))
 
-(controllers f-fade-2 (list synth guitar)
+(controllers fade-2 (list synth vibes)
 	     :bars 8
 	     :events '((:time (5 1 1)(8 4 1) s :ctrl volume :value 127 0 :ramp)))
 
-(->midi f)
+(->midi fade :filename "fade")
 
 	     

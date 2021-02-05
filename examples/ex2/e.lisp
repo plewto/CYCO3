@@ -1,6 +1,6 @@
 ;;;; CYCO examples ex2 section e
-;;;; Part E adds an ersatz guitar.  The synth part is transposed up an
-;;;; octave and mixed back to give the guitar some space.
+;;;; Part E adds an ersatz guitar.  The synth part drops the lowest 
+;;;; octave and is mixed back to give the guitar space.
 
 (param e (clone d :new-name "E"))
 
@@ -8,12 +8,9 @@
 ;;
 (disconnect (get-section-part e 'd-synth))
 
-;; Redefine the synth part using ':chord (12 19)' to transpose the original
-;; part up an octave. 
-;;
 (strummer e-synth synth
 	     :bars 8
-	     :events '((:chord (12 19) :amp mp :amp* 0.9)
+	     :events '((:chord (12 19) :amp f :amp* 0.9)
 		       (:time (1 1 1) :key f5  :dur h.   )
 		       (:time (1 4 1) :key f5  :dur q    )
 		       (:time (2 1 1) :key fs5 :dur h    )
@@ -70,6 +67,11 @@
 		    (:time (8 3 1) :key fs4  :dur e    )
 		    (:time (8 3 3) :key f4   :dur e    )
 		    (:time (8 4 1) :key ds4  :dur q    )))
+
+(controllers e-guitar-cc guitar
+	     :events '((:cc (1 1 1) portamento-time 64)
+		       (:cc (1 1 1) portamento 0)
+		       (:cc (8 1 1) portamento 127)))
 
 (->midi e)
 (->midi e :filename "loop-e" :repeat 8)

@@ -4,7 +4,7 @@
 ;;;; combination of snare and hand-claps are used.  Dice patterns
 ;;;; are used for random variations. 
 
-(param c (clone b :new-name "C"))
+(param c (clone b2 :new-name "C"))
 
 (qball c-clanks-1 gm-snare
        :bars 1

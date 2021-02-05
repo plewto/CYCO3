@@ -9,7 +9,7 @@
 
 (strummer d-synth synth
 	     :bars 8
-	     :events '((:chord (0 7) :amp f :amp* 0.9) ;; Defines the parallel fifths used throughout.
+	     :events '((:chord (0 12 19) :amp f :amp* 0.9)
                        (:time (1 1 1) :key f5  :dur h.   )
                        (:time (1 4 1) :key f5  :dur q    )
                        (:time (2 1 1) :key fs5 :dur h    )
@@ -31,5 +31,12 @@
                        (:time (8 1 1) :key fs5 :dur h    )
                        (:time (8 3 1) :key f5  :dur q    )
                        (:time (8 4 1) :key fs5 :dur q    )))
+
+(controllers d-synth-cc synth
+	     :bars 8
+	     :events '((:cc (1 1 1) portamento-time 16)
+		       (:cc (1 1 1) portamento 127)))
+	     
+ 
 (->midi d)
 (->midi d :filename "loop-d" :repeat 8)

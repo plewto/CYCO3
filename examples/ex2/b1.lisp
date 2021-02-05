@@ -1,15 +1,15 @@
-;;;; CYCO examples ex2 section b
-;;;; Section B adds a vibraphone to the basic motif.
+;;;; CYCO examples ex2 section b1
+;;;; Adds vibraphone to the basic motif.
 ;;;;
 
-;; Create section B as a clone of A.
+;; Create section B1 as a clone of A.
 ;; 
-(param b (clone a :new-name "B"))
+(param b1 (clone a :new-name "B1"))
 
 ;; The bulk rename is included only for illustration.  It is needed only if
 ;; the cloned parts are to be assigned to variables.
 ;;
-(bulk-rename-parts b 1 "B")
+(bulk-rename-parts b1 1 "B1")
 
 
 
@@ -25,15 +25,18 @@
 			     (keys-3 '(f5 a5 f6 c6 f6 f5 fs5 g5))
 			     (keys-4 (transpose keys-2 2))
 			     (keys-5 (transpose keys-1 -2)))
-			(transpose (append keys-1 keys-2 keys-1 keys-2
-					   keys-3 keys-4 keys-5 keys-2)
-				   -12)))
-(qball b-vibes vibes
+			(append keys-1 keys-2 keys-1 keys-2
+				keys-3 keys-4 keys-5 keys-2)))
+(qball b1-vibes vibes
        :bars 8
        :cue vibes-cue-list
        :key vibes-key-list
        :amp 'mf)
 
-
-(->midi b)
-(->midi b :filename "loop-b" :repeat 16)
+(controllers b1-vibes-cc vibes
+	     :bars 8
+	     :events '((:cc (1 1 1) portamento-time 16)
+		       (:cc (1 1 1) portamento 127)))
+	     
+(->midi b1)
+(->midi b1 :filename "loop-b1" :repeat 16)

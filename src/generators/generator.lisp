@@ -9,29 +9,48 @@
     :type function
     :initform #'(lambda (n) n)
     :accessor value-hook
-    :initarg :hook)
+    :initarg :hook
+    :documentation
+    "Each instance of Generator has an internal 'current-value'.  When the 
+value method is called, the current-value is passed as an argument to 
+the value-hook function.   The result of value-hook then becomes the 
+return for the value method.  The default value-hook is an identity
+(lambda (n) n)")
    (monitor
     :type function
     :initform #'(lambda (value)(declare (ignore value)) nil)
     :accessor monitor
-    :initarg :monitor)
+    :initarg :monitor
+    :documentation
+    "Whenever the next-1 method is called, the new current-value is
+passed to the monitor function.  If the monitor returns non-nil the 
+action function is executed.   The default monitor returns a constant
+nil  (lambda (value) nil)")
    (action
     :type function
     :initform #'(lambda (generator value)(declare (ignore generator)) value)
     :accessor action
-    :initarg :action)
+    :initarg :action
+    :documentation
+    "If the monitor function returns non-nil within a call to next-1, 
+the action function is executed.  The exact form of the action function 
+is different for specific generator sub classes.   In most cases it is
+able to alter the internal state of the generator.")
    (current-value
     :type number
     :initform 0
     :accessor current-value
     :initarg :seed))
-   
   (:documentation
-   "A Generator is a pattern like object for producing numeric sequences.
+   "A GENERATOR is a pattern like object for producing numeric sequences.
 Unlike true patterns, generators may not contain nested elements, they 
-may however be nested within patterns."))
-  
+may however be nested within patterns.
 
+Each Generator instance has associated monitor and action functions.
+When the next-1 method is called, the monitor function looks at the 
+new value and returns either nil or t.  If the result is t, the 
+action function is executed."))
+  
 (defmethod value ((gen generator))
   (funcall (slot-value gen 'value-hook)
 	   (slot-value gen 'current-value)))
@@ -52,7 +71,10 @@ may however be nested within patterns."))
 	(t (value gen))))
 
 
-(defclass constant-value (generator) nil)
+(defclass constant-value (generator) nil
+  (:documentation
+   "A CONSTANT-VALUE is a generator which always produces the same 
+value."))
 
 (defun constant-value (n &key &allow-other-keys)
   (make-instance 'constant-value :seed n))
@@ -63,13 +85,10 @@ may however be nested within patterns."))
 (defmethod next-1 ((con constant-value))
   (current-value con))
 
-
-
-
 (setf (documentation 'constant-value 'function)
-      "Returns generator with constant value
+      "Returns generator with constant value.
 (param foo (constant-value x))
+
+Where x is a numeric-value.
+
 (next foo) --> x")
-
-
-

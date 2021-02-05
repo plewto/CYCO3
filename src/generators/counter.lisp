@@ -1,5 +1,6 @@
 ;;;; CYCO generators/ramp.lisp
-;;;; 
+;;;;
+;;;; Integer arithmetic-sequence generator.
 
 (in-package :cyco)
 
@@ -18,8 +19,9 @@
     :type integer
     :initform 1
     :accessor counter-increment
-    :initarg :by)))
-
+    :initarg :by))
+  (:documentation
+   "COUNTER is an integer arithmetic-sequence generator."))
 
 (defmethod reset ((counter counter))
   (setf (current-value counter)
@@ -77,5 +79,22 @@
 		  (funcall (action counter) counter v1)
 		v1))))) )
 
+(setf (documentation 'counter 'function)
+      "Returns new instance of COUNTER.
 
-;;; TODO add counter docstring
+(counter from to &key by hook monitor action)
+
+from  - Integer, initial value.
+to    - Integer, final value.
+:by   - Integer, increment.
+        The correct increment sign is automatically adjusted based on
+        from and to values. Default +1 or -1.
+:hook    - Function applied by the value method to the 'natural'
+           value of the counter.  Default (lambda (value)) -> value
+:monitor - Predicate called by next-1 to determine if action function
+           should be executed.  Default (lambda (value)) -> Boole.
+:action  - Function executed within next-1 whenever monitor returns
+           non-nil.  The action return becomes the next current-value
+           Default (lambda (counter value)) -> value.
+           The counter argument may be used to alter the internal
+           state of the counter.")

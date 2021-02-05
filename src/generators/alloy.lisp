@@ -1,5 +1,7 @@
 ;;;; CYCO generators/alloy
 ;;;;
+;;;; Combines two generators.
+;;;;
 
 (in-package :cyco)
 
@@ -15,8 +17,11 @@
    (binary-function
     :type function
     :initform #'+
-    :initarg :function)))
-
+    :initarg :function))
+  (:documentation
+   "An ALLOY is a generator which combines the outputs of two 
+embedded generators using a binary function.  The default 
+function is addition."))
 
 (defmethod reset ((alloy alloy))
   (let ((a (reset (slot-value alloy 'generator-a)))
@@ -62,6 +67,26 @@
 		(funcall (action alloy) alloy c)
 	      c)))))
 
-;; TODO add alloy documentation
-;;
+(setf (documentation 'alloy 'function)
+      "Returns new instance of ALLOY
 
+(alloy a b &key function hook monitor action)
+
+a - First generator.
+b - Second generator.
+:function - Binary numeric function, default #'+
+:hook     - Hook function applied by the value method.
+            (hook (function (value a)(value b)))
+            Default (lambda (n) n)
+:monitor  - Value monitor predicate, (lambda (value)) --> boolean
+:action   - Action function executed whenever monitor returns true
+            within next-1.   
+
+            (lambda (alloy next-value-1)) --> next-value-2
+
+            The nominal next-value is passed as an argument,
+            the return becomes the actual next-value.  The alloy
+            argument may be used to alter the internal state 
+            of alloy.
+
+            Default (lambda (alloy value)) --> value.")

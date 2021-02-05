@@ -1,6 +1,7 @@
 ;;;; CYCO generators/shift-register.lisp
 ;;;;
-;;;; 
+;;;; Generator based on line-feedback shift-register
+;;;; https://en.wikipedia.org/wiki/Linear-feedback_shift_register
 
 (in-package :cyco)
 
@@ -9,22 +10,33 @@
     :type integer
     :accessor shift-register-seed
     :initform #b1
-    :initarg :seed)
+    :initarg :seed
+    :documentation
+    "Initial register value.")
    (taps
     :type integer
     :accessor shift-register-taps
     :initform #b1000000000000000
-    :initarg :taps)
+    :initarg :taps
+    :documentation
+    "High bits selects which register cells contribute to feedback.")
    (mask
     :type integer
     :reader shift-register-mask
     :initform #b1111111111111111
-    :initarg :mask)
+    :initarg :mask
+    :documentation
+    "Mask and to register's value, effectively setting the register's length.")
    (prerun-count
     :type integer
     :accessor shift-register-prerun
     :initform 0
-    :initarg :prerun)))
+    :initarg :prerun
+    :documentation
+    "Number of times to step register after a reset."))
+  (:documentation
+   "SHIFT-REGISTER is a generator using a linear-feedback shift-register.
+https://en.wikipedia.org/wiki/Linear-feedback_shift_register"))
    
 (defun shift-register (seed taps &key
 			    mask
@@ -89,10 +101,10 @@
   (format t "Feedback  ~A~%" (shift-register-feedback sr)))
 
 
-;; TODO update shift-register docstring
-
 (setf (documentation 'shift-register 'function)
-      "Creates new instance of SHIFT-REGISTER generator.
+      "Creates new SHIFT-REGISTER generator.
+
+(shift-register seed taps &key mask prerun hook monitor action)
 
 seed    - Integer, initial register state,  seed > 0.
           If seed is expressed in binary it directly reflects the 
@@ -112,6 +124,8 @@ taps    - Integer, feedback taps, taps >= 0.
 :hook   - Function applied to the 'raw' register value.  Shift register
           outputs have a tendency to 'blow up' and produce very high 
           values.  The hook function may be used to reign in excessive 
-          register values.  Defaults to identity (lambda n) --> n.")
-
-
+          register values.  Defaults to identity (lambda n) --> n.
+:monitor - Predicate called within next-1 to determine if action 
+           function should be executed. Default (lambda (value) nil)
+:action  - Function called within next-1 whenever the monitor predicate
+           returns non-nil  Default (lambda (shift-register value) value)")

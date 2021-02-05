@@ -20,7 +20,16 @@
     :type integer
     :accessor logistic-prerun
     :initform 0
-    :initarg :prerun)))
+    :initarg :prerun))
+  (:documentation
+   "LOGISTIC is a generator using the logistic map
+
+    x1 = rx0(1 - x0)
+ 
+    x0 and x1 are the current and next values respectively, 0.0 <= x0,x1 <= 1.0
+    and r is a 'fecundity' parameter, 0 <= r <= 4.0, default r=3.25"))
+    
+
 
 (defun logistic (&key (prerun 0)(seed 0.5)(mu 3.25)
 		      (hook #'(lambda (n) n))
@@ -66,16 +75,16 @@
 	    v1))
     (funcall (value-hook gen) v0)))
 
-
-;; TODO update logistic docstring
-
 (setf (documentation 'logistic 'function)
-      "Returns a generator which produces values using a logistic-map.
-https://en.wikipedia.org/wiki/Logistic_map
+      "Returns new instance of LOGISTIC.
 
-:prerun - Integer number of time to step the generator after it is created or reset, 
-          default 0.
-:seed   - Float, initial value 0.0 <= seed <= 1.0, default 0.5
-:mu     - Float, 'fecundity' value 0.0 <= mu <= 4.0, default 3.25
-:hook   - Function, value hook, default (lambda (n) n)")
+(logistic &key prerun seed mu hook monitor action)
 
+:prerun  - Integer, number of times to increment map prior to use, default 0
+:seed    - Float, initial value 0 <= seed <= 1, default 0.5
+:hook    - Function applied by value method to internal value
+           Default (lambda (n) n)
+:monitor - Predicate called within next-1 to determine if action function
+           should be called.  Default (lambda (value) nil)
+:action  - Function called within next-1 whenever the monitor predicate 
+           returns non-nil.  Default (lambda (logistic value) value)")

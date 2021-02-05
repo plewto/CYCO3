@@ -1,6 +1,6 @@
 ;;;; CYCO generators/envelopes.lisp
 ;;;; 
-;;;; action internal value uypdate only applicable during attack and decay stages
+;;;; Defines numeric generators with common envelope contours.
 ;;;;
 
 (in-package :cyco)
@@ -9,7 +9,9 @@
   ((loop-flag
     :type t
     :initform nil
-    :initarg :loop)
+    :initarg :loop
+    :documentation
+    "If true envelope repeats after final decay value.")
    (attack-increment
     :type number
     :initform 1
@@ -24,16 +26,23 @@
     :type number
     :initform 0
     :accessor envelope-floor
-    :initarg :floor)
+    :initarg :floor
+    :documentation
+    "The minimum value.")
    (ceiling
     :type number
     :initform 16
     :accessor envelope-ceiling
-    :initarg :ceiling)
+    :initarg :ceiling
+    :documentation
+    "The maximum value.")
    (state
     :type keyword
     :initform :attack
-    :accessor envelope-state)
+    :accessor envelope-state
+    :documentation
+    "Indicates current envelope stage, may be one of the following
+values  :ATTACK  :SUSTAIN or :DECAY")
    (sustain-counter
     :type integer
     :initform 16
@@ -41,7 +50,9 @@
    (sustain-reset
     :type integer
     :initform 16
-    :initarg :sustain)))
+    :initarg :sustain))
+  (:documentation
+   "ASR-ENVELOPE is a three-stage envelope generator."))
     
 (defmethod reset ((env asr-envelope))
   (setf (current-value env)(envelope-floor env)
@@ -134,22 +145,31 @@
 	      ((eq state :sustain)(next-sustain env))
 	      (t nil))))))
 
+(setf (documentation 'asr-envelope 'function)
+      "Returns new instance of ASR-ENVELOPE.
 
-;; TODO Update asr-envelope docstring
+(asr-envelope a b &key attack decay sustain loop hook monitor action)
 
-;; (setf (documentation 'asr-envelope 'function)
-;;       "The ASR-ENVELOPE generator produces a numeric sequence
-;; with attack, sustain and decay phases.
+a - Number, initial value.
+b - Number, peak value.
+:attack  - Number, attack stage increment, default 1.
+:decay   - Number, decay stage decrement, default 1. 
+:sustain - Integer, number of sustain values, default 4
+:loop    - Boolean, if true envelope returns to attack stage
+           after final decay value.  Default nil
+:hook    - Function applied by the value method to the current-value,
+           Default (lambda (n) n)
+:monitor - Predicate, called within next-1 to determine if action 
+           function should be executed.  
 
-;; a        - Initial value.
-;; b        - Peak value, b > a.
-;; :attack  - attack phase increment
-;; :decay   - decay phase decrement
-;; :sustain - number of sustain values.
-;; :loop    - Boolean, if true envelope returns to attack stage after final 
-;;            decay value has been reached,  Default nil
-;; :hook    - Hook function (lambda (n) ...), defaults to identity.")
+           (lambda (envelope value)) --> Boole
 
+           Where envelope may be examined for its current state
+           and value is the next output value.  The default always
+           returns nil.
+:action  - Function executed within next-1 if the monitor function 
+           returns non-nil.
 
+           (lambda (envelope value)) --> next-value
 
-
+           The internal state of envelope may be altered.")

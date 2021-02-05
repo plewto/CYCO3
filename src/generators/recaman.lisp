@@ -17,7 +17,11 @@
     :initarg :seed)
    (counter
     :type integer
-    :initform 0)))
+    :initform 0))
+  (:documentation
+   "RECAMAN is a generator for producing a Recaman sequence
+https://en.wikipedia.org/wiki/Recam%C3%A1n%27s_sequence
+https://oeis.org/A005132"))
 
 (defmethod reset ((rec recaman))
   (setf (current-value rec)
@@ -61,14 +65,17 @@
       (setf (slot-value rec 'counter) n
 	    (current-value rec) v1))))
 
-;; TODO update recaman docstring
-
 (setf (documentation 'recaman 'function)
-      "Returns generator that produces the Recaman sequence.
-https://en.wikipedia.org/wiki/Recam%C3%A1n%27s_sequence
-https://oeis.org/A005132
+      "Returns new RECAMAN generator.
 
-seed  - Integer, initial value. 
-:hook - Value hook function, default (lambda (n) n)")
+(recaman seed &key hook monitor action)
 
-
+seed - Integer, intial value
+:hook    - Function applied by value method to the internal value.
+           Default (lambda (n) n)
+:monitor - Predicate called within next-1 to determine if action
+           function should be executed.
+           Default (lambda (value) nil)
+:action  - Function executed within next-1 whenever the monitor 
+           predicate returns non-nil.  
+           Default (lambda (value) value)")

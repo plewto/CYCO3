@@ -1,6 +1,6 @@
 ;;;; CYCO generators/hailstone.lisp
 ;;;;
-;;;; Generates Hailstone sequence
+;;;; Generates Hailstone sequence.
 ;;;; https://en.wikipedia.org/wiki/Collatz_conjecture
 ;;;; https://oeis.org/A061641
 ;;;;
@@ -19,7 +19,10 @@
    (initial-value
     :type integer
     :initform 128
-    :initarg :seed)))
+    :initarg :seed))
+  (:documentation
+   "HAILSTONE generates values related to the 
+    Collatz conjecture."))
 
 (defmethod reset ((gen hailstone))
   (setf (current-value gen)
@@ -27,7 +30,8 @@
   gen)
 
 
-(defun hailstone (seed &key (even #'(lambda (n)(/ n 2)))
+(defun hailstone (seed &key
+		       (even #'(lambda (n)(/ n 2)))
 		       (odd #'(lambda (n)(1+ (* 3 n))))
 		       (hook #'(lambda (n) n))
 		       (monitor #'(lambda (value)
@@ -64,14 +68,21 @@
 		(funcall (action gen) gen v1)
 	      v1)))))
 
-;; TODO update hailstone docstring
-
 (setf (documentation 'hailstone 'function)
-      "Returns generator that produces a hailstone sequence.
-https://en.wikipedia.org/wiki/Collatz_conjecture
-https://oeis.org/A061641
+      "Returns new instance of HAILSTONE.
 
-seed  - Integer, starting value. 
-:even - Function applied for even result, default (lambda (n)(* 2 n))
-:odd  - Function applied for odd result, default (lambda (n)(1+ (* 3 n)))
-:hook - Function applied to value, default (lambda (n) n)")
+(hailstone seed &key event odd hook monitor action)
+
+seed  - Integer, initial value.
+:even - Function applied for even values,
+        Default (lambda (n)(/ n 2))
+:odd  - Function applied to odd values.
+        Default (lambda (n)(1+ (* 3 n)))
+:hook    - Function applied by VALUE method on the internal value.
+           Default (lambda (n) n)   
+:monitor - Predicate called within next-1 to determine if action
+           function should be executed.  
+           Default (lambda (value)) -> nil
+:action  - Function executed within next-1 whenever monitor returns 
+           non-nil.  Default (lambda (hailstone value)) -> value")
+           

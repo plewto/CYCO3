@@ -1,5 +1,6 @@
 ;;;; CYCO generators/lfo.lisp
 ;;;;
+;;;; Generators with cyclical output.
 
 (in-package :cyco)
 
@@ -51,7 +52,9 @@
    (pointer
     :type integer
     :accessor lfo-pointer
-    :initform 0)))
+    :initform 0))
+  (:documentation
+   "LFO is a generator which produces cyclical values."))
 
 (defmethod reset ((lfo lfo))
   (setf (lfo-pointer lfo) 0
@@ -94,10 +97,12 @@
        :action (action mother)
        :hook (value-hook mother)))
 
-;; TODO Update LFO docstring
 
 (setf (documentation 'sawtooth 'function)
       "Returns numeric list with sawtooth contour.
+
+(sawtooth amp1 amp2 &key cycles steps phase)
+
 amp1     - trough amplitude
 amp2     - peak amplitude
 :cycles  - number of wave cycles, default 1.
@@ -110,6 +115,9 @@ The resulting curve may have slight distortions.   Specifically
 
 (setf (documentation 'triangle 'function)
       "Returns numeric list with triangle contour.
+
+(triangle amp1 amp2 &key cycles steps phase)
+
 amp1     - trough amplitude
 amp2     - peak amplitude
 :cycles  - number of wave cycles, default 1.
@@ -123,6 +131,9 @@ The resulting curve may have slight distortions.   Specifically
 
 (setf (documentation 'pulse 'function)
       "Returns numeric list with pulse contour.
+
+(pulse amp1 amp2 &key cycles steps phase width)
+
 amp1     - trough amplitude
 amp2     - peak amplitude
 :cycles  - number of wave cycles, default 1.
@@ -136,17 +147,17 @@ The resulting curve may have slight distortions.   Specifically
 
 
 (setf (documentation 'lfo 'function)
-      "Generator which warps numeric list.
-:curve - Numeric wave-table, defaults to triangle wave-shape between 0 and 127.
-:hook  - hook function applied to value, default identity (lambda (n)) --> n
+     "Returns new instance of LFO.
 
-Examples
+(lfo &key curve hook monitor action)
 
-   (next (lfo) 16) --> (0 2 4 6 8 10 12 14 16 14 11 9 7 5 2 0)
-   (next (lfo :curve (pulse 0 1 :steps 8)) 16) --> (1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0)")
-
-
-
-
-
-
+:curve   - Numeric list describing the output sequence.
+           The triangle, sawtooth and pulse functions may be used
+           for the corresponding contour.
+           Default (triangle 0 127).
+:hook    - Function applied by the value method to the internal-value.
+           Default (lambda (n) n).
+:monitor - Predicate called by next-1 to determine if action function
+           should be executed.  Default (lambda (value) nil).
+:action  - Function called within next-1 whenever the monitor predicate
+           returns non-nil.  Default (lambda (lfo value) value)")

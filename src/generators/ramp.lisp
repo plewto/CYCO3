@@ -1,14 +1,11 @@
 ;;;; CYCO generators/ramp.lisp
 ;;;;
-;;;; ramp vs counter
 ;;;;
-;;;;            ramp                counter
-;;;; type    :  float               integer only
-;;;; monitor :  (lambda (value))    (lambda (value))
-;;;; action  :  (lambda (ramp))     (lambda (counter value))
-;;;;              Does not update     Directly updates
-;;;;              current-value       current-value.
-          
+;;;; Generator for arithmetic sequence.  Ramps are similar to
+;;;; counters except they may have non-integer values.
+;;;; The other major difference is that the action function
+;;;; for a counter may modify the sequence of values.  Self
+;;;; modification is more convoluted for ramps.
 
 (in-package :cyco)
 
@@ -86,44 +83,17 @@
 	      ((> floor ceiling)(decrement ramp ceiling))
 	      (t nil))))) )
 
-
-;; TODO Update ramp docstring
-
 (setf (documentation 'ramp 'function)
-      "A RAMP generator creates a linear sequence of numbers.
+      "Creates new RAMP generator.
 
-a     - Initial value
-b     - Final value
-:by   - Increment. The increment sign is automatically adjusted to match
-        the slope determined by a and b.  Default 1 or -1
-:hook - Function (lambda (n)) --> n2  applied to 'raw' ramp value.
-        Defaults to an identity.
-:monitor - Function  (lambda value) --> bool  
-           When monitor returns true, call action function.
-           Default (lambda (value) nil)
-:action  - Function (lambda (ramp))
-           Called whenever the monitor function returns true
-           for the ramp's current-value
-           Default (lambda (ramp))
-           
+(ramp a b &key by hook monitor action)
 
-Examples
-
-   (next (ramp 0 9) 12) --> (0 1 2 3 4 5 6 7 8 9 9 9)
-
-   (next (ramp 9 0) 12) --> (9 8 7 6 5 4 3 2 1 0 0 0)
-
-   (next (ramp 0 9 :by 2) 12) --> (0 2 4 6 8 9 9 9 9 9 9 9)
-
-   (next (ramp 9 0 :by 2) 12) --> (9 7 5 3 1 0 0 0 0 0 0 0)
-
-   a, b and by values need not be integers
-
-   (next (ramp 0 9 :by 1.5) 12) --> (0 1.5 3.0 4.5 6.0 7.5 9 9 9 9 9 9)
-
-   Use of hook function
-
-   (next (ramp 0 4 :hook #'(lambda (n)(+ 100 n))) 6) --> (100 101 102 103 104 104)")
-
-
-
+a - Number, initial value
+b - Number, final value
+:by      - Increment, default -1 or +1
+:hook    - Function applied by the value method to the internal value.
+           Default (lambda (n) n)
+:monitor - Predicate called within next-1 to determine if action function 
+           should be executed.  Default (lambda (value) nil)
+:action  - Function called with next-1 whenever the monitor predicate
+           returns non-nil.  Default (lambda (ramp))")

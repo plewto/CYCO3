@@ -9,41 +9,17 @@
 ;; COUNTER
 ;;
 
-(let* ((gen (counter))
+(let* ((gen (counter 0 4))
        (expect '(0 1 2 3 4))
        (actual (next gen 5)))
   (pass? "counter 11.2"
 	 (equal expect actual)))
 
-(let* ((gen (counter :hook #'(lambda (n)(* n n))))
+(let* ((gen (counter 0 4 :hook #'(lambda (n)(* n n))))
        (expect '(0 1 4 9 16))
        (actual (next gen 5)))
   (pass? "counter with hook 11.3"
 	 (equal expect actual)))
-
-
-(let ((action-counter 0))
-  (flet ((action-hook (n)
-		      (declare (ignore n))
-		      (setf action-counter (1+ action-counter))))
-    (let* ((gen1 (countdown 3))
-	   (expect '(3 2 1 0 0))
-	   (actual (next gen1 5)))
-      (pass? "countdown test 11.4"
-	     (equal expect actual)))
-    
-    (let* ((gen2 (countdown 3 :action #'action-hook :multi-trigger nil))
-	   (expect '(3 2 1 0 0))
-	   (actual (next gen2 5)))
-      (pass? "countdown with single action 11.5"
-	     (and (equal expect actual)
-		  (= action-counter 1))))
-
-    (setf action-counter 0)
-    (let* ((gen3 (countdown 3 :action #'action-hook :multi-trigger t)))
-      (next gen3 5)
-      (pass? "countdown with multi action 11.6"
-      	     (= action-counter 2))) ))
 
 ;; RAMP
 ;;
@@ -93,7 +69,7 @@
 	      (equal expect-sustain actual-sustain)
 	      (equal expect-decay actual-decay))))
 
-(let* ((asr2 (asr-envelope 0 10 :attack 2 :decay 3 :sustain 2))
+(let* ((asr2 (asr-envelope 0 10 :attack 2 :decay 3 :sustain 2 :loop nil))
        (expect-attack '(0 2 4 6 8))
        (expect-sustain '(10 10))
        (expect-decay '(7 4 1 0))
@@ -101,20 +77,24 @@
        (actual-sustain (next asr2 (length expect-sustain)))
        (actual-decay (next asr2 (length expect-decay))))
   (pass? "asr test 11.13"
-	 (and (equal expect-attack actual-attack)
-	      (equal expect-sustain actual-sustain)
-	      (equal expect-decay actual-decay)
-	      (every #'zerop (next asr2 10)))))
-	      
-(let* ((asr3 (asr-envelope 0 5 :attack 1 :decay 1 :sustain 1 :cycle t))
+	 (and
+	  (equal expect-attack actual-attack)
+	  (equal expect-sustain actual-sustain)
+	  (equal expect-decay actual-decay)
+	  (every #'zerop (next asr2 10)))))
+
+
+
+(let* ((asr3 (asr-envelope 0 5 :attack 1 :decay 1 :sustain 1 :loop t))
        (expect '(0 1 2 3 4  5 5  4 3 2 1 0))
        (actual-1 (next asr3 (length expect)))
        (actual-2 (next asr3 (1- (length expect))))
        (actual-3 (next asr3 (1- (length expect)))))
-  (pass? "asr cycle mode enabled 11.14"
+  (pass? "asr loop mode enabled 11.14"
 	 (and (equal expect actual-1)
 	      (equal (cdr expect) actual-2)
 	      (equal (cdr expect) actual-3))))
+
 	
 ;; LFO
 ;;
@@ -171,8 +151,6 @@
     (pass? "triangle 11.20"
 	   (and (monotonic-p first)
 		(monotonic-p (reverse second)))))
-
-
   (let* ((steps 30)
 	 (wave (pulse 0 9 :steps steps))
 	 (low 0)
@@ -186,8 +164,6 @@
 		(= low high)
 		(every #'(lambda (n)(= n 9)) (subseq wave 0 (/ steps 3)))
 		(every #'zerop (subseq wave (truncate (* 2/3 steps)))))))
-		
-  
   (let* ((steps 31)
 	 (wave (pulse 0 9 :steps steps :width 20))
 	 (low 0)
@@ -234,3 +210,91 @@
        (actual (next rec (length expect))))
   (pass? "Recaman 11.26"
 	 (equal expect actual)))
+
+;; Logistic
+;;
+
+(let* ((gen (logistic :seed 0.5 :mu 3.75))
+       (expected '(0.5 0.9375 0.21972656 0.6429255 0.86089617 0.44907734
+		       0.9277758 0.2512795 0.70551795 0.77910894))
+       (actual (next gen (length expected))))
+  (pass? "Logistic 11.27"
+	 (equal expected actual)))
+
+;; Alloy
+;;
+
+(let* ((expected '(0 11 22 33 44 55 66 77 88 99))
+       (count (length expected))
+       (a (counter 0 9 :by 1))
+       (b (counter 0 90 :by 10))
+       (c (alloy a b :function #'+))
+       (actual (next c count)))
+  (pass? "Alloy 11.28"
+	 (equal actual expected)))
+
+;; Monitor and action functions
+;;
+
+(let ((action-counter 0))
+  (flet ((increment ()
+		    (setf action-counter (1+ action-counter))))
+
+    (let ((counter (counter 0 9
+			:monitor #'(lambda (value)(= value 5))
+			:action #'(lambda (counter value)
+				    (declare (ignore counter))
+				    (increment)
+				    (1+ value)))))
+      (pass? "counter action function 11.29"
+	     (and (equal (next counter 9) '(0 1 2 3 4 6 7 8 9))
+		  (= action-counter 1))))
+
+    (let ((asr (asr-envelope 0 10
+			     :loop nil
+			     :monitor #'(lambda (env value)
+					  (declare (ignore env))
+					  (= value 5))
+			      :action #'(lambda (env value)
+					  (declare (ignore env))
+					  (increment)
+					  value))))
+      (next asr 30)
+      (pass? "asr-envelope action function 11.30"
+	     (= action-counter 3)))
+
+
+    (let* ((hs (hailstone 100
+			  :monitor #'(lambda (v)(or (= v 17)(= v 34)))
+			  :action #'(lambda (hs v)
+				      (declare (ignore hs))
+				      (increment)
+				      v))))
+      (next hs 30)
+      (pass? "hailstone action function 11.31"
+	     (= action-counter 5)))
+
+
+    ;; Suspicious test structure.
+    ;; While this test currently passes, it makes an un-supported assumption 
+    ;; about the shape of the triangle wave.  The triangle function is only
+    ;; guaranteed to return an approximately triangular shape.  The test assumes
+    ;; that two 5 values will appear in the wave.  While this is probably true
+    ;; it may not be.
+    ;;
+    ;; (let* ((gen (lfo :curve (triangle 0 9 :steps 20)
+    ;; 		     :monitor #'(lambda (v)(= v 5))
+    ;; 		     :action #'(lambda (gen v)
+    ;; 				 (increment)
+    ;; 				 v))))
+    ;;   (print (next gen 20))
+    ;;   (pass? "lfo action function 11.31"
+    ;; 	     (= action-counter 7)))
+    
+    ))
+	   
+    
+      
+			      
+    
+      

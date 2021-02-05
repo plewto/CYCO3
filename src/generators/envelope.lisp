@@ -135,10 +135,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 
   (defmethod next-1 ((env asr-envelope))
     (prog1
-	(progn 
-	  (if (funcall (monitor env) env (current-value env))
-	      (funcall (action env) env))
-	(value env))
+	(value env)
       (let ((state (envelope-state env)))
 	(cond ((eq state :attack)(next-attack env))
 	      ((eq state :decay)(next-decay env))

@@ -11,7 +11,7 @@
 ;;
 (global *silent-pass* nil)
 
-(setf *enable-banners* nil)
+(setf *enable-banners* t)
 
 (defun monotonic-p (list &optional (test #'<=))
   (apply test list))
@@ -59,4 +59,5 @@
 (load-test "10-nodes")
 (load-test "11-generators")
 (load-test "12-channels")
+(load-test "13-patterns")
 (load "test/load-mock-projects")

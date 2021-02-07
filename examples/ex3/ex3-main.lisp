@@ -6,26 +6,26 @@
 (plugin general-midi)
 
 (project ex3
-	 :tempo 60
+	 :tempo 90
 	 :bars 8
 	 :beats 4
 	 :title "The Unanswered Question")
 
 (lpf orchestra)
 (lpf preroll)
+(lpf fin)
 
 (section score :bars 64)
-;; (metronome score-metronome)
+(metronome score-metronome)
 
-;; (lpf strings)
+(lpf strings)
 (lpf question)
+(lpf answers)
 
-
-
-(section-order '(preroll score))
+(section-order '(preroll score reset))
 
 (project->midi)
 
 
+;; (dump-events (render-project *project*))
 
-(dump-events score)

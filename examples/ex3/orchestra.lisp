@@ -3,19 +3,23 @@
 
 (prune-orchestra)
 
-(param flute-1-scale  1.00)
-(param flute-2-scale  flute-1-scale)
-(param oboe-scale     1.00)
-(param clarinet-scale 1.00)
+(param wind-scale 1.00)
+
+(param flute-1-scale  (* wind-scale 1.00))
+(param flute-2-scale  (* wind-scale 1.00))
+(param oboe-scale     (* wind-scale 1.00))
+(param clarinet-scale (* wind-scale 1.00))
 
 (param question-scale 0.60)
 
-(param violin-1-scale 0.40)
-(param violin-2-scale violin-1-scale)
-(param viola-scale    0.40)
-(param cello-scale    0.50)
-(param ensemble-high-scale 0.40)
-(param ensemble-bass-scale 0.60)
+(param string-scale 0.7)
+
+(param violin-1-scale (* string-scale 0.40))
+(param violin-2-scale (* string-scale 0.40))
+(param viola-scale    (* string-scale 0.40))
+(param cello-scale    (* string-scale 0.50))
+(param ensemble-high-scale (* string-scale 0.40))
+(param ensemble-bass-scale (* string-scale 0.60))
 
 
 (param woodwind-transpose 12)
@@ -62,5 +66,5 @@
 
 
 
-(general-midi-metronome :channel 16 :program 'woodblock)
-;;			::phrase 72 :bar 72 :beat -1)
+(general-midi-metronome :channel 16 :program 'woodblock
+			:phrase 72 :bar 72 :beat -1)

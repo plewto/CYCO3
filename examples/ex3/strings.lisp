@@ -195,3 +195,7 @@
 	    :events (append viola-event-list cello-event-list)
 	    :shuffle #'randomizer))
 
+
+(controllers strings-volume (list violin-1 violin-2 viola cello ensemble-treble ensemble-bass)
+	     :events '((:time (59 1 1)(61 4 4) t :value 127 0 :ctrl volume :ramp)))
+		      

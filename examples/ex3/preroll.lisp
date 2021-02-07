@@ -14,8 +14,8 @@
 	     :events '((:cc (1 1 1) volume 127)))
 
 (controllers initialize-question-controllers question
-	     :events '((:cc (1 1 1) :portamento-time 4)
-		       (:cc (1 1 1) :portamento 0)))
+	     :events '((:cc (1 1 1) portamento-time 4)
+		       (:cc (1 1 1) portamento 0)))
 
 
 (->midi preroll)

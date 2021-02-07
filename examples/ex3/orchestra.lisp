@@ -16,10 +16,10 @@
 
 (param violin-1-scale (* string-scale 0.40))
 (param violin-2-scale (* string-scale 0.40))
-(param viola-scale    (* string-scale 0.40))
-(param cello-scale    (* string-scale 0.50))
+(param viola-scale    (* string-scale 0.70))
+(param cello-scale    (* string-scale 0.60))
 (param ensemble-high-scale (* string-scale 0.40))
-(param ensemble-bass-scale (* string-scale 0.60))
+(param ensemble-bass-scale (* string-scale 0.90))
 
 
 (param woodwind-transpose 12)

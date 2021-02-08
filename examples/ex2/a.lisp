@@ -28,7 +28,7 @@
 		  (7 1 1)(7 1 3)(7 4 1)(7 4 3)
 		  (8 1 1)(8 1 3)(8 4 1)(8 4 3))))
 
-  (qball a-bass piano
+  (qball a-bass (list bass piano)
 	 :cue cue-list
 	 :key '(f3 f3 f3 f3
 		   fs3 fs3 fs3 fs3

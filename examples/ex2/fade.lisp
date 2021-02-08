@@ -9,11 +9,11 @@
 
 (controllers fade-1 (list piano gm-snare guitar)
 	     :bars 8
-	     :events '((:time (4 1 1) (6 3 1) s :ctrl volume :value 127 0 :ramp)))
+	     :events '((:time (2 1 1) (6 3 1) s :ctrl volume :value 127 0 :ramp)))
 
 (controllers fade-2 (list synth vibes)
 	     :bars 8
-	     :events '((:time (5 1 1)(8 4 1) s :ctrl volume :value 127 0 :ramp)))
+	     :events '((:time (4 1 1)(8 4 1) s :ctrl volume :value 127 0 :ramp)))
 
 (->midi fade :filename "fade")
 

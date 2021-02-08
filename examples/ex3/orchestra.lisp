@@ -64,6 +64,5 @@
 			 :dynamic-map (basic-dynamic-map :scale ensemble-bass-scale))
 
 
-
 (general-midi-metronome :channel 16 :program 'woodblock
-			:phrase 72 :bar 72 :beat -1)
+			:phrase 72 :bar 72 :beat 64)

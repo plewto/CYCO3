@@ -34,16 +34,14 @@
 					 :events (list
 						  attack
 						  decay
-						  ))))
-	   )
-   
+						  )))))
     
     (the-question 'q1 '(16  1))
     (the-question 'q2 '(23 T5) :end-note 'b4)
     (the-question 'q3 '(31  2))
     (the-question 'q4 '(38 T5) :end-note 'b4)
     (the-question 'q5 '(45 T3))
-    (the-question 'q6 '(51  1) :end-note 'b4)  ;; hold until flutes start
+    (the-question 'q6 '(50  1) :end-note 'b4)
     (the-question 'q7 '(58 T5) :end-note 'b4)
 
     (envelope 'eq1 '(16  1))

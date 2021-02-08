@@ -16,7 +16,7 @@
 
 (project ex3
 	 :cuefn #'tbar
-	 :tempo 100
+	 :tempo 60
 	 :bars 8
 	 :beats 4
 	 :title "The Unanswered Question")
@@ -26,7 +26,7 @@
 (lpf fin)
 
 (section score :bars 64)
-(metronome score-metronome)
+;; (metronome score-metronome)
 
 (lpf strings)
 (lpf question)

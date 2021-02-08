@@ -20,13 +20,13 @@
 ;; Load additional files.
 ;;
 (lpf orchestra)
-(lpf preroll)
-(lpf a)
-(lpf b1)
-(lpf b2)
-(lpf c)
-(lpf d)
-(lpf e)
+(lpf preroll)  ;; initializartion & count-in metronome.
+(lpf a)        ;; basic motif
+(lpf b1)       ;; vibes
+(lpf b2)       ;; inverted vibes
+(lpf c)        ;; clanks
+(lpf d)        ;; synth
+(lpf e)        ;; guitar
 (lpf fade)
 (lpf controller-reset)
 

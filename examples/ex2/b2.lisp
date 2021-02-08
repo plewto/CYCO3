@@ -1,6 +1,6 @@
 ;;;; CYCO examples ex2 section b2
-;;;; Adds a counter-vibraphone
-;;;;
+;;;; Adds a counter-vibraphone by inverting and transposing the original
+;;;; The counter-vibes are delayed by a quarter-note.
 
 ;; Create section B2 as a clone of B1.
 ;;
@@ -11,9 +11,9 @@
 
 (qball b2-inverted-vibes vibes
        :bars 8
-       :shift 'q
+       :shift 'q  ;; delay by quarter-note
        :cue vibes-cue-list
-       :key (transpose (invert vibes-key-list 'f4) 48)
+       :key (transpose (invert vibes-key-list 'f4) 48)  ;; Modify key-list
        :amp 'p+)
 
 (controllers b2-vibes-cc vibes

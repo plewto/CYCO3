@@ -4,13 +4,18 @@
 
 (param e (clone d :new-name "E"))
 
-;; Remove the original synth part.  See documentation on nodes.
-;;
+;; Remove the original synth part, see documentation for nodes.
+;; 
 (disconnect (get-section-part e 'd-synth))
 
+;; Replacement synth part
+;;
 (strummer e-synth synth
 	     :bars 8
-	     :events '((:chord (12 19) :amp f :amp* 0.9)
+	     :events '(
+		       ;; :chord (12 19) drops the low note from the 
+		       ;; original synth part.
+		       (:chord (12 19) :amp f :amp* 0.9)
 		       (:time (1 1 1) :key f5  :dur h.   )
 		       (:time (1 4 1) :key f5  :dur q    )
 		       (:time (2 1 1) :key fs5 :dur h    )
@@ -60,18 +65,29 @@
 		    (:time (6 4 1) :key gs4  :dur q    )
 		    (:time (7 1 1) :key ds4  :dur h.   )
 		    (:time (7 4 1) :key ds4  :dur q    )
-		    (:time (8 1 1) :key fs4  :dur e    )
-		    (:time (8 1 3) :key f4   :dur e    )
-		    (:time (8 2 1) :key fs4  :dur e    )
-		    (:time (8 2 3) :key f4   :dur e    )
-		    (:time (8 3 1) :key fs4  :dur e    )
-		    (:time (8 3 3) :key f4   :dur e    )
+		    (:time (8 1 1) :key fs4  :dur h.   )
 		    (:time (8 4 1) :key ds4  :dur q    )))
 
+
+;; Apply 3-cycles triangle wave to pitch-bend in bar 8.
+;; 
+(bender e-guitar-bend guitar
+	:events '((:bend (1 1 1) 0.0)
+		  (:time (8 1 1)(8 4 1) t :value 0 -0.50 :cycles 3 :tri)
+		  ;; clean up, set pitch bend to 0
+		  ;; The final 16 in the time specification sets the
+		  ;; event 16 clock pulses after the last beat of bar 8.
+		  (:bend (8 4 4 16) 0.0))) 
+
+
+;; Set a slight portamento.
+;;
 (controllers e-guitar-cc guitar
-	     :events '((:cc (1 1 1) portamento-time 64)
-		       (:cc (1 1 1) portamento 0)
+	     :events '((:cc (1 1 1) volume 127)
+		       (:cc (1 1 1) portamento-time 8)
+		       (:cc (1 1 1) portamento 127)
 		       (:cc (8 1 1) portamento 127)))
+
 
 (->midi e)
 (->midi e :filename "loop-e" :repeat 8)

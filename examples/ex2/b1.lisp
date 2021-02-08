@@ -1,5 +1,5 @@
 ;;;; CYCO examples ex2 section b1
-;;;; Adds vibraphone to the basic motif.
+;;;; Adds vibraphone 
 ;;;;
 
 ;; Create section B1 as a clone of A.
@@ -12,7 +12,9 @@
 (bulk-rename-parts b1 1 "B1")
 
 
-
+;; Construct the vibes cue-list to produce a note on every
+;; eighth note.
+;;
 (param vibes-cue-list nil)
 (dolist (bar '(1 2 3 4 5 6 7 8))
   (dolist (beat '(1 2 3 4))
@@ -33,6 +35,8 @@
        :key vibes-key-list
        :amp 'mf)
 
+;; Adds slight portamento 
+;;
 (controllers b1-vibes-cc vibes
 	     :bars 8
 	     :events '((:cc (1 1 1) portamento-time 16)

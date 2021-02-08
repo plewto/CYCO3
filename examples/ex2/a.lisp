@@ -1,22 +1,15 @@
 ;;;; CYCO examples ex2 section a
 ;;;;
-;;;; Section A defines the basic motif, "a-bass" using a piano, and a few
-;;;; simple percussion parts.   The percussion is intentionally mixed low. 
+;;;; Section A defines the basic motif using various "qball" parts.
+;;;; The percussion is intentionally mixed low. 
 ;;;;
 
 ;; Creates the section object.
 ;;
 (section a :bars 8)
 
-;; ;; Add MIDI controller events to set all instrument volumes
-;; ;; to the maximum.
-;; ;; 
-;; (controllers preroll-volume (list piano vibes gm-snare synth guitar)
-;; 	     :bars 8
-;; 	     :events '((:cc (1 1 1) volume 127)))
 
-
-;; Defines the main motif.  Both the piano and kick-drum share the same
+;; Defines the main motif.  Both the bass and kick-drum share the same
 ;; cue-list.
 ;;
 (let ((cue-list '((1 1 1)(1 1 3)(1 4 1)(1 4 3)
@@ -28,6 +21,14 @@
 		  (7 1 1)(7 1 3)(7 4 1)(7 4 3)
 		  (8 1 1)(8 1 3)(8 4 1)(8 4 3))))
 
+  ;; The bass part uses a layered piano and bass.
+  ;;
+  ;; If (list base piano) were replaced with (cycle :of (list base piano)),
+  ;; the two instruments would play on alternate notes.
+  ;;
+  ;; If (dice :of (list bass piano)) were used the bass or piano
+  ;; would be randomly selected on each note
+  ;;
   (qball a-bass (list bass piano)
 	 :cue cue-list
 	 :key '(f3 f3 f3 f3
@@ -45,19 +46,19 @@
 	 :cue cue-list
 	 :key '(x1 x2 x1)
 	 :reset-on-repeat nil
-	 :amp 'f ))
+	 :amp 'f))
 
 (qball a-snare gm-snare
        :bars 1
        :cue '((1 2 1)(1 4 1))
-       :key (dice :of '(x1 x1 x1 x2))  ;; select random snare sound for variation.
+       :key (dice :of '(x1 x1 x1 x2))  ;; select random snare variation.
        :amp 'pp)
        
 (qball a-shaker gm-shaker
        :bars 1
        :cue '((1 1 1)(1 1 3)(1 2 1)(1 2 3)
 	      (1 3 1)(1 3 3)(1 4 1)(1 4 3))
-       :key (dice :of (cons 'maracas (copies 8 'cabasa))) ;; select random shaker sound for variation.
+       :key (dice :of (cons 'maracas (copies 8 'cabasa))) ;; select random shaker variation.
        :amp 'p)
 
 (qball a-clave gm-woodblock

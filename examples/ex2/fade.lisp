@@ -1,17 +1,21 @@
 ;;;; CYCO example ex2 section f  -- fade out
 ;;;;
-;;;; Section F is a clone of section E but adds volume fades to all parts.
-;;;; Two fades are defined with slightly different rates.   The piano,
-;;;; vibes and percussion fade out earlier then the synth and guitar.
+;;;; Section F is a clone of section E with volume events
+;;;; for a final fade out.  Three controllers parts are used
+;;;; to fade instruments at different rates.
 ;;;;
 
 (param fade (clone e :new-name "Fade"))
 
-(controllers fade-1 (list piano gm-snare guitar)
+(controllers fade-1 (list bass gm-snare guitar)
 	     :bars 8
-	     :events '((:time (2 1 1) (6 3 1) s :ctrl volume :value 127 0 :ramp)))
+	     :events '((:time (1 1 1) (6 3 1) s :ctrl volume :value 127 0 :ramp)))
 
-(controllers fade-2 (list synth vibes)
+(controllers fade-2 piano
+	     :bars 8
+	     :events '((:time (2 3 1)(7 3 1) s :ctrl volume :value 127 0 :ramp)))
+
+(controllers fade-3 (list synth vibes)
 	     :bars 8
 	     :events '((:time (4 1 1)(8 4 1) s :ctrl volume :value 127 0 :ramp)))
 

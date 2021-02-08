@@ -10,16 +10,16 @@
 (param oboe-scale     (* wind-scale 1.00))
 (param clarinet-scale (* wind-scale 1.00))
 
-(param question-scale 0.60)
+(param question-scale 1.00)
 
-(param string-scale 0.7)
+(param string-scale 1.00)
 
-(param violin-1-scale (* string-scale 0.40))
-(param violin-2-scale (* string-scale 0.40))
-(param viola-scale    (* string-scale 0.70))
-(param cello-scale    (* string-scale 0.60))
-(param ensemble-high-scale (* string-scale 0.40))
-(param ensemble-bass-scale (* string-scale 0.90))
+(param violin-1-scale (* string-scale 1.00))
+(param violin-2-scale (* string-scale 1.00))
+(param viola-scale    (* string-scale 1.00))
+(param cello-scale    (* string-scale 1.00))
+(param ensemble-high-scale (* string-scale 1.00))
+(param ensemble-bass-scale (* string-scale 1.00))
 
 
 (param woodwind-transpose 12)
@@ -40,7 +40,6 @@
 (general-midi-instrument clarinet :channel 4
 			 :keynumber-map (basic-keynumber-map :transpose woodwind-transpose)
 			 :dynamic-map (basic-dynamic-map :scale clarinet-scale))
-
 
 (general-midi-instrument question :channel 5 :program 'english-horn
 			 :keynumber-map (basic-keynumber-map :transpose 12)

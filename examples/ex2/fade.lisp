@@ -6,6 +6,7 @@
 ;;;;
 
 (param fade (clone e :new-name "Fade"))
+(bulk-rename-parts fade 1 "fade")
 
 (controllers fade-1 (list bass gm-snare guitar)
 	     :bars 8

@@ -3,8 +3,7 @@
 ;;;; Example 2 is a cover of the first half of Brian Eno's "The Great
 ;;;; Pretender".  The piece is built on a simple 8-bar motif which is
 ;;;; repeated throughout.  On each repetition additional instruments are
-;;;; added.   Producing this song using only general MIDI is rather
-;;;; restricting and no attempt has been made at the 2nd half.  
+;;;; added.
 
 (version 3)
 (plugin general-midi)
@@ -20,7 +19,7 @@
 ;; Load additional files.
 ;;
 (lpf orchestra)
-(lpf preroll)  ;; initializartion & count-in metronome.
+(lpf preroll)  ;; initialization & count-in metronome.
 (lpf a)        ;; basic motif
 (lpf b1)       ;; vibes
 (lpf b2)       ;; inverted vibes
@@ -38,3 +37,15 @@
 ;; Render the project and save to the MIDI directory.
 ;;
 (project->midi)
+
+;; Use dump-events to examine the generated MIDI events.  Usage is slightly
+;; different between a project and section/parts.  projects must be rendered
+;; before using dump-events
+;;
+;; (dump-events (render-project))
+;;
+;; When dumping sections or parts there is no need to render first
+;;
+;; (dump-events b1)         ;; section b1
+;; (dump-events b1-vibes)   ;; vibes part in section b1
+;;

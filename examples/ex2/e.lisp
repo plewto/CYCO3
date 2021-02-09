@@ -3,10 +3,11 @@
 ;;;; octave and is mixed back to give the guitar space.
 
 (param e (clone d :new-name "E"))
+(bulk-rename-parts e 1 "E")
 
 ;; Remove the original synth part, see documentation for nodes.
 ;; 
-(disconnect (get-section-part e 'd-synth))
+(disconnect (get-section-part e 'e-synth))
 
 ;; Replacement synth part
 ;;
@@ -74,7 +75,7 @@
 (bender e-guitar-bend guitar
 	:events '((:bend (1 1 1) 0.0)
 		  (:time (8 1 1)(8 4 1) t :value 0 -0.50 :cycles 3 :tri)
-		  ;; clean up, set pitch bend to 0
+		  ;; clean up, set pitch bend to 0.
 		  ;; The final 16 in the time specification sets the
 		  ;; event 16 clock pulses after the last beat of bar 8.
 		  (:bend (8 4 4 16) 0.0))) 

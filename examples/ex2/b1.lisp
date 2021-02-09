@@ -6,13 +6,13 @@
 ;; 
 (param b1 (clone a :new-name "B1"))
 
-;; The bulk rename is included only for illustration.  It is needed only if
+;; bulk-rename is included only for illustration.  It is needed only if
 ;; the cloned parts are to be assigned to variables.
 ;;
 (bulk-rename-parts b1 1 "B1")
 
 
-;; Construct the vibes cue-list to produce a note on every
+;; Construct the vibes-cue-list to produce a note on every
 ;; eighth note.
 ;;
 (param vibes-cue-list nil)

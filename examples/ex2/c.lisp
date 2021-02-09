@@ -5,7 +5,7 @@
 ;;;; are used for random variations. 
 
 (param c (clone b2 :new-name "C"))
-
+(bulk-rename-parts c 2 "C")
 
 ;; A Dice pattern selects random snare variations.   The variations are
 ;; defined by the snare instrument's keynumber-map.  To see a list

@@ -1,7 +1,7 @@
 ;;;; CYCO examples ex2 section a
 ;;;;
 ;;;; Section A defines the basic motif using various "qball" parts.
-;;;; The percussion is intentionally mixed low. 
+;;;; The percussion instruments are intentionally mixed low. 
 ;;;;
 
 ;; Creates the section object.
@@ -9,8 +9,8 @@
 (section a :bars 8)
 
 
-;; Defines the main motif.  Both the bass and kick-drum share the same
-;; cue-list.
+;; Defines the main motif.  The cue-list is shared by the bass, piano 
+;; and bass-drum instruments.
 ;;
 (let ((cue-list '((1 1 1)(1 1 3)(1 4 1)(1 4 3)
 		  (2 1 1)(2 1 3)(2 4 1)(2 4 3)
@@ -26,8 +26,14 @@
   ;; If (list base piano) were replaced with (cycle :of (list base piano)),
   ;; the two instruments would play on alternate notes.
   ;;
-  ;; If (dice :of (list bass piano)) were used the bass or piano
-  ;; would be randomly selected on each note
+  ;; If (dice :of (list bass piano)) were used instead, the bass or piano
+  ;; would be randomly selected on each note.
+  ;;
+  ;; With a qball patterens may be used for the instrument list, :key,
+  ;; :amp and :dur (duration) arguments.  List and single values are 
+  ;; values are converted to cycle patterns.
+  ;;
+  ;; The :cue argument only takes a list of time-specifications.
   ;;
   (qball a-bass (list bass piano)
 	 :cue cue-list

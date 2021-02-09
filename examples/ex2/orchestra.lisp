@@ -6,7 +6,8 @@
 ;;
 (prune-orchestra)
 
-;; Define instruments using general-midi.  
+;; Define instruments using general-midi plugin
+;; Use (?general-midi) for list of programs
 ;;
 
 (general-midi-instrument bass :channel 1)

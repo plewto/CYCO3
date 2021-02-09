@@ -2,12 +2,12 @@
 ;;;; Adds a counter-vibraphone by inverting and transposing the original
 ;;;; The counter-vibes are delayed by a quarter-note.
 
+
 ;; Create section B2 as a clone of B1.
 ;;
 
 (param b2 (clone b1 :new-name "B2"))
-
-(bulk-rename-parts b2 1 "B2")
+(bulk-rename-parts b2 2 "B2")
 
 (qball b2-inverted-vibes vibes
        :bars 8

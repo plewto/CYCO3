@@ -13,6 +13,8 @@
 	   (shift-offset (start-time)
 			 (bar time-signature start-time))
 
+	   ;; Creates a new English-horn "question" staring at the specified time.
+	   ;;
 	   (the-question (name start-time &key (end-note 'c5)(end-duration 'h)(amp 'mf))
 			 (make-qball name question
 				     :amp amp
@@ -21,7 +23,8 @@
 				     :key (key-list end-note)
 				     :dur (duration-list end-duration)))
 
-	   
+	   ;; Use volume controller events to sculpt the English-horn motif.
+	   ;;
 	   (envelope (name start-time &key (decay-start '(2 4 2))(decay-stop '(3 1 1)))
 		     (let* ((shift (shift-offset start-time))
 			    (a0   0)  ;; initial amp
@@ -33,9 +36,10 @@
 					 :shift shift
 					 :events (list
 						  attack
-						  decay
-						  )))))
-    
+						  decay)))))
+
+    ;; Note all time-cues use the awkward BAR function format for triplets.
+    ;; 
     (the-question 'q1 '(16  1))
     (the-question 'q2 '(23 T5) :end-note 'b4)
     (the-question 'q3 '(31  2))

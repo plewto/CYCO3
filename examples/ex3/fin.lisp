@@ -2,6 +2,9 @@
 ;;;; Controller reset
 ;;;;
 
+;; Restores controller values.
+;;
+
 (section reset :bars 1)
 
 (controllers volume-reset (list flute-1 flute-2 oboe clarinet

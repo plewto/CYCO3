@@ -3,10 +3,11 @@
 
 (prune-orchestra)
 
+;; Amplitude scaling factors
+;; 
 (param wind-scale 1.00)
 (param question-scale 0.80)
 (param string-scale 0.90)
-
 
 (param flute-1-scale  (* wind-scale 1.00))
 (param flute-2-scale  (* wind-scale 1.00))
@@ -21,8 +22,11 @@
 (param ensemble-bass-scale (* string-scale 1.00))
 
 
-(param woodwind-transpose 12)
 
+;; Woodwinds
+;; 2 flutes, oboe and clarinet.
+;;
+(param woodwind-transpose 12)
 
 (general-midi-instrument flute-1 :channel 1 :program 'flute
 			 :keynumber-map (basic-keynumber-map :transpose woodwind-transpose)
@@ -40,9 +44,14 @@
 			 :keynumber-map (basic-keynumber-map :transpose woodwind-transpose)
 			 :dynamic-map (basic-dynamic-map :scale clarinet-scale))
 
+;; Solo English Horn for the "question"
+
 (general-midi-instrument question :channel 5 :program 'english-horn
 			 :keynumber-map (basic-keynumber-map :transpose 12)
 			 :dynamic-map (basic-dynamic-map :scale question-scale))
+
+;; String section 2 violins, viola and cello
+;; 2 Ensemble instruments (treble/bass) are used for chorusing.
 
 (general-midi-instrument violin-1 :channel 6 :program 'violin
 			 :dynamic-map (basic-dynamic-map :scale violin-1-scale))
@@ -62,6 +71,7 @@
 (general-midi-instrument ensemble-bass :channel 12 :program 'string-ensemble-2
 			 :dynamic-map (basic-dynamic-map :scale ensemble-bass-scale))
 
-
+;; The optional metronome is set to only click at the start of each bar.
+;;
 (general-midi-metronome :channel 16 :program 'woodblock
 			:phrase 72 :bar 72 :beat -1)

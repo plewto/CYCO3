@@ -1,6 +1,10 @@
 ;;;; CYCO 3 example ex3 "answers"
 ;;;;
 
+;; The Answers are the most complex part of the piece.  A mixture of the
+;; normal and triplet time-cues are used.
+;;
+
 ;; Answer 1  Bar 20
 ;;
 (strummer a1-flute-1 flute-1
@@ -28,26 +32,26 @@
 ;; Answer 2 Bar 26
 ;;
 (strummer a2-flute-1 flute-1
-	  :events '((:time (26 t5)  :key df6 :dur ht+h.  :amp mp )
+	  :events '((:time (26 t5)  :key df6 :dur ht+h.  :amp p )
 		    (:time (27 4 1) :key c6  :dur h   )
 		    (:time (28 2 1) :key b5  :dur h   )
-		    (:time (28 4 1) :key bf5 :dur e      :amp p+)
+		    (:time (28 4 1) :key bf5 :dur e      :amp p)
 		    (:time (28 4 3) :key a5  :dur e   )
 		    (:time (29 1 1) :key af5 :dur q   )))
 
 (strummer a2-flute-2 flute-2
-	  :events '((:time (26 t5)   :key f5  :dur ht+q  :amp mp)
+	  :events '((:time (26 t5)   :key f5  :dur ht+q  :amp p)
 		    (:time (27 2  1) :key g5  :dur 2*w)))
 
 (strummer a2-oboe oboe
-	  :events '((:time (26 t5)  :key c5  :dur ht+h.  :amp mp)
+	  :events '((:time (26 t5)  :key c5  :dur ht+h.  :amp p)
 		    (:time (27 4 1) :key b4  :dur h)
-		    (:time (28 2 1) :key c5  :dur w      :amp mp-)))
+		    (:time (28 2 1) :key c5  :dur w      :amp p)))
 
 (strummer a2-clarinet clarinet
-	  :events '((:time (26 t5)  :key fs4 :dur ht+q  :amp mp)
+	  :events '((:time (26 t5)  :key fs4 :dur ht+q  :amp p)
 		    (:time (27 2 1) :key gs4 :dur 2*h.)
-		    (:time (28 4 1) :key a4  :dur e     :amp mp-)
+		    (:time (28 4 1) :key a4  :dur e     :amp p)
 		    (:time (28 4 3) :key as4 :dur e   )
 		    (:time (29 1 1) :key b4  :dur q   )))
 
@@ -59,14 +63,13 @@
 
 ;; Answer 3 Bar 34 
 ;;
-
 (strummer a3-flute-1 flute-1
 	  :events '((:time (34 1 1) :key a5  :dur w  :amp mp)
 		    (:time (35 2 1) :key af5 :dur q.)
 		    (:time (35 3 4) :key g5  :dur e  :amp mp+)
 		    (:time (35 4 1) :key gf5 :dur q  :amp mf )
-		    (:time (36 1 1) :key f5  :dur q  :amp mf-)
-		    (:time (36 2 1) :key f5  :dur h  :amp mp)))
+		    (:time (36 1 1) :key f5  :dur q  :amp mp)
+		    (:time (36 2 1) :key f5  :dur h  :amp mp-)))
 
 (strummer a3-flute-2 flute-2
 	  :events '((:time (34 1 1) :key b4  :dur h.  :amp mp)
@@ -84,9 +87,9 @@
 	  :events '((:time (34 2 1) :key gs4 :dur w  :amp mp )
 		    (:time (35 2 1) :key a4  :dur q          )
 		    (:time (35 3 1) :key b4  :dur q. :amp mp+)
-		    (:time (35 4 3) :key d5  :dur e  :amp mf-)
-		    (:time (36 1 1) :key cs5 :dur h  :amp mf-)
-		    (:time (36 3 1) :key cs5 :dur e  :amp mp)))
+		    (:time (35 4 3) :key d5  :dur e  :amp mp)
+		    (:time (36 1 1) :key cs5 :dur h  :amp mp-)
+		    (:time (36 3 1) :key cs5 :dur e  :amp p)))
 		    
 (controllers a3-dynamics (list flute-2 oboe)
 	     :events '((:cc (34 1 1) volume 112)
@@ -96,7 +99,7 @@
 
 
 ;; Answer 4 Bar 41
-
+;;
 (strummer a4-flute-1 flute-1
 	  :events '((:time (41 2 1) :key c6  :dur h :amp mf)
 		    (:time (41 4 1) :key fs5 :dur q)
@@ -133,6 +136,17 @@
 		    (:time (43 1 4) :key bf4 :dur s)
 		    (:time (43 2 1) :key fs5 :dur h)))
 
+;; A special strummed chord is defined as an attempt at clarinet
+;; glissando.  The :strum tt term specifies that the chord-notes are
+;; not played simultaneously, instead they are produced every
+;; thirty-second-note triplet. 
+;;
+;; :chord [solo] restores single-note playing.
+;;
+;; If :end-together were t, then the early glissando notes would
+;; hold until final note was played.   This would have produced a
+;; cluster instead of a gliss.
+;;
 (defchord '[gliss] '(0 0 1 2 2 3 4 5 6 6 7 8 8 9
 		       10 10 11 12 12 12 12 12 12 12 12))
 (strummer a4-clarinet clarinet
@@ -155,7 +169,6 @@
 
 ;; Answer 5 Bar 47
 ;;
-
 (strummer a5-flute-1 flute-1
 	  :events '((:time (  47 4 1) :key c6  :dur e  :amp ff)
 		    (:time (  47 4 3) :key d5  :dur e)
@@ -229,7 +242,7 @@
 	     :events '((:cc   (47 1 1) volume 64)
 		       (:time (47 2 3)(47 4 4) t :value 64 127 :ctrl volume :ramp)))
 ;; Answer 6 Bar 51
-
+;;
 (strummer a5-flute-1 flute-1
 	  :events '((:time (   51 2 1) :key bf4  :dur q+et :amp ff)
 		    (:time (t  51   8) :key cs4  :dur et)
@@ -321,72 +334,68 @@
 		    (:time (   55 1 3) :key f4          )
 		    (:time (   55 1 4) :key bf6 :dur h  )))
 
-
 (strummer a6-oboe oboe
 	  :events '((:time (   52 1 1) :key f4  :dur e   :amp ff)
-		    (:time (   52 1 3) :key fs4                )
-		    (:time (   52 2 1) :key af4                )
-		    (:time (   52 2 3) :key g4                 )
-		    (:time (t  52   7) :key a4  :dur et        )
-		    (:time (t  52   8) :key bf4                )
-		    (:time (t  52   9) :key c5                 )
-		    (:time (t  52  10) :key fs5 :dur qt        )
-		    (:time (t  52  12) :key g5  :dur et        )
-		    (:time (t  53   1) :key c5                 )
-		    (:time (t  53   2) :key b5                 )
-		    (:time (t  53   3) :key f5                 )
-		    (:time (   53 2 1) :key c6  :dur e         )
-		    (:time (   53 2 3) :key cs6 :dur q         )
-		    (:time (   53 3 3) :key d5  :dur s         )
-		    (:time (   53 3 4) :key ef5                )
-		    (:time (   53 4 1) :key f5                 )
-		    (:time (   53 4 2) :key fs5                )
-		    (:time (   53 4 3) :key af5                )
-		    (:time (   53 4 4) :key g5                 )
-		    (:time (   54 1 1) :key bf4 :dur s        )
-		    (:time (   54 1 2) :key df4 :dur e        )
-		    (:time (   54 1 4) :key e4  :dur s        )
-		    (:time (   54 2 1) :key ef5 :dur e        )
-		    (:time (   54 2 3) :key d5  :dur q        )
-		    (:time (t  54  10) :key d5  :dur et       )
-		    (:time (t  54  11) :key c5                )
-		    (:time (t  54  12) :key cs5               )
-		    (:time (   55 1 1) :key c5  :dur s        )
-		    (:time (   55 1 2) :key b4                )
-		    (:time (   55 1 3) :key a4                )
-		    (:time (   55 1 4) :key af4               )
-		    (:time (   55 2 1) :key b5 :dur h         )))
+		    (:time (   52 1 3) :key fs4                 )
+		    (:time (   52 2 1) :key af4                 )
+		    (:time (   52 2 3) :key g4                  )
+		    (:time (t  52   7) :key a4  :dur et         )
+		    (:time (t  52   8) :key bf4                 )
+		    (:time (t  52   9) :key c5                  )
+		    (:time (t  52  10) :key fs5 :dur qt         )
+		    (:time (t  52  12) :key g5  :dur et         )
+		    (:time (t  53   1) :key c5                  )
+		    (:time (t  53   2) :key b5                  )
+		    (:time (t  53   3) :key f5                  )
+		    (:time (   53 2 1) :key c6  :dur e          )
+		    (:time (   53 2 3) :key cs6 :dur q          )
+		    (:time (   53 3 3) :key d5  :dur s          )
+		    (:time (   53 3 4) :key ef5                 )
+		    (:time (   53 4 1) :key f5                  )
+		    (:time (   53 4 2) :key fs5                 )
+		    (:time (   53 4 3) :key af5                 )
+		    (:time (   53 4 4) :key g5                  )
+		    (:time (   54 1 1) :key bf4 :dur s          )
+		    (:time (   54 1 2) :key df4 :dur e          )
+		    (:time (   54 1 4) :key e4  :dur s          )
+		    (:time (   54 2 1) :key ef5 :dur e          )
+		    (:time (   54 2 3) :key d5  :dur q          )
+		    (:time (t  54  10) :key d5  :dur et         )
+		    (:time (t  54  11) :key c5                  )
+		    (:time (t  54  12) :key cs5                 )
+		    (:time (   55 1 1) :key c5  :dur s          )
+		    (:time (   55 1 2) :key b4                  )
+		    (:time (   55 1 3) :key a4                  )
+		    (:time (   55 1 4) :key af4                 )
+		    (:time (   55 2 1) :key b5 :dur h           )))
 		    
 
 (strummer a6-clarinet clarinet
 	  :events '((:time (  52 2 1) :key d4   :dur e  :amp ff)
-		    (:time (  52 2 3) :key ds4                )
-		    (:time (t 52   7) :key e4   :dur et       )
-		    (:time (t 52   8) :key f4                 )
-		    (:time (t 52   9) :key g4                 )
-		    (:time (t 52  10) :key cs5  :dur qt       )
-		    (:time (t 52  12) :key a4   :dur et       )
-		    (:time (  53 1 1) :key c5   :dur q        )
-		    (:time (  53 2 2) :key d5   :dur e.       )
-		    (:time (  53 2 4) :key f4                 )
-		    (:time (  53 3 1) :key a4   :dur e        )
-		    (:time (  53 3 3) :key b4                 )
-		    (:time (  53 4 1) :key a4   :dur q        )
-		    (:time (  54 1 1) :key bf4  :dur s        )
-		    (:time (  54 1 2) :key df4  :dur e        )
-		    (:time (  54 1 4) :key f4   :dur s        )
-		    (:time (  54 2 1) :key df4  :dur e        )
-		    (:time (  54 2 3) :key f4   :dur q        )
-		    (:time (  54 3 3) :key g4   :dur e        )
-		    (:time (t 54  10) :key a4   :dur et       )
-		    (:time (t 54  11) :key b4                 )
-		    (:time (t 54  12) :key bf4                )
-		    (:time (  55 1 1) :key g4   :dur s        )
-		    (:time (  55 1 2) :key fs4                )
-		    (:time (  55 1 3) :key e4                 )
-		    (:time (  55 1 4) :key ef4                )
-		    (:time (  55 2 1) :key gs5  :dur e        )
-		    (:time (  55 3 3) :key a6   :dur h+e      )))
-
-
-
+		    (:time (  52 2 3) :key ds4                 )
+		    (:time (t 52   7) :key e4   :dur et        )
+		    (:time (t 52   8) :key f4                  )
+		    (:time (t 52   9) :key g4                  )
+		    (:time (t 52  10) :key cs5  :dur qt        )
+		    (:time (t 52  12) :key a4   :dur et        )
+		    (:time (  53 1 1) :key c5   :dur q         )
+		    (:time (  53 2 2) :key d5   :dur e.        )
+		    (:time (  53 2 4) :key f4                  )
+		    (:time (  53 3 1) :key a4   :dur e         )
+		    (:time (  53 3 3) :key b4                  )
+		    (:time (  53 4 1) :key a4   :dur q         )
+		    (:time (  54 1 1) :key bf4  :dur s         )
+		    (:time (  54 1 2) :key df4  :dur e         )
+		    (:time (  54 1 4) :key f4   :dur s         )
+		    (:time (  54 2 1) :key df4  :dur e         )
+		    (:time (  54 2 3) :key f4   :dur q         )
+		    (:time (  54 3 3) :key g4   :dur e         )
+		    (:time (t 54  10) :key a4   :dur et        )
+		    (:time (t 54  11) :key b4                  )
+		    (:time (t 54  12) :key bf4                 )
+		    (:time (  55 1 1) :key g4   :dur s         )
+		    (:time (  55 1 2) :key fs4                 )
+		    (:time (  55 1 3) :key e4                  )
+		    (:time (  55 1 4) :key ef4                 )
+		    (:time (  55 2 1) :key gs5  :dur e         )
+		    (:time (  55 3 3) :key a6   :dur h+e       )))

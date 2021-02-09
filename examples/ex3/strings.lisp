@@ -1,10 +1,8 @@
 ;;;; CYCO ex3 strings
 ;;;;
 
-
-
-;; Violin-1
-
+;; violin-1
+;;
 (param v1-event-list '((:time ( 1 1) :key g6  :dur 3*w)
 		       (:time ( 4 1) :key fs6 :dur w.)
 		       (:time ( 5 3) :key e6  :dur w)
@@ -43,6 +41,8 @@
 		       (:time (54 3) :key fs6 :dur w)
 		       (:time (55 3) :key g6  :dur 13*h)))
 
+;; violin-2
+;;
 (param v2-event-list '((:time ( 1 1) :key d5 :dur 9*h)
 		       (:time ( 5 3) :key g4 :dur w.)
 		       (:time ( 7 1) :key d5 :dur h)
@@ -175,15 +175,15 @@
 			  (:time (52 1) :key g2  :dur 10*w)))
 
 
-(labels ((coin (&optional (p 0.5))
+;; The shuffle function is used to add slight time randominzation.
+;;
+(labels ((coin (&optional (p 0.5)) 
 	       (< (random 1.0) p))
-
 	 (randomizer (cue)
 		     (declare (ignore cue))
 		     (if (coin)
 			 (random 0.1)
 		       0.0)))
-
   (strummer violin-1-part violin-1 :events v1-event-list :shuffle #'randomizer)
   (strummer violin-2-part violin-2 :events v2-event-list :shuffle #'randomizer)
   (strummer viola-part viola :events viola-event-list :shuffle #'randomizer)
@@ -196,6 +196,9 @@
 	    :shuffle #'randomizer))
 
 
-(controllers strings-volume (list violin-1 violin-2 viola cello ensemble-treble ensemble-bass)
+;; Fade strings starting at bar 59.
+;;
+(controllers strings-volume (list violin-1 violin-2 viola cello
+				  ensemble-treble ensemble-bass)
 	     :events '((:time (59 1 1)(61 4 4) t :value 127 0 :ctrl volume :ramp)))
 		      

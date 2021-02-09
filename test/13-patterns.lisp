@@ -78,7 +78,7 @@
 	 (equal (reverse seq) '(a b c a b c z z z z z z)))
   (reset s)
   (setf seq '())
-  (setf (step-only-selected s) t)
+  (setf (step-selected-only s) t)
   (select s 0)
   (dotimes (i 6)
     (push (next-1 s) seq))

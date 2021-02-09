@@ -7,11 +7,11 @@
 (in-package :cyco)
 
 (defclass switch (pattern)
-  ((step-only-selected
+  ((step-selected-only
     :type t
     :initform nil
-    :accessor step-only-selected
-    :initarg :step-only-selected))
+    :accessor step-selected-only
+    :initarg :step-selected-only))
   (:documentation
    "A Switch selects current-value from a list of possible entities.
 The entities may be Patterns, Generators, static-values, or any object
@@ -22,7 +22,7 @@ for which the next-1 and value methods are defined."))
 		      (reset i)))
 
 	 (step-elements (switch)
-			(if (step-only-selected switch)
+			(if (step-selected-only switch)
 			    (next-1 (nth (pointer switch)(elements switch)))
 			  (dolist (e (elements switch))
 			    (next-1 e)))) )
@@ -33,13 +33,13 @@ for which the next-1 and value methods are defined."))
     (setf (value switch)(car (elements switch)))
     switch)
 
-  (defun switch (&key of step-only-selected)
+  (defun switch (&key of step-selected-only)
     (reset (make-instance 'switch :of (->list of)
-			  :step-only-selected step-only-selected)))
+			  :step-selected-only step-selected-only)))
 
   (defmethod clone ((mother switch) &key &allow-other-keys)
     (switch :of (clone (elements mother))
-	    :step-only-selected (step-only-selected mother)))
+	    :step-selected-only (step-selected-only mother)))
 
   
   (defmethod select ((switch switch)(item t))
@@ -68,15 +68,15 @@ for which the next-1 and value methods are defined."))
 (setf (documentation 'switch 'function)
       "Creates new switch pattern.
 
-(switch &key of step-only-selected)
+(switch &key of step-selected-only)
 
 :of - List of possible entities.
       The next-1 and value methods must be defined for each element.
       Default '()
 
-:step-only-selected - Boolean.  
+:step-selected-only - Boolean.  
       Changes how embedded elements are handled when the next-1 method
-      is executed.   If step-only-selected is false, then whenever next-1 
+      is executed.   If step-selected-only is false, then whenever next-1 
       is called for the switch, next-1 is called for all nested elements.
       If true, next-1 is only called on the currently selected element.
       Default false.")

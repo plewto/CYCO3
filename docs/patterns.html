@@ -40,6 +40,7 @@
       <li><a href='#coin'>coin</a></li>
       <li><a href='#wrapper'>wrapper</a></li>
       <li><a href='#walker'>walker</a></li>
+      <li><a href='#switch'>switch</a></li>
       <li><a href='#nested-patterns'>nested-patterns</a></li>
   </ul>
   <p class="body">
@@ -100,13 +101,13 @@
   <b class="definition">(NEXT pattern &optional n)</b><br>
   <p class="summery">Returns next value from pattern.</p>
   <pre class="description">
-    By default NEXT acts exactly like NEXT-1.  If the optional n argument is an integer
+    By default NEXT acts exactly like NEXT-1.  
+    If the optional n argument is an integer
     it behaves like (NEXT-n pattern n).
     
     If n is the keyword :ALL then a list of all elements are returned.
     If n is the keyword :REST then a list of all remaining elements is returned.
-    
-        (param foo (cycle :of '(A B C D E F G H)))
+     foo (cycle :of '(A B C D E F G H)))
         (next foo)       &rarr; A
         (next foo)       &rarr; B
         (next foo 3)     &rarr; (C D E)
@@ -394,6 +395,48 @@
     
     (param foo (walker :of '(A B C D)))
     (next foo 8) &rarr; D C B A B C B A
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="switch"></a>
+  
+  <!-- (SWITCH &key of step-selected-only) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SWITCH &key of step-selected-only)</b><br>
+  <p class="summery">Returns new switch pattern.</p>
+  <pre class="description">
+    SWITCH takes a list of patterns, <a href='generators.html'>generators</a> or static values.  At any one time 
+    only one of these is selected.  Calling NEXT-1 on the switch returns the value
+    of the currently selected item.  NEXT-1 is applied recursively to all of the
+    items, however if step-selected-only is true, then next-1 is only applied
+    to the currently selected item.  
+    
+    (param greek (line :of '(alpha beta delta)))
+    (param alpha (cycle :of '(a b c)))
+    (param s (switch :of (list greek alpha 'FOO) :step-selected-only t))
+    
+    (select s 1)
+    (next s 4)  &rarr; (A B C A)
+    
+    (select s :last)
+    (next s 3)  &rarr; (FOO FOO FOO)
+    
+    (select s 0)
+    (next s 4)  &rarr; (ALPHA BETA DELTA ALPHA)
+  </pre>
+  
+  <!-- (SELECT switch item) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SELECT switch item)</b><br>
+  <p class="summery">Sets selected switch item.</p>
+  <pre class="description">
+    item may be one of the following:
+        integer index
+        :next - selects the next item
+        :previous - selects the previous item
+        :last - selects the final item
+        :random - selects an item at random
   </pre>
   <p class="body">
     <br>

@@ -17,6 +17,10 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=raw-part.html class="navigation">Previous: raw-part </a> &nbsp;<a href=qball.html class="navigation">Next: qball </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <h1 class="banner">Strummer Parts</h1>
+  <p class="body">
+    STRUMMER is a part where explicit events are specified in an events-list.
+    It has several options for generating chords.
+  </p>
   <ul class='quick-jump'>
     <li>Quick Jump:</li>
       <li><a href='#events'>events</a></li>
@@ -29,7 +33,7 @@
     <li>Scale amplitudes across strummed notes.</li>
     <li>Strum direction patterns</li>
     <li>Grace notes</li>
-    <li>Amplitude patterns including crescendos</li>
+    <li>Amplitude patterns</li>
     <li>Simple events for bend, controller and program change.</li>
   </ul>
   
@@ -44,8 +48,7 @@
   <b class="definition">(STRUMMER name instrument &key ...)</b><br>
   <pre class="description">
     MAKE-STRUMMER and STRUMMER are identical except the later binds
-    the new part to the symbol name while the former does not.<br>
-    
+    the new part to the symbol name while the former does not.
     The name argument to MAKE-STRUMMER should be a quoted-symbol and
     should be unquoted for STRUMMER.
     
@@ -62,11 +65,9 @@
         :beats        - Beats per bar, defaults to section value.
         :subbeats     - Subbeats per beat, defaults to section value.
         :render-once  - Boolean, if true render events one time only, otherwise
-                        repeat events every bars as needed to fill parent section.
+                        repeat events as needed to fill parent section.
         :transposable - Boolean, if true part is subject to transpose and
                         invert transformations.
-        :reversible   - Boolean, if true part is subject to retrograde
-                        transformations. 
         :chord-model  - Sets chord-model, defaults to section value.
         :remarks      - Optional remarks text.
         :events       - List of events, see below.
@@ -99,7 +100,9 @@
               
     :TIME time-specification
     
-        TODO add documentation
+        Event time must match the expected format of the cue and shuffle functions.  
+        For the default <a href='cue-functions.html#bar'>BAR</a> function the format is
+        (bar-number beat-number subbeat-number)
     
     :CHORD chord-type
     
@@ -139,7 +142,18 @@
     :INVERSION degree        -12 &le; degree &le; +12
     :INV degree
     
-         TODO add documentation
+         Applies chord inversion by rotation and transposition of the chord 
+         list.   For each degree of positive inversion, the first chord value
+         is transposed up an octave and moved to the end of the list.  For 
+         negative inversions the last chord value is transposed down an octave 
+         and moved to the start of the list
+    
+         For major triad (0 4 7)
+         
+         inversion -1  &rarr; (-5 0 4)
+         inversion 0   &rarr; (0 4 7)
+         inversion +1  &rarr; (4 7 12)
+         inversion +2  &rarr; (7 12 16)
           
          :INVERSION and :INV are identical. 
     
@@ -147,7 +161,23 @@
     :OCTAVE n                -3 &le; n &le; +3
     :OCT n
     
-        TODO add documentation      
+        Adds octave to end of chord list by placing a transposed copy
+        of the first value at the end of the list.  Negative values
+        transpose down by octaves.
+    
+        For major triad (0 4 7)
+    
+        octave -1  &rarr; (-5 0 4 7)
+        octave 0   &rarr; (0 4 7)
+        octave +1  &rarr; (0 4 7 12)
+        octave +2  &rarr; (0 4 7 24)
+    
+        When combined with inversion, the appended octave is added after 
+        the inversion.
+    
+        original chord (0 4 7)
+        inversion 1    (4 7 12)
+        octave 1       (4 7 12 16)
     
         :OCTAVE and :OCT are identical.
     
@@ -233,10 +263,11 @@
         Sets delay between nominal event time and grace note, either as a
         metric-expression or in seconds.
     
-    :DUR metric-expression
+    :DUR <a href='metrics.html'>metric-expression</a>
     
-        TODO add documentation
-    
+        Sets note duration.  Literal numeric values are treated as absolute
+        times in seconds.   Symbolic metric-expressions are scaled by the
+        current tempo.
     
     :AMP dynamic
     :AMP pattern-list
@@ -279,15 +310,21 @@
     
     :BEND amount
     
-         TODO add documentation
+         Adds a single pitch bend event.   -1.0 &le; amount &le; +1.0
     
-    :CC controller-number amount
+    :CC controller-number value
     
-         TODO add documentation    
+         Adds single controller event.
+         controller-number may either be an integer 0, 1, 2, ... 127.
+         or a symbolic <a href='controllers.html'>controller name</a>.
+    
+         Value is an integer 0, 1, 2, ... 127.
     
     :PROGRAM program
     
-       TODO add documentation    
+       Adds single program-change event.
+       If program is the symbol 'default, then the instruments default
+       program is used.  
     
     :BANK bank program
        

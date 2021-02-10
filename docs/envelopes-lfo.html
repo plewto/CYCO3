@@ -14,7 +14,7 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=generators.html class="navigation">Previous: generators </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=counter.html class="navigation">Previous: counter </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/envelope.png" alt="envelope"/>
   <h1 class="banner">Envelopes & LFOs</h1>
@@ -24,73 +24,65 @@
       <li><a href='#lfo'>lfo</a></li>
       <li><a href='#curves'>sawtooth, triangle & pulse curves</a></li>
   </ul>
-  <a id="ramp"></a>
-  
-  <!-- (RAMP a b &key by hook) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(RAMP a b &key by hook)</b><br>
-  <p class="summery">Returns generator that produces linear sequence.</p>
-  <pre class="description">
-    
-    a     - Initial value
-    b     - Final value
-    :by   - Increment, default 1.
-    :hook - Value hook function, default (lambda (n) n)
-    
-    (param foo (ramp 0 5))
-    (next foo 10) --&gt; (0 1 2 3 4 5 5 5 5 5)
-    
-    (param foo (ramp 0 10 :by 1.5))
-    (next foo 10) --&gt; (0 1.5 3.0 4.5 6.0 7.5 9.0 10 10 10)
-    
-    
-    (param foo (ramp 10 0 :by -1 :hook #'(lambda (n)(* n n))))
-    (next foo 12) --&gt; (100 81 64 49 36 25 16 9 4 1 0 0)
-  </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="asr-envelope"></a>
   
-  <!-- (ASR-ENVELOPE a b &key attack decay sustain cycle hook) -->
+  <!-- (ASR-ENVELOPE a b &key attack decay sustain loop hook monitor action) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(ASR-ENVELOPE a b &key attack decay sustain cycle hook)</b><br>
+  <b class="definition">(ASR-ENVELOPE a b &key attack decay sustain loop hook monitor action)</b><br>
   <p class="summery">Returns generator that produces attack-sustain-release envelope.</p>
   <pre class="description">
     
-    a        - Initial value
-    b        - Peak value
+    a        - number, initial value
+    b        - number, peak value  b &ne; a
     :attack  - attack stage increment, default 1
     :decay   - decay stage decrement, default 1
     :sustain - Integer, number of sustain steps, default 4
-    :cycle   - Boolean, if true, automatically reset after final decay value,
+    :loop    - Boolean, if true, automatically reset after final decay value,
                default nil
     :hook    - Function, as in general generator hook, default (lambda (n) n)
+    :monitor - Predicate function called within NEXT-1 on the current value.  
+               If monitor returns non-nil the action function is executed.
+               monitor/action are only available during the attack and decay stages.
+               Default (lambda (envelope value) nil) &rarr Boole
+    
+               The envelope object is passed to the monitor so that the current 
+               state may be examined.  The method (envelope-state envelope) 
+               returns one of three values  :ATTACK :SUSTAIN or :DECAY
+    
+    :action - Function called within next-1 whenever monitor is non-nil
+              Default (lambda (envelope value) value) &rarr; next-value
+    
     
     Examples:
     
-    (param env (asr-envelope 0 12))
-    (next env 30) --&gt; (0 1 2 3 4 5 6 7 8 9 10 11 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0)
+    (param foo (asr-envelope 0 10))
+    (next foo 30) &rarr; (0 1 2 3 4 5 6 7 8 9 10 10 10 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0) 
     
-    (param env (asr-envelope 0 12 :attack 2 :sustain 3))
-    (next env 30) --&gt; (0 2 4 6 8 10 12 12 12 11 10 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0)
     
-    (param env (asr-envelope 0 12 :attack 2 :sustain 2 :decay 3 :cycle t))
-    (next env 30) --&gt; (0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12 9 6 3 0 2 4 6 8 10 12 12)
+    (param foo2 (asr-envelope 0 10 :attack 2 :decay 3 :sustain 2 :loop nil))
+    (next foo2 30) &rarr; (0 2 4 6 8 10 10 7 4 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="lfo"></a>
   <img class="center" src="images/lfo.png" alt="lfo"/>
   
-  <!-- (LFO &key curve hook) -->
+  <!-- (LFO &key curve hook monitor action) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(LFO &key curve hook)</b><br>
+  <b class="definition">(LFO &key curve hook monitor action)</b><br>
   <p class="summery">Returns generator which produces arbitrary cyclical sequences.</p>
   <pre class="description">
     
-    :curve - Numeric list, defaults to triangle wave.
-    :hook  - Function applied to output value, default (lambda (n) n)
+    :curve   - Numeric list, defaults to triangle wave.
+    :hook    - Function applied to output value, default (lambda (n) n)
+    :monitor - Predicate function called within NEXT-1 on current value.
+               When monitor returns non-nil the action function is executed.
+               Default (lambda (value) nil)
+    :action  - Function called within NEXT-1 whenever monitor is non-nil.
+               Default (lambda (lfo value) value).  The return becomes the 
+               the next LFO value.
     
     The following functions may be used with the LFO curve argument.
   </pre>
@@ -124,7 +116,7 @@
     :width  - (Pulse only) pulse width percent 0 &le; width &le; 100, default 50.
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=generators.html class="navigation">Previous: generators </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=counter.html class="navigation">Previous: counter </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

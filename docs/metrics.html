@@ -74,8 +74,8 @@
   <b class="definition">(METRIC object)</b><br>
   <p class="summery">Converts object to its metric value.</p>
   <pre class="description">
-    (METRIC 3.4)  &rarr; 3.4
-    (METRIC -123) &rarr; -1  All negative values treated as rest=-1.
+    (METRIC 3.4)  &rarr; 3.4  Numeric values are preserved.
+    (METRIC -123) &rarr; -123  
     (METRIC 'Q)   &rarr; 1.0 quarter note.
     (METRIC 'E.)  &rarr; 0.75 dotted eighth note.
     (METRIC 'ST)  &rarr; ~0.1667 sixteenth note triplet.

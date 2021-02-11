@@ -46,8 +46,10 @@
   <H2 class="heading">Dependencies</H2>
   <p class="body">
     The basic CYCO installation has no dependencies other then an ANSI Common Lisp,  
-    <a href='http://www.sbcl.org/'>Steel Bank Common Lisp</a> is recomended.  The optional 
-    'pig' plugin requires <a href='https://www.quicklisp.org/beta/'>quicklisp</a> to install osc, usocket and 
+    <a href='http://www.sbcl.org/'>Steel Bank Common Lisp</a> is recommended.
+    There have been problems using CLISP but Armed Bear seems to work fine.<br>  
+    
+    The optional 'pig' plugin requires <a href='https://www.quicklisp.org/beta/'>quicklisp</a> to install osc, usocket and 
     uiop packages.
   </p>
   <a id="installation"></a>
@@ -91,6 +93,19 @@
      starting CYCO from a snapshot you must first enter <strong>(CYCO)</strong> at the initial
      Lisp prompt.  By default the executable is saved as ~/bin/cyco</li>
   </ol>
+  <H2 class="heading">Example projects</H2>
+  <p class="body">
+    The examples folder contains several tutorial projects.  To use,
+    the contents of examples should be copied to the cyco-projects folder.
+    Currently there are three projects with increasing levels of
+    complexity.
+  </p>
+  <ul>
+    <li>ex1 - A very simple piano and flute folk song.</li>
+    <li>ex2 - Typical pop-song using Eno's <i>The Great Pretender</i>.</li>
+    <li>ex3 - Charles Ives's <i>The Unanswered Question</i><br>
+  <small>Or at least a cartoonish general-midi version of the Unanswered Question.</small></li>
+  </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=keynumbers.html class="navigation">Next: keynumbers </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   

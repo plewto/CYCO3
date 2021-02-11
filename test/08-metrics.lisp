@@ -9,7 +9,7 @@
 	    (not (some #'metric-p '(ape qe "q" "q." "qt")))))
 
 (pass? "metric (numeric) 8.2"
-       (and (= (metric -100) -1)
+       (and (= (metric -100) -100.0)
 	    (= (metric 0) 0)
 	    (= (metric 1/2) 1/2)
 	    (= (metric 3.14) 3.14)))

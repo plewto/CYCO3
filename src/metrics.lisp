@@ -61,8 +61,8 @@
 (defmethod metric ((object t))
   (cyco-type-error 'metric '(number symbol list) object))
 
-(defmethod metric ((metric-value number))
-  (float (if (minusp metric-value) -1 metric-value)))
+(defmethod metric ((value number))
+  (float value))
 
 (defmethod metric ((metric-value symbol))
   (let* ((name (string-upcase (->string metric-value)))
@@ -149,8 +149,8 @@
 	nil))))
 
 
-(defmethod metric-expression-p ((n number))
-  (if (minusp n) +rest+ n))
+(defmethod metric-expression-p ((n number)) (float n))
+  
 
 ;; Returns value of expression
 ;; If expression is invalid, generate cyco-composition-error and

@@ -2,8 +2,8 @@
 ;;;;
 
 (version 3)
-(project test-7 :bars 4
-	 :project-directory (join-path *mock-project-directory* "test-7"))
+(project test-8 :bars 4
+	 :project-directory (join-path *mock-project-directory* "test-8"))
 
 (plugin general-midi)
 (prune-orchestra)

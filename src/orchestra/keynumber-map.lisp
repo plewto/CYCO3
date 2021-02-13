@@ -40,7 +40,7 @@ The transpose amount is applied after the key range test."
 		+rest+)
 	 (warnfn (kn)
 		 (progn 
-		   (cyco-warning (sformat "BASIC-KEYNUMBER-MAP  unknown keynumber ~A" kn))
+		   (cyco-keynumber-warning (sformat "BASIC-KEYNUMBER-MAP  unknown keynumber ~A" kn))
 		   +rest+)))
     #'(lambda (kn)
 	(cond ((eq kn :doc)
@@ -142,7 +142,7 @@ The spacial symbol 'x returns the first keynumber in the list."
 		  (format t ";;   [~16A] --> ~3D~%" (car p)(cdr p)))
 		+rest+)
 	 (warnfn (kn)
-		 (cyco-warning (sformat "Unknown keynumber ~A" kn))
+		 (cyco-keynumber-warning (sformat "Unknown keynumber ~A" kn))
 		 +rest+))
     (let* ((htab (alist->hash-table assignments (length assignments))))
       #'(lambda (kn)

@@ -11,6 +11,9 @@
 (global *enable-warnings* t
 	"If nil suppress warning messages.")
 
+(global *enable-keynumber-warnings* nil
+	"If true invalid keynumbers elicit a warning.")
+
 (labels ((error-banner
 	  (msg)
 	  (format t "~A ~A~%" +banner-error+ msg))
@@ -35,6 +38,11 @@ is invalid."
 			 (sformat "Cuing function : ~A" function-name)
 			 (sformat "ARGS           : ~A" args))
 		   more)))
+
+  (defun cyco-keynumber-warning (text)
+    (if *enable-keynumber-warnings*
+	(cyco-warning text)))
+
   
   (defun cyco-error (&rest msg)
     "Generalized error.

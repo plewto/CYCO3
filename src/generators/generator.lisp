@@ -70,7 +70,6 @@ action function is executed."))
 	((integerp n)(next-n gen n))
 	(t (value gen))))
 
-
 (defclass constant-value (generator) nil
   (:documentation
    "A CONSTANT-VALUE is a generator which always produces the same 
@@ -78,6 +77,8 @@ value."))
 
 (defun constant-value (n &key &allow-other-keys)
   (make-instance 'constant-value :seed n))
+
+(defmethod pattern-length ((c constant-value) &key &allow-other-keys) 1)
 
 (defmethod clone ((mother constant-value) &key &allow-other-keys)
   (constant-value (value mother))) 

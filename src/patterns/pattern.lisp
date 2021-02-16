@@ -60,18 +60,12 @@
 	(pointer p) 0)
   p)
 
-(defmethod cardinality ((lst list))
-  (length lst))
-
-(defmethod cardinality ((v vector))
-  (length v))
-
-(defmethod cardinality ((p pattern))
-  (cardinality (elements p)))
+(defmethod pattern-length ((p pattern) &key &allow-other-keys)
+  (length (elements p)))
 
 (defmethod remaining ((p pattern))
   (let ((ptr (pointer p))
-	(mx (cardinality p)))
+	(mx (pattern-length p)))
     (and ptr (- mx ptr))))
 
 (defmethod next-1 ((obj t)) obj)

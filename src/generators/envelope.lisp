@@ -60,6 +60,12 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 	(slot-value env 'sustain-counter)(slot-value env 'sustain-reset))
   env)
 
+(defmethod pattern-length ((env asr-envelope) &key &allow-other-keys)
+  (let* ((diff (abs (- (envelope-ceiling env)(envelope-floor env))))
+	 (a (/ diff (abs (envelope-attack env))))
+	 (d (/ diff (abs (envelope-decay env))))
+	 (s (slot-value env 'sustain-reset)))
+    (+ a s d)))
 
 (defun asr-envelope (a b &key
 		       (attack 1)

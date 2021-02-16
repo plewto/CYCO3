@@ -75,6 +75,20 @@
 	    v1))
     (funcall (value-hook gen) v0)))
 
+(defmethod pattern-length ((lg logistic) &key (max 128) &allow-other-keys)
+  (reset lg)
+  (let ((seen '())
+	(v (current-value lg)))
+    (while (and (not (member v seen :test #'=))(plusp max))
+      (push v seen)
+      (next-1 lg)
+      (setf v (current-value lg))
+      (setf max (1- max)))
+    (length seen)))
+      
+    
+
+
 (setf (documentation 'logistic 'function)
       "Returns new instance of LOGISTIC.
 

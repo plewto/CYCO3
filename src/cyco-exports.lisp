@@ -54,7 +54,6 @@
 	  bpm->microseconds
 	  build-cyco
 	  butfinal
-	  cardinality
 	  channel
 	  set-channel
 	  channel-index
@@ -229,6 +228,7 @@
 	  part-p
 	  partition-list
 	  path-to-root
+	  pattern-length
 	  pattern-p
 	  period
 	  permute

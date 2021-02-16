@@ -11,10 +11,10 @@
     :accessor probability
     :initform 0.5
     :initarg :p)
-   (period
+   (length
     :type integer
-    :initform 0
-    :initarg :period))
+    :initform 128
+    :initarg :length))
   (:documentation 
 "A COIN is a PATTERN with binary choice: head or tail.
 The head and tail values my individually be:
@@ -22,7 +22,6 @@ The head and tail values my individually be:
   2) Pattern -> execute next-1 and return result.
   3) Function -> call function with internal counter as argument.
 
-Internal counter is reset after period calls.
 The head object is returned with probability p
 
 Note: (retrograde coin) flips head/tail probability."))
@@ -30,18 +29,17 @@ Note: (retrograde coin) flips head/tail probability."))
 (defmethod coin-p ((obj t)) nil)
 (defmethod coin-p ((c coin)) t)
 
-(defun coin (&key (p 0.5)(head #'true)(tail #'false)(period 16))
+(defun coin (&key (p 0.5)(head #'true)(tail #'false)(length 128))
   "Creates new instance of coin pattern."
   (let ((c (make-instance 'coin
 			  :p p
 			  :of (list head tail)
-			  :period (max 1 period))))
+			  :length length)))
     (next-1 c)
     c))
-	
 
-(defmethod cardinality ((c coin))
-  (slot-value c 'period))
+(defmethod pattern-length ((c coin) &key &allow-other-keys)
+  (slot-value c 'length))
 
 (defmethod reset ((c coin))
   (dolist (q (elements c))(reset q))
@@ -58,14 +56,11 @@ Note: (retrograde coin) flips head/tail probability."))
 		((pattern-p selection)
 		 (next-1 selection))
 		(t selection)))
-    (setf (pointer c)
-	  (rem (1+ (pointer c))(cardinality c)))
+    (setf (pointer c)(1+ (pointer c)))
     (value c)))
 
 (defmethod clone ((mother coin) &key &allow-other-keys)
   (coin :p (probability mother)
 	:head (clone (car (elements mother)))
 	:tail (clone (second (elements mother)))
-	:period (slot-value mother 'period)))
-
-
+	:length (pattern-length mother)))

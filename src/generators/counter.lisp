@@ -28,6 +28,9 @@
 	(initial-value counter))
   counter)
 
+(defmethod pattern-length ((c counter) &key &allow-other-keys)
+  (let ((diff (abs (- (initial-value c)(final-value c)))))
+    (truncate (/ diff (abs (counter-increment c))))))
 
 (defun counter (from to &key (by 1)
 		     (hook #'(lambda (n) n))

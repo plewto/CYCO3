@@ -9,7 +9,11 @@
   ((random-function
     :type function
     :initform #'(lambda ()(random 1.0))
-    :initarg :function))
+    :initarg :function)
+   (length
+    :type integer
+    :initform 128
+    :initarg :length))
    (:documentation
     "BONES is a random numbergenerator."))
 
@@ -19,8 +23,10 @@
 				(declare (ignore value))
 				nil))
 		   (action #'(lambda ()))
+		   (length 128)
 		   &allow-other-keys)
   (reset (make-instance 'bones
+			:length length
 			:hook hook
 			:monitor monitor
 			:action action
@@ -34,7 +40,8 @@
   (bones :function (slot-value mother 'random-function)
 	 :hook (value-hook mother)
 	 :monitor (monitor mother)
-	 :action (action mother)))
+	 :action (action mother)
+	 :length (pattern-length mother)))
 
 (defmethod next-1 ((bones bones))
   (prog1
@@ -44,6 +51,9 @@
       (value bones))
     (setf (current-value bones)
 	  (funcall (slot-value bones 'random-function)))))
+
+(defmethod pattern-length ((b bones) &key &allow-other-keys)
+  (slot-value b 'length))
 
 (setf (documentation 'bones 'function)
       "Bones is a random-number generator.

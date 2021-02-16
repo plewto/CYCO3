@@ -36,13 +36,6 @@
   (reset (final-value bag))
   bag)
 
-;; (defmethod next-1 ((bag bag))
-;;   (prog1
-;;       (or (car (elements bag))
-;; 	  (next-1 (final-value bag)))
-;;     (setf (elements bag)
-;; 	  (cdr (elements bag)))))
-
 (defmethod next-1 ((bag bag))
   (let ((v (or (car (elements bag))
 	       (next-1 (final-value bag)))))

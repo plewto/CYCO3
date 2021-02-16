@@ -26,7 +26,6 @@
     :initform 1
     :initarg :increment)))
 
-
 (defun ramp (a b &key (by 1)
 	       (hook #'(lambda (n) n))
 	       (monitor #'(lambda (v)
@@ -82,6 +81,10 @@
 	(cond ((< floor ceiling)(increment ramp ceiling))
 	      ((> floor ceiling)(decrement ramp ceiling))
 	      (t nil))))) )
+
+(defmethod pattern-length ((r ramp) &key &allow-other-keys)
+  (let ((diff (abs (- (ramp-ceiling r)(ramp-floor r)))))
+    (truncate (/ diff (ramp-increment r)))))
 
 (setf (documentation 'ramp 'function)
       "Creates new RAMP generator.

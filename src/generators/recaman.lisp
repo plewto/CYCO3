@@ -17,7 +17,11 @@
     :initarg :seed)
    (counter
     :type integer
-    :initform 0))
+    :initform 0)
+   (length
+    :type integer
+    :initform 128
+    :initarg :length))
   (:documentation
    "RECAMAN is a generator for producing a Recaman sequence
 https://en.wikipedia.org/wiki/Recam%C3%A1n%27s_sequence
@@ -35,18 +39,22 @@ https://oeis.org/A005132"))
 				  (declare (ignore value))
 				  nil))
 		     (action #'(lambda (value) value))
-		     (hook #'(lambda (n) n)) &allow-other-keys)
+		     (hook #'(lambda (n) n))
+		     (length 128)
+		     &allow-other-keys)
   (reset (make-instance 'recaman
 			:seed seed 
 			:hook hook 
 			:monitor monitor 
-			:action action)))
+			:action action
+			:length length)))
 
 (defmethod clone ((mother recaman) &key &allow-other-keys)
   (recaman (slot-value mother 'initial-value)
 	   :hook (value-hook mother)
 	   :monitor (monitor mother)
-	   :action (action mother)))
+	   :action (action mother)
+	   :length (pattern-length mother)))
 
 (defmethod next-1 ((rec recaman))
   (prog1
@@ -64,6 +72,10 @@ https://oeis.org/A005132"))
       (push v1 (slot-value rec 'seen))
       (setf (slot-value rec 'counter) n
 	    (current-value rec) v1))))
+
+(defmethod pattern-length ((r recaman) &key &allow-other-keys)
+  (slot-value r 'length))
+
 
 (setf (documentation 'recaman 'function)
       "Returns new RECAMAN generator.

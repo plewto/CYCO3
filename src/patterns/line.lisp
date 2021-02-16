@@ -22,7 +22,7 @@ once all previous values have been returned."))
   (let* ((ptr (pointer q))
 	 (val (next-1 (nth ptr (elements q)))))
     (setf (pointer q)
-	  (min (1+ ptr)(1- (cardinality q))))
+	  (min (1+ ptr)(1- (pattern-length q))))
     (setf (slot-value q 'value) val)
     val))
 

@@ -29,7 +29,6 @@
 	(slot-value gen 'initial-value))
   gen)
 
-
 (defun hailstone (seed &key
 		       (even #'(lambda (n)(/ n 2)))
 		       (odd #'(lambda (n)(1+ (* 3 n))))
@@ -67,6 +66,23 @@
 	    (if (funcall (monitor gen) v1)
 		(funcall (action gen) gen v1)
 	      v1)))))
+
+(labels ((whole-number-p (n)
+			 (zerop (- n (truncate n))))
+
+	 (power-of-2-p (n)
+		       (whole-number-p (log n 2))))
+
+  (defmethod pattern-length ((stone hailstone) &key &allow-other-keys)
+    (reset stone)
+    (let ((counter 0))
+      (while (not (power-of-2-p (current-value stone)))
+	(next-1 stone)
+	(setf counter (1+ counter)))
+      (reset stone)
+      (+ 1 counter (truncate (log (current-value stone) 2))))))
+  
+
 
 (setf (documentation 'hailstone 'function)
       "Returns new instance of HAILSTONE.

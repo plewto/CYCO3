@@ -145,9 +145,15 @@ See ->list"))
    "Returns all but final element of sequence.
 (butfinal '(a b c)) --> (a b)"))
 
-(defgeneric cardinality (pattern)
+(defgeneric pattern-length (object &key &allow-other-keys)
   (:documentation
-   "Returns number of elements in a Pattern."))
+   "Returns period length of pattern."))
+
+(defmethod pattern-length ((n t) &key &allow-other-keys)
+  1)
+
+(defmethod pattern-length ((s sequence) &key &allow-other-keys)
+  (length s))
 
 (defgeneric channel (object &optional resolve)
   (:documentation

@@ -11,7 +11,11 @@
     :type t
     :initform nil
     :accessor step-selected-only
-    :initarg :step-selected-only))
+    :initarg :step-selected-only)
+   (length
+    :type integer
+    :initform 128
+    :initarg :length))
   (:documentation
    "A Switch selects current-value from a list of possible entities.
 The entities may be Patterns, Generators, static-values, or any object
@@ -33,14 +37,15 @@ for which the next-1 and value methods are defined."))
     (setf (value switch)(car (elements switch)))
     switch)
 
-  (defun switch (&key of step-selected-only)
+  (defun switch (&key of step-selected-only (length 128))
     (reset (make-instance 'switch :of (->list of)
-			  :step-selected-only step-selected-only)))
+			  :step-selected-only step-selected-only
+			  :length length)))
 
   (defmethod clone ((mother switch) &key &allow-other-keys)
     (switch :of (clone (elements mother))
-	    :step-selected-only (step-selected-only mother)))
-
+	    :step-selected-only (step-selected-only mother)
+	    :length (pattern-length mother)))
   
   (defmethod select ((switch switch)(item t))
     (let ((len (length (elements switch))))

@@ -46,7 +46,7 @@
 ;; shift-register will be reset after determining it's period.
 ;;
 
-(param sr-period (cardinality sr))
+(param sr-period (pattern-length sr))
 
 ;; Display a table of the register pattern.
 ;; Values on the left in square brackets are just a counter.

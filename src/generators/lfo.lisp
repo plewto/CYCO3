@@ -56,6 +56,9 @@
   (:documentation
    "LFO is a generator which produces cyclical values."))
 
+(defmethod pattern-length ((lfo lfo) &key &allow-other-keys)
+  (length (lfo-curve lfo)))
+
 (defmethod reset ((lfo lfo))
   (setf (lfo-pointer lfo) 0
 	(current-value lfo)(car (lfo-curve lfo)))

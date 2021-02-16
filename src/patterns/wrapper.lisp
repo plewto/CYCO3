@@ -34,7 +34,7 @@ its value."))
     (setf (value w)(funcall of 0))
     w))
 
-(defmethod cardinality ((w wrapper))
+(defmethod pattern-length ((w wrapper) &key &allow-other-keys)
   (slot-value w 'period))
 
 (defmethod reset ((w wrapper))
@@ -48,7 +48,7 @@ its value."))
 		     (pointer w)))
     (setf (pointer w)
 	  (rem (+ (pointer w) 1)
-	       (cardinality w)))))
+	       (pattern-length w)))))
 
 (defmethod clone ((mother wrapper) &key &allow-other-keys)
   (wrapper :of (slot-value mother 'function)

@@ -23,7 +23,7 @@ cycle repeats."))
   (let* ((ptr (pointer q))
 	 (val (next-1 (nth ptr (elements q)))))
     (setf (pointer q)
-	  (rem (1+ ptr)(cardinality q)))
+	  (rem (1+ ptr)(pattern-length q)))
     (setf (slot-value q 'value) val)
     val))
 

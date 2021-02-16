@@ -9,15 +9,20 @@
   ((current-position
     :type integer
     :accessor walker-current-position
-    :initform 0))
+    :initform 0)
+   (length
+    :type integer
+    :initform 128
+    :initarg :length))
   (:documentation
    "Random walks over patterns"))
 
 (defmethod walker-p ((obj walker)) t)
 
-(defun walker (&key of)
+(defun walker (&key of length)
   "Creates new instance of WALKER pattern"
-  (reset (make-instance 'walker :of (->list of))))
+  (let ((elements (->list of)))
+    (reset (make-instance 'walker :of elements :length (or length (length elements))))))
 
 (defmethod value ((w walker))
   (value (nth (walker-current-position w)
@@ -31,7 +36,7 @@
 
 (let ((walker-coin (coin :head 1 :tail -1)))
   (defmethod next-1 ((w walker))
-    (let ((count (cardinality w))
+    (let ((count (length (elements w)))
 	  (pos (+ (walker-current-position w)
 		  (next-1 walker-coin)))
 	  (ptr (pointer w)))
@@ -44,4 +49,7 @@
 		   (elements w))))))
       
 (defmethod clone ((mother walker) &key &allow-other-keys)
-  (walker :of (clone (elements mother))))
+  (walker :of (clone (elements mother)) :length (pattern-length mother)))
+
+(defmethod pattern-length ((w walker) &key &allow-other-keys)
+  (slot-value w 'length))

@@ -66,6 +66,13 @@ function is addition."))
 	    c))
     (value alloy)))
 
+(defmethod pattern-length ((alloy alloy) &key (max 128) &allow-other-keys)
+  (let ((pa (pattern-length (slot-value alloy 'generator-a) :max max))
+	(pb (pattern-length (slot-value alloy 'generator-b) :max max)))
+    (if (= pa pb)
+	pa
+      (* pa pb))))
+
 (setf (documentation 'alloy 'function)
       "Returns new instance of ALLOY
 

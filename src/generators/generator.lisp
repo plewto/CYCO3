@@ -1,7 +1,6 @@
 ;;;; CYCO generators/generator.lisp
 ;;;;
 
-
 (in-package :cyco)
 
 (defclass generator nil
@@ -11,8 +10,8 @@
     :accessor value-hook
     :initarg :hook
     :documentation
-    "Each instance of Generator has an internal 'current-value'.  When the 
-value method is called, the current-value is passed as an argument to 
+    "Each instance of Generator has an 'internal-value'.  When the 
+value method is called, the internal-value is passed as an argument to 
 the value-hook function.   The result of value-hook then becomes the 
 return for the value method.  The default value-hook is an identity
 (lambda (n) n)")
@@ -22,7 +21,7 @@ return for the value method.  The default value-hook is an identity
     :accessor monitor
     :initarg :monitor
     :documentation
-    "Whenever the next-1 method is called, the new current-value is
+    "Whenever the next-1 method is called, the new internal-value is
 passed to the monitor function.  If the monitor returns non-nil the 
 action function is executed.   The default monitor returns a constant
 nil  (lambda (value) nil)")
@@ -36,10 +35,10 @@ nil  (lambda (value) nil)")
 the action function is executed.  The exact form of the action function 
 is different for specific generator sub classes.   In most cases it is
 able to alter the internal state of the generator.")
-   (current-value
+   (internal-value
     :type number
     :initform 0
-    :accessor current-value
+    :accessor internal-value
     :initarg :seed))
   (:documentation
    "A GENERATOR is a pattern like object for producing numeric sequences.
@@ -53,7 +52,7 @@ action function is executed."))
   
 (defmethod value ((gen generator))
   (funcall (slot-value gen 'value-hook)
-	   (slot-value gen 'current-value)))
+	   (slot-value gen 'internal-value)))
 
 (defmethod reset ((gen generator)) gen)
 
@@ -84,7 +83,7 @@ value."))
   (constant-value (value mother))) 
 
 (defmethod next-1 ((con constant-value))
-  (current-value con))
+  (internal-value con))
 
 (setf (documentation 'constant-value 'function)
       "Returns generator with constant value.

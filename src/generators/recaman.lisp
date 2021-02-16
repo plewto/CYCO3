@@ -28,7 +28,7 @@ https://en.wikipedia.org/wiki/Recam%C3%A1n%27s_sequence
 https://oeis.org/A005132"))
 
 (defmethod reset ((rec recaman))
-  (setf (current-value rec)
+  (setf (internal-value rec)
 	(slot-value rec 'initial-value)
 	(slot-value rec 'seen) '()
 	(slot-value rec 'counter) 0)
@@ -59,7 +59,7 @@ https://oeis.org/A005132"))
 (defmethod next-1 ((rec recaman))
   (prog1
       (value rec)
-    (let* ((v0 (current-value rec))
+    (let* ((v0 (internal-value rec))
 	   (n (1+ (slot-value rec 'counter)))
 	   (v1 (- v0 n)))
       (setf v1 (cond ((zerop n) 1)
@@ -71,7 +71,7 @@ https://oeis.org/A005132"))
 	  (setf v1 (funcall (action rec) v1)))
       (push v1 (slot-value rec 'seen))
       (setf (slot-value rec 'counter) n
-	    (current-value rec) v1))))
+	    (internal-value rec) v1))))
 
 (defmethod pattern-length ((r recaman) &key &allow-other-keys)
   (slot-value r 'length))

@@ -46,10 +46,10 @@
 (defmethod next-1 ((bones bones))
   (prog1
       (progn
-	(if (funcall (monitor bones)(current-value bones))
+	(if (funcall (monitor bones)(internal-value bones))
 	    (funcall (action bones)))
       (value bones))
-    (setf (current-value bones)
+    (setf (internal-value bones)
 	  (funcall (slot-value bones 'random-function)))))
 
 (defmethod pattern-length ((b bones) &key &allow-other-keys)

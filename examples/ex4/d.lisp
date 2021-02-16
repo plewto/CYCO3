@@ -9,7 +9,7 @@
 
 (format t "Recaman Generator~%")
 (dotimes (i 32)
-  (let ((v (current-value rgen))
+  (let ((v (internal-value rgen))
 	(k (value rgen)))
     (format t "[~2d] ~3d --> ~2d ~A~%" i v k (keyname k))
     (next-1 rgen)))

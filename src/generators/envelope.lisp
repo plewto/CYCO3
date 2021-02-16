@@ -55,7 +55,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
    "ASR-ENVELOPE is a three-stage envelope generator."))
     
 (defmethod reset ((env asr-envelope))
-  (setf (current-value env)(envelope-floor env)
+  (setf (internal-value env)(envelope-floor env)
 	(slot-value env 'state) :attack
 	(slot-value env 'sustain-counter)(slot-value env 'sustain-reset))
   env)
@@ -109,11 +109,11 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 	(env)
 	(let* ((delta (envelope-attack env))
 	       (ceiling (envelope-ceiling env))
-	       (value (min ceiling (+ (current-value env) delta))))
+	       (value (min ceiling (+ (internal-value env) delta))))
 	  (if (= value ceiling)
 	      (setf (envelope-state env) :sustain
 		    (slot-value env 'sustain-counter)(slot-value env 'sustain-reset)))
-	  (setf (current-value env)
+	  (setf (internal-value env)
 		(if (funcall (monitor env) env value)
 		    (funcall (action env) env value)
 		  value))))
@@ -123,10 +123,10 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 	(env)
 	(let* ((delta (envelope-decay env))
 	       (floor (envelope-floor env))
-	       (value (max floor (+ (current-value env) delta))))
+	       (value (max floor (+ (internal-value env) delta))))
 	  (if (= value floor)
 	      (setf (envelope-state env)(if (slot-value env 'loop-flag) :attack :off)))
-	  (setf (current-value env)
+	  (setf (internal-value env)
 		(if (funcall (monitor env) env value)
 		    (funcall (action env) env value)
 		  value))))
@@ -160,7 +160,7 @@ b - Number, peak value.
 :sustain - Integer, number of sustain values, default 4
 :loop    - Boolean, if true envelope returns to attack stage
            after final decay value.  Default nil
-:hook    - Function applied by the value method to the current-value,
+:hook    - Function applied by the value method to the internal-value,
            Default (lambda (n) n)
 :monitor - Predicate, called within next-1 to determine if action 
            function should be executed.  

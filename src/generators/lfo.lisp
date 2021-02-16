@@ -61,7 +61,7 @@
 
 (defmethod reset ((lfo lfo))
   (setf (lfo-pointer lfo) 0
-	(current-value lfo)(car (lfo-curve lfo)))
+	(internal-value lfo)(car (lfo-curve lfo)))
   lfo)
 
 (defmethod next-1 ((lfo lfo))
@@ -70,7 +70,7 @@
     (let* ((curve (lfo-curve lfo))
 	   (pointer (rem (1+ (lfo-pointer lfo))(length curve)))
 	   (v (nth pointer curve)))
-      (setf (current-value lfo)
+      (setf (internal-value lfo)
 	    (if (funcall (monitor lfo) v)
 		(funcall (action lfo) lfo v)
 	      v))

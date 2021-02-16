@@ -25,7 +25,7 @@
     Collatz conjecture."))
 
 (defmethod reset ((gen hailstone))
-  (setf (current-value gen)
+  (setf (internal-value gen)
 	(slot-value gen 'initial-value))
   gen)
 
@@ -59,10 +59,10 @@
 (defmethod next-1 ((gen hailstone))
   (prog1
       (value gen)
-    (let* ((v0 (current-value gen))
+    (let* ((v0 (internal-value gen))
 	   (rule (slot-value gen (if (oddp v0) 'odd-rule 'even-rule)))
 	   (v1 (funcall rule v0)))
-      (setf (current-value gen)
+      (setf (internal-value gen)
 	    (if (funcall (monitor gen) v1)
 		(funcall (action gen) gen v1)
 	      v1)))))
@@ -76,11 +76,11 @@
   (defmethod pattern-length ((stone hailstone) &key &allow-other-keys)
     (reset stone)
     (let ((counter 0))
-      (while (not (power-of-2-p (current-value stone)))
+      (while (not (power-of-2-p (internal-value stone)))
 	(next-1 stone)
 	(setf counter (1+ counter)))
       (reset stone)
-      (+ 1 counter (truncate (log (current-value stone) 2))))))
+      (+ 1 counter (truncate (log (internal-value stone) 2))))))
   
 
 

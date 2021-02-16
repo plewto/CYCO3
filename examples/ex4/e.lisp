@@ -7,14 +7,14 @@
 (param hs (hailstone 33 :hook #'(lambda (n)
 				  (+ 36 (rem (1- n) 36)))))
 
-(let ((cv (current-value hs))
+(let ((cv (internal-value hs))
       (counter 0))
   (while (not (= cv 1))
     (format t "[~2d] ~3d --> ~2d ~A~%" counter cv (value hs)(keyname (value hs)))
     (next-1 hs)
-    (setf cv (current-value hs))
+    (setf cv (internal-value hs))
     (setf counter (1+ counter)))
-  (setf cv (current-value hs))
+  (setf cv (internal-value hs))
   (format t "[~2d] ~3d --> ~2d ~A~%" counter cv (value hs)(keyname (value hs))))
 		     
 (reset hs)

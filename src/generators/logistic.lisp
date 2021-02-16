@@ -28,7 +28,6 @@
  
     x0 and x1 are the current and next values respectively, 0.0 <= x0,x1 <= 1.0
     and r is a 'fecundity' parameter, 0 <= r <= 4.0, default r=3.25"))
-    
 
 
 (defun logistic (&key (prerun 0)(seed 0.5)(mu 3.25)
@@ -49,7 +48,7 @@
 			:hook hook)))
 
 (defmethod reset ((gen logistic))
-  (setf (current-value gen)
+  (setf (internal-value gen)
 	(slot-value gen 'seed))
   (dotimes (i (logistic-prerun gen))
     (next-1 gen))
@@ -67,9 +66,9 @@
    :hook (value-hook mother)))
 
 (defmethod next-1 ((gen logistic))
-  (let* ((v0 (current-value gen))
+  (let* ((v0 (internal-value gen))
 	 (v1 (* (logistic-mu gen) v0 (- 1 v0))))
-    (setf (current-value gen)
+    (setf (internal-value gen)
 	  (if (funcall (monitor gen) v1)
 	      (funcall (action gen) gen v1)
 	    v1))
@@ -78,16 +77,13 @@
 (defmethod pattern-length ((lg logistic) &key (max 128) &allow-other-keys)
   (reset lg)
   (let ((seen '())
-	(v (current-value lg)))
+	(v (internal-value lg)))
     (while (and (not (member v seen :test #'=))(plusp max))
       (push v seen)
       (next-1 lg)
-      (setf v (current-value lg))
+      (setf v (internal-value lg))
       (setf max (1- max)))
     (length seen)))
-      
-    
-
 
 (setf (documentation 'logistic 'function)
       "Returns new instance of LOGISTIC.

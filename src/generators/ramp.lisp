@@ -46,7 +46,7 @@
 			      (* -1 (abs by)))))
 
 (defmethod reset ((ramp ramp))
-  (setf (current-value ramp)(ramp-floor ramp))
+  (setf (internal-value ramp)(ramp-floor ramp))
   ramp)
 
 (defmethod clone ((mother ramp) &key &allow-other-keys)
@@ -60,20 +60,20 @@
 
 (flet ((increment (ramp ceiling)
 		  (let* ((delta (ramp-increment ramp))
-			 (v0 (current-value ramp))
+			 (v0 (internal-value ramp))
 			 (v1 (min ceiling (+ delta v0))))
-		    (setf (current-value ramp) v1)))
+		    (setf (internal-value ramp) v1)))
        
        (decrement (ramp ceiling)
 		  (let* ((delta (ramp-increment ramp))
-			 (v0 (current-value ramp))
+			 (v0 (internal-value ramp))
 			 (v1 (max ceiling (+ delta v0))))
-		    (setf (current-value ramp) v1))) )
+		    (setf (internal-value ramp) v1))) )
   
   (defmethod next-1 ((ramp ramp))
     (prog1
 	(progn
-	  (if (funcall (monitor ramp)(current-value ramp))
+	  (if (funcall (monitor ramp)(internal-value ramp))
 	      (funcall (action ramp) ramp))
 	  (value ramp))
       (let ((floor (ramp-floor ramp))

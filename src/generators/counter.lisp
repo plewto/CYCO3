@@ -24,7 +24,7 @@
    "COUNTER is an integer arithmetic-sequence generator."))
 
 (defmethod reset ((counter counter))
-  (setf (current-value counter)
+  (setf (internal-value counter)
 	(initial-value counter))
   counter)
 
@@ -75,9 +75,9 @@
 	(value counter)
       (let* ((increment (counter-increment counter))
 	     (limit (final-value counter))
-	     (v0 (current-value counter))
+	     (v0 (internal-value counter))
 	     (v1 (clip (+ v0 increment) increment limit)))
-	(setf (current-value counter)
+	(setf (internal-value counter)
 	      (if (funcall (monitor counter) v1)
 		  (funcall (action counter) counter v1)
 		v1))))) )
@@ -97,7 +97,7 @@ to    - Integer, final value.
 :monitor - Predicate called by next-1 to determine if action function
            should be executed.  Default (lambda (value)) -> Boole.
 :action  - Function executed within next-1 whenever monitor returns
-           non-nil.  The action return becomes the next current-value
+           non-nil.  The action return becomes the next internal-value
            Default (lambda (counter value)) -> value.
            The counter argument may be used to alter the internal
            state of the counter.")

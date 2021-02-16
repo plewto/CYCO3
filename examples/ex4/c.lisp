@@ -56,7 +56,7 @@
 ;;
 (format t "period ~A~%" sr-period)
 (dotimes (i sr-period)
-  (let ((cv (current-value sr))
+  (let ((cv (internal-value sr))
 	(val (value sr)))
     (next-1 sr)
     (format t "[~2d] ~3d --> ~3d ~A~%" i cv val (keyname val))))

@@ -7,13 +7,13 @@
 ;;;; A PDF version of the score may be obtained from
 ;;;; https://petruccimusiclibrary.ca/files/imglnks/caimg/8/89/IMSLP05327-Charles_Ives_-_The_Unanswered_Question.pdf
 ;;;;
-;;;; A forward to the score has better explanation but briefly there are
+;;;; A forward to the score has a better explanation, but briefly there are
 ;;;; three elements:
 ;;;;
 ;;;;  1) String section representing eternal existence.
 ;;;;  2) A solo instrument (English horn) plays a 5-note motif
 ;;;;     which repeatedly ask the "Perennial Question of Existence".
-;;;;  3) A woodwind quartet which profess an answer, but never does.
+;;;;  3) A woodwind quartet which profess an answer, but never provides one.
 ;;;;
 ;;;; With each repetition of the question the answers become more agitated
 ;;;; and eventually start mocking the question.   The piece ends with the
@@ -22,8 +22,7 @@
 (version 3)
 (plugin general-midi)
 
-
-;; Due to the rhythmic complexity, particularly with the woodwind "answers",
+;; Due to rhythmic complexity, particularly with the woodwind "answers",
 ;; an alternative cueing-function is used.   See the "cue and shuffle
 ;; functions" section of the documentation.   The default BAR function can
 ;; handle triplets but is cumbersome.   Instead the TBAR function below
@@ -54,33 +53,34 @@
 	   (* 0.5 (1- triplet-number) (tbeat-duration time-signature))))
     (bar time-signature time-cue)))
 
-
+;; Create project
+;;
 (project ex3
 	 :cuefn #'tbar
 	 :tempo 70      ;; The specified tempo is ~50, nice for         	 
 	 :bars 64       ;; contemplative listening but painfully
-	 :beats 4       ;; slow for a tutorial. 
+	 :beats 4       ;; slow for a tutorial. Feel free to speed it up.
 	 :title "The Unanswered Question")
 
-;; Load suport files
+;; Load support files
+;;
 (lpf orchestra)
 (lpf preroll)
 (lpf fin)
 
 
 ;; Establish the one and only section.
+;;
 (section score :bars 64)
 ;; (metronome score-metronome)  ;; optional metronome
 
 ;; Load the parts files.
+;;
 (lpf strings)
 (lpf question)
 (lpf answers)
 
+;; Write main MIDI file.
+;;
 (section-order '(preroll score reset))
-
 (project->midi)
-
-
-
-

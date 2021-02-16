@@ -23,9 +23,9 @@
 (lpf a)        ;; basic motif
 (lpf b1)       ;; vibes
 (lpf b2)       ;; inverted vibes
-(lpf c)        ;; clanks
+(lpf c)        ;; percussive "clanks"
 (lpf d)        ;; synth
-(lpf e)        ;; guitar
+(lpf e)        ;; ersatz guitar
 (lpf fade)
 (lpf controller-reset)
 
@@ -38,13 +38,13 @@
 ;;
 (project->midi)
 
-;; Use dump-events to examine the generated MIDI events.  Usage is slightly
-;; different between a project and section/parts.  projects must be rendered
+;; Use DUMP-EVENTS to examine the generated MIDI events.  Usage is slightly
+;; different between a project and section/parts.  Projects must be rendered
 ;; before using dump-events
 ;;
 ;; (dump-events (render-project))
 ;;
-;; When dumping sections or parts there is no need to render first
+;; When dumping sections or parts there is no need to render first.
 ;;
 ;; (dump-events b1)         ;; section b1
 ;; (dump-events b1-vibes)   ;; vibes part in section b1

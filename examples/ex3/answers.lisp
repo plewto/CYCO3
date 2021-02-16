@@ -1,9 +1,8 @@
 ;;;; CYCO 3 example ex3 "answers"
 ;;;;
+;;;; The Answers are the most complex part of the piece.  A mixture of the
+;;;; normal and triplet-based time-cues are used.
 
-;; The Answers are the most complex part of the piece.  A mixture of the
-;; normal and triplet time-cues are used.
-;;
 
 ;; Answer 1  Bar 20
 ;;
@@ -35,7 +34,7 @@
 	  :events '((:time (26 t5)  :key df6 :dur ht+h.  :amp p )
 		    (:time (27 4 1) :key c6  :dur h   )
 		    (:time (28 2 1) :key b5  :dur h   )
-		    (:time (28 4 1) :key bf5 :dur e      :amp p)
+		    (:time (28 4 1) :key bf5 :dur e   )
 		    (:time (28 4 3) :key a5  :dur e   )
 		    (:time (29 1 1) :key af5 :dur q   )))
 
@@ -46,12 +45,12 @@
 (strummer a2-oboe oboe
 	  :events '((:time (26 t5)  :key c5  :dur ht+h.  :amp p)
 		    (:time (27 4 1) :key b4  :dur h)
-		    (:time (28 2 1) :key c5  :dur w      :amp p)))
+		    (:time (28 2 1) :key c5  :dur w)))
 
 (strummer a2-clarinet clarinet
 	  :events '((:time (26 t5)  :key fs4 :dur ht+q  :amp p)
 		    (:time (27 2 1) :key gs4 :dur 2*h.)
-		    (:time (28 4 1) :key a4  :dur e     :amp p)
+		    (:time (28 4 1) :key a4  :dur e   )
 		    (:time (28 4 3) :key as4 :dur e   )
 		    (:time (29 1 1) :key b4  :dur q   )))
 
@@ -72,12 +71,12 @@
 		    (:time (36 2 1) :key f5  :dur h  :amp mp-)))
 
 (strummer a3-flute-2 flute-2
-	  :events '((:time (34 1 1) :key b4  :dur h.  :amp mp)
+	  :events '((:time (34 1 1) :key b4  :dur h. :amp mp)
 		    (:time (35 1 1) :key c5  :dur w+q)
 		    (:time (36 2 1) :key c5  :dur h)))
 
 (strummer a3-oboe oboe
-	  :events '((:time (34 3 1) :key c5  :dur q   :amp mp)
+	  :events '((:time (34 3 1) :key c5  :dur q  :amp mp)
 		    (:time (34 4 1) :key g5  :dur q)
 		    (:time (35 1 1) :key f5  :dur q)
 		    (:time (35 2 1) :key e5  :dur h.+h)
@@ -136,7 +135,7 @@
 		    (:time (43 1 4) :key bf4 :dur s)
 		    (:time (43 2 1) :key fs5 :dur h)))
 
-;; A special strummed chord is defined as an attempt at clarinet
+;; A special strummed chord is defined as an attempt at a clarinet
 ;; glissando.  The :strum tt term specifies that the chord-notes are
 ;; not played simultaneously, instead they are produced every
 ;; thirty-second-note triplet. 
@@ -144,7 +143,7 @@
 ;; :chord [solo] restores single-note playing.
 ;;
 ;; If :end-together were t, then the early glissando notes would
-;; hold until final note was played.   This would have produced a
+;; hold until the final note was played.   This would have produced a
 ;; cluster instead of a gliss.
 ;;
 (defchord '[gliss] '(0 0 1 2 2 3 4 5 6 6 7 8 8 9

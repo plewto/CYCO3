@@ -29,8 +29,8 @@
   ;; If (dice :of (list bass piano)) were used instead, the bass or piano
   ;; would be randomly selected on each note.
   ;;
-  ;; With a qball patterens may be used for the instrument list, :key,
-  ;; :amp and :dur (duration) arguments.  List and single values are 
+  ;; With a qball, patterns may be used for the instrument list, :key,
+  ;; :amp and :dur (duration) arguments.  List and, single values, are 
   ;; values are converted to cycle patterns.
   ;;
   ;; The :cue argument only takes a list of time-specifications.
@@ -48,9 +48,17 @@
 	 :amp 'fff
 	 :dur 'e)
 
+  ;; Define the kick-drum part.
+
+  ;; The General MIDI standard defines two bass drums at keynumbers 35 and
+  ;; 36.  The gm-kick instrument uses a keynumber-map to convert the 
+  ;; symbols 'X1 and 'X2 to these key-numbers.  The ?KMAP function displays
+  ;; information about an instrument's keynumber-map.  To see list of
+  ;; available kick-drum variations, use (?KMAP gm-kick)
+  ;;
   (qball a-kick gm-kick
 	 :cue cue-list
-	 :key '(x1 x2 x1)
+	 :key '(x1 x2 x1)  ;; cycle kick-drum variation on each note.
 	 :reset-on-repeat nil
 	 :amp 'f))
 

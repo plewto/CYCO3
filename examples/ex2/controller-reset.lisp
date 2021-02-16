@@ -1,4 +1,5 @@
-;;;; CYCO example ex2 section volume-reset
+;;;; CYCO example ex2 section controller-reset
+;;;;
 ;;;; The final section used solely to reset controller values.
 ;;;;
 

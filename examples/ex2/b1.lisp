@@ -6,11 +6,10 @@
 ;; 
 (param b1 (clone a :new-name "B1"))
 
-;; bulk-rename is included only for illustration.  It is needed only if
-;; the cloned parts are to be assigned to variables.
+;; bulk-rename is not technically needed. However, it makes part names
+;; more consistent.
 ;;
 (bulk-rename-parts b1 1 "B1")
-
 
 ;; Construct the vibes-cue-list to produce a note on every
 ;; eighth note.
@@ -35,7 +34,7 @@
        :key vibes-key-list
        :amp 'mf)
 
-;; Adds slight portamento 
+;; Adds slight portamento.
 ;;
 (controllers b1-vibes-cc vibes
 	     :bars 8

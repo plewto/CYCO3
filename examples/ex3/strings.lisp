@@ -175,7 +175,7 @@
 			  (:time (52 1) :key g2  :dur 10*w)))
 
 
-;; The shuffle function is used to add slight time randominzation.
+;; A shuffle function adds slight time randomization.
 ;;
 (labels ((coin (&optional (p 0.5)) 
 	       (< (random 1.0) p))

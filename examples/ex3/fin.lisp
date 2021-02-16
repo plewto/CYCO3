@@ -1,9 +1,6 @@
 ;;;; CYCO examples ex3 section fin
-;;;; Controller reset
-;;;;
-
-;; Restores controller values.
-;;
+;;;; 
+;;;; Restores MIDI controllers.
 
 (section reset :bars 1)
 
@@ -14,6 +11,5 @@
 
 (controllers portamento-reset question
 	     :events '((:cc (1 1 1) portamento 0)))
-
 
 (->midi reset)

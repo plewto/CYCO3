@@ -21,12 +21,9 @@
 (param ensemble-high-scale (* string-scale 0.70))
 (param ensemble-bass-scale (* string-scale 1.00))
 
-
-
-;; Woodwinds
-;; 2 flutes, oboe and clarinet.
+;; Woodwind quartet.
 ;;
-(param woodwind-transpose 12)
+(param woodwind-transpose 0)
 
 (general-midi-instrument flute-1 :channel 1 :program 'flute
 			 :keynumber-map (basic-keynumber-map :transpose woodwind-transpose)
@@ -50,8 +47,8 @@
 			 :keynumber-map (basic-keynumber-map :transpose 12)
 			 :dynamic-map (basic-dynamic-map :scale question-scale))
 
-;; String section 2 violins, viola and cello
-;; 2 Ensemble instruments (treble/bass) are used for chorusing.
+;; String section: 2 violins, viola and cello
+;; 2 Ensemble instruments (treble/bass) duplicate the solo strings.
 
 (general-midi-instrument violin-1 :channel 6 :program 'violin
 			 :dynamic-map (basic-dynamic-map :scale violin-1-scale))

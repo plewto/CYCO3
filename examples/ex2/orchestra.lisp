@@ -6,13 +6,13 @@
 ;;
 (prune-orchestra)
 
-;; Define instruments using general-midi plugin
-;; Use (?general-midi) for list of programs
+;; Define instruments using general-midi plugin.
+;; Use (?GENERAL-MIDI) for list of available programs.
 ;;
 
 (general-midi-instrument bass :channel 1)
 
-;; "Honky tonk" piano-4 is layerd with bass.
+;; piano-4 (honky tonk) is layered with bass.
 ;;
 (general-midi-instrument piano :channel 2
 			 :program 'piano-4
@@ -27,14 +27,10 @@
 
 (general-midi-metronome :channel 16 :program 'woodblock)
 
-
 ;; gm drum-kit selection.
 ;;
 (set-program-number gm-percussion 0)
 
 ;; The general-midi plugin automatically creates several percussion
-;; instruments on channel 10.   Use (?o) to view the orchestra structure.
+;; instruments on channel 10.   Use (?O) to view the orchestra structure.
 ;;
-
-
-			 

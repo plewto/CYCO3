@@ -1,9 +1,8 @@
 ;;;; CYCO examples ex3 preroll section
 ;;;;
 
-;; Send initial program-change and MIDI controller vlaues.
+;; Send initial program-change and MIDI controller values.
 ;;
-
 (preroll
  :bars 1
  :instruments (list flute-1 flute-2 oboe clarinet

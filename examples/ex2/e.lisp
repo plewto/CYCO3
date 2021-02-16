@@ -1,11 +1,12 @@
 ;;;; CYCO examples ex2 section e
+;;;;
 ;;;; Part E adds an ersatz guitar.  The synth part drops the lowest 
 ;;;; octave and is mixed back to give the guitar space.
 
 (param e (clone d :new-name "E"))
 (bulk-rename-parts e 1 "E")
 
-;; Remove the original synth part, see documentation for nodes.
+;; Remove original synth part, see documentation for nodes.
 ;; 
 (disconnect (get-section-part e 'e-synth))
 
@@ -77,11 +78,11 @@
 		  (:time (8 1 1)(8 4 1) t :value 0 -0.50 :cycles 3 :tri)
 		  ;; clean up, set pitch bend to 0.
 		  ;; The final 16 in the time specification sets the
-		  ;; event 16 clock pulses after the last beat of bar 8.
+		  ;; event 16 clock pulses after the start of bar 8, beat 4.
 		  (:bend (8 4 4 16) 0.0))) 
 
 
-;; Set a slight portamento.
+;; Add a slight portamento.
 ;;
 (controllers e-guitar-cc guitar
 	     :events '((:cc (1 1 1) volume 127)

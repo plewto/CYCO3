@@ -9,13 +9,12 @@
 
 ;; If true passed test do not produce output.
 ;;
-(global *silent-pass* nil)
+(global *silent-pass* t)
 
-(setf *enable-banners* t)
+(setf *enable-banners* nil)
 
 (defun monotonic-p (list &optional (test #'<=))
   (apply test list))
-
 
 (defun fail (test-name reason)
   (let ((message (sformat ":FAIL: test ~A : ~A" test-name reason)))
@@ -61,3 +60,7 @@
 (load-test "12-channels")
 (load-test "13-patterns")
 (load "test/load-mock-projects")
+
+(format t "~%**********************************~%")
+(format t "**** All test have succeeded. ****~%")
+(format t "**********************************~%")

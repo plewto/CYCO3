@@ -42,4 +42,4 @@
 (load-mock-project 8 "Section order")
 (load-mock-project 9 "Parts time shift")
 
-(format t "~%**** All test have succeeded. ****~%")
+

@@ -22,7 +22,6 @@
 	  ->alist
 	  ->cycle
 	  ->list
-	  ->markov-link
 	  ->midi
 	  ->pattern
 	  ->string
@@ -141,10 +140,6 @@
 	  logistic
 	  make-ghost
 	  make-instrument
-	  markov-add-link
-	  markov-chain-p
-	  markov-link-p
-	  markov-walk
 	  mean
 	  meta-channel
 	  meta-channel-assignment-p

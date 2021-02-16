@@ -34,8 +34,6 @@ see ->vector"))
 (defmethod ->list ((object string))
   (list object))
 
-(defgeneric ->markov-link (object)
-  (:documentation "Coerce object to a markov-link"))
 
 (defgeneric ->pattern (object &key pattern-type)
   (:documentation
@@ -423,20 +421,6 @@ Keyname will not return names for user defined keynumbers."))
 A local property is a property defined directly by an object.
 Properties defined by an object's parent are not considered local."))
 
-(def-type-predicate markov-chain-p)
-(def-type-predicate markov-link-p)
-
-(defgeneric markov-add-link (source destination weight)
-  (:documentation
-   "Adds potential destinations for a Markov-link.
-source - the markov-link
-destination - potential next value.  The destination may be of any type
-but is coerced to a markov-link.
-weight - The number of times destination is added to sources' links list."))
-
-(defgeneric markov-walk (markov-link)
-  (:documentation
-   "Returns the next markov-link."))
 
 (defgeneric meta-channel (channel-name  &optional resolve)
   (:documentation

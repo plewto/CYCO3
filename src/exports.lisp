@@ -2,19 +2,19 @@
 ;;;;
 
 (export '(*cyco-config-directory*
-	  *cyco-config-file*
-	  *cyco-config-profile*
-	  *default-osc-send-address*
-	  *default-osc-send-host*
-	  *default-osc-send-port*
-	  *local-host*
-	  *metronome*
-	  *osc-receive-address*
-	  *osc-receive-buffer-length*
-	  *osc-receive-port*
-	  *osc-send-verbose*
-	  *project*
-	  *root-instrument*
+          *cyco-config-file*
+          *cyco-config-profile*
+          *default-osc-send-address*
+          *default-osc-send-host*
+          *default-osc-send-port*
+          *local-host*
+          *metronome*
+          *osc-receive-address*
+          *osc-receive-buffer-length*
+          *osc-receive-port*
+          *osc-send-verbose*
+          *project*
+          *root-instrument*
 	  +REST+
 	  +default-articulation-map+
 	  +default-dynamic-map+
@@ -31,10 +31,10 @@
 	  add-group
 	  alist-p
 	  alloy
-	  asr-envelope
 	  append-filename-extension
 	  approximate
 	  articulation-map
+	  asr-envelope
 	  bag
 	  bag-p
 	  bar
@@ -45,16 +45,14 @@
 	  basic-keynumber-map
 	  beat-duration
 	  beats
-	  set-beats
 	  bend->midi-data
-	  bool
 	  bones
+	  bool
 	  bpm->beat-period
 	  bpm->microseconds
 	  build-cyco
 	  butfinal
 	  channel
-	  set-channel
 	  channel-index
 	  child-of-p
 	  chord-model-p
@@ -68,8 +66,8 @@
 	  constant
 	  constant-articulation-map
 	  constant-function
-	  counter
 	  copies
+	  counter
 	  cycle
 	  cycle-p
 	  cyco
@@ -94,7 +92,6 @@
 	  dynamic
 	  dynamic->velocity
 	  dynamic-map
-	  set-dynamic-map
 	  dynamic-name
 	  dynamic-p
 	  elide
@@ -127,7 +124,6 @@
 	  keyname
 	  keynumber
 	  keynumber-map
-	  set-keynumber-map
 	  keynumber-p
 	  lfo
 	  limit
@@ -208,7 +204,6 @@
 	  mute-all
 	  muted-p
 	  name
-	  set-name
 	  next
 	  next-1
 	  next-n
@@ -233,12 +228,9 @@
 	  print-tree
 	  priority
 	  program-bank
-	  set-program-bank
 	  program-change-events
 	  program-map
-	  set-program-map
 	  program-number
-	  set-program-number
 	  project->midi
 	  project-p
 	  properties
@@ -251,15 +243,14 @@
 	  push-event
 	  put
 	  ramp
-	  recaman
 	  read-midi-bend
 	  read-midi-data
 	  read-midi-long
 	  read-midi-vlv
 	  read-signed-midi-data
+	  recaman
 	  remaining
 	  remarks
-	  set-remarks
 	  render-midi-message
 	  render-n
 	  render-once
@@ -277,19 +268,33 @@
 	  sawtooth
 	  section-order
 	  section-p
+	  select
 	  set-articulation-map
 	  set-bars
 	  set-basic-program-map
+	  set-beats
+	  set-channel
 	  set-cyco-prompt
+	  set-dynamic-map
+	  set-keynumber-map
 	  set-meta-channel
+	  set-name
+	  set-program-bank
+	  set-program-map
+	  set-program-number
+	  set-remarks
+	  set-smf-track
+	  set-subbeats
 	  set-symbolic-program-map
+	  set-tempo
+	  set-unit
 	  sformat
 	  shift-register
 	  signed-norm->midi-data
 	  slice
+	  slowglass
 	  smf
 	  smf-track
-	  set-smf-track
 	  smf-track-count
 	  soft-reset
 	  solo
@@ -300,14 +305,11 @@
 	  strummer-p
 	  subbeat-duration
 	  subbeats
-	  select
-	  set-subbeats
 	  switch
 	  symbolic-keynumber-map
 	  tbeat-duration
 	  tbeats
 	  tempo
-	  set-tempo
 	  thin-bend-events
 	  thin-controller-events
 	  tick-duration
@@ -319,7 +321,6 @@
 	  tsubbeat-duration
 	  tsubbeats
 	  unit
-	  set-unit
 	  unmute
 	  unmute-all
 	  walker

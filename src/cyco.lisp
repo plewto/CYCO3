@@ -104,6 +104,7 @@
 		   "src/patterns/walker"
 		   "src/patterns/instrument-layer"
 		   "src/patterns/switch"
+		   "src/patterns/slowglass"
 		   "src/generators/generator"
 		   "src/generators/counter"
 		   "src/generators/ramp"

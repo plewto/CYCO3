@@ -27,7 +27,7 @@
       <li><a href='#next'>next</a></li>
       <li><a href='#value-hook'>value-hook</a></li>
       <li><a href='#value'>value</a></li>
-      <li><a href='#current-value'>current-value</a></li>
+      <li><a href='#internal-value'>internal-value</a></li>
       <li><a href='#monitor'>monitor</a></li>
       <li><a href='#action'>action</a></li>
       <li><a href='#constant-value'>constant-value</a></li>
@@ -103,7 +103,7 @@
   <!--  -->
   <!--  -->
   <b class="definition">(VALUE-HOOK generator)</b><br>
-  <p class="summery">Returns the hook function applied to the current-value.<br>
+  <p class="summery">Returns the hook function applied to the internal-value.<br>
   The default function is the identity (lambda (n) n)</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="value"></a>
@@ -112,17 +112,16 @@
   <!--  -->
   <!--  -->
   <b class="definition">(VALUE generator)</b><br>
-  <p class="summery">Returns the current-value of the generator after application of the 
+  <p class="summery">Returns the internal-value of the generator after application of the 
   hook-function.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="current-value"></a>
+  <a id="internal-value"></a>
   
-  <!-- (CURRENT-VALUE generator) -->
+  <!-- (INTERNAL-VALUE generator) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(CURRENT-VALUE generator)</b><br>
-  <p class="summery">Returns the internal value of the generator.  CURRENT-VALUE does not 
-  apply the value-hook function.</p>
+  <b class="definition">(INTERNAL-VALUE generator)</b><br>
+  <p class="summery">Returns the internal value of the generator.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="monitor"></a>
   

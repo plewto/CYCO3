@@ -36,8 +36,7 @@
     :by      - Integer increment.  The increment sign is automatically adjusted 
                for compatibility with the from and to values.  Defaults to &pm;1.
     :hook    - Function applied to the internal value.  
-               The CURRENT-VALUE function returns the internal count.
-               The VALUE function returns the current-value processed by the 
+               The VALUE function returns the internal-value processed by the 
                hook function.  Default (lambda (n) n)
     :monitor - Value monitor predicate called by NEXT-1.  If the monitor returns
                non-nil the action function is executed.
@@ -106,7 +105,7 @@
     b   - Number, final value, a &ne; b
     :by - Number, increment.  The increment sign is automatically adjusted to the 
           a and b values, default &pm;1.
-    :hook    - Function applied to current-value, default (lambda (n) n)
+    :hook    - Function applied to internal-value, default (lambda (n) n)
     :monitor - Function, predicate called within NEXT-1.  If the result is
                non-nil the action function is executed.  Default (lambda (v) nil)
     :action  - Function executed within NEXT-1 whenever monitor is non-nil.

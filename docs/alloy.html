@@ -32,8 +32,8 @@
     a - Generator, first operand to the binary-function
     b - Generator, seconds operand to the function.
     :function - Function, binary function, default #'+
-    :hook     - Function applied to the current-value.
-                Calling (current-value alloy) returns (function a b)
+    :hook     - Function applied to the internal-value.
+                Calling (internal-value alloy) returns (function a b)
                 Calling (value alloy) returns the composition (hook (function a b))
                 Default (lambda (n) n)
     :monitor  - Predicate function called within NEXT-1. The action function 
@@ -41,7 +41,7 @@
                 Default (lambda (value) nil)
     :action   - Function called within NEXT-1 whenever monitor is non-nil.
                 Default (lambda (alloy value) value)
-                The result becomes the next current-value of the alloy.
+                The result becomes the next internal-value of the alloy.
     
     Examples:
     	     

@@ -26,7 +26,7 @@
       <li><a href='#value'>value</a></li>
       <li><a href='#reset'>reset</a></li>
       <li><a href='#pattern-p'>pattern-p</a></li>
-      <li><a href='#cardinality'>cardinality</a></li>
+      <li><a href='#pattern-length'>pattern-length</a></li>
       <li><a href='#remaining'>remaining</a></li>
       <li><a href='#to-pattern'>to-pattern</a></li>
       <li><a href='#transpose'>transpose</a></li>
@@ -151,25 +151,25 @@
   <b class="definition">(PATTERN-P object)</b><br>
   <p class="summery">Predicate, true if object is a pattern type.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="cardinality"></a>
+  <a id="pattern-length"></a>
   
-  <!-- (CARDINALITY pattern) -->
+  <!-- (PATTERN-LENGTH pattern) -->
   <!--  -->
   <!--  -->
-  <b class="definition">(CARDINALITY pattern)</b><br>
+  <b class="definition">(PATTERN-LENGTH pattern)</b><br>
   <p class="summery">Returns number of elements in pattern.</p>
   <pre class="description">
-    Cardinality is not well defined for all pattern types.  For such 
+    Pattern-Length is not well defined for all pattern types.  For such 
     cases the result is arbitrary or user defined.
     
     (param foo (cycle :of '(A B C)))
-    (cardinality foo) &rarr; 3
+    (pattern-length foo) &rarr; 3
     
-    The coin pattern is an example without a well defined cardinality.  
-    The :period argument is used to set an arbitrary cardinality.
+    The coin pattern is an example without a well defined pattern-length.  
+    The :period argument is used to set an arbitrary pattern-length.
     
     (param baz (coin :period 4))
-    (cardinality baz) &rarr; 4
+    (pattern-length baz) &rarr; 4
     (next baz :rest) &rarr; (T NIL NIL T T NIL T)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
@@ -345,7 +345,7 @@
     :P      - Probability of 'head' result.  0 &lt;= p &lt;= 1, default 0.5.
     :HEAD   - The 'head' value, default #'TRUE.
     :TAIL   - The 'tail' value, default #'FALSE.
-    :PERIOD - Sets an arbitrary cardinality.
+    :PERIOD - Sets an arbitrary pattern-length.
     
     The head and tail parameters may be any of the following types:
     

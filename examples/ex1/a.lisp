@@ -54,14 +54,13 @@
 
 ;;; Add piano left-hand part.
 ;;;
-;;; This part shows two ways to specify a chord.
+;;; This example shows two ways to specify a chord.
 ;;;   1) As a literal list of offsets IE (0 12) means play two notes an octave apart.
 ;;;   2) [solo] is a symbolic chord name, solo is the equivalent to the offset list (0).
 ;;; See chord-models
 ;;;
-;;; As with :time, :dur and :amp, a :chord value remains in effect until explicitly
-;;; changed.
-;;;
+;;; The :chord value remains in effect until explicitly changed.
+;;; 
 
 (strummer a-piano-left piano
 	     :events
@@ -133,9 +132,7 @@
 	       (:time (6 2 3) :key c4  :chord (0 7 10) :inv 0    )
 	       (:time (7 1 1) :key f4  :chord [maj] :inv 1 :oct 1 :dur h.)))
 
-
 ;;; A group allows multiple parts to be muted or soloed as a unit.
-;;; Here the piano-group is composed of the left and right hand parts.
 ;;;
 (group piano-group (list a-piano-left a-piano-right))
 
@@ -150,7 +147,7 @@
 ;;;    nil     - Mute state remains the same.
 ;;;
 ;;; Generally groups are listed before individual parts.  This allows the
-;;; the group state to be set and then make exceptions to the individual
+;;; the group state to be set and then exceptions made for the individual
 ;;; parts.
 
 (mute piano-group   nil )
@@ -170,4 +167,4 @@
 ;;;
 
 (->midi a)
-(->midi a :filename "practice-a" :repeat 8)
+(->midi a :filename "loop-a" :repeat 8)

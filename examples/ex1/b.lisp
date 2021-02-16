@@ -33,9 +33,7 @@
 
 (group b-piano-group (list b-piano-left b-piano-right))
 
-
 (mute piano-group   nil )
-
 (mute b-metronome   :mute)
 (mute b-melody      nil  )
 (mute b-piano-left  nil  )
@@ -43,4 +41,4 @@
 
 
 (->midi b)
-(->midi b :filename "practice-b" :repeat 8)
+(->midi b :filename "loop-b" :repeat 8)

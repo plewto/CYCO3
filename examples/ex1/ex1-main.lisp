@@ -12,8 +12,7 @@
 ;;;;
 
 
-
-;;; Force CYCO version 3.
+;;; Ensure CYCO version 3.
 ;;;
 
 (version 3)
@@ -26,11 +25,11 @@
 
 ;;; Create project named ex1
 ;;;
-;;; The title and remarks values are optional.
+;;; Title and remarks are optional.
 ;;; Normally the title should serve as the project's name but here they
 ;;; are separate.
 ;;;
-;;; The tempo, bars and beats values are defaults for the remainder
+;;; The tempo, bars and beats values are the defaults for the remainder
 ;;; of the project.
 ;;;
 

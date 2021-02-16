@@ -1,24 +1,22 @@
 ;;;; CYCO example ex1 orchestra.lisp
 ;;;;
-;;;; CYCO does not have an "orchestra" object perse.  Instead the orchestra
+;;;; CYCO does not have an "orchestra" object per se.  Instead the orchestra
 ;;;; is a linked tree of instruments.   The root of the orchestra tree is
 ;;;; *ROOT-INSTRUMENT* 
 ;;;;
 
-
 ;;; Remove old instruments from the orchestra.  If this step were not
-;;; taken, every time this file was loaded it would add needless duplicate
-;;; instruments to the orchestra.
+;;; taken, every time this file was loaded it would clog the orchestra
+;;; tree with needless duplication's.
 ;;;
 
 (prune-orchestra)
 
 ;;; Define the instruments using the general-midi plugin.  We are using a
-;;; piano, flute, vibes and  a metronome.
+;;; piano, flute, vibes and a metronome.
 ;;;
 
-
-;;; Create the piano instrument on channel 1 using general-midi
+;;; Create the piano instrument on channel 1.
 ;;; Use (?general-midi) for list available general-midi programs.
 ;;;
 
@@ -35,7 +33,7 @@
 
 
 ;;; Creates an instrument for use as a metronome on channel 16 using the 
-;;; general-midi woodblock.  The woodblock is bound to the global
+;;; general-midi woodblock.  The new instrument is bound to the global
 ;;; *METRONOME* instrument.
 ;;;
 

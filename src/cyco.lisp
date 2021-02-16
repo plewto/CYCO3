@@ -149,7 +149,7 @@
 		   "src/util/inspection"
 		   "src/plugins"
 		   "src/local-config"
-		   "src/cyco-exports")))
+		   "src/exports")))
 		   
  
   (defun ld (filename &key (verbose t)(print nil))

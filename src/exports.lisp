@@ -265,6 +265,7 @@
 	  rl
 	  root-p
 	  rotate
+	  sample-and-hold
 	  sawtooth
 	  section-order
 	  section-p

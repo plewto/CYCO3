@@ -12,7 +12,7 @@
     :initform 0
     :initarg :divide))
   (:documentation
-   "Samples embedded pattern on every nth call to next-1."))
+   "Samples source pattern on every nth call to next-1."))
 
 (defmethod reset ((glass slowglass))
   (call-next-method)
@@ -35,7 +35,7 @@ source - Pattern or Generator or any object where next-1 is defined.
 			:divide (max 0 n))))
 
 (defmethod clone ((mother slowglass) &key &allow-other-keys)
-  (slowglass :of (clone (elements mother)) :divide (slowglass-rate mother)))
+  (slowglass (clone (elements mother)) :n (slowglass-rate mother)))
 
 (defmethod next-1 ((glass slowglass))
   (if (zerop (pointer glass))

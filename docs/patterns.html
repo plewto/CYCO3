@@ -41,6 +41,8 @@
       <li><a href='#wrapper'>wrapper</a></li>
       <li><a href='#walker'>walker</a></li>
       <li><a href='#switch'>switch</a></li>
+      <li><a href='#slowglass'>slowglass</a></li>
+      <li><a href='#sample-and-hold'>sample-and-hold</a></li>
       <li><a href='#nested-patterns'>nested-patterns</a></li>
   </ul>
   <p class="body">
@@ -437,6 +439,47 @@
         :previous - selects the previous item
         :last - selects the final item
         :random - selects an item at random
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="slowglass"></a>
+  
+  <!-- (SLOWGLASS source &key (n 1)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SLOWGLASS source &key (n 1))</b><br>
+  <p class="summery">Returns new instance of SLOWGLASS pattern.</p>
+  <pre class="description">
+    
+    source - Pattern, generator or any object where next-1 and value are defined.
+    :n     - Sample rate division, default 1.
+    
+    Slowglass samples the source pattern every nth time NEXT-1 is called.   The 
+    source pattern is not advanced until it is sampled. 
+    
+    (param c (cycle :of '(A B C)))
+    (param sg (slowglass c :n 2))
+    (next sg 8) &rarr; (A A B B C C A A) 
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="sample-and-hold"></a>
+  
+  <!-- (SAMPLE-AND-HOLD source &key (n 1)) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SAMPLE-AND-HOLD source &key (n 1))</b><br>
+  <p class="summery">Returns new SAMPLE-AND-HOLD pattern.</p>
+  <pre class="description">
+    
+    source - Pattern, generator or any object where next-1 and value are defined.
+    :n     - Sample rate division, default 1.
+    
+    Sample-and-hold is similar to slowglass except that the source pattern 
+    is advanced on every NEXT-1 call.  The value of a sample-and-hold is only
+    updated every nth time.
+    
+    (param c (cycle :of '(A B C)))
+    (param snh (sample-and-hold c :n 2))
+    (next snh 12) &rarr; (A A C C B B A A C C B B)
   </pre>
   <p class="body">
     <br>

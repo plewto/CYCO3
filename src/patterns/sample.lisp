@@ -46,7 +46,3 @@ the source pattern values may be rearranged."
     (if (= p1 p2)
 	p1
       (* p1 p2))))
-
-	     
-
-   

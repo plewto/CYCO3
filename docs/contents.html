@@ -14,34 +14,33 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=glossary.html class="navigation">Next: glossary </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=appendix-a.html class="navigation">Next: appendix-a </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/logo.png" alt="logo"/>
   <h1 class="banner">Contents</h1>
   <ul>
-    <li><a href='#patterns'>patterns</a></li>
-    <li><a href='#generators'>generators</a></li>
-    <li><a href='#keynumbers'>keynumbers</a></li>
-    <li><a href='#dynamics'>dynamics</a></li>
-    <li><a href='#metrics'>metrics</a></li>
-    <li><a href='#MIDI'>MIDI</a></li>
+    <li><a href='#articulation-maps'>articulation-maps</a></li>
     <li><a href='#channels'>channels</a></li>
-    <li><a href='#nodes'>nodes</a></li>
+    <li><a href='chords.html'>chords</a></li>
+    <li><a href='#cue-and-shuffle'>cue-and-shuffle</a></li>
+    <li><a href='#dynamic-maps'>dynamic-maps</a></li>
+    <li><a href='#dynamics'>dynamics</a></li>
+    <li><a href='#generators'>generators</a></li>
     <li><a href='#instruments'>instruments</a></li>
     <li><a href='#key-maps'>key-maps</a></li>
-    <li><a href='#articulation-maps'>articulation-maps</a></li>
-    <li><a href='#dynamic-maps'>dynamic-maps</a></li>
+    <li><a href='#keynumbers'>keynumbers</a></li>
+    <li><a href='#metrics'>metrics</a></li>
+    <li><a href='midi-events.html'>MIDI</a></li>
+    <li><a href='#nodes'>nodes</a></li>
+    <li><a href='#parts'>parts</a></li>
+    <li><a href='#patterns'>patterns</a></li>
+    <li><a href='#plugins'>plugins</a></li>
     <li><a href='#program-maps'>program-maps</a></li>
-    <li><a href='#time-signature'>time-signature</a></li>
-    <li><a href='#cue-and-shuffle'>cue-and-shuffle</a></li>
     <li><a href='#projects'>projects</a></li>
     <li><a href='#sections'>sections</a></li>
-    <li><a href='#chords'>chords</a></li>
-    <li><a href='#parts'>parts</a></li>
-    <li><a href='#plugins'>plugins</a></li>
-    <li><a href='appendix-a.html'>Appendix A: constants and globals</a></li>
-    <li><a href='appendix-b.html'>Appendix B: functions</a></li>
-    <li><a href='appendix-c.html'>Appendix C: class hierarchy</a></li>
+    <li><a href='#time-signature'>time-signature</a></li>
+    <li></li>
+    <li><a href='appendix-a.html'>Appendix A: class hierarchy</a></li>
   </ul>
   <a href=index.html class="index">Home</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=index.html#installation class="index">Installation</a><br>
@@ -58,6 +57,8 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns.html#wrapper class="index">Wrapper Pattern</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns.html#walker class="index">Walker Pattern</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns.html#switch class="index">Switch Pattern</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns,html#slowglass class="index">Slowglass</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns,html#sample-and-hold class="index">Sample-and-Hold</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=patterns.html#nested class="index">Nested Patterns</a><br>
    <br>
   
@@ -105,10 +106,6 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=metrics.html#metric-p class="index">METRIC-P</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=metrics.html#metric-expression class="index">METRIC-EXPRESSION</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=metrics.html#metric-expression-p class="index">METRIC-EXPRESSION-P</a><br>
-   <br>
-  
-  <a id="MIDI"></a>
-  <a href=midi-events.html class="index"><b>MIDI Events</b></a><br>
    <br>
   
   <a id="channels"></a>
@@ -240,10 +237,6 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=preroll.html#fin class="index">FIN</a><br>
    <br>
   
-  <a id="chords"></a>
-  <a href=chords.html class="index"><b>Chords</b></a><br>
-   <br>
-  
   <a id="parts"></a>
   <a href=parts.html class="index"><b>Parts</b></a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=raw-part.html class="index">RAW-PART</a><br>
@@ -257,7 +250,6 @@
    <br>
   
   <a id="plugins"></a>
-  <H3 class="heading">Plugins</H3>
   <a href=plugins.html class="index"><b>Plugins</b></a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=plugins.html#plugin class="index">PLUGIN</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=plugins.html#load-plugin-file class="index">LOAD-PLUGIN-FILE</a><br>
@@ -272,7 +264,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href=ukulele.html class="index">Ukulele Chords</a><br>
   <a href=pig.html class="index"><b>Pig OSC interface to Pigiron</b></a><br>
   <a href=ion.html class="index"><b>ION</b></a> <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=glossary.html class="navigation">Next: glossary </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=appendix-a.html class="navigation">Next: appendix-a </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

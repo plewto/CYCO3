@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>Appendix A, Constants</title>
+      <title>Appendix A, Classes</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -14,116 +14,112 @@
   
 <body lang="en-US">
   <a id="top"></a>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=glossary.html class="navigation">Previous: glossary </a> &nbsp;<a href=appendix-b.html class="navigation">Next: appendix-b </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <a href=index.html class="link">Home</a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <h1 class="banner">Appendix A, Constants & Globals</h1>
-  <ul class='appendix'>
-    <li class='appendix'><pre>constant  <b>+ACTIVE-SENSING+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER+</b>                     constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-BAR1+</b>                util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-BAR2+</b>                util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-ERROR+</b>               util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-HEADER1+</b>             util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-HEADER2+</b>             util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BANNER-WARNING+</b>             util/banner.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+BENDER-DOCSTRING+</b>           parts/controllers-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CENT+</b>                       constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CHANNEL-PREFIX+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CHANNEL-PRESSURE+</b>           constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CLOCK+</b>                      constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CONTINUE+</b>                   constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CONTROL-CHANGE+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CONTROLLERS-DOCSTRING+</b>      parts/controllers-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CONTROLLERS-PROPERTIES+</b>     parts/controllers.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+COPYRIGHT+</b>                  constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CUE-POINT+</b>                  constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+CYCO-VERSION+</b>               constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+DEFAULT-ARTICULATION-MAP+</b>   orchestra/articulation-map.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+DEFAULT-DYNAMIC-MAP+</b>        orchestra/dynamic-map.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+DEFAULT-KEYNUMBER-MAP+</b>      orchestra/keynumber-map.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+DEFAULT-KEYTABLE+</b>           keytables.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+END-EXCLUSIVE+</b>              constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+END-OF-TRACK+</b>               constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+EQ12+</b>                       constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+FIN-PROPERTIES+</b>             composition/sections/fin.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+INSTRUMENT-NAME+</b>            constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+INSTRUMENT-PROPERTIES+</b>      orchestra/instrument.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+KEY-SIGNATURE+</b>              constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+LYRIC-TEXT+</b>                 constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+MAKE-STRUMMER-DOCSTRING+</b>    parts/strummer-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+MARKER-TEXT+</b>                constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+META+</b>                       constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+METRIC-UNITS+</b>               metrics.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+MNEMONICS+</b>                  constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+NOTE-OFF+</b>                   constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+NOTE-ON+</b>                    constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+NULL-NODE+</b>                  node.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+NULL-PROJECT+</b>               composition/project/project.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+NULL-SECTION+</b>               composition/sections/section.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PART-PROPERTIES+</b>            parts/part.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PART-SPECIFIC-PROPERTIES+</b>   parts/part.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PITCH-BEND+</b>                 constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PITCH-CLASSES+</b>              keynumbers.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+POLY-PRESSURE+</b>              constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PREROLL-PROPERTIES+</b>         composition/sections/preroll.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PROGRAM-CHANGE+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PROGRAMS-PROPERTIES+</b>        parts/programs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+PROJECT-PROPERTIES+</b>         composition/project/project.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+QBALL-DOCSTRING+</b>            parts/qball-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+QBALL-PROPERTIES+</b>           parts/qball.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+RAW-PART-PROPERTIES+</b>        parts/raw-part.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+RESET+</b>                      constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+REST+</b>                       constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+REVERSE-KEYNUMBER-ARRAY+</b>    keynumbers.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SECTION-PROPERTIES+</b>         composition/sections/section.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SEQ-SPECIFIC-EVENT+</b>         constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SEQUENCE-NUMBER+</b>            constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SMPTE-OFFSET+</b>               constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SONG-POSITION-POINTER+</b>      constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SONG-SELECT+</b>                constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+START+</b>                      constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+STRUMMER-DOCSTRING+</b>         parts/strummer-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+STRUMMER-PROPERTIES+</b>        parts/strummer.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+SYSTEM-EXCLUSIVE+</b>           constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TEMPO-CHANGE+</b>               constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TEXT-MESSAGE+</b>               constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TICKS-PER-BEAT+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TIME-CODE+</b>                  constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TIME-SIGNATURE+</b>             constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TIME-SIGNATURE-PROPERTIES+</b>  composition/time-signature.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TRACK-NAME+</b>                 constants.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TRANSFORMER-DOCSTRING+</b>      parts/transformer-docs.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TRANSFORMER-PROPERTIES+</b>     parts/transformer.lisp</pre></li>
-    <li class='appendix'><pre>constant  <b>+TUNE-REQUEST+</b>               constants.lisp</pre></li>
-  </ul>
-  <br>
-  <ul class='appendix'>
-    <li class='appendix'><pre>global  <b>*CHORD-TABLE*</b>                         chords/default-chords.lisp</li>
-    <li class='appendix'><pre>global  <b>*CONFIG-DIRECTORY*</b>                    globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*CURRENT-LPF-FILENAME*</b>                composition/project/loader.lisp</li>
-    <li class='appendix'><pre>global  <b>*CURRENT-TIME-SIGNATURE*</b>              composition/time-signature.lisp</li>
-    <li class='appendix'><pre>global  <b>*CYCO-ERROR-AS-WARNING*</b>               util/notifications.lisp</li>
-    <li class='appendix'><pre>global  <b>*CYCO-LOCATION*</b>                       globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*DEFAULT-PROJECT-OUTPUT-DIRECTORY*</b>    globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*DYNAMIC-TABLE*</b>                       dynamics.lisp</li>
-    <li class='appendix'><pre>global  <b>*ENABLE-BANNERS*</b>                      util/banner.lisp</li>
-    <li class='appendix'><pre>global  <b>*ENABLE-WARNINGS*</b>                     util/notifications.lisp</li>
-    <li class='appendix'><pre>global  <b>*KEYNUMBER-TABLE*</b>                     keynumbers.lisp</li>
-    <li class='appendix'><pre>global  <b>*METRONOME*</b>                           globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*OS-EXTENSION-SEPARATOR*</b>              globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*OS-HOMEDIR-ALIAS*</b>                    globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*OS-PATH-ROOT*</b>                        globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*OS-PATH-SEPARATOR*</b>                   globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*PERSISTENT-PROJECT-NAME-NAMESTRING*</b>  composition/project/persistence.lisp</li>
-    <li class='appendix'><pre>global  <b>*PROJECT*</b>                             globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*PROJECT-MAIN-FILENAME-FORMAT*</b>        globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*PROJECTS-ROOT*</b>                       globals.lisp</li>
-    <li class='appendix'><pre>global  <b>*ROOT-INSTRUMENT*</b>                     orchestra/instrument.lisp</li>
-    <li class='appendix'><pre>global  <b>*ROOT-TIME-SIGNATURE*</b>                 composition/time-signature.lisp</li>
-    <li class='appendix'><pre>global  <b>*STRUMMER-RENDER-TRACE*</b>               parts/strummer-midi-render.lisp</li>
-  </ul>
+  <h1 class="banner">Appendix A, Class Hierarchy</h1>
+  <pre class="code">
+    
+    abstract-chord-model
+      |
+      +-- chord-table
+      +-- polychord (oud plugin)
+    
+    chord-variations (oud plugin)
+    chord-family     (oud plugin)
+    
+    midi-message
+      |
+      +-- midi-channel-message
+      |     |
+      |     +-- midi-channel-pressure
+      |     +-- midi-control-change
+      |     +-- midi-key-message
+      |     |     |
+      |     |     +-- midi-note-off
+      |     |     +-- midi-note-on
+      |     |     +-- midi-poly-pressure
+      |     |        
+      |     +-- midi-pitch-bend
+      |     +-- midi-program-change
+      |
+      +-- midi-meta-message
+      |     |
+      |     +-- %midi-end-of-track%
+      |     +-- midi-key-signature
+      |     +-- midi-meta-copyright
+      |     +-- midi-meta-cue
+      |     +-- midi-meta-instrument-name
+      |     +-- midi-meta-lyric
+      |     +-- midi-meta-marker
+      |     +-- midi-meta-text
+      |     +-- midi-meta-track-name
+      |     +-- midi-tempo-message
+      |    
+      +-- midi-system-common-message
+            |   
+            +-- midi-end-system-exclusive
+            +-- midi-system-exclusive
+    
+    pattern
+      |
+      +-- bag
+      +-- coin
+      +-- cycle
+      +-- dice
+      +-- instrument-layer
+      +-- line
+      +-- walker
+      +-- wrapper
+      +-- slowglass
+      |     |  
+      |     +-- sample-and-hold
+      |
+      +-- switch
+    
+    generator
+      |
+      +-- alloy
+      +-- asr-envelope
+      +-- bones
+      +-- constant-value
+      +-- counter
+      +-- hailstone
+      +-- lfo
+      +-- logistic
+      +-- ramp
+      +-- recaman
+      +-- shift-register
+    
+    
+    
+    cyco-node
+      |
+      +-- instrument
+      +-- time-signature
+            |
+            +-- part
+            |     |
+            |     +-- bender
+            |     +-- controllers
+            |     +-- programs
+            |     +-- qball
+            |     +-- raw-part
+            |     +-- strummer
+            |     +-- transformer
+            |
+            +-- project
+            +-- section
+                  |
+                  +-- fin
+                  +-- preroll
+    
+    group
+    smf
+    smf-header
+    smf-track
+  </pre>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a href=index.html class="link">Home</a> &nbsp;<a href=glossary.html class="navigation">Previous: glossary </a> &nbsp;<a href=appendix-b.html class="navigation">Next: appendix-b </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>
 </html>

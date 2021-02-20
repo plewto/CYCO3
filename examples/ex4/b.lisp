@@ -1,11 +1,12 @@
 ;;;; CYCO examples ex4 b
-;;;; Use bag pattern to create a tone-row.
 ;;;;
+;;;; Use bag pattern to create a tone-row.
 
 
-;; Section b bars and tempo values override the default project
-;; values.
-(section b :bars 6 :tempo 130)
+;; Section b bars and tempo values override the project's
+;; defaults.
+;;
+(section b :bars 6 :tempo 120)
 
 (metronome b-metronome)
 
@@ -23,17 +24,10 @@
 (format t "tone-row  ~A~%" (keyname +tone-row+))
 (format t "inverted  ~A~%" (transpose (keyname +inverted-tone-row+) 12))
 	
-;; Create cue-list with an event on every eighth note for 
-;; the first 3 bars.
-;;
-(let* ((cue-list '()))
-  (dolist (br '(1 2 3))
-    (dolist (bt '(1 2 3 4))
-      (push (list br bt 1) cue-list)
-      (push (list br bt 3) cue-list)))
-  (setf cue-list (reverse cue-list))
 
-  ;; Repeat base tone-row for duration of the section
+(let* ((cue-list (create-cue-list :bars 3)))
+ 
+  ;; Repeat base tone-row for duration of the section.
   (qball b-tone-row piano
 	 :bars 3
 	 :cue cue-list

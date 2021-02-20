@@ -29,6 +29,9 @@ cycle repeats."))
 
 (defmethod ->cycle ((object cycle)) object)
 
+;; (defmethod ->cycle ((object pattern))
+;;   (cycle :of (elements pattern)))
+
 (defmethod ->cycle ((lst list))
   (cycle :of lst))
 

@@ -1,15 +1,16 @@
 ;;;; CYCO examples ex4 preroll.lisp
 ;;;;
 
-(preroll
- :bars 1
- :instruments (list piano gm-percussion *metronome*))
+(let ((instruments (list piano bass guitar strings high-strings
+			 clarinet gm-percussion *metronome*)))
 
-(controllers initialize-controllers (list piano gm-percussion *metronome*)
-	     :events '((:cc (1 1 1) volume 127)
-		       (:cc (1 1 1) portamento 0)))
+  (preroll :bars 1 :instruments instruments)
 
-(bender initialize-pitch-bend (list piano gm-percussion *metronome*)
-	:events '((:bend (1 1 1) 0.0)))
+  (controllers initialize-controllers instruments
+	       :events '((:cc (1 1 1) volume 127)
+			 (:cc (1 1 1) portamento 0)))
+
+  (bender initialize-pitch-bend instruments
+	  :events '((:bend (1 1 1) 0.0))))
 
 (->midi preroll)

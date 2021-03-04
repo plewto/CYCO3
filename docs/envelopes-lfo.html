@@ -45,7 +45,7 @@
     :monitor - Predicate function called within NEXT-1 on the current value.  
                If monitor returns non-nil the action function is executed.
                monitor/action are only available during the attack and decay stages.
-               Default (lambda (envelope value) nil) &rarr Boole
+               Default (lambda (envelope value) nil) &rarr; Boole
     
                The envelope object is passed to the monitor so that the current 
                state may be examined.  The method (envelope-state envelope) 

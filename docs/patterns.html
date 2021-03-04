@@ -109,7 +109,8 @@
     
     If n is the keyword :ALL then a list of all elements are returned.
     If n is the keyword :REST then a list of all remaining elements is returned.
-     foo (cycle :of '(A B C D E F G H)))
+     
+        (param foo (cycle :of '(A B C D E F G H)))
         (next foo)       &rarr; A
         (next foo)       &rarr; B
         (next foo 3)     &rarr; (C D E)
@@ -414,17 +415,17 @@
     to the currently selected item.  
     
     (param greek (line :of '(alpha beta delta)))
-    (param alpha (cycle :of '(a b c)))
-    (param s (switch :of (list greek alpha 'FOO) :step-selected-only t))
+    (param animal (cycle :of '(ape bat cat)))
+    (param s (switch :of (list greek animal 'FOO) :step-selected-only t))
     
     (select s 1)
-    (next s 4)  &rarr; (A B C A)
+    (next s 4)  &rarr; (APE BAT CAT APE)
     
     (select s :last)
     (next s 3)  &rarr; (FOO FOO FOO)
     
     (select s 0)
-    (next s 4)  &rarr; (ALPHA BETA DELTA ALPHA)
+    (next s 4)  &rarr; (ALPHA BETA DELTA DELTA)
   </pre>
   
   <!-- (SELECT switch item) -->
@@ -434,11 +435,11 @@
   <p class="summery">Sets selected switch item.</p>
   <pre class="description">
     item may be one of the following:
-        integer index
-        :next - selects the next item
-        :previous - selects the previous item
-        :last - selects the final item
-        :random - selects an item at random
+     integer index
+     :next - selects the next item
+     :previous - selects the previous item
+     :last - selects the final item
+     :random - selects an item at random
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="slowglass"></a>
@@ -450,11 +451,11 @@
   <p class="summery">Returns new instance of SLOWGLASS pattern.</p>
   <pre class="description">
     
-    source - Pattern, generator or any object where next-1 and value are defined.
-    :n     - Sample rate division, default 1.
-    
     Slowglass samples the source pattern every nth time NEXT-1 is called.   The 
     source pattern is not advanced until it is sampled. 
+    
+    source - Pattern, generator or any object where next-1 and value are defined.
+    :n     - Sample rate division, default 1.
     
     (param c (cycle :of '(A B C)))
     (param sg (slowglass c :n 2))
@@ -470,12 +471,12 @@
   <p class="summery">Returns new SAMPLE-AND-HOLD pattern.</p>
   <pre class="description">
     
-    source - Pattern, generator or any object where next-1 and value are defined.
-    :n     - Sample rate division, default 1.
-    
     Sample-and-hold is similar to slowglass except that the source pattern 
     is advanced on every NEXT-1 call.  The value of a sample-and-hold is only
     updated every nth time.
+    
+    source - Pattern, generator or any object where next-1 and value are defined.
+    :n     - Sample rate division, default 1.
     
     (param c (cycle :of '(A B C)))
     (param snh (sample-and-hold c :n 2))

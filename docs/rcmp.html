@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>rcmp MIDI Player</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=contents.html class="navigation">Next: contents </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <h1 class="banner">RCMP MIDI Player Plugin</h1>
+  <p class="body">
+    <b>rcmp</b> is a terminal based MIDI file player available
+    on github at <a href='https://github.com/plewto/rcmp'>plewto/rcmp</a>.
+    
+    This plugin allows CYCO to control an instance of rcmp
+    via <a href='https://en.wikipedia.org/wiki/Open_Sound_Control'>OSC</a>    
+    messages.  In use, rcmp creates a media-list by scanning a directory for MIDI
+    files.   At any one time a single item from the list is selected for
+    playback.
+  </p>
+  <p class="body">
+    Prior to using the plugin, an rcmp server must be running
+    in a separate terminal.  Further the prefix, host-ip and port
+    numbers must match between CYCO and rcmp .
+  </p>
+  <p class="body">
+    Loading the rcmp plugin binds an instance of <b>RCMP:RCMP-PROXY</b> to
+    <b>RCMP:*PROXY*</b>.  The default proxy parameters are:
+  </p>
+  <ul>
+    <li>OSC path prefix  &rarr; /rcmp</li>
+    <li>Server host address &rarr; #(127 0 0 1)</li>
+    <li>Server port &rarr; 7000</li>
+  </ul>
+  <p class="body">
+    If you need to change any of these values, execute RCMP:RCMP-PROXY
+  </p>
+  
+  <!-- (RCMP:RCMP-PROXY &key prefix host port) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:RCMP-PROXY &key prefix host port)</b><br>
+  <p class="summery">Create new instance of RCMP-PROXY and bind it to RCMP:*PROXY* as the new 
+  default for all RCMP functions.</p>
+  <pre class="description">
+    
+    :prefix - OSC address prefix, default /rcmp
+    :host   - rcmp server ip address, default #(127 0 0 1)
+    :port   - server port number, default 7000
+  </pre>
+  
+  <!-- (RCMP:HELP) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:HELP)</b><br>
+  <p class="summery">Display rcmp help.</p>
+  
+  <!-- (RCMP:SCAN  directory) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:SCAN  directory)</b><br>
+  <p class="summery">Add all MIDI files in directory to the media-list.   The media-list is
+    cleared prior to scanning the directory.   The first file in the
+    directory is automatically selected for playback.
+  
+    NOTE: It can take rcmp several seconds to refresh after scanning a
+    directory.</p>
+  
+  <!-- (RCMP:RESCAN) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:RESCAN)</b><br>
+  <p class="summery">Clear the media-list and rescan the current directory.</p>
+  
+  <!-- (RCMP:SELECT item) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:SELECT item)</b><br>
+  <p class="summery">Select item from media-list for playback.</p>
+  <pre class="description">
+    
+    The item may be selected either by its numeric list position, or
+    by name.
+  </pre>
+  
+  <!-- (RCMP:?MEDIA) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:?MEDIA)</b><br>
+  <p class="summery">Print the media-list</p>
+  <pre class="description">
+    
+    NOTE: The output is produced in the terminal where rcmp is running, not
+    in the terminal running CYCO.
+  </pre>
+  
+  <!-- (RCMP:PLAY) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:PLAY)</b><br>
+  <p class="summery">Command rcmp to start playback of selected MIDI file.</p>
+  
+  <!-- (RCMP:STOP) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:STOP)</b><br>
+  <p class="summery">Command rcmp to halt playback.</p>
+  <pre class="description">
+    
+    It may take a second or two for playback to actually stop.
+  </pre>
+  
+  <!-- (RCMP:EXIT) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(RCMP:EXIT)</b><br>
+  <p class="summery">Command rcmp to terminate.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=ukulele.html class="navigation">Previous: ukulele </a> &nbsp;<a href=contents.html class="navigation">Next: contents </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

@@ -15,34 +15,34 @@ rcmp constructs a media-list by scanning a directory for MIDI files.  You
 then select an entry from the list for playback.  The following functions
 are imported into the main CYCO package by the rcmp plugin.
 
-(player-exit)
+(rcmp:exit)
     Terminate the rcmp program.
 
-(?player)
+(rcmp:help)
     Display this message
 
-(scan-media directory)
+(rcmp:scan directory)
     First clears the media-list, then adds all MIDI files in directory to
     the media-list.   The first file is automatically selected for
     playback.   NOTE: It can take rcmp several seconds to refresh after
     scanning a directory.
 
-(rescan-media)
+(rcmp:rescan)
     Rescan the current directory.  The currently selected media is
     re-selected. 
 
-(select-media name)
+(rcmp:select name)
     Selects an item from the media-list.  name may either by the numeric
     position in the media-list or the items name. 
 
-(?medialist)
+(rcmp:?media)
     Causes rcmp to display the current media list.   Note the list is
     displayed in the terminal rcmp is executing in and not in CYCO.
 
-(play)
+(rcmp:play)
     Start playback of the selected media item.
 
-(stop)
+(rcmp:stop)
     Stop playback.  It can take a second or 2 for rcmp to actually halt
     playback.")
 

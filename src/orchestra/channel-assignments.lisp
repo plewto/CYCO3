@@ -78,26 +78,7 @@ remarks - optional explanation."
 			   (push key acc))))
 		 channel-map)
 	acc))
-    
-    (defun ?meta-channels ()
-      "Displays meta-channel assignments."
-      (let ((acc '()))
-	(maphash #'(lambda (key value)
-		     (push (cons key (->string (meta-channel-value value))) acc))
-		 channel-map)
-	(dolist (p (sort acc #'(lambda (a b)(string< (car a)(car b)))))
-	  (format t "[~16A] --> ~A~%" (car p)(cdr p)))
-	(format t "~%")
-	(loop for channel from 1 to 16
-	      do (maphash #'(lambda (key value)
-			      (declare (ignore key))
-			      (let ((mchan (meta-channel-value value)))
-				(if (and (integerp mchan)(= mchan channel))
-				    (format t "[CHAN ~02D] --> ~A~%" channel (meta-channel-name value)))))
-			  channel-map))))
-      
-	      
-    
+     
     (defun meta-channel-assignment-p (object)
       "Predicate, true if object is either a numeric MIDI channel 
 or a defined symbolic meta channel."

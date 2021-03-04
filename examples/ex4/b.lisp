@@ -1,16 +1,16 @@
-;;;; CYCO examples ex4 b
+;;;; CYCO examples ex4 B
 ;;;;
 ;;;; Use bag pattern to create a tone-row.
 
 
-;; Section b bars and tempo values override the project's
+;; Section B bars and tempo values override the project's
 ;; defaults.
 ;;
 (section b :bars 6 :tempo 120)
 
 (metronome b-metronome)
 
-;; Create the tone-row and assign it to a global constant +TONE-ROW+
+;; Create the tone-row and bind it to constant +TONE-ROW+
 ;; The tone-row is randomly generated the first time this file
 ;; is loaded, thereafter the same tone-row is reused.
 ;;

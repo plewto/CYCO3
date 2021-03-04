@@ -1,7 +1,8 @@
 ;;;; CYCO examples g
 ;;;;
 ;;;; Example g uses the SAMPLE-AND-HOLD pattern and PALINDROME function
-;;;; to create string harmony below a simple piano part.
+;;;; to create string harmony below a simple piano motif.
+;;;; https://en.wikipedia.org/wiki/Sample_and_hold
 ;;;;
 
 (section g :bars 8 :tempo 120)

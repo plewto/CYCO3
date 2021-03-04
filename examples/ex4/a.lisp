@@ -1,6 +1,6 @@
-;;;; CYCO examples ex4 a
+;;;; CYCO examples ex4 A
 ;;;;
-;;;; Section a uses QBALLs to create a basic drum pattern.
+;;;; Section A uses QBALLs to create a basic drum pattern.
 
 (setf *enable-keynumber-warnings* nil)
 
@@ -23,25 +23,23 @@
 ;; encounters an unrecognized key-number.  Warnings may be enabled by
 ;; setting *ENABLE-KEYNUMBER-WARNINGS* to t.
 ;; 
-;; Break down of generated kick-drum events.
-;;
 
 
 (qball a-kick gm-kick
        :bars 2                        ;; Since the section length is
        :cue '((1 1 1)(1 2 3)(1 4 1)   ;;   4-bars, the 2-bar kick part
 	      (2 2 1)(2 4 1))         ;;   is repeated twice.
-       :key '(x1 x1 x2 treat-as-rest)
+       :key '(x1 x1 x2 treat-as-rest) ;;
        :reset-on-repeat t             ;; Each repetition is identical.
        :amp 'f)
 
 (qball a-snare gm-snare              ;; By setting :reset-on-repeat nil,
        :bars 2                       ;;   the key-number pattern is not
        :cue '((1 2 1)(1 3 3)         ;;   reset when the pattern repeats.
-	      (2 1 1)(2 3 1)(2 4 3)) ;;   The second time through the 
-       :key '(x1 x1 x2)              ;;   part (bars 3 & 4) the key-pattern
-       :reset-on-repeat nil          ;;   will be shifted relative to the 
-       :amp 'f)                      ;;   first iteration.
+	      (2 1 1)(2 3 1)(2 4 3)) ;;   The second time through the part
+       :key '(x1 x1 x2)              ;;   the key-pattern will be shifted 
+       :reset-on-repeat nil          ;;   relative to the first iteration.
+       :amp 'f)                      ;;   
                          
  
 
@@ -56,10 +54,10 @@
 
 
 ;; DUMP-EVENTS prints the generated MIDI events.
-;; The optional filter takes a single-argument predicate,
-;; (lambda (midi-message)) --> Boolean.
-;; If the filter returns nil the event is printed.
-;; This example removes note-off events.
+;;    The optional filter takes a single-argument predicate,
+;;    (lambda (midi-message)) --> Boolean.
+;;    If the filter returns nil the event is printed.
+;;    This example suppresses note-off events.
 ;;
 (dump-events a-hats :filter #'midi-note-off-p)
 

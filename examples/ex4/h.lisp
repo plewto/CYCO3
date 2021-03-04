@@ -14,6 +14,14 @@
 		       (length transpose-list)))
        (cue-list (create-cue-list :bars 2)))
 
+  ;; The CNTH function is like the Common Lisp NTH function except it is
+  ;; cyclical.   (cnth 3 '(a b c)) --> a
+  ;;             (cnth 4 '(a b c)) --> b
+  ;;
+  (dotimes (i (length key-list))
+    (format t "[~2D]  motif ~3A  transpose ~A   --> ~A~%"
+	    i (keyname (cnth i motif))(cnth i transpose-list)(keyname (nth i key-list))))
+  
   (qball h-piano piano
 	 :bars 2
 	 :cue cue-list

@@ -6,6 +6,8 @@
 ;;;; Chord templates are sorted by mean key-number, ignoring muted strings.
 ;;;;
 
+(in-package :cyco-oud)
+
 (defclass chord-variations nil
   ((pitch-class
     :type integer

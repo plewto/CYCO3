@@ -4,6 +4,8 @@
 ;;;; IE all major chords.
 ;;;;
 
+(in-package :cyco-oud)
+
 (defclass chord-family nil
   ((chord-type
     :type symbol

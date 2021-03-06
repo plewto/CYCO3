@@ -2,6 +2,9 @@
 ;;;;
 ;;;; Defines key-range in terms of a monochord with optional capo
 
+
+(in-package :cyco-oud)
+
 (defstruct monochord
   root-key				;; integer
   fret-count				;; integer 

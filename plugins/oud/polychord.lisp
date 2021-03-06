@@ -3,6 +3,8 @@
 ;;;; Extends ABSTRACT-CHORD-MODEL using suit of monochords.
 ;;;;
 
+(in-package :cyco-oud)
+
 (defclass polychord (abstract-chord-model)
   ((fret-count
     :type integer

@@ -84,14 +84,16 @@
 
 	 (prepare-note-end-times 
 	  (state start-times instrument)
-	  (let ((acc '())
-		(duration (funcall (articulation-map instrument)
-				   (strummer-state-articulation state))))
-	    (dolist (start start-times)
-	      (push (+ start duration) acc))
-	    (if (strummer-state-strum-end-together state)
-		(copies (length start-times)(apply #'max acc))
-	      (reverse acc))))
+	  (if start-times
+	      (let ((acc '())
+		    (duration (funcall (articulation-map instrument)
+				       (strummer-state-articulation state))))
+		(dolist (start start-times)
+		  (push (+ start duration) acc))
+		(if (strummer-state-strum-end-together state)
+		    (copies (length start-times)(apply #'max acc))
+		  (reverse acc)))
+	    '()))
 
 	 (prepare-note-velocities 
 	  (state note-count root-velocity)
@@ -182,12 +184,10 @@
 	    (if note-events
 	    	(setf midi-events (append midi-events note-events)))
 	    (sort-midi-events midi-events))) )
-
   
   (defmethod pattern-reset ((strummer strummer))
     (dolist (state (strummer-states strummer))
       (pattern-reset state)))
-  
 
   (defmethod render-once ((strummer strummer) &key (offset 0))
     (if (muted-p strummer)(return-from render-once '()))

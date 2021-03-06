@@ -170,9 +170,7 @@ tuning - list of open string tunings as absolute key-numbers."
 		(setf txt (if txt
 			      (setf txt (sformat "~A~%~A" txt text))
 			    text))
-		(setf (gethash chord-type (chord-table-descriptions plychrd)) txt))))
-	 
-	 )
+		(setf (gethash chord-type (chord-table-descriptions plychrd)) txt)))))
   
   (defmethod define-chord-family ((plychrd polychord)
   				  (chord-type symbol)
@@ -233,9 +231,7 @@ from each list below.
 	  		     (list (list capo template)))
 	(setf current-key (1+ current-key))
 	(setf pos (1+ pos))
-	(setf capo (1+ capo)))))
-
-  )
+	(setf capo (1+ capo))))))
 
 (defmethod dump-chords ((plychrd polychord))
   (format t "POLYCHORD ~A~%" (name plychrd))

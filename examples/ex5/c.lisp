@@ -7,8 +7,8 @@
 ;; Up to this point all examples have been using the default *CHORD-TABLE*,
 ;; which takes a keyboardist view.  Notes are generally ordered with no
 ;; duplicates.  While using *CHORD-TABLE* you may either specify a chord by
-;; name or as a template of keynumber offsets.  The following two chords
-;; are identical.
+;; name or as a template of keynumber offsets.  The following two statements
+;; produce identical results. 
 ;;
 ;;     (:time (1 1 1) :key 60  :chord [maj]   )
 ;;     (:time (1 2 1) :key 60  :chord (0 4 7) )
@@ -17,7 +17,7 @@
 ;; each template value.   :key 60 :chord (0 4 7) -->  (60 64 67)
 ;;
 
-;; Alternate chord tables are available (via plugin) which take a fretted
+;; Alternate chord tables are available, via plugin, which take a fretted
 ;; instrument approach.  These alter both how the root keynumber and the
 ;; chord template are interpreted.  The most extensive alternate system 
 ;; is provided by the GUITAR-CHORDS plugin.
@@ -26,7 +26,7 @@
 (plugin guitar-chords)
 
 ;; Using (a? 'guitar) after loading the plugin, reveals a new bound symbol
-;; *GUITAR-CHORD-MODEL*.   Use (?chords *GUITAR-CHORD-MODEL*) to print a
+;; *GUITAR-CHORD-MODEL*.   Use (?chords *GUITAR-CHORD-MODEL*) to print
 ;; the chord types it provides.   One thing to notice right away is that
 ;; guitar-chords defines variations on each generic chord-type.  Further
 ;; these variations are specific to the root keynumber.  For example there
@@ -71,7 +71,7 @@
 
 (strummer c1 guitar
 	  :chord-model *guitar-chord-model*
-	  :events '((:chord [SUS4] :dur e. :amp ff :amp* 0.9 :strum 0.03 :strum* 1.01 :direction down)
+	  :events '((:chord [min7] :dur e. :amp ff :amp* 0.9 :strum 0.03 :strum* 1.01 :direction down)
 		    (:time (1 1 1) :key a0 )
 		    (:time (1 1 3) :key a1 )
 		    (:time (1 2 1) :key a2 )
@@ -81,8 +81,6 @@
 		    (:time (1 4 1) :key a6 )
 		    (:time (1 4 3) :key a7 )
 		    (:time (2 1 1) :key a8 )))
-		    
-
 (->midi c)
 								       
 		    

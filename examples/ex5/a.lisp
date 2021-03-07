@@ -10,7 +10,7 @@
 ;;                                remarks events)
 ;;
 ;; name          - A non-quoted symbol, the parts name.  The new strummer-part
-;;                 is bound to the symbol name.
+;;                 is bound to the symbol name.  
 ;; instrument    - Instrument                
 ;; :section      - Parent section, defaults to the current-section of
 ;;                 *PROJECT*.              
@@ -37,10 +37,7 @@
 ;;
 
 ;; Strummer events are specified as a nested list of "event clauses".  Each
-;; clause starts with a keyword and is followed by a prescribed number of
-;; values.   The value's for several clause types are remembered until
-;; explicitly changed.   
-
+;; clause starts with a keyword followed by a prescribed number of values.
 
 ;; Part A1 plays a c-major arpeggio on bar 1.
 ;;
@@ -83,7 +80,7 @@
 (strummer a4 piano
 	  :render-once t
 	  :events '((:amp ff :chord (0 4 7))
-		    ;; original chord
+		    ;; original chord  (0 4 7)
 		    (:time (4 1 1) :key d4 )
 
 		    ;; first inversion (4 7 12)
@@ -108,7 +105,7 @@
 	  :render-once t
 	  :events '((:amp ff :chord (0 4 7))
 
-		    ;; Original chord
+		    ;; Original chord (0 4 7)
 		    (:time (5 1 1) :key e4 )
 
 		    ;; Adds octave copy of first note to end
@@ -119,7 +116,6 @@
 		    ;; (0 4 7) --> (0 4 7 24)
 		    (:time (5 2 1) :key e4 :oct 2)  
 
-		    ;; octave and inversion interact.
 		    ;; If :inv and :oct are used at the same time,
 		    ;; the inversion is applied first.
 		    ;; (0 4 7) --> (4 7 12) --> (4 7 12 16)

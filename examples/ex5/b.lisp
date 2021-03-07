@@ -28,11 +28,11 @@
 
 		    ;; A pattern of directions may be applied over the next 
 		    ;; several chords.   The pattern cycles once it ends.
-		    (:strum s :direction (down up random dice))
-		    (:time (3 1 1) :key d3 )   ;; forward
-		    (:time (3 2 1) :key d4 )   ;; reverse
-		    (:time (3 3 1) :key d5 )   ;; scramble order
-		    (:time (3 4 1) :key d6 )   ;; select up or down at random
+		    (:strum s :direction (down up))
+		    (:time (3 1 1) :key d3 )   ;; down
+		    (:time (3 2 1) :key d4 )   ;; up
+		    (:time (3 3 1) :key d5 )   ;; down
+		    (:time (3 4 1) :key d6 )   ;; up
 
 		    ;; The strum rate may be accelerated by :strum*
 		    ;; :strum* n     n == 1    --> no scale

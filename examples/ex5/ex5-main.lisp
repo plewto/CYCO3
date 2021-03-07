@@ -13,6 +13,7 @@
 (lpf preroll)
 (lpf a)   ;; Basic strummer usage
 (lpf b)   ;; Strumming chords
-(lpf c)   ;; alternate chord tables
+(lpf c)   ;; Alternate chord tables
+(lpf d)   ;; Miscellaneous features
 
 ;; (project->midi)

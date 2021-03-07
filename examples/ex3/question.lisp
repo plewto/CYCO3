@@ -26,7 +26,7 @@
 				     :key (key-list end-note)
 				     :dur (duration-list end-duration)))
 
-	   ;; Use volume events to sculpt the question motif.
+	   ;; Use volume events to sculpt the question dynamics.
 	   ;;
 	   (envelope (name start-time &key (decay-start '(2 4 2))(decay-stop '(3 1 1)))
 		     (let* ((shift (shift-offset start-time))

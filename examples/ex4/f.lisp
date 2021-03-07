@@ -5,7 +5,7 @@
 
 ;;;; The logistic generator may produces anything from highly repetitive
 ;;;; to pseudo-random patterns.  The mu value has the most influence over
-;;;; the generated sequence and should be in interval [3.0 4.0).
+;;;; the generated sequence and should be in the interval [3.0 4.0).
 ;;;; mu < ~3.45             --> 2 values
 ;;;; ~3.45 < mu <= ~3.54    --> 4 values
 ;;;; mu ~= 3.544            --> 8 values

@@ -35,9 +35,9 @@
 
 (qball a-snare gm-snare              ;; By setting :reset-on-repeat nil,
        :bars 2                       ;;   the key-number pattern is not
-       :cue '((1 2 1)(1 3 3)         ;;   reset when the pattern repeats.
-	      (2 1 1)(2 3 1)(2 4 3)) ;;   The second time through the part
-       :key '(x1 x1 x2)              ;;   the key-pattern will be shifted 
+       :cue '((1 2 1)(1 3 3)         ;;   reset when the snare pattern repeats.
+	      (2 1 1)(2 3 1)(2 4 3)) ;;   The second time through the 
+       :key '(x1 x1 x2)              ;;   key-pattern will be shifted 
        :reset-on-repeat nil          ;;   relative to the first iteration.
        :amp 'f)                      ;;   
                          

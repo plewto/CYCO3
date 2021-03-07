@@ -1,6 +1,6 @@
 ;;;; CYCO examples h
 ;;;;
-;;;; Example h uses an ALLOY generators to transpose basic motif.
+;;;; Example h uses an ALLOY generator to transpose a basic motif.
 ;;;; An alloy combines two generators (or numeric-only patterns)
 ;;;; with a binary function.  The default function is addition.
 ;;;;

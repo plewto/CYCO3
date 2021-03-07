@@ -5,9 +5,10 @@
 ;;;; *ROOT-INSTRUMENT* 
 ;;;;
 
-;;; Remove old instruments from the orchestra.  If this step were not
+
+;;; First remove old instruments from the orchestra.  If this step were not
 ;;; taken, every time this file was loaded it would clog the orchestra
-;;; tree with needless duplication's.
+;;; with needless duplication's.
 ;;;
 
 (prune-orchestra)
@@ -32,8 +33,8 @@
 (general-midi-instrument vibes :channel 3)
 
 
-;;; Creates an instrument for use as a metronome on channel 16 using the 
-;;; general-midi woodblock.  The new instrument is bound to the global
+;;; Creates an instrument for use as a metronome using the general-midi woodblock
+;;; on channel 16.  The new instrument is bound to the global
 ;;; *METRONOME* instrument.
 ;;;
 

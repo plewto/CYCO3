@@ -23,9 +23,9 @@
 ;;; documentation for cue and shuffle functions.  Also see 
 ;;; the BAR function cheat-sheet in the documentation.
 ;;;
-;;; :dur clause sets note duration.  See metrics and metric-expressions.
+;;; The :dur clause sets note duration.  See metrics and metric-expressions.
 ;;;
-;;; :amp clause sets velocity.  See dynamics.
+;;; The :amp clause sets velocity.  See dynamics.
 ;;;
 ;;; The :time, :amp and :dur values remain in effect until
 ;;; explicitly changed.
@@ -144,7 +144,7 @@
 ;;;    :MUTE   - Mute the part or group.
 ;;;    :UNMUTE - Unmute the part or group.
 ;;;    :SOLO   - Unmute the part or group while muting all other parts.
-;;;    nil     - Mute state remains the same.
+;;;    nil     - Mute state remains the unchanged.
 ;;;
 ;;; Generally groups are listed before individual parts.  This allows the
 ;;; the group state to be set and then exceptions made for the individual

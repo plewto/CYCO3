@@ -10,8 +10,8 @@
 
 (metronome b-metronome)
 
-;; Create the tone-row and bind it to constant +TONE-ROW+
-;; The tone-row is randomly generated the first time this file
+;; Create a random tone-row and bind it to constant +TONE-ROW+
+;; The tone-row is generated the first time this file
 ;; is loaded, thereafter the same tone-row is reused.
 ;;
 (constant +tone-row+ (let ((b (bag :of '(0 1 2 3 4 5 6 7 8 9 10 11))))

@@ -14,7 +14,7 @@ is ~/cyco-projects/.
 - A projects top-level directory must have the same name as the project, 
   and must also be lower-case.
 
-- At a minimum a projects directory must contain two items:
+- At a minimum a project's directory must contain two items:
 
 1. A main-file responsible for creating the project object and
    loading the remainder of the project.  The name for this file
@@ -23,7 +23,7 @@ is ~/cyco-projects/.
 2. A MIDI directory where all generated MIDI files are stored. 
 
 
-A bare bones project named 'Foo' has the following structure.
+A minimal project named 'Foo' has the following structure.
 
      ~/cyco-projects/
         |
@@ -45,7 +45,7 @@ for project files.
 As a convenience the **CREATE-PROJECT-FRAMEWORK** function may
 be used to build a basic project directory.  
 
-Simply pass it the projects name and the appropriate files are created in the
+Simply pass it the projects name and the appropriate empty files are created in the
 projects-root directory.
 
 
@@ -58,20 +58,21 @@ The default project-name is persistent between CYCO runs.  Entering (LP)
 after starting CYCO loads the most recently used project.  
 
 **NOTE: see BUG 0008, for unknown reasons the persistent
-filename is sometimes corrupted.**
+filename is sometimes corrupted.   If it becomds currupt, simply delete the 
+file ~/.config/cyco/current-project-name**
 
 
 #### Loading Project files
 
-Within a project the **LPF** function loads a file relative to the projects
+Within a project the **LPF** macro loads a file relative to the projects
 directory.
 
-The filename should be quoted and it is not necessary to include the
+The filename should not be quoted and it is not necessary to include the
 filename extension.  
 
 Like LP, LPF when called without an argument reloads the most recently
 loaded file.  This is a convenience for reloading a file currently under
-development without a minimum of typing.
+development with a minimum of typing.
 
 
 #### Inspection functions
@@ -79,8 +80,7 @@ development without a minimum of typing.
 CYCO defines several functions for inspecting various objects.  All of
 these functions begin with a question mark.
 
-The function **?** is the most general.  It may take any argument type and
-will always displays at least some information about it.  
+The function **?** is the most general.  (? something) 
 
 The **??** function prints a list of all these inspection functions.
 

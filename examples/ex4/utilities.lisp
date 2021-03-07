@@ -2,7 +2,7 @@
 ;;;;
 
 
-;;; Creates cue-list for every beat, and optional eighth notyes,
+;;; Creates cue-list for every beat, and optional eighth notes,
 ;;; for given number of bars, beats.
 ;;;
 (defun create-cue-list (&key (bars 4)(beats 4)(add-eighths t))

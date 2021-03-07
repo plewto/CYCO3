@@ -12,7 +12,7 @@
 
 (general-midi-instrument bass :channel 1)
 
-;; piano-4 (honky tonk) is layered with bass.
+;; piano-4 (honky tonk)
 ;;
 (general-midi-instrument piano :channel 2
 			 :program 'piano-4

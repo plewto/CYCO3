@@ -6,7 +6,7 @@
 ;;;;
 ;;;;   1) "preroll" - Program-changes with a metronome count-in.
 ;;;;   2) "A"  - The piece as scored.
-;;;;   3) "B"  - Clone of section A but inverted.
+;;;;   3) "B"  - Clone of section, replaces flute with clarinet.
 ;;;;
 ;;;; See score.png
 ;;;;
@@ -52,12 +52,11 @@
 
 ;;; Before creating the main MIDI file the section-order must be specified.
 ;;;
-;;; 
 
 (section-order '(preroll a b))
 
 ;;; Write the main MIDI file.
-;;; The file is placed in the MIDI folder and names ex1-main.mid
+;;; The file is placed in the MIDI folder and named "ex1-main.mid"
 ;;;
 
 (project->midi)

@@ -1,6 +1,6 @@
 ;;;; CYCO examples ex1 b.lisp
 ;;;;
-;;;; Defines part b as a variant of a.
+;;;; Defines part B as a variant of A.
 ;;;; 
 
 

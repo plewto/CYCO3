@@ -17,7 +17,7 @@
 ;; each template value.   :key 60 :chord (0 4 7) -->  (60 64 67)
 ;;
 
-;; Alternate chord tables are available, via plugin, which take a fretted
+;; Alternate chord tables are available via plugin which take a fretted
 ;; instrument approach.  These alter both how the root keynumber and the
 ;; chord template are interpreted.  The most extensive alternate system 
 ;; is provided by the GUITAR-CHORDS plugin.
@@ -25,8 +25,8 @@
 
 (plugin guitar-chords)
 
-;; Using (a? 'guitar) after loading the plugin, reveals a new bound symbol
-;; *GUITAR-CHORD-MODEL*.   Use (?chords *GUITAR-CHORD-MODEL*) to print
+;; Using (?a 'guitar) after loading the plugin, reveals a new bound symbol
+;; *GUITAR-CHORD-MODEL*.   Use (?chords *GUITAR-CHORD-MODEL*) to display
 ;; the chord types it provides.   One thing to notice right away is that
 ;; guitar-chords defines variations on each generic chord-type.  Further
 ;; these variations are specific to the root keynumber.  For example there
@@ -37,9 +37,9 @@
 
 ;; While using guitar chords, the keynumber is interpreted differently.
 ;; Specifically the pitch-class selects a family of chords of the same
-;; type, while the octave selects the variation.   In general lower octave
-;; numbers are positioned lower on the neck, but the difference between key c0
-;; and c1 is not strictly an octave.
+;; type and pitch-class, while the octave selects the specific variation.   
+;; In general, lower octave numbers are positioned lower on the neck, but 
+;; the difference between key c0 and c1 is not strictly an octave.
 ;;
 ;;     :key c0 :chord [maj]   --> (R C5 E4 G5 C6 E5)  ;; R indicates a
 ;;     :key c1 :chord [maj]   --> (R C5 G4 C6 E6 R)   ;; muted string.

@@ -34,7 +34,7 @@
        :key vibes-key-list
        :amp 'mf)
 
-;; Adds slight portamento.
+;; Add slight portamento.
 ;;
 (controllers b1-vibes-cc vibes
 	     :bars 8

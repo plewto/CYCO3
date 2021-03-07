@@ -2,14 +2,13 @@
 ;;;;
 ;;;; Section C adds "clank" sounds.   Hard to say what sounds were used on
 ;;;; the original, they almost sound like a shotgun being racked.   Here a
-;;;; combination of snare and hand-claps are used.  Dice patterns
-;;;; are used for random variations. 
+;;;; combination of snare and hand-claps are used.  Dice patterns provide
+;;;; random variations. 
 
 (param c (clone b2 :new-name "C"))
 (bulk-rename-parts c 2 "C")
 
-;; A Dice pattern selects random snare variations.   The variations are
-;; defined by the snare instrument's keynumber-map.
+;; A Dice pattern selects random snare variations.
 ;;
 (qball c-clanks-1 gm-snare
        :bars 1

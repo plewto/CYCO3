@@ -37,7 +37,7 @@
 		    (:time (3 2 3) :key e6  )
 		    (:time (3 2 4) :key f6  ) ;; fff
 
-		    ;; The dynamic level remains at final level of crescendo
+		    ;; The dynamic level remains at final level of the crescendo
 		    (:time (3 3 1) :key f6  ) ;; fff
 		    (:time (3 3 2) :key f6  ) ;; fff
 		    (:time (3 3 3) :key f6  ) ;; fff
@@ -78,9 +78,9 @@
 		    ;;      as a metric expression.
 		    ;;
 		    ;; :grace-delay time
-		    ;;      Sets the grace-note on time relative to the nominal note
+		    ;;      Sets the grace-note on-time relative to the nominal note
 		    ;;      time.   Time may either be in absolute seconds or a
-		    ;;      metric-expression.  Negative values mote the grace-note
+		    ;;      metric-expression.  Negative values move the grace-note
 		    ;;      before the nominal time, positive value place is after.
 		    ;;      
 		    ;; :grace key
@@ -102,7 +102,7 @@
 		    (:time (7 2 1) :key a5 :chord [min7] :amp mf :dur h.)
 
 		    ;; :program default  is a special case to switch to the instrument's
-		    ;; default instrument.
+		    ;; default program.
 		    ;;
 		    (:time (7 4 4) :program default)
 		    
@@ -112,13 +112,13 @@
 		    ;; 0 <= controller-number < 128
 		    ;; 0 <= value < 127 
 		    ;; Use CONTROLLERS part for more feature-rich controller and
-		    ;; after-touch events.
+		    ;; after-touch events.   cc 7 is volume.
 		    ;;
 		    (:time (8 1 1) :cc 7  64 :key a4 :chord [circle-4] :amp ffff :dur w+w)
 		    (:time (8 2 3) :cc 7 127)
 		    
 		    ;; :bend n   produces a single bend event.
-		    ;; -1.0 <= n <= +1.0,   0 --> no bend
+		    ;; -1.0 <= n <= +1.0,   0 --> no bend.
 		    ;; Use BENDER part for more extensive pitch-bend control.
 		    ;;
 		    (:time (9 1 1) :key a5 :chord [maj9] :amp ffff :dur w+w)

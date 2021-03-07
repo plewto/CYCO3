@@ -23,7 +23,7 @@
 
 ;; Woodwind quartet.
 ;;
-(param woodwind-transpose 0)
+(param woodwind-transpose 12)
 
 (general-midi-instrument flute-1 :channel 1 :program 'flute
 			 :keynumber-map (basic-keynumber-map :transpose woodwind-transpose)

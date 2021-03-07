@@ -15,7 +15,7 @@
 ;; :section      - Parent section, defaults to the current-section of
 ;;                 *PROJECT*.              
 ;; :cuefn        - Event cue function, defaults to section's value.            
-;; :shuffle      - Event cue shuffle function, defaults to section's value.              
+;; :shuffle      - Event shuffle function, defaults to section's value.              
 ;; :shift        - Time shift either in absolute seconds or using relative
 ;;                 metric value. Defaults to 0.
 ;; :tempo        - Tempo in BPS, defaults to section's value.          
@@ -39,6 +39,7 @@
 ;; Strummer events are specified as a nested list of "event clauses".  Each
 ;; clause starts with a keyword followed by a prescribed number of values.
 
+
 ;; Part A1 plays a c-major arpeggio on bar 1.
 ;;
 (strummer a1 piano
@@ -61,7 +62,7 @@
 		    (:time (2 4 1) :key c5)))
 
 ;; Bar 3
-;; Chords may be named.
+;; Chord names may be used.
 ;; The [solo] chord returns to individual notes.
 ;; Use the ?CHORDS function to see a list of named chords.
 ;; 
@@ -83,18 +84,19 @@
 		    ;; original chord  (0 4 7)
 		    (:time (4 1 1) :key d4 )
 
-		    ;; first inversion (4 7 12)
+		    ;; first inversion (0 4 7) --> (4 7 12)
 		    (:time (4 1 3) :key d4 :inv 1)
 
-		    ;; 2nd inversion (7 12 16)
+		    ;; 2nd inversion (0 4 7) --> (7 12 16)
 		    (:time (4 2 1) :key d4 :inv 2)
 
-		    ;; Original 3-note chord is transposed
-		    ;; Up an octave (12 16 19)
+		    ;; For a 3rd inversion on a 3-note chord,
+		    ;; the result is the original transposed 
+		    ;; up an octave (0 4 7) --> (12 16 19)
 		    (:time (4 2 3) :key d4 :inv 3)  
 
 		    ;; negative inversions are allowed.
-		    ;; The original chord becomes (-5 0 4)
+		    ;; The original chord becomes (0 4 7) --> (-5 0 4)
 		    (:time (4 3 1) :key d4 :inv -1))) 
 
 

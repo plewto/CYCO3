@@ -20,7 +20,6 @@
 (lpf f)   ;; logistic generator
 (lpf g)   ;; slowglass & palindrome for generated harmony
 (lpf h)   ;; transpose using alloy generator
-(lpf i)   ;; strummer and chord-tables
 
 
 (section-order '(preroll a b c d e f g))

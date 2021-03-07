@@ -16,7 +16,7 @@
 	     :bars 8
 	     :events '(
 		       ;; :chord (12 19) drops the low note from the 
-		       ;; original synth part.
+		       ;; original part.
 		       (:chord (12 19) :amp f :amp* 0.9)
 		       (:time (1 1 1) :key f5  :dur h.   )
 		       (:time (1 4 1) :key f5  :dur q    )

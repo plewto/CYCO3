@@ -19,7 +19,7 @@
 ;; Load additional files.
 ;;
 (lpf orchestra)
-(lpf preroll)  ;; initialization & count-in metronome.
+(lpf preroll)  ;; initialization & count-in
 (lpf a)        ;; basic motif
 (lpf b1)       ;; vibes
 (lpf b2)       ;; inverted vibes

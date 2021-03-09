@@ -1,6 +1,6 @@
 ;;;; CYCO examples ex4-main
 ;;;;
-;;;; Example project ex4 illustrates the various patterns and generators
+;;;; Example project ex4 illustrates various patterns and generators
 ;;;; and is not intended as a cohesive piece.  Each section stands alone
 ;;;; and demonstrates one or two concepts.
 

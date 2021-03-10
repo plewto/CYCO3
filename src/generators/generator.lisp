@@ -49,7 +49,11 @@ Each Generator instance has associated monitor and action functions.
 When the next-1 method is called, the monitor function looks at the 
 new value and returns either nil or t.  If the result is t, the 
 action function is executed."))
-  
+
+(defgeneric generator-p (item))
+(defmethod generator-p (item t) nil)
+(defmethod generator-p (item generator) t)
+
 (defmethod value ((gen generator))
   (funcall (slot-value gen 'value-hook)
 	   (slot-value gen 'internal-value)))

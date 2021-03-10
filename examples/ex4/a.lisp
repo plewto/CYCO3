@@ -1,6 +1,22 @@
 ;;;; CYCO examples ex4 A
 ;;;;
 ;;;; Section A uses QBALLs to create a basic drum pattern.
+;;;; Qballs are heavily reliant on implicit CYCLE patterns.
+;;;;
+;;;; The CYCLE pattern returns it's element in sequence.  Once the final
+;;;; value has been reached, the cycle repeats.
+;;;;
+;;;; The :KEY, :DUR and :AMP arguments to QBALL may take any of the
+;;;; following types:
+;;;;
+;;;;   1) A single appropriate value (keynumber, metric-expression or
+;;;;      dynamic respectively).
+;;;;   2) A list of values.
+;;;;   3) A pattern of values.
+;;;;
+;;;; If any of these values are a single atom or a list, it is converted
+;;;; to a CYCLE pattern.   If the value is some type of PATTERN, then that
+;;;; pattern is used directly.
 
 (setf *enable-keynumber-warnings* nil)
 

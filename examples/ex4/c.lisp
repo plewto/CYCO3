@@ -1,91 +1,53 @@
-;;;; CYCO examples ex4  c
-;;;; Shift register
+;;;; CYCO examples ex4 C
+;;;;
+;;;; Use BAG pattern to create a tone-row.
+;;;;
+;;;; The BAG pattern returns it's elements at random without replacement.
+;;;; Once all elements have been returned, it returns a final value
+;;;; indefinitly.  By default thet final value is NIL but it may be any
+;;;; pattern or generator.
 ;;;;
 
-(section c :bars 8 :tempo 120)
 
+(section c :bars 6 :tempo 120)
 
-;; The shift-register generator is capable of producing a wide array of
-;; numeric patterns.  At the extreme, these approach pseudo-random.
-;;
-;;   (shift-register seed taps &key mask hook monitor action prerun)
-;;
-;; When constructing a shift register it is convenient to use binary notation
-;; for the seed, taps and mask values, binary notation directly represents the
-;; register's state.
-;;
-;; seed  - initial register value, must be an integer 0 < seed <= 65535.
-;;         If seed=0 the register will freeze.
-;;
-;; taps  - selects feedback stages.   
-;;         A 1 indicates feedback is selected.
-;;
-;; :mask - Set register length. Typically a register of length n
-;;         will have all bits set in an n-length binary word.
-;;         Stages may be eliminated from the output by clearing
-;;         the corresponding mask bit.  The register has a maximum
-;;         length of 16-bits.
-;;
-;; The taps parameter has the most influence over the generated pattern.
-;; Try different combinations.   Usually the left-most taps bit is 1.
-;;
+(metronome c-metronome)
 
-
-
-;; In this example a shift-register generates a sequence of key-numbers.
-;; However, shift-registers will often generate values far exceeding 127,
-;; the maximum key-number.  The purpose of the hook function is to convert
-;; the internal register value to a range useful for key-numbers.
+;; Create a random tone-row and bind it to constant +TONE-ROW+ The tone-row
+;; is generated the first time this file is loaded, thereafter the same
+;; tone-row is reused.
 ;;
-(param sr (shift-register #b000001 #b101110 :mask #b111111
-			   :hook #'(lambda (n)
-				     (+ 36 (rem (1- n) 24)))))
+(constant +tone-row+ (let ((b (bag :of '(0 1 2 3 4 5 6 7 8 9 10 11))))
+		       (transpose (next b 12) 60)))
 
-;; The generic function PATTERN-LENGTH attempts to determine the length of a
-;; generated pattern before it repeats.
+;; Use invert to create a key-inversion of the tone-row.
 ;;
-;;    (PATTERN-LENGTH object) --> Integer
-;;
-;; Usually object will be either a pattern or generator.  Depending on the
-;; type object, pattern-length can be highly inefficient.  This is
-;; particularly true for random generators (dice, bag, bones, logistic).
-;; For this reason pattern-length takes an optional :max keyword.
-;;
+(constant +inverted-tone-row+ (invert +tone-row+ 72))
 
-(let* ((cue-list (create-cue-list))
-       (sr-period (pattern-length sr))
-       (key-list (next sr sr-period)))
+(format t "tone-row  ~A~%" (keyname +tone-row+))
+(format t "inverted  ~A~%" (transpose (keyname +inverted-tone-row+) 12))
+	
 
-  (dump-key-list "Shift-register key pattern" key-list cue-list)
-  
-  (qball c-sr-demo piano
-	 :bars 4
+(let* ((cue-list (create-cue-list :bars 3)))
+ 
+  ;; Repeat root tone-row for duration of the section.
+  (qball c-tone-row piano
+	 :bars 3
 	 :cue cue-list
-	 :key key-list
-	 :dur 'q))
+	 :dur 'q
+	 :key +tone-row+
+	 :amp 'f)
 
-;; Add percussion
-;;
-(qball c-kick gm-kick
-       :bars 2
-       :cue '((1 1 1)(1 1 3)
-	      (2 1 1))
-       :key 'x1
-       :amp 'fff)
-
-(qball c-snare gm-snare
-       :bars 2
-       :cue '((2 1 3)(2 4 3))
-       :key 'x1
-       :amp '(fff mp))
-
-(qball c-crash gm-cymbal
-       :bars 4
-       :cue '((4 4 3))
-       :key 'crash1
-       :amp 'ff)
-
-
-(metronome c-met)
+  ;; The qball for the inverted motif has the same cue-list as
+  ;; above but is delayed by 3 whole notes plus a sixteenth note.
+  ;;
+  (qball c-inverted-tone-row piano
+	 :shift 'w+w+w+s
+	 :bars 3
+	 :render-once t
+	 :cue cue-list
+	 :dur 'q
+	 :key +inverted-tone-row+
+	 :amp 'mp))
 
 (->midi c)

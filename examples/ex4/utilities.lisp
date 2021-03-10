@@ -5,12 +5,14 @@
 ;;; Creates cue-list for every beat, and optional eighth notes,
 ;;; for given number of bars, beats.
 ;;;
-(defun create-cue-list (&key (bars 4)(beats 4)(add-eighths t))
+(defun create-cue-list (&key (bars 4)(beats 4)(add-eighths t)(add-sixteenths nil))
   (let ((acc '()))
     (dolist (br (range 1 (1+ bars)))
       (dolist (bt (range 1 (1+ beats)))
 	(push (list br bt 1) acc)
-	(if add-eighths (push (list br bt 3) acc))))
+	(if add-sixteenths (push (list br bt 2) acc))
+	(if add-eighths (push (list br bt 3) acc))
+	(if add-sixteenths (push (list br bt 4) acc))))
     (reverse acc)))
 
 

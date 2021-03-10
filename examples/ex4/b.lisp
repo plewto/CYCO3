@@ -1,50 +1,33 @@
-;;;; CYCO examples ex4 B
+;;;; CYCO ex4 b  Line pattern
 ;;;;
-;;;; Use bag pattern to create a tone-row.
 
-
-;; Section B bars and tempo values override the project's
-;; defaults.
+;; The LINE pattern returns element in sequence until the final element
+;; is reached.  Thereafter it continues to return the final element.
 ;;
-(section b :bars 6 :tempo 120)
-
-(metronome b-metronome)
-
-;; Create a random tone-row and bind it to constant +TONE-ROW+
-;; The tone-row is generated the first time this file
-;; is loaded, thereafter the same tone-row is reused.
+;; (line :of '(1 2 3))
+;; (next line 6) --> 1 2 3 3 3 3
 ;;
-(constant +tone-row+ (let ((b (bag :of '(0 1 2 3 4 5 6 7 8 9 10 11))))
-		       (transpose (next b 12) 60)))
-
-;; Use invert to create a key-inversion of the tone-row.
 ;;
-(constant +inverted-tone-row+ (invert +tone-row+ 72))
+;; The following example uses a line to produce a crescendo over the first
+;; 31 notes.  The remaining 97 notes have the same amplitude. 
+;;
 
-(format t "tone-row  ~A~%" (keyname +tone-row+))
-(format t "inverted  ~A~%" (transpose (keyname +inverted-tone-row+) 12))
-	
+(section b :bars 4 :tempo 112)
 
-(let* ((cue-list (create-cue-list :bars 3)))
- 
-  ;; Repeat base tone-row for duration of the section.
-  (qball b-tone-row piano
-	 :bars 3
-	 :cue cue-list
-	 :dur 'q
-	 :key +tone-row+
-	 :amp 'mf)
+(qball b-piano piano
+       :cue (create-cue-list :bars 4 :add-eighths t :add-sixteenths t)
 
-  ;; The qball for the inverted motif has the same cue-list as
-  ;; above but is delayed by 3 whole notes plus a sixteenth note.
-  ;;
-  (qball b-inverted-tone-row piano
-	 :shift 'w+w+w+s
-	 :bars 3
-	 :render-once t
-	 :cue cue-list
-	 :dur 'q
-	 :key +inverted-tone-row+
-	 :amp 'mp))
+       ;; PALINDROME takes a sequence and produces a palindrome from its
+       ;; elements.   The return value is a sequence of the same type.  The
+       ;; optional :elide keyword dictates how the pattern is repeated.
+       ;;
+       :key (palindrome '(c5 ef5 bf5 g5 d6 bf5 ef6 d6) :elide :start)
 
+       ;; The RANGE function returns an arithmetic sequence between two
+       ;; values.  The :by keyword sets the common difference.
+       ;;
+       :amp (line :of (range 0.1 1.0 :by 0.03))
+       :dur 'q)
+
+(print (length (render-once b-piano)))
 (->midi b)

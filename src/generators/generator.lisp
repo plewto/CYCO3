@@ -51,8 +51,8 @@ new value and returns either nil or t.  If the result is t, the
 action function is executed."))
 
 (defgeneric generator-p (item))
-(defmethod generator-p (item t) nil)
-(defmethod generator-p (item generator) t)
+(defmethod generator-p ((item t)) nil)
+(defmethod generator-p ((item generator)) t)
 
 (defmethod value ((gen generator))
   (funcall (slot-value gen 'value-hook)

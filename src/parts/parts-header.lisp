@@ -64,7 +64,6 @@
                 :triangle
                 :keynumber
                 :keynumber-map
-		:lfo
                 :limit
                 :line
                 :metric-expression
@@ -162,7 +161,6 @@
 (src-load "controllers-render")
 (src-load "transformer-docs")
 (src-load "transformer")
-
 
 (export '(*strummer-render-trace*
 	  bender

@@ -6,7 +6,7 @@
       <meta name="robots" content="index,follow,archive">
       <meta name="keywords" content="NIL">
       <link rel="stylesheet" type="text/css" href="style.css"/>
-      <title>Envelopes & LFOs</title>
+      <title>Envelopes</title>
       <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
       <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
@@ -17,11 +17,10 @@
   <a href=index.html class="link">Home</a> &nbsp;<a href=counter.html class="navigation">Previous: counter </a> &nbsp;<a href=shift-register.html class="navigation">Next: shift-register </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <img class="center" src="images/envelope.png" alt="envelope"/>
-  <h1 class="banner">Envelopes & LFOs</h1>
+  <h1 class="banner">Envelopes</h1>
   <ul class='quick-jump'>
     <li>Quick Jump:</li>
       <li><a href='#asr-envelope'>asr-envelope</a></li>
-      <li><a href='#lfo'>lfo</a></li>
       <li><a href='#curves'>sawtooth, triangle & pulse curves</a></li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
@@ -63,28 +62,6 @@
     
     (param foo2 (asr-envelope 0 10 :attack 2 :decay 3 :sustain 2 :loop nil))
     (next foo2 30) &rarr; (0 2 4 6 8 10 10 7 4 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-  </pre>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="lfo"></a>
-  <img class="center" src="images/lfo.png" alt="lfo"/>
-  
-  <!-- (LFO &key curve hook monitor action) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(LFO &key curve hook monitor action)</b><br>
-  <p class="summery">Returns generator which produces arbitrary cyclical sequences.</p>
-  <pre class="description">
-    
-    :curve   - Numeric list, defaults to triangle wave.
-    :hook    - Function applied to output value, default (lambda (n) n)
-    :monitor - Predicate function called within NEXT-1 on current value.
-               When monitor returns non-nil the action function is executed.
-               Default (lambda (value) nil)
-    :action  - Function called within NEXT-1 whenever monitor is non-nil.
-               Default (lambda (lfo value) value).  The return becomes the 
-               the next LFO value.
-    
-    The following functions may be used with the LFO curve argument.
   </pre>
   <a id="curves"></a>
   

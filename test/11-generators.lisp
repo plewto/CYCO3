@@ -96,15 +96,8 @@
 	      (equal (cdr expect) actual-3))))
 
 	
-;; LFO
+;; Waveshapes
 ;;
-
-(let* ((curve '(0 1 2))
-       (gen (lfo :curve curve :hook #'(lambda (n)(* n n))))
-       (expect '(0 1 4 0 1 4 0 1 4))
-       (actual (next gen (length expect))))
-  (pass? "LFO test 11.15"
-	 (equal expect actual)))
 
 (flet ((diff (data)
 	     (loop for i from 0 to (- (length data) 2)
@@ -272,29 +265,4 @@
 				      v))))
       (next hs 30)
       (pass? "hailstone action function 11.31"
-	     (= action-counter 5)))
-
-
-    ;; Suspicious test structure.
-    ;; While this test currently passes, it makes an un-supported assumption 
-    ;; about the shape of the triangle wave.  The triangle function is only
-    ;; guaranteed to return an approximately triangular shape.  The test assumes
-    ;; that two 5 values will appear in the wave.  While this is probably true
-    ;; it may not be.
-    ;;
-    ;; (let* ((gen (lfo :curve (triangle 0 9 :steps 20)
-    ;; 		     :monitor #'(lambda (v)(= v 5))
-    ;; 		     :action #'(lambda (gen v)
-    ;; 				 (increment)
-    ;; 				 v))))
-    ;;   (print (next gen 20))
-    ;;   (pass? "lfo action function 11.31"
-    ;; 	     (= action-counter 7)))
-    
-    ))
-	   
-    
-      
-			      
-    
-      
+	     (= action-counter 5))) ))

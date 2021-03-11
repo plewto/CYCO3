@@ -44,7 +44,7 @@
 (lpf e)   ;; coin and wrapper patterns
 (lpf f)   ;; Nessted patterns
 (lpf g)   ;; Counter, ramp and asr-envelope generators
-(lpf h)   ;; LFO generators
+;; (lpf h)   ;; LFO generators  **DEPRECIATED**
 (lpf i)   ;; Shift-register
 (lpf j)   ;; recaman generator
 (lpf k)   ;; hailstone generator

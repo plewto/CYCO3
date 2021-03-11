@@ -46,7 +46,7 @@
     Examples:
     	     
     (param a (counter 0 100 :by 10))
-    (param b (lfo :curve '(0 1 2)))
+    (param b (cycle :of '(0 1 2)))
     (param c (alloy a b))
     (next c 10) &rarr; (0 11 22 30 41 52 60 71 82 90) 
   </pre>

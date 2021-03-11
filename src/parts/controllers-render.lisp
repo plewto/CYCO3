@@ -13,7 +13,6 @@
 	      (push (+ shift time) acc)
 	      (setf time (+ time interval)))
 	    (reverse acc)))
-
 	 
 	 (generate-single-controller-event
 	  (state time-shift channel-index-list)
@@ -48,19 +47,19 @@
 		   (value2 (controllers-state-end-value state))
 		   (controller (controllers-state-controller state))
 		   (generator (cond
-			       ((eq curve :saw)
-				(lfo :curve (sawtooth value1 value2 :steps steps
-						      :cycles cycles :phase phase)))
-			       ((eq curve :tri)
-				(lfo :curve (triangle value1 value2 :steps steps
-						      :cycles cycles :phase phase)))
-
-			       ((eq curve :pulse)
-				(lfo :curve (pulse value1 value2 :steps steps
-						   :cycles cycles :phase phase
-						   :width width)))
-			       (t (let ((delta (/ (float (- value2 value1)) (1- steps))))
-				    (ramp value1 value2 :by delta)))))
+		   	       ((eq curve :saw)
+		   		(cycle :of (sawtooth value1 value2 :steps steps
+						     :cycles cycles :phase phase)))
+		   	       ((eq curve :tri)
+		   		(cycle :of (triangle value1 value2 :steps steps
+		   				      :cycles cycles :phase phase)))
+		   
+		   	       ((eq curve :pulse)
+		   		(cycle :of (pulse value1 value2 :steps steps
+		   				   :cycles cycles :phase phase
+		   				   :width width)))
+		   	       (t (let ((delta (/ (float (- value2 value1)) (1- steps))))
+		   		    (ramp value1 value2 :by delta)))))
 		   (value-list (mapcar #'round (next generator steps))))
 	      (let ((message-function (if (numberp controller)
 					  #'(lambda (ci value)(midi-control-change ci controller value))
@@ -106,19 +105,18 @@
 		     (value1 (norm->14bit norm-value1))
 		     (value2 (norm->14bit norm-value2))
 		     (generator (cond
-				 ((eq curve :saw)
-				  (lfo :curve (sawtooth value1 value2 :steps steps
-							:cycles cycles :phase phase)))
-				 ((eq curve :tri)
-				  (lfo :curve (triangle value1 value2 :steps steps
-							:cycles cycles :phase phase)))
-				 
-				 ((eq curve :pulse)
-				  (lfo :curve (pulse value1 value2 :steps steps
-						     :cycles cycles :phase phase
-						     :width width)))
-				 (t (let ((delta (/ (float (- value2 value1))(1- steps))))
-				      (ramp value1 value2 :by delta)))))
+		     		 ((eq curve :saw)
+		     		  (cycle :of (sawtooth value1 value2 :steps steps
+		     					:cycles cycles :phase phase)))
+		     		 ((eq curve :tri)
+		     		  (cycle :of (triangle value1 value2 :steps steps
+		     					:cycles cycles :phase phase)))
+		     		 ((eq curve :pulse)
+		     		  (cycle :of (pulse value1 value2 :steps steps
+		     				     :cycles cycles :phase phase
+		     				     :width width)))
+		     		 (t (let ((delta (/ (float (- value2 value1))(1- steps))))
+		     		      (ramp value1 value2 :by delta)))))
 		     (value-list (mapcar #'round (next generator steps)))
 		     (lsb-list (mapcar #'(lambda (v)(logand v #x7f)) value-list))
 		     (msb-list (mapcar #'(lambda (v)(logand (ash v -7) #x7f)) value-list)))

@@ -125,7 +125,6 @@
 	  keynumber
 	  keynumber-map
 	  keynumber-p
-	  lfo
 	  limit
 	  line
 	  line-p

@@ -110,7 +110,7 @@
 		   "src/generators/counter"
 		   "src/generators/ramp"
 		   "src/generators/envelope"
-		   "src/generators/lfo"
+		   "src/generators/waveshapes"
 		   "src/generators/shift-register"
 		   "src/generators/hailstone"
 		   "src/generators/recaman"

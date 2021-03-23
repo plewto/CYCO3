@@ -78,7 +78,14 @@ remarks - optional explanation."
 			   (push key acc))))
 		 channel-map)
 	acc))
-     
+
+    (defun ?meta-channels ()
+      "Display assigned Meta channels."
+      (dolist (c (range 1 17))
+	(dolist (n (meta-channel-names c))
+	  (if (not (eq c n))
+	      (format t "[MIDI channel ~2d] ~A~%" c n)))))
+    
     (defun meta-channel-assignment-p (object)
       "Predicate, true if object is either a numeric MIDI channel 
 or a defined symbolic meta channel."

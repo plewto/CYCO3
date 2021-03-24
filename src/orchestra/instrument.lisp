@@ -95,7 +95,7 @@ other instruments."))
 	  (instrument channel)
 	  (setf (instrument-channel-index instrument)
 		(if (meta-channel-assignment-p channel)
-		    (1- (meta-channel channel))
+		    (1- (meta-channel channel :resolve t :default 1))
 		  (progn
 		    (cyco-value-error
 		     'instrument.set-channel
@@ -114,7 +114,7 @@ other instruments."))
     value))
 
 (defmethod channel ((instrument instrument) &optional resolve)
-  (meta-channel (property instrument :channel) resolve))
+  (meta-channel (property instrument :channel) :resolve resolve))
 
 (defmethod channel-index ((instrument instrument))
   (or (instrument-channel-index instrument)

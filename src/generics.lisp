@@ -422,7 +422,7 @@ A local property is a property defined directly by an object.
 Properties defined by an object's parent are not considered local."))
 
 
-(defgeneric meta-channel (channel-name  &optional resolve)
+(defgeneric meta-channel (channel-name  &key resolve default)
   (:documentation
    "Returns value of named MIDI channel.  A symbolic meta-channel may
 map to another symbolic channel.  If optional resolve argument is true

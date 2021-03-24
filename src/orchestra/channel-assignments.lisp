@@ -38,34 +38,46 @@ remarks - optional explanation."
       (setf (gethash name channel-map) mchan)
       mchan))
   
-  (defmethod meta-channel ((channel integer) &optional resolve)
-    "In range integer channel numbers map to themselves."
-    (declare (ignore resolve))
+  ;; (defmethod meta-channel ((channel integer) &optional resolve)
+  ;;   "In range integer channel numbers map to themselves."
+  ;;   (declare (ignore resolve))
+  ;;   (if (and (plusp channel)(<= channel 16))
+  ;; 	channel
+  ;;     (cyco-value-error 'meta-channel channel)))
+
+  (defmethod meta-channel ((channel integer) &key resolve default)
+    (declare (ignore resolve default))
     (if (and (plusp channel)(<= channel 16))
 	channel
       (cyco-value-error 'meta-channel channel)))
-
-  (defmethod meta-channel ((channel null) &optional resolve)
-    (if resolve 0 nil))
+  
+  (defmethod meta-channel ((channel null) &key resolve default)
+    (declare (ignore resolve default))
+    1)
 
  
-  (labels ((resolve-channel (target-name name depth)
+  (labels ((resolve-channel (target-name name default depth)
 			    (if (zerop depth)
-				(cyco-error 'set-meta-channel name "Circular MIDI channel assignment")
+				(progn
+				 (cyco-warning (sformat "Unknown MIDI channel ~A, using default ~A." name default))
+				 default)
 			      (let* ((p (gethash name channel-map))
 				     (chan (and p (meta-channel-value p))))
 				(if (and (integerp chan)(plusp chan)(<= chan 16))
 				    chan
-				  (resolve-channel target-name chan (1- depth))))))
-	   (resolve-channel-once (name)
+				  (resolve-channel target-name chan default (1- depth))))))
+	   
+	   (resolve-channel-once (name default)
 				 (let ((p (gethash name channel-map)))
 				   (or (and p (meta-channel-value p))
-				       (cyco-value-error 'meta-channel name)))) )
+				       (progn
+					 (cyco-warning (sformat "Unknown MIDI chanhnel ~A, using default ~A." name default))
+					 default)))))
 	   
-    (defmethod meta-channel ((name symbol) &optional (resolve t))
+    (defmethod meta-channel ((name symbol) &key (resolve t)(default 1))
       (if resolve
-	  (resolve-channel name name 10)
-	(resolve-channel-once name)))
+	  (resolve-channel name name default 10)
+	(resolve-channel-once name default)))
 
    
     (defun meta-channel-names (channel)
@@ -73,7 +85,7 @@ remarks - optional explanation."
       (let ((acc (list channel)))
 	(maphash #'(lambda (key mchan)
 		     (declare (ignore mchan))
-		     (let ((chan (meta-channel key :resolve)))
+		     (let ((chan (meta-channel key :resolve t)))
 		       (if (= chan channel)
 			   (push key acc))))
 		 channel-map)

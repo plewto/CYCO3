@@ -190,7 +190,6 @@
 	  strummer
 	  strummer-p
 	  transformer
-	  make-striper
 	  transformer-p)
 	:cyco-part)
 
@@ -220,7 +219,6 @@
           cyco-part:strummer
           cyco-part:strummer-p
 	  cyco-part:transformer
-	  cyco-part:make-striper
 	  cyco-part:transformer-p)
 	:cyco)
 

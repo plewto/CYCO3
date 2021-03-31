@@ -146,7 +146,7 @@
   ((meta-type
     :initform +TEMPO-CHANGE+)
    (priority
-    :initform 2)
+    :initform 1)
    (tempo
     :type float
     ;;:reader tempo

@@ -98,7 +98,7 @@
 
 (let ((instance (make-instance 'midi-system-common-message
 				    :command +RESET+
-				    :priority 0)))
+				    :priority 1)))
 
   (constant-function midi-reset instance)
 
@@ -111,7 +111,7 @@
 
 (let ((instance (make-instance 'midi-system-common-message
 				    :command +START+
-				    :priority 0)))
+				    :priority 3)))
 
   (constant-function midi-start instance)
 
@@ -124,7 +124,7 @@
 
 (let ((instance (make-instance 'midi-system-common-message
 				    :command +STOP+
-				    :priority 0)))
+				    :priority 4)))
 
   (constant-function midi-stop instance)
 
@@ -137,7 +137,7 @@
 
 (let ((instance (make-instance 'midi-system-common-message
 				    :command +CONTINUE+
-				    :priority 0)))
+				    :priority 3)))
 
   (constant-function midi-continue instance)
 
@@ -150,7 +150,7 @@
 
 (let ((instance (make-instance 'midi-system-common-message
 				    :command +CLOCK+
-				    :priority 0)))
+				    :priority 2)))
 
   (constant-function midi-clock instance)
 

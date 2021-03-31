@@ -83,14 +83,76 @@
 ;;; ---------------------------------------------------------------------- 
 ;;;			 MIDI-END-SYSTEM-EXCLUSIVE (Singleton)
 
-(let ((eox (make-instance 'midi-system-common-message
+(let ((instance (make-instance 'midi-system-common-message
 			  :command +END-EXCLUSIVE+
 			  :priority 06)))
 
-  (constant-function midi-end-system-exclusive eox)
+  (constant-function midi-end-system-exclusive instance)
   
   (defmethod midi-end-system-exclusive-p ((message midi-system-common-message))
     (= (command message) +END-EXCLUSIVE+)))
 
-  
 
+;;; ----------------------------------------------------------------------
+;;;                      MIDI-RESET (Singleton)
+
+(let ((instance (make-instance 'midi-system-common-message
+				    :command +RESET+
+				    :priority 0)))
+
+  (constant-function midi-reset instance)
+
+  (defmethod midi-reset-p ((message midi-system-common-message))
+    (= (command message) +RESET+)))
+
+
+;;; ---------------------------------------------------------------------
+;;;                 MIDI-START (Singleton)
+
+(let ((instance (make-instance 'midi-system-common-message
+				    :command +START+
+				    :priority 0)))
+
+  (constant-function midi-start instance)
+
+  (defmethod midi-start-p ((message midi-system-common-message))
+    (= (command message) +START+)))
+
+
+;;; ---------------------------------------------------------------------
+;;;                 MIDI-STOP (Singleton)
+
+(let ((instance (make-instance 'midi-system-common-message
+				    :command +STOP+
+				    :priority 0)))
+
+  (constant-function midi-stop instance)
+
+  (defmethod midi-stop-p ((message midi-system-common-message))
+    (= (command message) +STOP+)))
+
+
+;;; ---------------------------------------------------------------------
+;;;                 MIDI-CONTINUE (Singleton)
+
+(let ((instance (make-instance 'midi-system-common-message
+				    :command +CONTINUE+
+				    :priority 0)))
+
+  (constant-function midi-continue instance)
+
+  (defmethod midi-continue-p ((message midi-system-common-message))
+    (= (command message) +CONTINUE+)))
+
+
+;;; ---------------------------------------------------------------------
+;;;                 MIDI-CLOCK (Singleton)
+
+(let ((instance (make-instance 'midi-system-common-message
+				    :command +CLOCK+
+				    :priority 0)))
+
+  (constant-function midi-clock instance)
+
+  (defmethod midi-clock-p ((message midi-system-common-message))
+    (= (command message) +CLOCK+)))

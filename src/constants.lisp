@@ -36,6 +36,7 @@
 (constant +SONG-POSITION-POINTER+ #xF2)
 (constant +SONG-SELECT+ #xF3)
 (constant +START+ #xFA)
+(constant +STOP+ #x7C)
 (constant +SYSTEM-EXCLUSIVE+ #xF0)
 (constant +TUNE-REQUEST+ #xF6)
 
@@ -77,6 +78,7 @@
 	    (setf (gethash +SONG-POSITION-POINTER+ table) "SPP   ")
 	    (setf (gethash +SONG-SELECT+ table) "SS    ")
 	    (setf (gethash +START+ table) "START ")
+	    (setf (gethash +STOP+ table)  "STOP  ")
 	    (setf (gethash +SYSTEM-EXCLUSIVE+ table) "SYSEX ")
 	    (setf (gethash +TUNE-REQUEST+ table) "TUNE  ")
 	    (setf (gethash +META+ table) "META  ")

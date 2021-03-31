@@ -150,6 +150,7 @@
 	  midi-channel-message-p
 	  midi-channel-pressure
 	  midi-channel-pressure-p
+	  midi-clock
 	  midi-control-change
 	  midi-control-chnage-p
 	  midi-data->bend

@@ -17,6 +17,7 @@
 ;;;;            +-- RAW-PART
 ;;;;            +-- SIMPLE-PART
 ;;;;            +-- STRUMMER
+;;;;            +-- STRIPPER
 ;;;;          
 
 (in-package :cyco-part)

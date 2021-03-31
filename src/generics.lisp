@@ -610,6 +610,8 @@ The :elide argument determine how end-values are treated.
 (def-type-predicate part-p
    "Predicate, true if object is an instance of any type of Part.")
 
+(def-type-predicate stripper-p
+  "Predicate, true if object is an instance of STRIPPER class.")
 
 (defgeneric path-to-root (node)
   (:documentation

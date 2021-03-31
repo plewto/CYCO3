@@ -24,6 +24,14 @@
     (reset instance)
     instance))
 
+(defmethod clone ((mother striper) &key new-name new-parent &allow-other-keys)
+  (let* ((name (if new-name
+		   (sformat new-name (name mother))
+		 (name mother)))
+	 (parent (or new-parent (parent mother)))
+	 (division (property mother :division)))
+    (striper :name name :section parent :division division)))
+
 (defmethod render-once ((striper striper) &key (offset 0.0))
   (if (muted-p striper)
       (return-from render-once '()))

@@ -10,6 +10,18 @@
 
 (defmethod midi-system-common-message-p ((message midi-system-common-message)) t)
 
+(defmethod data-count ((message midi-system-common-message)) 0)
+
+(defmethod data ((message midi-system-common-message)(index t))
+  (declare (ignore index))
+  nil)
+
+(defmethod render-midi-message ((message midi-system-common-message))
+  (list (command message)))
+
+(defmethod ->string ((message midi-system-common-message))
+  (->string (gethash (command message) +MNEMONICS+)))
+
 ;;; ---------------------------------------------------------------------- 
 ;;;                       MIDI-SYSTEM-EXCLUSIVE
 
@@ -68,29 +80,17 @@
       (push (aref data i) bytes))
     (reverse bytes)))
 
-
 ;;; ---------------------------------------------------------------------- 
 ;;;			 MIDI-END-SYSTEM-EXCLUSIVE (Singleton)
 
-(defclass midi-end-system-exclusive (midi-system-common-message)
-  ((command
-    :initform +END-EXCLUSIVE+)
-   (priority
-    :initform 6)))
+(let ((eox (make-instance 'midi-system-common-message
+			  :command +END-EXCLUSIVE+
+			  :priority 06)))
 
-(defmethod midi-end-system-exclusive-p ((message midi-end-system-exclusive)) t)
-
-(constant-function midi-end-system-exclusive
-		   (make-instance 'midi-end-system-exclusive))
-
-(defmethod data-count ((message midi-end-system-exclusive)) 0)
-
-(defmethod ->string ((message midi-end-system-exclusive))
-  (sformat  "~A " (gethash +END-EXCLUSIVE+ +MNEMONICS+)))
-
-(defmethod render-midi-message ((message midi-end-system-exclusive))
-  (list +END-EXCLUSIVE+))
+  (constant-function midi-end-system-exclusive eox)
   
+  (defmethod midi-end-system-exclusive-p ((message midi-system-common-message))
+    (= (command message) +END-EXCLUSIVE+)))
 
-
+  
 

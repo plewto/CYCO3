@@ -29,8 +29,13 @@
 ;;;;  |
 ;;;;  +-- MIDI-SYSTEM-COMMON-MESSAGE
 ;;;;  |    |
-;;;;  |    +--- MIDI-SYSTEM-EXCLUSIVE
-;;;;  |    +--- --MIDI-END-SYSTEM-EXCLUSIVE (singleton)
+;;;;  |    +-- MIDI-SYSTEM-EXCLUSIVE
+;;;;  |    +-- MIDI-END-SYSTEM-EXCLUSIVE (singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
+;;;;  |    +-- MIDI-RESET (singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
+;;;;  |    +-- MIDI-START (Singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
+;;;;  |    +-- MIDI-STOP (Singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
+;;;;  |    +-- MIDI-CONTINUE (Singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
+;;;;  |    +-- MIDI-CLOCK (Singleton instance of MIDI-SYSTEM-COMMON-MESSAGE)
 ;;;;  |
 ;;;;  +-- MIDI-META-MESSAGE
 ;;;;       |
@@ -43,7 +48,7 @@
 ;;;;       |    +-- MIDI-META-CUE
 ;;;;       |    +-- MIDI-META-MARKER
 ;;;;       |
-;;;;       +-- --MIDI-END-OF-TRACK (singleton)
+;;;;       +-- --MIDI-END-OF-TRACK ** TODO re-implement singelto (singleton instance of MIDI-SYS)
 ;;;;       +-- MIDI-TEMPO-CHANGE
 ;;;;       +-- MIDI-TIME-SIGNATURE
 ;;;;       +-- MIDI-KEY-SIGNATURE
@@ -239,7 +244,6 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
    (priority
     :initform 9)))
 
-(defmethod midi-control-change-p ((object t)) nil)
 (defmethod midi-control-change-p ((message midi-control-change)) t)
 
 (defun midi-control-change (channel-index controller-number value)

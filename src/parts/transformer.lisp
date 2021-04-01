@@ -115,7 +115,7 @@
     daughter))
 				    
 
-(defmethod render-once ((part transformer) &key (offset 0.0))
+(defmethod render-once ((part transformer) &key (offset 0.0) &allow-other-keys)
   (let ((midi-events '())
 	(filter (transformer-filter-function part))
 	(transform (transformer-transform-function part)))

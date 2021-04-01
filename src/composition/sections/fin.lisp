@@ -46,7 +46,7 @@
     daughter))
 
 
-(defmethod render-once ((section fin) &key (offset 0.0))
+(defmethod render-once ((section fin) &key (offset 0.0)(stripe t) &allow-other-keys)
   (let* ((period (phrase-duration section)))
     (list (cons offset (midi-meta-marker "FIN"))
 	  (cons (+ offset period)(midi-end-of-track)))))

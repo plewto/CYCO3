@@ -145,7 +145,7 @@ subject to the Section cueing function."))
     daughter))
 
 
-(defmethod render-once ((raw-part raw-part) &key (offset 0.0))
+(defmethod render-once ((raw-part raw-part) &key (offset 0.0) &allow-other-keys)
   (if (muted-p raw-part)(return-from render-once '()))
   (let ((midi-events '())
 	(time-shift (+ offset (property raw-part :shift))))

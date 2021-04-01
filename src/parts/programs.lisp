@@ -123,7 +123,7 @@ Programs are always a leaf node."))
 	  (clone (programs-events mother)))
     daughter))
 
-(defmethod render-once ((programs-part programs) &key (offset 0))
+(defmethod render-once ((programs-part programs) &key (offset 0) &allow-other-keys)
   (if (muted-p programs-part)(return-from render-once '()))
   (let ((midi-events '())
 	(time-shift (+ offset (property programs-part :shift))))

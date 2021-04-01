@@ -205,32 +205,18 @@ same name.
 	(retrograde part)))
   section)
 
+(defmethod stripe ((section section)(event-list list) &key (offset 0.0)(count 1))
+  (let* ((quarter (beat-duration section))
+	(division 24.0)
+	(time-delta (/ quarter division))
+	(time offset)
+	(end-time (+ offset (* count (duration section)))))
+    (while (< time end-time)
+      (push (cons time (midi-clock)) event-list)
+      (setf time (+ time time-delta)))
+    event-list))
 
-;;; Commented version of render-once suppresses all note-on-events
-;;; with times greater the then the section's period.  Not exactly
-;;; sure why this was done.  The alternate version below has the
-;;; filters removed.
-;;;
-;;
-;; (defmethod render-once ((section section) &key (offset 0.0))
-;;   (let* ((event-list (list (cons offset
-;; 				 (midi-meta-marker (name section)))
-;; 			   (cons offset
-;; 				 (midi-tempo-message (tempo section)))
-;; 			   (cons offset
-;; 				 (midi-time-signature (beats section)(unit section)))))
-;; 	 (period (phrase-duration section))
-;; 	 (end-mask (+ offset period)))
-;;     (dolist (part (reverse (children section)))
-;;       (let* ((count (truncate (/ period (phrase-duration part)))))
-;; 	(dolist (event (render-n part count :offset offset))
-;; 	  (let* ((time (car event))
-;; 		 (message (cdr event)))
-;; 	    (if (or (< time end-mask)(not (midi-note-on-p message)))
-;; 		(push (clone event) event-list))))))
-;;     (sort-midi-events event-list)))
-
-(defmethod render-once ((section section) &key (offset 0.0))
+(defmethod render-once ((section section) &key (offset 0.0)(stripe t) &allow-other-keys)
   (let* ((event-list (list (cons offset
 				 (midi-meta-marker (name section)))
 			   (cons offset

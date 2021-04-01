@@ -759,7 +759,7 @@ duration of the object.
 
 Stack space may be exhausted if count is too high."))
 
-(defgeneric render-once (object &key offset)
+(defgeneric render-once (object &key offset &allow-other-keys)
   (:documentation
    "Convert object to a list of MIDI events.
 :offset shifts all events by offset seconds, default 0."))

@@ -42,7 +42,7 @@
 				midi-events)))))))
 	    midi-events)))
  
-  (defmethod render-once ((qball qball) &key (offset 0.0))
+  (defmethod render-once ((qball qball) &key (offset 0.0) &allow-other-keys)
       (if (muted-p qball)(return-from render-once '()))
       (if (property qball :reset-on-repeat)
 	  (reset qball)

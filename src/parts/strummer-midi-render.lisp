@@ -189,7 +189,7 @@
     (dolist (state (strummer-states strummer))
       (pattern-reset state)))
 
-  (defmethod render-once ((strummer strummer) &key (offset 0))
+  (defmethod render-once ((strummer strummer) &key (offset 0) &allow-other-keys)
     (if (muted-p strummer)(return-from render-once '()))
     (let* ((midi-events '())
 	   (time-shift (+ offset (property strummer :shift)))

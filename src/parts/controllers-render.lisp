@@ -125,7 +125,7 @@
 			   (push (cons time (midi-pitch-bend ci lsb msb)) event-list)))
 		event-list)))) )
   
-  (defmethod render-once ((part controllers) &key (offset 0.0))
+  (defmethod render-once ((part controllers) &key (offset 0.0) &allow-other-keys)
     (if (muted-p part)(return-from render-once '()))
     (reset part)
     (let* ((midi-events '())
@@ -141,7 +141,7 @@
 	    (setf midi-events (thin-controller-events midi-events channel-index))))
       (sort-midi-events midi-events)))
 
-  (defmethod render-once ((part bender) &key (offset 0.0))
+  (defmethod render-once ((part bender) &key (offset 0.0) &allow-other-keys)
     (if (muted-p part)(return-from render-once '()))
     (reset part)
     (let* ((midi-events '())

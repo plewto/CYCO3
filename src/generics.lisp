@@ -749,7 +749,7 @@ or pattern-like object."))
   (:documentation
    "Convert MIDI message object to list of MIDI bytes."))
 
-(defgeneric render-n (object count &key offset)
+(defgeneric render-n (object count &key offset &allow-other-keys)
   (:documentation
    "Convert object to list of MIDI events.
 If count is greater then 1, place each additional copy shifted by the 

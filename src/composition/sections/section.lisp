@@ -205,7 +205,7 @@ same name.
 	(retrograde part)))
   section)
 
-(defmethod stripe ((section section)(event-list list) &key (offset 0.0)(count 1))
+(defmethod stripe-section ((section section)(event-list list) &key (offset 0.0)(count 1))
   (let* ((quarter (beat-duration section))
 	(division 24.0)
 	(time-delta (/ quarter division))
@@ -228,17 +228,23 @@ same name.
       (let* ((count (truncate (/ period (phrase-duration part)))))
 	(dolist (event (render-n part count :offset offset))
 	  (push (clone event) event-list))))
+    (setf event-list (if stripe
+			 (stripe-section section event-list :offset offset)
+		       event-list))
     (sort-midi-events event-list)))
 
-(defmethod render-n ((section section)(n integer) &key (offset 0.0))
+(defmethod render-n ((section section)(n integer) &key (offset 0.0)(stripe t) &allow-other-keys)
   (let ((event-list '())
 	(period (phrase-duration section))
-	(template (render-once section)))
+	(template (render-once section :stripe nil)))
     (dotimes (i n)
       (dolist (event template)
 	(let ((relative-time (car event))
 	      (message (cdr event)))
 	  (push (cons (+ offset (* i period) relative-time) message) event-list))))
+    (setf event-list (if stripe
+			 (stripe-section section event-list :offset offset :count n)
+		       event-list))
     (sort-midi-events event-list)))
 
 (defmethod dump-events ((s section) &key

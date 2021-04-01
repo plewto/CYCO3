@@ -47,13 +47,21 @@
 
 
 (defmethod render-once ((section fin) &key (offset 0.0)(stripe t) &allow-other-keys)
-  (let* ((period (phrase-duration section)))
-    (list (cons offset (midi-meta-marker "FIN"))
-	  (cons (+ offset period)(midi-end-of-track)))))
-
-
-(defmethod render-n ((section fin)(n integer) &key (offset 0.0))
   (let* ((period (phrase-duration section))
-	 (terminal-time (+ offset (* period n))))
-    (list (cons offset (midi-meta-marker "FIN"))
-	  (cons terminal-time (midi-end-of-track)))))
+	 (event-list (list (cons offset (midi-meta-marker "FIN"))
+			   (cons (+ offset period)(midi-end-of-track)))))
+    (setf event-list (if stripe
+			 (stripe-section section event-list :offset offset)
+		       event-list))
+    (sort-midi-events event-list)))
+
+
+(defmethod render-n ((section fin)(n integer) &key (offset 0.0)(stripe t) &allow-other-keys)
+  (let* ((period (phrase-duration section))
+	 (terminal-time (+ offset (* period n)))
+	 (event-list (list (cons offset (midi-meta-marker "FIN"))
+			   (cons terminal-time (midi-end-of-track)))))
+    (setf event-list (if stripe
+			 (stripe-section section event-list :offset offset :count n)
+		       event-list))
+    (sort-midi-events event-list)))

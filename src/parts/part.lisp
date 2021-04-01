@@ -125,7 +125,7 @@ used directly."))
   (dolist (p +part-specific-properties+)
     (put destination p (clone (property source p)))))
   
-(defmethod render-n ((part part)(n integer) &key (offset 0.0))
+(defmethod render-n ((part part)(n integer) &key (offset 0.0) &allow-other-keys)
   (reset part)
   (let ((midi-events '())
 	(period (phrase-duration part))

@@ -162,7 +162,6 @@
 (src-load "controllers-render")
 (src-load "transformer-docs")
 (src-load "transformer")
-(src-load "striper")
 
 (export '(*strummer-render-trace*
 	  bender
@@ -186,7 +185,6 @@
 	  raw-part-p
 	  simple-part
 	  simple-part-p
-	  striper
 	  strummer
 	  strummer-p
 	  transformer
@@ -215,7 +213,6 @@
           cyco-part:raw-part-p
           cyco-part:simple-part
           cyco-part:simple-part-p
-	  cyco-part:striper
           cyco-part:strummer
           cyco-part:strummer-p
 	  cyco-part:transformer

@@ -6,6 +6,15 @@
 (in-package :cyco)
 
 (constant +CYCO-VERSION+  (list 3 0 0))
+(constant +BUILD-TIME+  (multiple-value-bind
+			    (second minute hour date month year day-of-week dst-p tz)
+			    (decode-universal-time (get-universal-time))
+			  (declare (ignore second day-of-week dst-p tz))
+			  (list (cons :year year)
+				(cons :month month)
+				(cons :day date)
+				(cons :hour hour)
+				(cons :minute minute))))
 
 (constant +BANNER+
 	  (let ((a0 (format nil "  ___  _  _  ___  _____ ~%"))

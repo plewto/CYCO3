@@ -67,7 +67,7 @@
 	     (triangle . (81)))))
 
 (instrument gm-percussion
-	    :parent *root-instrument*
+	    :parent +root-instrument+
 	    :transient nil
 	    :channel 10
 	    :program 0

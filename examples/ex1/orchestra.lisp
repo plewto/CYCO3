@@ -1,9 +1,8 @@
 ;;;; CYCO example ex1 orchestra.lisp
 ;;;;
 ;;;; CYCO does not have an "orchestra" object per se.  Instead the orchestra
-;;;; is a linked tree of instruments.   The root of the orchestra tree is
-;;;; *ROOT-INSTRUMENT* 
-;;;;
+;;;; is a linked tree of instruments.   The constant +ROOT-INSTRUMENT+ is the 
+;;;; root of the orchestra tree.
 
 
 ;;; First remove old instruments from the orchestra.  If this step were not

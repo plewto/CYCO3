@@ -35,14 +35,14 @@
     (defun ?channels ()
       "Displays list of instruments on each MIDI channel."
       (setf ary (->vector (copies 16 '())))
-      (walk *root-instrument*)
+      (walk +root-instrument+)
       (dotimes (i (length ary))
 	(let ((chan (1+ i))
 	      (ilst (aref ary i)))
 	  (dolist (iname ilst)
 	    (format t "[~2D] ~A~%" chan iname)))))))
 
-(defun ?o (&optional (root *root-instrument*))
+(defun ?o (&optional (root +root-instrument+))
   "Displays orchestra tree."
   (print-tree root))
 

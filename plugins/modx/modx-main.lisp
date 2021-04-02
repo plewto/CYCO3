@@ -28,7 +28,7 @@ The performance does not directly produce events.  Instead child
 instruments should be added to correspond to each performance part/channel."))
 
 (defun make-modx-performance (name bank program-number &key
-				   remarks (parent *root-instrument*))
+				   remarks (parent +root-instrument+))
   "Creates new instance of modx-performance.
 bank should be a symbol as listed in +MODX-BANKS+ association list.
 program is a MIDI program number 1..128.
@@ -76,7 +76,7 @@ The new instance becomes the default for add-modx-part macro."
     inst))
       
 
-(defmacro modx-performance (name bank program-number &key remarks (parent *root-instrument*))
+(defmacro modx-performance (name bank program-number &key remarks (parent +root-instrument+))
   "Creates new instance of modx-performance and bind it to the symbol name.
 Otherwise modx-performance and make-modx-performance have identical usage."
   `(let ((inst (make-modx-performance ',name ,bank ,program-number

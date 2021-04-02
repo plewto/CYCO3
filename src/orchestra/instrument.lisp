@@ -37,7 +37,7 @@ instruments.   Typically instruments are defined in two stages:
 The type-1 instruments should be non-transient while the type-2 instruments
 are transient.
 
-The global *ROOT-INSTRUMENT* serves as the common root node for all 
+The constant +ROOT-INSTRUMENT+ serves as the common root node for all 
 other instruments."))
 
 (defmethod instrument-p ((instrument instrument)) t)
@@ -120,9 +120,9 @@ other instruments."))
   (or (instrument-channel-index instrument)
       (1- (channel instrument :resolve))))
 
-(global *root-instrument*
+(constant +root-instrument+
 	(let ((root (make-instance 'instrument
-				   :name '*root-instrument*
+				   :name '+root-instrument+
 				   :properties +instrument-properties+
 				   :transient nil)))
 	  (set-basic-program-map root)
@@ -137,7 +137,7 @@ other instruments."))
 (let ((docstring 
  "Creates a new instance of INSTRUMENT.
 name        - Symbol
-:parent     - Parent instrument, defaults to *ROOT-INSTRUMENT*
+:parent     - Parent instrument, defaults to +ROOT-INSTRUMENT+
 :transient  - bool, If this instrument is being created as part of a 
               project's orchestra, transient should be t.
               If the instrument is created by the configuration process
@@ -154,7 +154,7 @@ name        - Symbol
 :articulation-map - Sets articulation-map, if nil inherits from parent."))
   
   (defun make-instrument (name &key
-			       (parent *root-instrument*)
+			       (parent +root-instrument+)
 			       (transient t)
 			       channel
 			       program
@@ -180,7 +180,7 @@ name        - Symbol
       instrument)))
 
 (defmacro instrument (name &key
-			   (parent *root-instrument*)
+			   (parent +root-instrument+)
 			   (transient t)
 			   channel
 			   program
@@ -203,7 +203,7 @@ name        - Symbol
      (param ,name instrument)
      instrument))
 
-(instrument null-instrument :parent *root-instrument*
+(instrument null-instrument :parent +root-instrument+
 	    :transient nil
 	    :channel 1
 	    :program 0
@@ -214,7 +214,7 @@ name        - Symbol
 (set-program-map null-instrument #'(lambda (&rest _)(declare (ignore _)) nil))
 
 (setf *metronome* (make-instrument '*metronome*
-				   :parent *root-instrument*
+				   :parent +root-instrument+
 				   :transient nil
 				   :channel 16
 				   :keynumber-map (metronome-keynumber-map)
@@ -223,20 +223,20 @@ name        - Symbol
 
 
 (let ((docstring 
- "Removes all transient instruments from the tree rooted at *root-instrument*.
+ "Removes all transient instruments from the tree rooted at +root-instrument+.
 While composing a piece it is usual to reload the project repeatedly.   
 Projects typically define several instruments as their 'orchestra'.  
 If the orchestra is not pruned then each time the project is loaded it 
 creates useless duplicate instruments.   Non-transient instruments are
 not effect by prune-orchestra unless the :force argument is true."))
   
-  (defun prune-orchestra (&key (force nil)(root *root-instrument*))
+  (defun prune-orchestra (&key (force nil)(root +root-instrument+))
     docstring
     (prune root force)
     (if force
 	(progn 
-	  (connect *root-instrument* null-instrument)
-	  (connect *root-instrument* *metronome*)))))
+	  (connect +root-instrument+ null-instrument)
+	  (connect +root-instrument+ *metronome*)))))
 
 (defmethod note-events ((instrument instrument)
 			(time number)

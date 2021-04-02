@@ -14,7 +14,7 @@
           *osc-receive-port*
           *osc-send-verbose*
           *project*
-          *root-instrument*
+          +root-instrument+
 	  +REST+
 	  +default-articulation-map+
 	  +default-dynamic-map+

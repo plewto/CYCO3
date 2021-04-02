@@ -23,6 +23,6 @@
 (pass? "Orchestra tree structure"
        (let ((flag t))
 	 (dolist (instrument (list piano bass organ *metronome*))
-	   (setf flag (and flag (eq (parent instrument) *root-instrument*))))
+	   (setf flag (and flag (eq (parent instrument) +root-instrument+))))
 	 flag))
 

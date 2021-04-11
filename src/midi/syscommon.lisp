@@ -8,6 +8,8 @@
 
 (defclass midi-system-common-message (midi-message) nil)
 
+(defmethod midi-system-common-message-p ((obj t)) nil)
+
 (defmethod midi-system-common-message-p ((message midi-system-common-message)) t)
 
 (defmethod data-count ((message midi-system-common-message)) 0)
@@ -52,6 +54,8 @@
   "Makes new instance of MIDI-SYSTEM-EXCLUSIVE with initially zeroed data array of given length."
   (midi-system-exclusive (make-array data-length :element-type 'integer :fill-pointer t)))
 
+(defmethod midi-system-exclusive-p ((obj t)) nil)
+
 (defmethod midi-system-exclusive-p ((message midi-system-exclusive)) t)
 
 (defmethod data-count ((message midi-system-exclusive))
@@ -88,6 +92,8 @@
 			  :priority 06)))
 
   (constant-function midi-end-system-exclusive instance)
+
+  (defmethod midi-midi-end-system-exclusive-p ((obj t)) nil)
   
   (defmethod midi-end-system-exclusive-p ((message midi-system-common-message))
     (= (command message) +END-EXCLUSIVE+)))
@@ -102,6 +108,8 @@
 
   (constant-function midi-reset instance)
 
+  (defmethod midi-reset-p ((obj t)) nil)
+  
   (defmethod midi-reset-p ((message midi-system-common-message))
     (= (command message) +RESET+)))
 
@@ -115,6 +123,8 @@
 
   (constant-function midi-start instance)
 
+  (defmethod midi-start-p ((obj t)) nil)
+  
   (defmethod midi-start-p ((message midi-system-common-message))
     (= (command message) +START+)))
 
@@ -128,6 +138,8 @@
 
   (constant-function midi-stop instance)
 
+  (defmethod midi-stop-p ((obj t)) nil)
+  
   (defmethod midi-stop-p ((message midi-system-common-message))
     (= (command message) +STOP+)))
 
@@ -140,7 +152,8 @@
 				    :priority 3)))
 
   (constant-function midi-continue instance)
-
+  
+  (defmethod midi-continue-p ((obj t)) nil)
   (defmethod midi-continue-p ((message midi-system-common-message))
     (= (command message) +CONTINUE+)))
 
@@ -154,5 +167,7 @@
 
   (constant-function midi-clock instance)
 
+  (defmethod midi-clock-p ((obj t)) nil)
+  
   (defmethod midi-clock-p ((message midi-system-common-message))
     (= (command message) +CLOCK+)))

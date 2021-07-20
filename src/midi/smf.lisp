@@ -19,11 +19,11 @@
 
 (defun smf (&key (format 1)
 		 (track-count 1)
-		 (division +TICKS-PER-BEAT+))
+		 (division *TICKS-PER-BEAT*))
   "Creates instance of SMF (Standard MIDI File).
 format      - file format (only type 1 currently supported).
 track-count - number of tracks (only single track currently supported).
-division    - number of ticks per beat. Defaults to +TICKS-PER-BEAT+"
+division    - number of ticks per beat. Defaults to *TICKS-PER-BEAT*"
   (make-instance 'smf
 		 :header (make-instance 'smf-header
 					:format format

@@ -9,7 +9,7 @@
 (global *os-extension-separator* #\.)
 (global *os-homedir-alias* #\~)
 
-;; Default direcctories
+;; Default directories
 ;;
 (global *cyco-location* nil)
 (global *config-directory* nil)
@@ -20,4 +20,4 @@
 (global *project* nil)
 (global *metronome* nil)
 
-
+(global *ticks-per-beat* 480)

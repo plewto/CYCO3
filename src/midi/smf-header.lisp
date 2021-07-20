@@ -14,7 +14,7 @@
    (division
     :type integer
     :reader smf-division
-    :initform +TICKS-PER-BEAT+
+    :initform *TICKS-PER-BEAT*
     :initarg :division))
   (:documentation
    "Provides Standard MIDI File Header Chunck"))

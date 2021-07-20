@@ -1,4 +1,4 @@
-;;;; CYCO build.lisp
+;;;; CYCO cyco.lisp
 ;;;;
 ;;;; Main entry point to build CYCO.
 ;;;;
@@ -77,7 +77,5 @@ a warning message is displayed and CYCO terminates."
   (set-cyco-prompt)
   nil)
 
-(format t "~%--------------------------------------------~%")
-(format t   "---     Enter (CYCO) at Lisp prompt.     ---~%")
-(format t   "--------------------------------------------~%~%")
+
 

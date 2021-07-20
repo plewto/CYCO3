@@ -3,6 +3,8 @@
 ;;;; Defines internal state of STRUMMER objects.
 ;;;;
 
+(in-package :cyco-part)
+
 (defstruct strummer-state
   (source nil)	                     ; event source text
   (time-specification nil)            

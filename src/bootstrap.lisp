@@ -11,7 +11,7 @@
        ;;     :print-off - print load off.
        ;;     :verbose - Display file names as they are loaded.
        ;;     :quite   - Opposite of :verbose
-       (manifest '(:verbose
+       (manifest '(:quite
 		   "src/constants"
 		   "src/globals"
 		   "src/generics"
@@ -79,6 +79,25 @@
 		   "src/composition/group"
 		   "src/composition/sections/section"
 		   "src/parts/parts-header"
+		   "src/parts/expect"
+		   "src/parts/part"
+		   "src/parts/raw-part"
+		   "src/parts/qball-docs"
+		   "src/parts/qball"
+		   "src/parts/qball-midi-render"
+		   "src/parts/metronome"
+		   "src/parts/programs"
+		   "src/parts/strummer-docs"
+		   "src/parts/strummer-state"
+		   "src/parts/strummer"
+		   "src/parts/strummer-midi-render"
+		   "src/parts/controllers-docs"
+		   "src/parts/controllers-state"
+		   "src/parts/controllers"
+		   "src/parts/controllers-render"
+		   "src/parts/transformer-docs"
+		   "src/parts/transformer"
+		   "src/parts/export"
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
 		   "src/util/inspection"

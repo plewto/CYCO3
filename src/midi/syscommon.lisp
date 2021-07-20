@@ -8,8 +8,6 @@
 
 (defclass midi-system-common-message (midi-message) nil)
 
-(defmethod midi-system-common-message-p ((obj t)) nil)
-
 (defmethod midi-system-common-message-p ((message midi-system-common-message)) t)
 
 (defmethod data-count ((message midi-system-common-message)) 0)
@@ -53,8 +51,6 @@
 (defmethod midi-system-exclusive ((data-length integer))
   "Makes new instance of MIDI-SYSTEM-EXCLUSIVE with initially zeroed data array of given length."
   (midi-system-exclusive (make-array data-length :element-type 'integer :fill-pointer t)))
-
-(defmethod midi-system-exclusive-p ((obj t)) nil)
 
 (defmethod midi-system-exclusive-p ((message midi-system-exclusive)) t)
 

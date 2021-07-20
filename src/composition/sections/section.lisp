@@ -283,17 +283,17 @@ is appended to the name if needed."   ))
 	   (fqn (join-path-list (list project-directory project-name output-directory section-name) :as-file)))
       (append-filename-extension fqn ".mid"))))
 	       
-(defmethod section->smf ((section section) &key (offset 0.0)(repeat 1))
+(defmethod section->smf ((section section) &key (offset 0.0)(repeat 1)(no-stripe nil))
   "Creates Standard MIDI File from Section contents."
-  (let* ((events (render-n section repeat :offset offset))
+  (let* ((events (render-n section repeat :offset offset :no-stripe no-stripe))
 	 (track (make-instance 'smf-track :events events))
 	 (midi-file (smf :format 1 :track-count 1)))
     (setf (aref (smf-tracks midi-file) 0) track)
     midi-file))
 
-(defmethod ->midi ((section section) &key (filename nil)(offset 0.0)(repeat 1)(pad 2.0))
+(defmethod ->midi ((section section) &key (filename nil)(offset 0.0)(repeat 1)(pad 2.0)(no-stripe nil))
   "Write section contents to Standard MIDI file."
-  (let* ((midi-file (section->smf section :offset offset :repeat repeat))
+  (let* ((midi-file (section->smf section :offset offset :repeat repeat :no-stripe no-stripe))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
     midi-file))

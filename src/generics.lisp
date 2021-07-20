@@ -45,15 +45,16 @@ For all other types return (pattern-type :of object)
 The default pattern-type is Cycle."))
 
 
-(defgeneric ->midi (contents &key filename offset repeat pad)
+(defgeneric ->midi (contents &key filename offset repeat pad no-stripe)
   (:documentation
    "Creates new MIDI file from contents and write to file.
 :filename - Optional String, if not specified the filename is derived from
             the name of contents and the current project.
 :offset   - float, initial offset time in seconds, default 0.
 :repeat   - int, number of times to repeat contents, default 1.  If repeat is too 
-stack depth may be exhausted.           
-:pad      - float, number of seconds to add to end of file, default 2."))
+large stack depth may be exhausted.           
+:pad      - float, number of seconds to add to end of file, default 2.
+:no-stripe - bool, if non-nil do not render with MIDI clock events, default nil""))
 
 (defgeneric ->string (object)
   (:documentation

@@ -216,7 +216,7 @@ same name.
       (setf time (+ time time-delta)))
     event-list))
 
-(defmethod render-once ((section section) &key (offset 0.0)(stripe t) &allow-other-keys)
+(defmethod render-once ((section section) &key (offset 0.0)(no-stripe t) &allow-other-keys)
   (let* ((event-list (list (cons offset
 				 (midi-meta-marker (name section)))
 			   (cons offset
@@ -228,21 +228,21 @@ same name.
       (let* ((count (truncate (/ period (phrase-duration part)))))
 	(dolist (event (render-n part count :offset offset))
 	  (push (clone event) event-list))))
-    (setf event-list (if stripe
+    (setf event-list (if (not no-stripe)
 			 (stripe-section section event-list :offset offset)
 		       event-list))
     (sort-midi-events event-list)))
 
-(defmethod render-n ((section section)(n integer) &key (offset 0.0)(stripe t) &allow-other-keys)
+(defmethod render-n ((section section)(n integer) &key (offset 0.0)(no-stripe t) &allow-other-keys)
   (let ((event-list '())
 	(period (phrase-duration section))
-	(template (render-once section :stripe nil)))
+	(template (render-once section :no-stripe t)))
     (dotimes (i n)
       (dolist (event template)
 	(let ((relative-time (car event))
 	      (message (cdr event)))
 	  (push (cons (+ offset (* i period) relative-time) message) event-list))))
-    (setf event-list (if stripe
+    (setf event-list (if (not no-stripe)
 			 (stripe-section section event-list :offset offset :count n)
 		       event-list))
     (sort-midi-events event-list)))

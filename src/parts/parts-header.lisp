@@ -40,6 +40,7 @@
                 :cyco-composition-error
                 :cyco-node
                 :cyco-type-error
+		:cyco-warning
                 :data
                 :defines-chord-p
                 :disconnect
@@ -68,12 +69,20 @@
                 :line
                 :metric-expression
                 :metric-expression-p
-		:midi-channel-message-p
+                :midi-channel-message-p
                 :midi-channel-pressure
-		:midi-clock
+                :midi-clock
                 :midi-control-change
                 :midi-control-change-p
                 :midi-message-p
+                :midi-meta-copyright
+                :midi-meta-cue
+                :midi-meta-instrument-name
+                :midi-meta-lyric
+                :midi-meta-marker
+                :midi-meta-message
+                :midi-meta-text
+                :midi-meta-track-name
                 :midi-note-off
                 :midi-note-off-p
                 :midi-note-on

@@ -31,7 +31,12 @@
 	  strummer
 	  strummer-p
 	  transformer
-	  transformer-p)
+	  transformer-p
+	  text-part
+	  text-part-p
+	  make-text-part
+
+	  )
 	:cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
@@ -59,7 +64,11 @@
           cyco-part:strummer
           cyco-part:strummer-p
 	  cyco-part:transformer
-	  cyco-part:transformer-p)
+	  cyco-part:transformer-p
+	  cyco-part:text-part
+	  cyco-part:text-part-p
+	  cyco-part:make-text-part
+	  )
 	:cyco)
 
 (in-package :cyco)

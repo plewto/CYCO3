@@ -122,6 +122,7 @@
 		   "src/parts/controllers-render"
 		   "src/parts/transformer-docs"
 		   "src/parts/transformer"
+		   "src/parts/text"
 		   "src/parts/export"
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"

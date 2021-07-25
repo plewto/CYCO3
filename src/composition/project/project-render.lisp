@@ -21,9 +21,9 @@
 	    (let ((period (phrase-duration section)))
 	      (if (not (zerop xpose))(transpose section xpose))
 	      (if invert-pivot (invert section invert-pivot))
-	      ;; (format t "[TIME ~5,4F] ~12A period ~5,4f      ~%"   (+ shift time)  section-name period  )
 	      (setf acc (append acc (render-n section count :offset (+ shift time))))
 	      (setf time (+ time (* count period)))
+	      ;; (format t "[TIME ~5,4F] ~12A period ~5,4f      ~%"   (+ shift time)  section-name period  )
 	      (disconnect section))
 	  (cyco-warning
 	   (sformat t "Section ~A does not exists" section-name)))))

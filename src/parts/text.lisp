@@ -2,11 +2,8 @@
 
 (in-package :cyco-part)
 
+
 (constant +text-part-properties+ +part-properties+)
-
-
-
-  
 
 (defclass text-part (part)
   ((text-events
@@ -97,3 +94,22 @@
 			    (t (midi-meta-text text)))))
 	(push (cons (+ time time-shift) message) midi-events)))
     (sort-midi-events midi-events)))
+
+
+(defmethod clone ((mother text-part) &key new-name new-parent)
+  (let* ((frmt (or new-name "~A"))
+	 (name (->symbol (sformat frmt (name mother))))
+	 (parent (or new-parent (parent mother)))
+	 (daughter (make-text-part name :section parent
+				   :cuefn (property mother :cue-function)
+				   :shift (property mother :shift)
+				   :render-once (property mother :render-once)
+				   :remarks (remarks mother)
+				   :events nil)))
+    (copy-part-properties mother daughter)
+    (copy-time-signature mother daughter)
+    (setf (text-events daughter)
+	  (clone (text-events mother)))
+    (reset daughter)
+    daughter))
+    

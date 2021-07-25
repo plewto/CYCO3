@@ -9,7 +9,7 @@
   ((format
     :type integer
     :reader smf-format
-    :initform 1
+    :initform 0
     :initarg :format)
    (division
     :type integer

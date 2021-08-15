@@ -19,6 +19,8 @@
 	  make-raw-part
 	  make-simple-part
 	  make-strummer
+	  make-sysex-part
+	  make-text-part
 	  make-transformer
 	  metronome
 	  programs
@@ -30,13 +32,11 @@
 	  simple-part-p
 	  strummer
 	  strummer-p
+	  sysex
 	  transformer
 	  transformer-p
 	  text-part
-	  text-part-p
-	  make-text-part
-
-	  )
+	  text-part-p)
 	:cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
@@ -52,6 +52,8 @@
           cyco-part:make-raw-part
           cyco-part:make-simple-part
           cyco-part:make-strummer
+	  cyco-part:make-sysex-part
+	  cyco-part:make-text-part
 	  cyco-part:make-transformer
           cyco-part:metronome
           cyco-part:programs
@@ -65,10 +67,9 @@
           cyco-part:strummer-p
 	  cyco-part:transformer
 	  cyco-part:transformer-p
+	  cyco-part:sysex
 	  cyco-part:text-part
-	  cyco-part:text-part-p
-	  cyco-part:make-text-part
-	  )
+	  cyco-part:text-part-p)
 	:cyco)
 
 (in-package :cyco)

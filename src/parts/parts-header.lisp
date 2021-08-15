@@ -16,6 +16,7 @@
                 :->pattern
                 :->string
                 :->symbol
+		:->vector
                 :absolute-chords-p
                 :approximate
                 :articulation-map
@@ -81,6 +82,7 @@
                 :midi-meta-lyric
                 :midi-meta-marker
                 :midi-meta-message
+		:midi-system-exclusive
                 :midi-meta-text
                 :midi-meta-track-name
                 :midi-note-off

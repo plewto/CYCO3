@@ -1,7 +1,9 @@
-
+;;;; CYCO parts text.lisp
+;;;;
+;;;; Defines TEXT-PART for inserting meta text messages in Sections.
+;;;;
 
 (in-package :cyco-part)
-
 
 (constant +text-part-properties+ +part-properties+)
 
@@ -67,7 +69,7 @@
 	    
 (defmacro text-part (name &key section cuefn shift render-once remarks events)
   `(progn
-     (part-banner (name , section) ',name)
+     (part-banner (name ,section) ',name)
      (let ((new-text-part (make-text-part ',name :section ,section
 					  :cuefn ,cuefn :shift ,shift
 					  :render-once ,render-once

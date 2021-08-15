@@ -64,7 +64,7 @@
   (let ((result "")
 	(line-count 40))
     (dotimes (i (data-count message))
-      (setf result (str+ result (sformat  "~2X" (data message i))))
+      (setf result (str+ result (sformat  "~2X " (data message i))))
       (setf line-count (1- line-count))
       (if (zerop line-count)
 	  (progn

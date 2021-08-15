@@ -123,6 +123,8 @@
 		   "src/parts/transformer-docs"
 		   "src/parts/transformer"
 		   "src/parts/text"
+		   "src/parts/sysex-docs"
+		   "src/parts/sysex"
 		   "src/parts/export"
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"

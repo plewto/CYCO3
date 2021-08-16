@@ -116,6 +116,7 @@ Sets parameters for Pigiron server.
      	  server-proxy
           ping
           play
+	  player-ping
           poly-pressure
           program
           stop

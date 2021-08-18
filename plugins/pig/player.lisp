@@ -12,6 +12,7 @@
 (defun player-ping ()
   "(pig:player-ping) sends ping command to Pigiron MIDIPlayer named by pig:*midi-player*"
   (osc-send "exec" (sformat "op ~A, ping" *midi-player*)))
+  
 
 (defun stop ()
   "(pig:stop) sends stop message to Pigiron player named by pig:*midi-player*"
@@ -47,6 +48,7 @@
 name argument should be an absolute filename for a MIDI file."
   (osc-send "exec" (sformat "op ~A, load, ~A" *midi-player* name))
   (sleep 0.1))
+  
 
 (defun play (&optional name)
   "(pig:play &optional name) Sends play command to Pigiron player named by pig:*midi-player*
@@ -62,4 +64,5 @@ Name may take the following forms:
 	    (load-smf filename)
 	  (cyco-error (sformat "PIG:PLAY can not load filename ~A" name)))))
   (osc-send "exec" (sformat "op ~A, play" *midi-player*)))
+  
 

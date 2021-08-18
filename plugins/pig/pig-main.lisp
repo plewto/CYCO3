@@ -42,7 +42,7 @@
   ((prefix
     :type string
     :initform "/pig"
-    :accessor pig-prefix
+    :accessor osc-prefix
     :initarg :prefix)
    (host
     :type vector
@@ -53,14 +53,20 @@
     :type integer
     :initform 8020
     :accessor pig-port
-    :initarg :port)))
+    :initarg :port)
+   (response-file
+    :type string
+    :initform "~/.config/pigiron/response"
+    :accessor response-filename
+    :initarg :response-file)))
 
 ;; Default server-proxy
 ;;
 (global *server-proxy* nil)
 
 
-(defun server-proxy (&key (prefix "/pig")(host #(127 0 0 1))(port 8020))
+(defun server-proxy (&key (prefix "/pig")(host #(127 0 0 1))(port 8020)
+			  (response-file "~/.config/pigiron/response"))
   "(PIG:SERVER-PROXY &key prefix host port)
 Sets parameters for Pigiron server.
 :key  - OSC address prefix, default /pig
@@ -69,14 +75,15 @@ Sets parameters for Pigiron server.
   (setf *server-proxy* (make-instance 'server-proxy
 				    :prefix prefix
 				    :host host
-				    :port port))
+				    :port port
+				    :response-file response-file))
   *server-proxy*)
 
 (server-proxy)
 
 
 (flet ((format-address (command)
-		       (sformat "~A/~A" (pig-prefix *server-proxy*) command)))
+		       (sformat "~A/~A" (osc-prefix *server-proxy*) command)))
 
       (defun osc-send (command &optional (data 0))
 	;; data can not be empty
@@ -93,8 +100,16 @@ Sets parameters for Pigiron server.
 	    (when socket (usocket:socket-close socket)))))))
 
 
+(defun bool->str (flag)
+  (if flag
+      "true"
+    "false"))
+
+;;(load-plugin-file "response")
+;; (load-plugin-file "channels")
 (load-plugin-file "player")
 (load-plugin-file "midi")
+(load-plugin-file "monitor")
 
 (defun ping ()
   "(PIG:PING) Sends ping message to Pigiron server."
@@ -103,6 +118,7 @@ Sets parameters for Pigiron server.
 (defun exit ()
   "(PIG:EXIT) Sends exit message to Pigiron server."
   (osc-send "exit"))
+
 
 (export '(*midi-op*
           *midi-player*
@@ -120,12 +136,19 @@ Sets parameters for Pigiron server.
           poly-pressure
           program
           stop
-          sysex)
+	  monitor-exclude
+	  monitor-on
+	  monitor-off
+          sysex
+
+	  )
 	:pig)
 
 (import '(pig:*midi-player*
 	  pig:play
-	  pig:stop)
+	  pig:stop
+
+	  )
 	:cyco)
 
 (in-package :cyco)

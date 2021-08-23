@@ -7,7 +7,7 @@
 
 (in-package :pig)
 
-(global *midi-op* "out.1")
+(global *midi-op* "out")
 
 (labels ((midi->pig (&rest bytes)
 		    (let ((acc (sformat "midi, ~A, " *midi-op*)))

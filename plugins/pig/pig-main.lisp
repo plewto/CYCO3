@@ -11,6 +11,84 @@
 ;;;;    host         #(127 0 0 1)
 ;;;;    port         8020
 ;;;;
+;;;;
+;;;;
+;;;; --> ChannelFilter --> Distributor --+--> MIDIOutput --> Monitor
+;;;;                        MIDIPlayer --+         
+;;;;
+;;;;  Lisp Var        Opertator      Name
+;;;;  *midi-player*   MIDIPlayer     player
+;;;;  *midi-op*       MIDIOutput     out
+;;;;  *monitor*       Monitor        mon
+;;;;  *filter*        ChannelFilter  filter
+;;;;  *distributor*   Distributor    dist
+;;;;
+;;;; Usage from CYCO package
+;;;;
+;;;;   (play &optional name)
+;;;;       Optionally load MIDI file and begin playback.
+;;;;       If name is relative load it from the current-project's
+;;;;       MIDI directory.
+;;;;
+;;;;   (stop)
+;;;;       Stop MIDI player
+;;;;
+;;;;   (pig:load-smf name)
+;;;;       Load MIDI file into player.
+;;;;       If name is relative filename, load from current project's MIDI
+;;;;       directory.
+;;;;
+;;;;   (pig:ping)
+;;;;       Send 'ping' message to Pigiron.
+;;;;
+;;;;   (pig:exit)
+;;;;       Send 'exit' message to Pigiron.
+;;;;
+;;;;   (pig:info name)
+;;;;       Display info for named operator.
+;;;;       Output appears in Pigiron terminal.
+;;;;
+;;;;   (pig:q-channels)
+;;;;       Display info for filter and distributor operators in the
+;;;;       Pigiron terminal.   The display will included enabled
+;;;;       input and output MIDI channels.
+;;;;
+;;;;   (pig:monitor-exclude status flag)
+;;;;       Enable/Disable monitoring of specific MIDI status types.
+;;;;
+;;;;   (pig:monitor-on)
+;;;;       Enable Pigiron monitor.
+;;;;
+;;;;  (pig:monitor-off)
+;;;;      Disable Pigiron monitor.
+;;;;
+;;;;  (pig:in-channels  &rest channels)
+;;;;      Select Pigiron MIDI input channels.
+;;;;
+;;;;  (pig:out-channels &rest channels)
+;;;;      Select Pigiron MIDI output channels.
+;;;;
+;;;;  The following functions transmit single MIDI message via Pigiron's
+;;;;  output operator.  All channels in range [1,16] inclusive.
+;;;;  All data bytes (with exception for bend) 0 <= data < 0x80.
+;;;;      
+;;;;  (pig:note-off channel key &optional velocity)
+;;;;  (pig:note-on channel key &optional velocity)
+;;;;  (pig:poly-pressure channel key pressure)
+;;;;  (pig:controller channel controller-number value)
+;;;;  (pig:program channel program-number)
+;;;;  (pig:mono-pressure channel pressure)
+;;;;
+;;;;  Bend transmits pitch-bend event.  normal-bend is a float
+;;;;  -1.0 <= normal-bend <= +1.0.
+;;;;
+;;;;  (pig:bend channel normal-bend)
+;;;;
+;;;;  Transmit System Exclusive message, do not include either
+;;;; SYSEX or END-OF-SYSEX status bytes.
+;;;;
+;;;; (pig:sysex bytes)
+;;;;
 
 
 (defpackage :pig
@@ -105,11 +183,11 @@ Sets parameters for Pigiron server.
       "true"
     "false"))
 
-;;(load-plugin-file "response")
-;; (load-plugin-file "channels")
 (load-plugin-file "player")
 (load-plugin-file "midi")
 (load-plugin-file "monitor")
+(load-plugin-file "filter")
+(load-plugin-file "distributor")
 
 (defun ping ()
   "(PIG:PING) Sends ping message to Pigiron server."
@@ -119,9 +197,18 @@ Sets parameters for Pigiron server.
   "(PIG:EXIT) Sends exit message to Pigiron server."
   (osc-send "exit"))
 
+(defun info (what)
+  (osc-send "info" what))
+
+(defun q-channels ()
+  (osc-send "info" *filter*)
+  (osc-send "info" *distributor*))
 
 (export '(*midi-op*
           *midi-player*
+	  *monitor*
+	  *filter*
+	  *distributor*
           bend
           controller
           exit
@@ -140,15 +227,14 @@ Sets parameters for Pigiron server.
 	  monitor-on
 	  monitor-off
           sysex
-
-	  )
+	  info
+	  in-channels
+	  out-channels
+	  q-channels)
 	:pig)
 
-(import '(pig:*midi-player*
-	  pig:play
-	  pig:stop
-
-	  )
+(import '(pig:play
+	  pig:stop)
 	:cyco)
 
 (in-package :cyco)

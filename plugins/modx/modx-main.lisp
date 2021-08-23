@@ -1,108 +1,62 @@
-;;;; CYCO modx plugin
+;;;; CYCO modx plugin  
 ;;;;
-;;;; Provides instrument for Yamaha MODX structured as one main instrument
-;;;; with optional parts.   The term "part" is used by Yamaha for modex
-;;;; patch description and should not be confused with CYCO part's.
+;;;; For Yamaha MODX Instruments.
 ;;;;
-
+;;;; +ROOT-INSTRUMENT+
+;;;;   |
+;;;;   +-- +MODX+
+;;;;         |
+;;;;         +-- modx-performance (name bank-lsb bank-msb program-number)
+;;;;               |
+;;;;               +-- modx-instrument (channel 1)
+;;;;               +-- modx-instrument (channel 2)
+;;;;               +--
+;;;;               +-- modx-instrument (channel 16)
+;;;;
+;;;; 1) Create a modx-performance instrument.
+;;;;    Use this for program-change events and as parent to
+;;;;    specific instruments.
+;;;;
+;;;; 2) Create 1 or more instruments under the modx-performance,
+;;;;    each on specific MIDI channel.
+;;;;
 
 (in-package :cyco)
 
-(constant +MODX-BANKS+ '((:preset-1 64 0)
-			 (:user-1 64 32)))
+(defun modx-program-map (bank-msb bank-lsb program-number)
+  #'(lambda (time &key bank program)
+      (let ((channel-index 0))
+	(setf bank-lsb (or bank bank-lsb))
+	(setf program-number (or program-number program))
+	(list (cons time (midi-control-change channel-index 0 bank-msb))
+	      (cons time (midi-control-change channel-index 32 bank-lsb))
+	      (cons (+ time 0.05) (midi-program-change channel-index program-number))))))
+
+(instrument +modx+
+	    :parent +root-instrument+
+	    :channel 1
+	    :transient nil)
 
 
-(param *current-modx-performance* nil)
-
-(constant +modx-properties+
-	  (append +instrument-properties+
-		  '(:program-bank-lsb)))
-
-(defclass modx-performance (instrument)
-  ((channels
-    :type vector
-    :initform (->vector (copies 16))
-    :accessor modx-channels))
-  (:documentation "A specialized Instrument for Yamaha MODX performance.
-The performance does not directly produce events.  Instead child
-instruments should be added to correspond to each performance part/channel."))
-
-(defun make-modx-performance (name bank program-number &key
-				   remarks (parent +root-instrument+))
-  "Creates new instance of modx-performance.
-bank should be a symbol as listed in +MODX-BANKS+ association list.
-program is a MIDI program number 1..128.
-
-The new instance becomes the default for add-modx-part macro."
-  (let* ((bank-values (or (cdr (assoc bank +modx-banks+))
-	 		  (progn 
-	 		    (cyco-warning (sformat "Unknowns MODX bank: ~A, using default" bank))
-	 		    '(64 0))))
-	 (bank-msb (car bank-values))
-	 (bank-lsb (second bank-values))
-	 (inst (make-instance 'modx-performance
-			      :properties +modx-properties+
-			      :name name 
-			      :remarks remarks)))
-    (connect parent inst)
-    (if (not (and (plusp program-number)(<= program-number 128)))
-	(progn
-	  (cyco-warning (sformat "MODX program-number out of bounds: ~A, using default"
-				 program-number))
-	  (setf program-number 1)))
-    (put inst :program-number (1- program-number))
-    (put inst :program-bank bank-msb)
-    (put inst :program-bank-lsb bank-lsb)
-    (let ((pmap #'(lambda (time &key bank program)
-		    (declare (ignore bank))
-    		    (let* ((t0 (max 0 (- time 0.005)))
-			   (t1 (+ t0 0.002))
-			   (t2 (+ t0 0.004))
-    			  (cindex 0))
-    		      (cond ((eq program :doc)
-    			     (format t "MODX ~A program ~A  bank-msb ~A  bank-lsb ~A"
-    				     name (1+ program-number) bank-msb bank-lsb)
-    			     '())
-    			    ((or (eq program :default)(not program))
-    			     (list (cons t0 (midi-control-change cindex 0 bank-msb))
-    				   (cons t1 (midi-control-change cindex 32 bank-lsb))
-    				   (cons t2 (midi-program-change cindex program-number))))
-    			    (t
-			     (list (cons t0 (midi-control-change cindex 0 bank-msb))
-    				     (cons t1 (midi-control-change cindex 32 bank-lsb))
-    				     (cons t2 (midi-program-change cindex program)))))))))
-      (put inst :program-map pmap))
-    (setf *current-modx-performance* inst)
-    inst))
-      
-
-(defmacro modx-performance (name bank program-number &key remarks (parent +root-instrument+))
-  "Creates new instance of modx-performance and bind it to the symbol name.
-Otherwise modx-performance and make-modx-performance have identical usage."
-  `(let ((inst (make-modx-performance ',name ,bank ,program-number
-				      :remarks (or ,remarks "MODX Performance")
-				      :parent ,parent)))
+(defmacro modx-performance (name bank-msb bank-lsb program-number)
+  `(let ((inst (make-instrument ',name
+				:parent +modx+
+				:transient t)))
+     (set-program-map inst (modx-program-map ,bank-msb ,bank-lsb ,program-number))
      (defparameter ,name inst)
      inst))
 
-(defmacro add-modx-part (name channel &key
-			      (modx *current-modx-performance*)
-			      keynumber-map
-			      articulation-map
-			      dynamic-map
-			      remarks)
-  "Adds new part/channel to Yamaha modx-performance. 
-The object bound to *current-modx-performance* is used by default.
-The new instrument is bound to the symbol name."
+
+(defmacro modx-instrument (name modx-performance channel &key
+				(keynumber-map (basic-keynumber-map))
+				(dynamic-map (basic-dynamic-map))
+				(articulation-map (basic-articulation-map)))
   `(let ((inst (make-instrument ',name
+				:parent ,modx-performance
 				:channel ,channel
 				:keynumber-map ,keynumber-map
-				:articulation-map ,articulation-map
 				:dynamic-map ,dynamic-map
-				:remarks (sformat "~A" (or ,remarks "")))))
-     (connect ,modx inst)
-     (put inst :program-map nil)
-     (setf (aref (modx-channels ,modx)(1- ,channel)) inst)
+				:articulation-map ,articulation-map
+				:transient t)))
      (defparameter ,name inst)
      inst))
-

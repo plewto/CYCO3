@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Sysex Events</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=meta-text.html class="navigation">Previous: meta-text </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <h1 class="banner">System Exclusive Events</h1>
+  <p class="body">
+    The <b>SYSEX</b> inserts System Exclusive messages into a
+    Section.
+  </p>
+  
+  <!-- (MAKE-SYSEX-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-SYSEX-PART name &key ...)</b><br>
+  
+  <!-- (SYSEX-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(SYSEX-PART name &key ...)</b><br>
+  <pre class="description">
+    MAKE-SYSEX-PART and SYSEX are identical except SYSEX binds the new part to
+     the symbol name while MAKE-SYSEX-PART does not.  name should be a quoted
+     symbol for MAKE-SYSEX-PART and unquoted for SYSEX.
+    
+        name     - symbol
+        :section - parent section, defaults to current section.
+        :cuefn   - cue function, defaults to section value.
+        :shift   - time shift amount, defaults to 0 seconds.
+        :render-once - Boolean, if non-nil do not repeat events while rendering.
+        :remarks - optional remarks text
+        :events  - list of event specifications, see below
+    
+    events are a nested list of form 
+    
+        ((time-1) data...)
+         (time-2) data...)
+          ...............
+         (time-n) data...))
+    
+    Where time is in a format accepted by the cue function,  the default format
+    is (bar beat sub-beat)
+    
+    data is System Exclusive data bytes.   Do not include the SYSEX or
+    END-SYSEX status bytes.   Each data is a 7-bit byte   0 &le; data &le; 127.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=meta-text.html class="navigation">Previous: meta-text </a> &nbsp;<a href=specialized-parts.html class="navigation">Next: specialized-parts </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

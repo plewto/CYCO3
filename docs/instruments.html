@@ -43,7 +43,7 @@
     MIDI equipment. <br>
     
     CYCO does not define an <i>orchestra</i> object parse, instead the term
-    'orchestra' refers to the tree rooted at <br><strong>*ROOT-INSTRUMENT*</strong>. All
+    'orchestra' refers to the tree rooted at <br><strong>+ROOT-INSTRUMENT+</strong>. All
     instruments are linked to this tree. <br><br>
     
     
@@ -195,10 +195,10 @@
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="root-instrument"></a>
   
-  <!-- *ROOT-INSTRUMENT* -->
+  <!-- +ROOT-INSTRUMENT+ -->
   <!--  -->
   <!--  -->
-  <b class="definition">*ROOT-INSTRUMENT*</b><br>
+  <b class="definition">+ROOT-INSTRUMENT+</b><br>
   <p class="summery">Forms the root of the orchestra tree.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="null-instrument"></a>
@@ -236,7 +236,7 @@
     MAKE-INSTRUMENT.
     
     	name              - Symbol 
-    	:parent           - The parent instrument, default *ROOT-INSTRUMENT*
+    	:parent           - The parent instrument, default +ROOT-INSTRUMENT+
     	:transient        - Boolean, set to nil if the instrument is being defined by a project.
     	                    default nil.
     	:channel          - MIDI channel, defaults to parent channel.

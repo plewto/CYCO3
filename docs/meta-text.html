@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="robots" content="index,follow,archive">
+      <meta name="keywords" content="NIL">
+      <link rel="stylesheet" type="text/css" href="style.css"/>
+      <title>Meta Text Events</title>
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'/>
+      <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'/>
+  </head>
+  
+<body lang="en-US">
+  <a id="top"></a>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=transformer.html class="navigation">Previous: transformer </a> &nbsp;<a href=sysex.html class="navigation">Next: sysex </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <h1 class="banner">Meta Text Events</h1>
+  <p class="body">
+    Meta-text events are inserted into a section by the <b>TEXT-PART</b> macro.
+  </p>
+  
+  <!-- (MAKE-TEXT-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-TEXT-PART name &key ...)</b><br>
+  
+  <!-- (TEXT-PART name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(TEXT-PART name &key ...)</b><br>
+  <pre class="description">
+    MAKE-TEXT-PART and TEXT-PART are identical except TEXT-PART
+    binds the new instance to the symbol name while MAKE-TEXT-PART does not.
+    The name argument should be a quoted symbol for make-text-part and
+    unquoted for text-part.
+    
+         name     - symbol
+         :section - parent section, defaults to current section.
+         :cuefn   - cueing function, defaults to section value
+         :shift   - time shift, defaults to 0 seconds.
+         :remarks - optional remarks text
+         :events  - text-event specifications, see below.
+    
+    The events is a nested list of form:
+    
+         :events '((time-1) type text...)
+                   (time-2) type text...)
+                    ....................
+                   (time-n) type text...))
+    
+    Where time is in a format expected by the cue function.  The default time
+    specification is a list (bar beat sub-beat).
+    
+    type is a keyword indicating the type of text event.   Possible values are
+    
+          :copyright
+          :cue
+          :instrument-name
+          :lyric
+          :marker
+          :text
+          :track-name
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a href=index.html class="link">Home</a> &nbsp;<a href=transformer.html class="navigation">Previous: transformer </a> &nbsp;<a href=sysex.html class="navigation">Next: sysex </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
+  
+</body>
+</html>

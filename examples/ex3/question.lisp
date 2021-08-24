@@ -1,4 +1,4 @@
-;;;; CYCO3 examples ex3 question.lisp
+;;;; CYCO examples ex3 question.lisp
 ;;;;
 
 

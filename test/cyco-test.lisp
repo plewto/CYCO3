@@ -1,4 +1,4 @@
-;;;; CYCO3 test/cyco-test
+;;;; CYCO test/cyco-test
 ;;;;
 
 ;; If true failed rest produce an error.

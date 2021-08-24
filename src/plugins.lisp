@@ -4,7 +4,7 @@
 ;;;; Plugins may be located in multiple locations but the following
 ;;;; two are expected:
 ;;;;
-;;;;    cyco3/plugins/            ;; Plugins provided with CYCO
+;;;;    cyco/plugins/            ;; Plugins provided with CYCO
 ;;;;    ~/.config/cyco/plugins/   ;; User defined plugins
 ;;;;
 ;;;; Additional locations may be specified by calling
@@ -13,7 +13,7 @@
 ;;;;
 ;;;; If more then one directory contains the same plugin, the location
 ;;;; added to the search-path last is used.   By default plugins 
-;;;; in ~/.config/cyco/plugins/ shadow those in cyco3/plugins/
+;;;; in ~/.config/cyco/plugins/ shadow those in cyco/plugins/
 ;;;; 
 
 (in-package :cyco)

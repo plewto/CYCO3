@@ -17,3 +17,8 @@
 (defun monitor-off ()
   (osc-send "exec" (sformat "op ~A, enable, ~A" *monitor* "true")))
 
+(defun monitor-log (log-filename)
+  (osc-send "exec" (sformat "op ~A, open-logfile, ~A" *monitor* log-filename)))
+
+(defun monitor-close-log ()
+  (osc-send "exec" (sformat "op ~A, close-log-file" *monitor*)))

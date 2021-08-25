@@ -226,6 +226,8 @@ Sets parameters for Pigiron server.
 	  monitor-exclude
 	  monitor-on
 	  monitor-off
+	  monitor-log
+	  monitor-close-log
           sysex
 	  info
 	  in-channels

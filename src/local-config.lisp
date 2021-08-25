@@ -5,7 +5,7 @@
 
 (in-package :cyco)
 
-(setf *cyco-location* "~/cyco")
+(setf *cyco-location* "~/cyco3")
 (setf *config-directory* "~/.config/cyco")
 
 (push-plugin-search-path (join-path *cyco-location* "plugins"))

@@ -50,13 +50,15 @@
 (defmacro modx-instrument (name modx-performance channel &key
 				(keynumber-map (basic-keynumber-map))
 				(dynamic-map (basic-dynamic-map))
-				(articulation-map (basic-articulation-map)))
+				(articulation-map (basic-articulation-map))
+				(remarks ""))
   `(let ((inst (make-instrument ',name
 				:parent ,modx-performance
 				:channel ,channel
 				:keynumber-map ,keynumber-map
 				:dynamic-map ,dynamic-map
 				:articulation-map ,articulation-map
-				:transient t)))
+				:transient t
+				:remarks (->string (or ,remarks "")) )))
      (defparameter ,name inst)
      inst))

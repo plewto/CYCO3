@@ -47,6 +47,8 @@
 				:parent +modx+
 				:transient t)))
      (set-program-map inst (modx-program-map ,bank-msb ,bank-lsb ,program-number))
+     ;;(put inst :program-number ,program-number)
+     ;;(put inst :program-bank ,bank-msb)
      (defparameter ,name inst)
      (setf *current-modx-performance* inst)
      inst))

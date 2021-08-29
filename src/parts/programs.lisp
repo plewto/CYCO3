@@ -84,9 +84,15 @@ Programs are always a leaf node."))
 	      (put new-programs-part :reversible nil)
 	      (setf prognum (or prognum :default))
 	      (setf bank (or bank :default))
+	      (if (eq bank :default)
+		  (setf bank (or (property instrument :program-bank) 0)))
+	      (if (eq prognum :default)
+		  (setf prognum (or (property instrument :program-number) 0)))
 	      (setf midi-events (append midi-events 
 					(program-change-events instrument event-time 
-							       :bank bank :program prognum))) ))
+							       :bank bank
+							       :program prognum
+							       ))) ))
 	  (setf (programs-events new-programs-part) (sort-midi-events midi-events))
 	  new-programs-part)))))
 	  

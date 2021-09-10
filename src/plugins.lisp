@@ -60,6 +60,9 @@ memory.  Instead it simply marks them as never having been loaded."
 	"Locates directory for named plugin.
 A nil result indicates a matching plugin can not be found."
 	(find-plugin-location (format-name name) search-path verbose))
+
+      (defun current-plugin-path ()
+	(string-downcase (car current-plugin-stack)))
       
       (defun load-plugin-file (name)
 	"Loads a file relative to the current plugin."

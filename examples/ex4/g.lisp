@@ -53,6 +53,7 @@
 			   :monitor #'(lambda (n)
 					(>= n 80))
 			   :action #'(lambda (cntr v)
+				       (declare (ignore v))
 				       (setf (initial-value cntr) 74)
 				       (setf (final-value cntr) 24)
 				       (setf (counter-increment cntr) -3)

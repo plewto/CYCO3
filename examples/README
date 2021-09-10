@@ -1,0 +1,49 @@
+CYCO Examples README
+
+This directory contains several example projects.  To render the
+examples you may either copy the individual project folders to
+~/cyco-projects or change the the value of *PROJECT-ROOT*
+
+(setf *PROJECTS-ROOT* "~/cyco3/examples")
+
+All examples use the general-midi plugin.
+
+
+ex1   The basics, creates a simple folk song.
+      - Create project
+      - Load project related files.
+      - Defining an "orchestra"
+      - Defining a PREROLL section.
+      - Creating sections
+      - instrument groups and mute function.
+      - Cloning a section.
+      - Using STRUMMER parts with simple chords.
+
+ex2   Slightly more complex example produces first section of Brian Eno's
+      "The Great Pretender".
+      - QBALL parts.
+      - DICE pattern for randomization.
+      - MIDI controller events.
+
+ex3   Charles Ive's "The Unanswered Question"
+      - Using alternate cue function for complex time specification.
+      - Misusing a shuffle function to add time randomization.
+      - Instrument keynumber-map for transposition.
+      - Instrument dynamic-map for mixing.
+      - More complex controller events.
+
+ex4   Pattern and Generators
+      - More QBALL and CYCLE patterns.
+      - LINE pattern
+      - BAG pattern
+      - DICE and WALKER patterns.
+      - COIN and WRAPPER patterns
+      - COUNTER, RAMP and ASR-ENVELOPE generators.
+      - SHIFT-REGISTER generator
+      - Recaman generator
+      - Hailstone generator
+      - Logistic generator
+      - SLOW-GLASS and PALINDROME
+      - Using ALLOY to compose two generators.
+      
+      

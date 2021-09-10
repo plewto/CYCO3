@@ -8,7 +8,7 @@
 (section n :bars 8 :tempo 120)
 
 (let* ((piano-cue-list (create-cue-list :bars 2))
-       (motif (lfo :curve (keynumber '(c5 ef5 bf5 g5 c6))))
+       (motif (cycle :of '(c5 ef5 bf5 g5 c6)))
        (piano-keys (next motif 5))  
 
        ;; Slowglass extends the motif.

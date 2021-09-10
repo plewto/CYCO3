@@ -144,7 +144,7 @@
 ;;;    :MUTE   - Mute the part or group.
 ;;;    :UNMUTE - Unmute the part or group.
 ;;;    :SOLO   - Unmute the part or group while muting all other parts.
-;;;    nil     - Mute state remains the unchanged.
+;;;    nil     - Mute state remains unchanged.
 ;;;
 ;;; Generally groups are listed before individual parts.  This allows the
 ;;; the group state to be set and then exceptions made for the individual

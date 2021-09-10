@@ -30,7 +30,7 @@
                        (:time (4 1 1) :key fs5 :dur h    )
                        (:time (4 3 1) :key f5  :dur q    )
                        (:time (4 4 1) :key fs5           )
-                       (:time (5 1 1) :key f5  :dur h+e  ) ;; add half and eighth notes.
+                       (:time (5 1 1) :key f5  :dur h+e  ) ;; tied half and eighth notes.
                        (:time (5 3 3) :key f5  :dur e    )
                        (:time (5 4 1) :key fs5           )
                        (:time (5 4 3) :key g5            )

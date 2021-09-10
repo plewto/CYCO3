@@ -4,7 +4,7 @@
 ;;;;
 ;;;; The BAG pattern returns it's elements at random without replacement.
 ;;;; Once all elements have been returned, it returns a final value
-;;;; indefinitly.  By default thet final value is NIL but it may be any
+;;;; indefinitly.  By default the final value is NIL but it may be any
 ;;;; pattern or generator.
 ;;;;
 

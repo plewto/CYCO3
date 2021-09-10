@@ -30,7 +30,7 @@
 ;;
 ;;     (WRAPPER &key of period)
 ;;
-;; :of     - The wrapped function of form (lambda (n) ) where n is an
+;; :of     - The wrapped function of form (lambda n) where n is an
 ;;           internal counter and there is no prescribed return-type.
 ;;           The default (lambda (n) n) performs like a cyclical counter. 
 ;;

@@ -21,7 +21,7 @@
 ;;         A 1 indicates feedback is selected.
 ;;
 ;; :mask - Set register length. Typically a register of length n
-;;         will have all bits set in an n-length binary word.
+;;         will have all bits set in an n-bit binary word.
 ;;         Stages may be eliminated from the output by clearing
 ;;         the corresponding mask bit.  The register has a maximum
 ;;         length of 16-bits.

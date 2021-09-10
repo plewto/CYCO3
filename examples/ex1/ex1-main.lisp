@@ -6,7 +6,7 @@
 ;;;;
 ;;;;   1) "preroll" - Program-changes with a metronome count-in.
 ;;;;   2) "A"  - The piece as scored.
-;;;;   3) "B"  - Clone of section, replaces flute with clarinet.
+;;;;   3) "B"  - Clone of section A, replaces flute with clarinet.
 ;;;;
 ;;;; See score.png
 ;;;;

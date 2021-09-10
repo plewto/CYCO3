@@ -9,8 +9,8 @@
  :bars 1
  :instruments (list bass piano vibes synth guitar *metronome*))
 
-(controllers initialize-controllers (list bass piano vibes synth
-					  guitar gm-percussion *metronome*)
+(controllers initialize-controllers
+	     (list bass piano vibes synth guitar gm-percussion *metronome*)
 	     :events '((:cc (1 1 1) volume 127)
 		       (:cc (1 1 1) portamento 0)))
 

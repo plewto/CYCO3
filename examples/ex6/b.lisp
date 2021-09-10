@@ -3,7 +3,7 @@
 (section b :bars 16)
 
 
-;; In use, BENDER is nearly identical to CONTROLLERS.  There differences
+;; In use, BENDER is nearly identical to CONTROLLERS.  The differences
 ;; are as follows:
 ;;
 ;; 1) There is no :ctrl keyword.

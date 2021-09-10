@@ -23,6 +23,20 @@
   "An alias for defparameter."
   `(defparameter ,name ,value ,docstring))
 
+(global *os-path-root*)
+(global *os-path-separator*)
+(global *os-extension-separator*)
+(global *os-homedir-alias*)
+(global *cyco-location*)
+(global *config-directory*)
+(global *projects-root*)
+(global *project-main-filename-format*)
+(global *default-project-output-directory*)
+(global *project*)
+(global *metronome*)
+(global *ticks-per-beat* 480)
+
+
 (defmacro while (test &rest body)
   `(do ()
        ((not ,test))
@@ -60,6 +74,9 @@ a warning message is displayed and CYCO terminates."
 			(sformat "Current version   : ~A" +cyco-version+)
 			(sformat "Specified version : (~A ~A NIL)" major minor))
 	  (exit)))))
+
+
+
 
 (in-package :common-lisp-user)
 

@@ -38,7 +38,6 @@
        ;;     :quite   - Opposite of :verbose
        (manifest '(:quite
 		   "src/constants"
-		   "src/globals"
 		   "src/generics"
 		   "src/util/string-utilities"
 		   "src/util/banner"

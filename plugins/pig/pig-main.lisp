@@ -13,8 +13,11 @@
 ;;;;
 ;;;;
 ;;;;
-;;;; --> ChannelFilter --> Distributor --+--> MIDIOutput --> Monitor
-;;;;                        MIDIPlayer --+         
+;;;; Assumed Pigiron MIDI process graph
+;;;;
+;;;;     --> ChannelFilter --> Distributor --+--> MIDIOutput --> Monitor
+;;;;                            MIDIPlayer --+         
+;;;;
 ;;;;
 ;;;;  Lisp Var        Opertator      Name
 ;;;;  *midi-player*   MIDIPlayer     player

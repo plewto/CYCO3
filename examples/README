@@ -2,7 +2,7 @@ CYCO Examples README
 
 This directory contains several example projects.  To render the
 examples you may either copy the individual project folders to
-~/cyco-projects or change the the value of *PROJECT-ROOT*
+~/cyco-projects/ or change the the value of *PROJECT-ROOT*
 
 (setf *PROJECTS-ROOT* "~/cyco3/examples")
 
@@ -18,14 +18,15 @@ ex1   The basics, creates a simple folk song.
       - instrument groups and mute function.
       - Cloning a section.
       - Using STRUMMER parts with simple chords.
+      - Render to MIDI file
 
-ex2   Slightly more complex example produces first section of Brian Eno's
+ex2   Slightly more complex example produces first half of Brian Eno's
       "The Great Pretender".
       - QBALL parts.
       - DICE pattern for randomization.
       - MIDI controller events.
 
-ex3   Charles Ive's "The Unanswered Question"
+ex3   Charles Ives "The Unanswered Question"
       - Using alternate cue function for complex time specification.
       - Misusing a shuffle function to add time randomization.
       - Instrument keynumber-map for transposition.

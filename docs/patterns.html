@@ -315,7 +315,7 @@
     (param foo (bag :of '(A B C) :final 'end)))
     (next foo 8) &rarr; B A C END END END END END
     
-    The final element my itself be a pattern.
+    The final element may itself be a pattern.
     
     (param foo (bag :of '(A B C) :final (cycle :of '(ape bat)))
     (next foo 8) &rarr; C A B APE BAT APE BAT APE

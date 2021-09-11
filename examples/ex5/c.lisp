@@ -25,7 +25,7 @@
 
 (plugin guitar-chords)
 
-;; Using (?a 'guitar) after loading the plugin, reveals a new bound symbol
+;; Using (?a guitar) after loading the plugin, reveals a new bound symbol
 ;; *GUITAR-CHORD-MODEL*.   Use (?chords *GUITAR-CHORD-MODEL*) to display
 ;; the chord types it provides.   One thing to notice right away is that
 ;; guitar-chords defines variations on each generic chord-type.  Further

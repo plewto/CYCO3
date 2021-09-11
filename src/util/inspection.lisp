@@ -5,13 +5,15 @@
 
 (in-package :cyco)
 
-(defun ?d (sym)
-  "A shortcut abbreviation for describe"
-  (describe sym))
-  
-(defun ?a (sym &optional (package :CYCO))
-  "A shortcut abbreviation for apropos"
-  (apropos sym package))
+(defmacro ?d (sym)
+  "Convenience macro for describe.
+Do not quote the argument, use (?d foo)  not (?d 'foo)"
+  `(describe ',sym))
+
+(defmacro ?a (sym &optional (package :cyco))
+  "Convenience macro for apropos.
+Do not quote the argument.  Use (?a foo)  not (?a 'foo)"
+  `(apropos ',sym ,package))
 
 (defun ?kmap (instrument)
   "Displays instrument's keymap documentation."
@@ -55,8 +57,8 @@
 (defun ?? ()
   "Displays list of available inspection functions."
   (format t "(? object)      Displays info about object.~%")
-  (format t "(?a symbol)     Shortcut for (apropos symbol)~%")
-  (format t "(?d symbol)     Shortcut for (describe symbol)~%")
+  (format t "(?a symbol)     Shortcut for (apropos symbol)  do not quote symbol~%")
+  (format t "(?d symbol)     Shortcut for (describe symbol) do not quote symbol~%")
   (format t "(?o)            Displays orchestra tree.~%")
   (format t "(?p)            Displays current project structure.~%")
   (format t "(?chords)       Display chord table, takes optional argument.~%")

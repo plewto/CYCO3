@@ -109,7 +109,7 @@
 	  (strummer state instrument root-velocity)
 	  (if (not (strummer-state-key state))
 	      (return-from strum-chord nil))
-	  (let ((root-key (funcall (keynumber-map instrument)(strummer-state-key state))))
+	  (let ((root-key (strummer-state-key state)))
 	    (if (not (rest-p root-key))
 		(let* ((note-list (prepare-note-list strummer state root-key))
 		       (note-count (length note-list))
@@ -168,6 +168,7 @@
 	    (append
 	     (render-grace-note time state instrument velocity)
 	     (strum-chord strummer state instrument velocity))))
+	 
 
 	 (render-state 
 	  (strummer state instrument time-offset)

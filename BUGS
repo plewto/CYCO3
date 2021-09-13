@@ -85,7 +85,7 @@ BUG 0009 2021.01.12  Status OPEN
     under SBCL and CLISP.   This causes issues when setting various
     global values in util/paths.lisp    As coded SBCL works as expected
     but CLIPS elisits a warning.  On linux this does not pose any problems
-    but would cause CYCO to fail under windows.  
+    but would cause CYCO to fail under windows using CLSIP.
 
 --------------------------------------------------------------------
 BUG 0010 2021.01.31  Status CLOSED

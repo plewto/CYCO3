@@ -73,3 +73,4 @@
 
 (load-plugin-file "drumkits/real-brushes-kit")
 (load-plugin-file "drumkits/iranian-mix-kit")
+(load-plugin-file "drumkits/new-maple-custum-kit")

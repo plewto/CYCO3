@@ -74,6 +74,7 @@
 		   "src/generators/bones"
 		   "src/generators/logistic"
 		   "src/generators/alloy"
+		   "src/generators/euclid"
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"

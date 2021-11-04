@@ -80,7 +80,7 @@ https://oeis.org/A005132"))
 (setf (documentation 'recaman 'function)
       "Returns new RECAMAN generator.
 
-(recaman seed &key hook monitor action)
+(RECAMAN seed &key hook monitor action)
 
 seed - Integer, intial value
 :hook    - Function applied by value method to the internal value.

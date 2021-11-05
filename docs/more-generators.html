@@ -117,6 +117,62 @@
                Default (lambda (logistic value) value)
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="euclid"></a>
+  <H4 class="heading">Euclid</H4>
+  <img class="center" src="images/euclid.png" alt="euclid"/>
+  
+  <!-- (EUCLID length points &key shift hook monitor action) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(EUCLID length points &key shift hook monitor action)</b><br>
+  <p class="summery">Returns <a href='https://en.wikipedia.org/wiki/Euclidean_rhythm'>Euclidean rhythm</a> generator.    
+    See <a href='https://dbkaplun.github.io/euclidean-rhythm/'>on-line demo</a></p>
+  <pre class="description">
+    
+    Euclid divides a given integer length as evenly as possible by the number
+    of points.  If points does not evenly divide into length, the generated
+    points have unequal spacing.  This turns out to be particularly useful for
+    poly-rhythms
+  </pre>
+  <pre class="code">
+    
+       (param ec (euclid 8 5))
+       (next ec 5) &rarr; (0 2 3 5 6)
+    
+       The length argument of 8 determines the gamut of possible values 0..7.
+       These may be considered the 8 8th notes in a 4/4 bar.   The points
+       argument 5 selects specific notes out of this set.  
+    
+       To be used as a rhythm the 'raw' Euclid output must be converted to a
+       cue-list.  The generator hook function is ideal for this conversion.
+    
+       (param ec (euclid 8 5
+                          :hook #'(lambda (n)
+                                     (let ((sub (if (evenp n) 1 3))
+                                           (beat (truncate (+ (* n 1/2) 1))))
+                                       (list 1 beat sub)))))
+    
+        (next ec 5) &rarr; ((1 1 1) (1 2 1) (1 2 3) (1 3 3) (1 4 1))
+    
+    
+        The shift argument produces the same pattern but shifts the selected notes
+        
+        (param ec (euclid 8 5 :shift 2))
+        (next ec 5)  &rarr; (0 2 4 5 7)
+    
+    
+    
+        Typical Euclid implementations require the following conditions:
+    
+             Length and points are positive integers where points &le; length.
+    
+        This implementation allows points &gt; length, this will result in
+        duplicate values.  
+    
+        (param ec (euclid 8 9))
+        (next ec 9)  &rarr; (0 1 2 3 4 4 5 6 7)
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a href=index.html class="link">Home</a> &nbsp;<a href=alloy.html class="navigation">Previous: alloy </a> &nbsp;<a href=nodes.html class="navigation">Next: nodes </a> &nbsp;<a href=#top class="navigation">Top </a> &nbsp;<a href=contents.html class="navigation">Contents </a> &nbsp;
   
 </body>

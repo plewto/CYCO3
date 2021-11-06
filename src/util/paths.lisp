@@ -6,28 +6,32 @@
 
 (in-package :cyco)
 
-
+(defun platform ()
+  "Returns os type, one of :UNIX, :LINUX or :WIN32"
+  (or (find :unix *features*)
+      (find :linux *features*)
+      (find :win32 *features*)))
 
 ;; Set path parameters for current platform.
 ;;
-;; BUG 0009 PORTABILITY
+;; BUG 0009 PORTABILITY (may be closed, pending test on win32)
 ;; Testing shows SBCL and CLISP versions of (software-type) are
 ;; not consistent.  SBCL returns a simple one-word 'Linux', CLISP
 ;; returns much more.  Under posix systems this should not
 ;; pose any problems.
 ;;
-;; See possible solution see:
-;; https://stackoverflow.com/questions/4372568/how-can-i-determine-the-operating-system-and-hostname-using-common-lisp  
-;; 
-(let ((platform (software-type)))
-  (cond ((string= platform "Linux")
-	 (setf *os-path-root* "/"
-	       *os-path-separator* #\/
-	       *os-extension-separator* #\.
-	       *os-homedir-alias* #\~))
-	(t (let ((msg1 (sformat  "Platform ~A not currently supported." platform))
-		 (msg2 "Using default (Linux) path parameters."))
-	     (cyco-warning msg1 msg2)))))
+(let ((os (platform)))
+  (cond ((eq os :win32)
+	 (setf *os-path-root* (->string #p"C:")))
+	((or (eq os :linux)(eq os :unix))
+	 (setf *os-path-root* "/"))
+	(t (let ((msg1 "Can not determin operating system")
+		 (msg2 "Using '/' for path root."))
+	     (setf *os-path-root* "/")
+	     (cyco-warning msg1 msg2))))
+  (setf *os-path-separator* #\/
+	*os-extension-separator* #\.
+	*os-homedir-alias* #\~))
 
 (defun absolute-path-p (namestring)
   "Predicate, true if namestring indicates an absolute file name."

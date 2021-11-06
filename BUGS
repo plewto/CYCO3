@@ -79,13 +79,17 @@ BUG 0008 2020.11.21 Status OPEN
 
 
 --------------------------------------------------------------------
-BUG 0009 2021.01.12  Status OPEN
+BUG 0009 2021.01.12  Status OPEN  (May be closed, pending test on win32)
 
     The function (SOFTWARE-VERSION) does not return a consistent format
     under SBCL and CLISP.   This causes issues when setting various
     global values in util/paths.lisp    As coded SBCL works as expected
     but CLIPS elisits a warning.  On linux this does not pose any problems
     but would cause CYCO to fail under windows using CLSIP.
+
+    2021.11.06
+    Defined new portable 'platform; function
+    Tested with SBCL, CLISP and ABCL on Linux.
 
 --------------------------------------------------------------------
 BUG 0010 2021.01.31  Status CLOSED

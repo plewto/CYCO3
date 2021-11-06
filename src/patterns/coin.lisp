@@ -22,9 +22,8 @@ The head and tail values my individually be:
   2) Pattern -> execute next-1 and return result.
   3) Function -> call function with internal counter as argument.
 
-The head object is returned with probability p
+The head object is returned with probability p"))
 
-Note: (retrograde coin) flips head/tail probability."))
 
 (defmethod coin-p ((obj t)) nil)
 (defmethod coin-p ((c coin)) t)
@@ -64,3 +63,5 @@ Note: (retrograde coin) flips head/tail probability."))
 	:head (clone (car (elements mother)))
 	:tail (clone (second (elements mother)))
 	:length (pattern-length mother)))
+
+(defmethod retrograde ((c coin)) c)

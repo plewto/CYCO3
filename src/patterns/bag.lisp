@@ -54,10 +54,10 @@
   (invert (final-value bag) pivot)
   bag)
 
-(defmethod retrograde ((bag bag))
-  (call-next-method)
-  (retrograde (final-value bag))
-  bag)
+;; (defmethod retrograde ((bag bag))
+;;   (call-next-method)
+;;   (retrograde (final-value bag))
+;;   bag)
 
 (defmethod clone ((mother bag) &key &allow-other-keys)
   (bag :of (clone (seed mother))

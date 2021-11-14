@@ -38,14 +38,14 @@
     Generators may however be elements of a pattern.
   </p>
   <p class="body">
-    The generator methods <b>VALUE</b>, <b>NEXT-1</b> and <b>NEXT</b> function the same
-    for generators and patterns, except there is no :ALL or :REST option for
-    the generator version of NEXT.  Additionally generators have a value-hook function which is
+    The generic functions <b>VALUE</b>, <b>NEXT-1</b> and <b>NEXT</b> function the same
+    for generators and patterns, except there is no :ALL or :REST options.
+    Additionally generators have a value-hook function which is
     applied to the 'natural' value before being returned by the VALUE
     method.
   </p>
   <p class="body">
-    Additionally each generator instances has a pair of functions called <em>MONITOR</em> and <em>ACTION</em>.
+    Each generator instances has a pair of functions called <em>MONITOR</em> and <em>ACTION</em>.
     The monitor is a predicate called by NEXT-1.  If the monitor returns true for the current value, then the
     action function is executed.  The lambda form for the action function is specific to each generator type,
     in some cases it may modify the internal state of the generator.
@@ -107,23 +107,21 @@
   Returns the hook function applied to the internal-value.<br>
   The default function is the identity (lambda (n) n)</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
-  <a id="value"></a>
-  
-  <!-- (VALUE generator) -->
-  <!--  -->
-  <!--  -->
-  <b class="definition">(VALUE generator)</b><br>
-  <p class="summery">
-  Returns the internal-value of the generator after application of the 
-  hook-function.</p>
-  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="internal-value"></a>
   
   <!-- (INTERNAL-VALUE generator) -->
   <!--  -->
   <!--  -->
   <b class="definition">(INTERNAL-VALUE generator)</b><br>
-  <p class="summery">Returns the internal value of the generator.</p>
+  <p class="summery">Returns the current internal value of the generator.</p>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="value"></a>
+  
+  <!-- (VALUE generator) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(VALUE generator)</b><br>
+  <p class="summery">Returns the result of applying the hook function to the internal-value.</p>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="monitor"></a>
   

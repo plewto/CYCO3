@@ -102,7 +102,6 @@
 	  find-child
 	  flatten
 	  flatten1
-	  float-bar
 	  generator
 	  get-controller-number
 	  ghost

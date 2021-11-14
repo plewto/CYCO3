@@ -32,13 +32,8 @@ SB - Sub beat within beat, 1,2,3,... <= (subbeats time-signature), default 1
      Use 'T' prefix for triplet version of sub-bet
      T1,T2,T3,... <= (tsubbeats time-signature)
 
-TK - Tick offset, may be positive or negative integer, default 0.")
-      (float-bar-docstring
-"FLOAT-BAR is an alternate cuing function which allows fractional 
-beat parameters  (BR BT)
-BR - Bar number, integer >= 1
-BT - Beat number, float/rational >= 1"))
-
+TK - Tick offset, may be positive or negative integer, default 0."))
+  
   (labels ((warnfn (args)
 		   (cyco-cue-warning 'BAR args)
 		   0.0)
@@ -100,9 +95,5 @@ BT - Beat number, float/rational >= 1"))
 	     (tk (tick-value time-signature time-specification (aref v 3))) )
 	(float (+ br bt sb tk))))
     
-    (defun float-bar (time-signature time-specification)
-      float-bar-docstring
-      (let* ((v (->vector (fill-list (->list time-specification) '(1 1))))
-	     (br (bar-value time-signature time-specification (aref v 0)))
-	     (bt (* (beat-duration time-signature)(1- (aref v 1)))))
-	(float (+ br bt)))) )) 
+  
+    )) 

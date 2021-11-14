@@ -63,11 +63,16 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 	  :monitor (monitor mother)
 	  :action (action mother)))
 
+;; (defmethod value ((gen euclid))
+;;   (funcall (slot-value gen 'value-hook)
+;; 	   (mod (+ (slot-value gen 'shift)
+;; 		   (round (slot-value gen 'internal-value)))
+;; 		(slot-value gen 'length))))
+
 (defmethod value ((gen euclid))
   (funcall (slot-value gen 'value-hook)
-	   (mod (+ (slot-value gen 'shift)
-		   (round (slot-value gen 'internal-value)))
-		(slot-value gen 'length))))
+	   (+ (slot-value gen 'shift)
+	      (round (slot-value gen 'internal-value)))))
 
 (defmethod next-1 ((gen euclid))
   (prog1
@@ -101,51 +106,8 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 https://en.wikipedia.org/wiki/Euclidean_rhythm
 https://dbkaplun.github.io/euclidean-rhythm/
 
-The sequence is produced by dividing length as evenly as possible by
-points, where both length and points are positive integers.  Typically 
-0 < length, and 0 < points <= length.  If length and points have a GCD > 1,
-then the generated values are evenly spaced.   If length and points are
-relatively prime, the generated values are not evenly spaced.   It is this
-later case which produces the most interesting results.  
-
-Although typically points <= length, this implementation allows 
-points > length.  For points > length, duplicate values may appear. 
-
-The most common application is for rhythmic generation.  For example, for a
-length of 8, there are 8 possible resulting values: 0, 1, 2, ..., 7.  These
-may be treated as all of the 8th notes of a bar in 4/4.  The points
-argument determines which of the possible 8th notes are to be played. 
-
-    (param foo (euclid 8 4))
-    (next foo 4) --> (0 2 4 6) hit every down beat.
-
-    01234567
-    X-X-X-X-
+TODO Redo Euclid documentation (remove value mod expression)
 
 
-    (param foo (euclid 8 5))
-    (next foo 5) --> (0 2 3 5 6) hit down-beats 1, 2 & 4, up-beats 2 & 3
-
-    01234567
-    X-XX-XX-
-    
-
-The shift argument produces the same rhythmic pattern but shifts the
-selected notes
-
-    (param foo (euclid 8 5 :shift 2))
-    (next foo 5) --> (2 4 5 7 0)
-
-    01234567
-    X-X-XX-X
-
-Use a hook function to convert the raw numeric output to a cue-list
-
-    (param foo (euclid 8 5
-                       :hook #'(lambda (n)
-                                 (let ((sub (if (evenp n) 1 3))
-                                       (beat (truncate (+ (* n 1/2) 1))))
-                                   (list 1 beat sub)))))
-
-    (next foo 5) --> ((1 1 1) (1 2 1) (1 2 3) (1 3 3) (1 4 1))" )
+" )
 

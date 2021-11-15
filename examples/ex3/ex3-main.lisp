@@ -22,6 +22,9 @@
 (version 3)
 (plugin general-midi)
 
+
+;;
+;; ISSUE: Updates docs for tbar now beinging a built in function.
 ;; Due to rhythmic complexity, particularly with the woodwind "answers",
 ;; an alternative cueing-function is used.   See the "cue and shuffle
 ;; functions" section of the documentation.   The default BAR function can
@@ -52,6 +55,7 @@
 	(+ (* (1- bar-number) (bar-duration time-signature))
 	   (* 0.5 (1- triplet-number) (tbeat-duration time-signature))))
     (bar time-signature time-cue)))
+  
 
 ;; Create project
 ;;

@@ -191,6 +191,7 @@ Sets parameters for Pigiron server.
 (load-plugin-file "monitor")
 (load-plugin-file "filter")
 (load-plugin-file "distributor")
+(load-plugin-file "docs")
 
 (defun ping ()
   "(PIG:PING) Sends ping message to Pigiron server."
@@ -212,6 +213,7 @@ Sets parameters for Pigiron server.
 	  *monitor*
 	  *filter*
 	  *distributor*
+	  ?pig
           bend
           controller
           exit
@@ -238,7 +240,8 @@ Sets parameters for Pigiron server.
 	  q-channels)
 	:pig)
 
-(import '(pig:play
+(import '(pig:?pig
+	  pig:play
 	  pig:stop)
 	:cyco)
 

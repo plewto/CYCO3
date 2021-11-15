@@ -68,6 +68,7 @@
 	  constant-function
 	  copies
 	  counter
+	  cue
 	  cycle
 	  cycle-p
 	  cyco
@@ -307,6 +308,7 @@
 	  subbeats
 	  switch
 	  symbolic-keynumber-map
+	  tbar
 	  tbeat-duration
 	  tbeats
 	  tempo

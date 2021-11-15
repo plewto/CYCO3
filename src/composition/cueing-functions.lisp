@@ -32,7 +32,16 @@ SB - Sub beat within beat, 1,2,3,... <= (subbeats time-signature), default 1
      Use 'T' prefix for triplet version of sub-bet
      T1,T2,T3,... <= (tsubbeats time-signature)
 
-TK - Tick offset, may be positive or negative integer, default 0."))
+TK - Tick offset, may be positive or negative integer, default 0.")
+
+      (tbar-docstring
+       "TBAR is an alternate cueing function which is easier to use for triplets.
+TBAR behaves exactly like BAR unless the first element of the time-cue is the
+symbol 't, in which case it switches to eighth-note triplet mode.
+
+      (T BAR-NUMBER TRIPLET-NUMBER)
+
+For a 4/4 bar  1 <= triplet-number <= 12") )
   
   (labels ((warnfn (args)
 		   (cyco-cue-warning 'BAR args)
@@ -95,5 +104,43 @@ TK - Tick offset, may be positive or negative integer, default 0."))
 	     (tk (tick-value time-signature time-specification (aref v 3))) )
 	(float (+ br bt sb tk))))
     
-  
-    )) 
+    (defun tbar (time-signature time-cue)
+      tbar-docstring
+      (if (eq (car time-cue) 't)
+	  (let ((bar-number (or (second time-cue) 1))
+		(triplet-number (or (third time-cue) 1)))
+	    (+ (* (1- bar-number) (bar-duration time-signature))
+	       (* 0.5 (1- triplet-number) (tbeat-duration time-signature))))
+	(bar time-signature time-cue))) ))
+
+
+
+
+;; time-cue (bar n &optional division)
+;;
+(defun cue-n (time-signature time-cue)
+  (let* ((br (max 0 (1- (or (car time-cue) 1))))
+	 (n (max 0 (or (second time-cue) 0)))
+	 (d (max 1 (or (third time-cue) 16)))
+	 (brdur (bar-duration time-signature))
+	 (uint (/ brdur d)))
+    (+ (* br brdur)
+       (* n uint))))
+	
+(setf (documentation 'cuen 'function)
+      "CUE-N is a cuining function which divides the bar into evenly spaced intervals.
+The time-cue format has the form 
+
+     (BR N &optional DIV)
+
+Where:
+ 
+     BR  - bar number  0 < br
+     N   - count       0, 1, 2, 3, ...
+     DIV - optional division, defaults to 16,  0 < div
+
+Note BR is counted from 1 while N is counted from 0.
+Further N may extend past the bar boundary.
+
+     (3 4)  - bar 3, 4th sixteenth note  .... X... .... ....
+     (0 16) - start of bar 2             .... .... .... ....  X...")

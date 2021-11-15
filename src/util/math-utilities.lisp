@@ -47,3 +47,10 @@ value  - number,
       (setf acc (+ acc (if (char= (char s i) #\1) 1 0))))
     (if (evenp acc) 0 1)))
     
+(defun n-complement (gamut lst)
+  "Returns list of all elements numbers gamut which are not in list."
+  (let ((acc '()))
+    (dolist (n (->list gamut))
+      (if (not (member n lst))
+	  (push n acc)))
+    (reverse acc)))

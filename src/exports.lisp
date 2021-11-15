@@ -203,6 +203,7 @@
 	  mute
 	  mute-all
 	  muted-p
+	  n-complement
 	  name
 	  next
 	  next-1

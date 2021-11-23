@@ -95,10 +95,8 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 
 
 (defmethod cue-function ((gen euclid))
-  "Returns cue-function  for this specific instance of Euclid."
-  #'(lambda (time-signature time-cue)
-      (cue-n time-signature (list 0 time-cue (slot-value gen 'length)))))
-
+  "Returns cue-function for this specific instance of Euclid."
+  (cue-n (slot-value gen 'length)))
 
 (setf (documentation 'euclid 'function)
       "Creates 'Euclidean Rhythm' Generator.

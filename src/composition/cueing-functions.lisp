@@ -114,33 +114,42 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 	(bar time-signature time-cue))) ))
 
 
-
-
-;; time-cue (bar n &optional division)
-;;
-(defun cue-n (time-signature time-cue)
-  (let* ((br (max 0 (1- (or (car time-cue) 1))))
-	 (n (max 0 (or (second time-cue) 0)))
-	 (d (max 1 (or (third time-cue) 16)))
-	 (brdur (bar-duration time-signature))
-	 (uint (/ brdur d)))
-    (+ (* br brdur)
-       (* n uint))))
+(defun cue-n (division)
+  #'(lambda (time-signature time-cue)
+      (let* ((br (max 0 (1- (or (car time-cue) 1))))
+	     (n (max 0 (or (second time-cue) 0)))
+	     (jog (or (third time-cue) 0))
+	     (brdur (bar-duration time-signature))
+	     (ndur (/ brdur division))
+	     (jdur (/ ndur 16)))
+	(+ (* br brdur)
+	   (* n ndur)
+	   (* jog jdur)))))
 	
-(setf (documentation 'cuen 'function)
-      "CUE-N is a cuining function which divides the bar into evenly spaced intervals.
-The time-cue format has the form 
+		 
+(setf (documentation 'cue-n 'function)
+      "CUE-N returns a cuing-function which evenly divides a bar into division sections.
 
-     (BR N &optional DIV)
+The time-cue argument for the resulting function has the form
 
-Where:
- 
-     BR  - bar number  0 < br
-     N   - count       0, 1, 2, 3, ...
-     DIV - optional division, defaults to 16,  0 < div
+    (bar n [jog])
 
-Note BR is counted from 1 while N is counted from 0.
-Further N may extend past the bar boundary.
+bar - bar-number 1, 2, 3, ...
+n   - number of division units after the start of the bar  0, 1, 2, ...
+      The n argument may be greater then the division to set a time after 
+      the current bar.
+jog - optional finer grained offset, shifts time by jog/16 of the division 
+      unit.  jog may be negative or positive.
 
-     (3 4)  - bar 3, 4th sixteenth note  .... X... .... ....
-     (0 16) - start of bar 2             .... .... .... ....  X...")
+
+Example 
+
+     (param tsig (time-signature :tempo 60 :bars 4 :beats 4))
+     (param fn (cue-n 4))
+
+     (funcall fn tsig '(1))     --> 0.00    start bar 1
+     (funcall fn tsig '(1 0))   --> 0.00    beat 1, bar 1
+     (funcall fn tsig '(1 1))   --> 1.00    beat 2, bar 1
+     (funcall fn tsig '(1 1 4)) --> 1.25    first 16th note after beat 1
+     (funcall fn tsig '(nil 4)) --> 4.00    start of bar 2")
+

@@ -94,9 +94,15 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
     (1- points)))
 
 
-(defmethod cue-function ((gen euclid))
-  "Returns cue-function for this specific instance of Euclid."
-  (cue-n (slot-value gen 'length)))
+;; (defmethod cue-function ((gen euclid))
+;;   "Returns cue-function for this specific instance of Euclid."
+;;   (cue-n (slot-value gen 'length)))
+
+(defmethod cue-function ((gen euclid) &key division)
+  (let ((fn (cue-n (or division (slot-value gen 'length)))))
+    #'(lambda (time-signature point)
+	(funcall fn time-signature (list 0 point)))))
+
 
 (setf (documentation 'euclid 'function)
       "Creates 'Euclidean Rhythm' Generator.

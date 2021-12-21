@@ -351,7 +351,7 @@ rounding errors."))
 
 (defgeneric find-child (parent child)
   (:documentation
-   "Find indicated child of parent.
+   "Find indicated child from tree
 Returns nil if no such child exists."))
 
 (def-type-predicate group-p

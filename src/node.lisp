@@ -94,14 +94,11 @@ not."))
 (defmethod root-p ((node cyco-node))
   (not (parent node)))
 
+(defmethod leaf-p ((node cyco-node))
+  (null (children node)))
+
 (defmethod child-of-p ((parent cyco-node)(child cyco-node))
   (eq parent (parent child)))
-
-(defmethod find-child ((parent cyco-node)(child cyco-node))
-  (find child (children parent)))
-
-(defmethod find-child ((parent cyco-node)(child-name symbol))
-  (find child-name (children parent) :test #'(lambda (a b)(eq a (name b)))))
 
 (defmethod path-to-root ((n null)) nil)
 
@@ -208,3 +205,16 @@ not."))
     (format t "      [~24A] --> ~A~%" k (property n k))))
 
 (constant +NULL-NODE+ (make-instance 'cyco-node))
+
+(let ((found nil))
+  (labels ((-find-child (parent child-name)
+			(setf found (or found
+					(find child-name (children parent)
+					      :test #'(lambda (a b)(eq a (name b))))))
+			(if (null found)
+			    (dolist (c (children parent))
+			      (-find-child c child-name)))))
+	  (defmethod find-child ((parent cyco-node)(child-name symbol))
+	    (setf found nil)
+	    (-find-child parent child-name)
+	    found)))

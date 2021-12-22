@@ -266,7 +266,7 @@
 	   ;; :cc ctrl value    0 <= ctrl < 128,  0 <= value < 128
 	   (process-controller 
 	    (strummer state event clause)
-	    (let ((controller-number (get-controller-number (second clause) :default 1))
+	    (let ((controller-number (get-controller-number (second clause)))
 		  (value (expect-integer strummer event clause :position 2 :min 0 :max 127 :default 0)))
 	      (setf (strummer-state-controller-number state) (or controller-number 0)
 		    (strummer-state-controller-value state) value)))

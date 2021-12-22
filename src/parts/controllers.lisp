@@ -144,7 +144,7 @@
 		;;  'pressure)
 		((string= (->string ctrl) "PRESSURE")
 		 'pressure)
-		(t (get-controller-number ctrl :default 1))))
+		(t (get-controller-number ctrl))))
 	 
 	 (process-controller-type
 	  (state clause)

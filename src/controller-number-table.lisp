@@ -25,11 +25,15 @@
 	  (format t "    ~12A --> ~3D~%" (car ctrl)(cdr ctrl)))))
   
 
+  (defun controller-p (ctrl)
+    (or (and (integerp ctrl)(>= ctrl 0)(< ctrl 128))
+	(gethash (->symbol ctrl) controller-table)))
+  
   (defun get-controller-number (ctrl)
     (or (and (integerp ctrl)(>= ctrl 0)(< ctrl 128) ctrl)
 	(gethash (->symbol ctrl) controller-table)
 	(cyco-error (sformat "Undefined contoller ~A" ctrl))))
-
+  
   (defun initialize-controller-table ()
     (setf controller-table (make-hash-table :size 128))
     (define-controller 'bank-select  0)

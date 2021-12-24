@@ -66,6 +66,7 @@
 	  constant
 	  constant-articulation-map
 	  constant-function
+	  controller-p
 	  copies
 	  counter
 	  cue

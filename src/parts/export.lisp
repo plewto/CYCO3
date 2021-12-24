@@ -23,6 +23,8 @@
 	  make-text-part
 	  make-transformer
 	  metronome
+	  mixer
+	  make-mixer
 	  programs
 	  qball
 	  qball-p
@@ -56,6 +58,8 @@
 	  cyco-part:make-text-part
 	  cyco-part:make-transformer
           cyco-part:metronome
+	  cyco-part:mixer
+	  cyco-part:make-mixer
           cyco-part:programs
           cyco-part:qball
           cyco-part:qball-p

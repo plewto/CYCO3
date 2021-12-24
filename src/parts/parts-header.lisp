@@ -35,6 +35,7 @@
 		:command
                 :connect
                 :constant
+		:controller-p
                 :copies
                 :copy-time-signature
                 :cycle
@@ -42,6 +43,7 @@
                 :cyco-node
                 :cyco-type-error
 		:cyco-warning
+		:cyco-error
                 :data
                 :defines-chord-p
                 :disconnect
@@ -54,6 +56,7 @@
                 :elide
                 :false
                 :final
+		:find-child
 		:flatten
                 :get-controller-number
                 :global

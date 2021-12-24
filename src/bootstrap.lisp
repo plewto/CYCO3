@@ -122,12 +122,14 @@
 		   "src/parts/controllers-state"
 		   "src/parts/controllers"
 		   "src/parts/controllers-render"
+		   "src/parts/mixer"
 		   "src/parts/transformer-docs"
 		   "src/parts/transformer"
 		   "src/parts/text"
 		   "src/parts/sysex-docs"
 		   "src/parts/sysex"
 		   "src/parts/export"
+		   
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
 		   "src/util/inspection"
@@ -135,7 +137,7 @@
 		   "src/local-config"
 		   "src/exports")))
 
-  (labels  ((load-cyco-source (filename &key (verbose t)(print nil))
+  (labels  ((load-cyco-source (filename &key (verbose nil)(print nil))
 		"Loads CYCO source file."
 		(let ((temp *load-print*))
 		  (setf current filename)
@@ -178,6 +180,6 @@
 	      (t (load-cyco-source file :verbose verbose :print print))))
       (customize)) ))
 
-(build-cyco)
+(build-cyco :verbose nil)
 
 

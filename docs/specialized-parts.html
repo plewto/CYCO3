@@ -59,6 +59,54 @@
     <li><a href='articulation-maps.html#metronome'>Articulation maps</a></li>
   </ul>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="mixer"></a>
+  <img class="center" src="images/mixer.png" alt="mixer"/>
+  <H2 class="heading">Mixer Part</H2>
+  <p class="body">
+    <i>Mixer</i> is a part for setting static MIDI volume levels.
+  </p>
+  
+  <!-- (MAKE-MIXER name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MAKE-MIXER name &key ...)</b><br>
+  
+  <!-- (MIXER name &key ...) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(MIXER name &key ...)</b><br>
+  <pre class="description">
+    MAKE-MIXER and MIXER are identical except the later binds the
+    new part to the symbol name.  The name argument should be quoted for
+    MAKE-MIXER and unquoted for MIXER.   Use CONTROLLERS for more generalized 
+    controller events.
+    
+           Keyword arguments:
+    
+            :section     - Parent section
+            :cuefn       - cue function
+            :shift       - time shift events
+            :tempo       - 
+            :unit        -
+            :bars        -
+            :beats       -
+            :subbeats    -
+            :render-once - If true, do not repeat 
+            :remarks     - optional remarks text
+            :events      - nested list of events, see below
+    
+          The events list has the form 
+    
+               '((time-a  channel-a1 volume-a1 channel-a2 volume-a2 ... channel-an volume-an)
+                 (time-b  channel-b1 volume-b1 channel-b2 volume-b2 ... channel-bn volume-bn)
+                 (.... ))
+    
+          Where
+             time has for expected by the cue function, by default (bar beat sub-beat)
+             channel is either an integer MIDI channel or an instrument name.
+             volume is an integer between 0 and 127 inclusive.
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="programs"></a>
   <H2 class="heading">Programs Part</H2>
   <p class="body">

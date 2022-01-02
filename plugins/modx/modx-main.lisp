@@ -27,9 +27,9 @@
 
 (defun modx-program-map (bank-msb bank-lsb program-number)
   #'(lambda (time &key bank program)
+      (declare (ignore bank program))
       (let ((channel-index 0))
-	(setf bank-lsb (or bank bank-lsb))
-	(setf program-number (or program-number program))
+	
 	(list (cons time (midi-control-change channel-index 0 bank-msb))
 	      (cons time (midi-control-change channel-index 32 bank-lsb))
 	      (cons (+ time 0.05) (midi-program-change channel-index program-number))))))

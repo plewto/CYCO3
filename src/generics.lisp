@@ -554,6 +554,10 @@ are muted.  A nil value leaves the current state as is."))
 (defmethod name ((object t)) nil)
 (defmethod name ((s symbol)) (symbol-name s))
 (defmethod name ((s string)) s)
+(defmethod name ((n number))(format nil "~A" n))
+(defmethod name ((lst list))(mapcar #'name lst))
+
+
 
 (defgeneric set-name (object new-name)
   (:documentation

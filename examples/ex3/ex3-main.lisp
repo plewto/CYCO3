@@ -13,7 +13,7 @@
 ;;;;  1) String section representing eternal existence.
 ;;;;  2) A solo instrument (English horn) plays a 5-note motif
 ;;;;     which repeatedly ask the "Perennial Question of Existence".
-;;;;  3) A woodwind quartet which profess an answer, but never provides one.
+;;;;  3) A woodwind quartet which profess an answer, yet never provides one.
 ;;;;
 ;;;; With each repetition of the question the answers become more agitated
 ;;;; and eventually start mocking the question.   The piece ends with the
@@ -23,8 +23,12 @@
 (plugin general-midi)
 
 
+;; NOTE: The following block illustrates using a custom cue-function called
+;; "TBAR".  The utility of TBAR became so obvious that it has since been 
+;; included as a standard CYCO function.  The version of TBAR developed 
+;; below is slightly different then the new standard version. 
 ;;
-;; ISSUE: Updates docs for tbar now beinging a built in function.
+
 ;; Due to rhythmic complexity, particularly with the woodwind "answers",
 ;; an alternative cueing-function is used.   See the "cue and shuffle
 ;; functions" section of the documentation.   The default BAR function can

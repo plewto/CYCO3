@@ -134,7 +134,7 @@
 
 ;;; A group allows multiple parts to be muted or soloed as a unit.
 ;;;
-(group piano-group (list a-piano-left a-piano-right))
+(group piano-group '(a-piano-left a-piano-right))
 
 
 ;;; Individual parts and groups may be muted or soloed.

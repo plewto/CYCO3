@@ -27,13 +27,13 @@
 (put b-melody :instruments vibes)
 
 
-;;; When cloning a section, groups are not included.  They have to
-;;; be manually redefined if desired.
+;;; When cloning a section, groups are not included,  they must be 
+;;; manually redefined if desired.
 ;;;
 
-(group b-piano-group (list b-piano-left b-piano-right))
+(group b-piano-group '(b-piano-left b-piano-right))
 
-(mute piano-group   nil )
+(mute b-piano-group   nil )
 (mute b-metronome   :mute)
 (mute b-melody      nil  )
 (mute b-piano-left  nil  )

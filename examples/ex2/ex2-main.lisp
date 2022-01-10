@@ -1,4 +1,4 @@
-;;;; CYCO examples ex2-main.lisp
+ ;;;; CYCO examples ex2-main.lisp
 ;;;;
 ;;;; Example 2 is a cover of the first half of Brian Eno's "The Great
 ;;;; Pretender".  The piece is built on a simple 8-bar motif which is
@@ -49,3 +49,4 @@
 ;; (dump-events b1)         ;; section b1
 ;; (dump-events b1-vibes)   ;; vibes part in section b1
 ;;
+

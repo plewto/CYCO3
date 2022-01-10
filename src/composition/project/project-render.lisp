@@ -50,3 +50,12 @@ file is  <user-home>/cyco-projects/foo/MIDI/foo.mid"
 		 ".mid")))
     (write-smf smf fname)
     smf))
+
+
+(defun partition-project (&key (project *project*)(unmute-all t))
+  "Render project into individual channels.
+A MIDI file is created for each non-empty channel for each section.
+If unmute-all is true, all parts are unmuted."
+  (dolist (sec (children project))
+    (partition sec :unmute-all unmute-all)))
+    

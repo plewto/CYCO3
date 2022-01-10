@@ -321,4 +321,43 @@ new-prefix  - prefix added to each name."
 (constant +NULL-SECTION+ (make-instance 'section
 					:name 'NULL-SECTION
 					:properties +SECTION-PROPERTIES+))
-					
+
+(labels ((unmute-all (section)
+		      (dolist (g (groups section))
+			(mute g :unmute))
+		      (dolist (c (children section))
+			(mute c :unmute)))
+	  
+	  (split-channels (section &key (unmute-all t))
+		    (if unmute-all (unmute-all section))
+		    (let ((events (render-once section))
+			  (acc (->vector (copies 16))))
+		      (dotimes (ci 16)
+			(let ((bcc '()))
+			  (dolist (evn events)
+			    (let ((msg (cdr evn)))
+			      (if (midi-channel-message-p msg)
+				  (if (eq (channel-index msg) ci)
+				      (push evn bcc))
+				(push evn bcc))))
+			  (setf (aref acc ci) (reverse bcc))))
+		      acc)))
+
+	(defmethod partittion ((sec section) &key (unmute-all t) &allow-other-keys)
+	  "Render Section to individual MIDI channels.
+Creates one file for each non-empty channel."
+	  (let ((sources (split-channels sec :unmute-all unmute-all))
+		(directory (car (split-path (section-filename :section sec)))))
+	    (dotimes (ci 16)
+	      (let* ((c (1+ ci))
+		     (c-events (aref sources ci))
+		     (fname (sformat "~A__CHAN_~2,'0D.mid" (name sec) c))
+		     (filename (join-path directory fname :as-file)))
+		(if (some #'(lambda (event)(midi-channel-message-p (cdr event))) c-events)
+		    (let ((trk (make-instance 'smf-track))
+			  (smf (smf)))
+		      (setf (aref (smf-tracks smf) 0) trk)
+		      (dolist (event c-events)
+			(push-event (car event)(cdr event) trk))
+		      (format t "Sec: ~A  Chan: ~02D  Count: ~4D : " (name sec) c (length c-events))
+		      (write-smf smf filename))))))))

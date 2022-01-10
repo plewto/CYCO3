@@ -293,7 +293,7 @@ After a disconnect the child becomes a root node."))
 (defgeneric duplicate-channel-message (message &key channel data1 data2)
   (:documentation
    "Returns new MIDI-CHANNEL-MESSAGE of the same type as message
-with optional channel and data byte chganges."))
+with optional channel and data byte changes."))
 
 (defgeneric dump-chords (chord-model)
   (:documentation
@@ -556,8 +556,6 @@ are muted.  A nil value leaves the current state as is."))
 (defmethod name ((s string)) s)
 (defmethod name ((n number))(format nil "~A" n))
 (defmethod name ((lst list))(mapcar #'name lst))
-
-
 
 (defgeneric set-name (object new-name)
   (:documentation
@@ -939,3 +937,7 @@ amount - integer, transposition amount."))
 Function returns indexed value from table.
 If index is out of bounds, returns out-of-bounds-value"))
 
+
+(defgeneric partition (object &key &allow-other-keys)
+  (:documentation
+   "Split or render object into mutually-exclusive components."))

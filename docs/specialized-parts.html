@@ -105,6 +105,16 @@
              time has for expected by the cue function, by default (bar beat sub-beat)
              channel is either an integer MIDI channel or an instrument name.
              volume is an integer between 0 and 127 inclusive.
+    
+    Typical usage: 
+    
+         (mixer part-name
+            :events '(((1 1 1)
+                        (piano . 127)
+                        (bass  .  96)
+                        (organ .  96))
+                      ((4 1 1)
+                        (bass  . 127))))
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="programs"></a>

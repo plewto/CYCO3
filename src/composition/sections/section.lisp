@@ -343,7 +343,7 @@ new-prefix  - prefix added to each name."
 			  (setf (aref acc ci) (reverse bcc))))
 		      acc)))
 
-	(defmethod partittion ((sec section) &key (unmute-all t) &allow-other-keys)
+	(defmethod partition ((sec section) &key (unmute-all t) &allow-other-keys)
 	  "Render Section to individual MIDI channels.
 Creates one file for each non-empty channel."
 	  (let ((sources (split-channels sec :unmute-all unmute-all))

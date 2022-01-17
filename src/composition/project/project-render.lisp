@@ -57,5 +57,6 @@ file is  <user-home>/cyco-projects/foo/MIDI/foo.mid"
 A MIDI file is created for each non-empty channel for each section.
 If unmute-all is true, all parts are unmuted."
   (dolist (sec (children project))
+    (format t "Section ~A~%" (name sec))
     (partition sec :unmute-all unmute-all)))
     

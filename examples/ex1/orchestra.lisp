@@ -7,7 +7,7 @@
 
 ;;; First remove old instruments from the orchestra.  If this step were not
 ;;; taken, every time this file was loaded it would clog the orchestra
-;;; with needless duplication's.
+;;; with needless duplications.
 ;;;
 
 (prune-orchestra)

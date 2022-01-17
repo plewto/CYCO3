@@ -17,6 +17,11 @@
     (progn
       (format t "~%Debugger disabled~%~%")
       (setf *debugger-hook* #'(lambda (c h)
-			       (declare (ignore h))
-			       (print c)
+				(format t "~%")
+			       (dotimes (i 3)
+				 (format  t "ERROR *************************** ERROR~%"))
+			       (format t "~%")
+			       ;;(print c)
+			       ;;(print h)
+			       (format t "~%")
 			       (abort)))))

@@ -4,7 +4,7 @@
 
 (load "src/cyco")
 
-(defparameter *no-debugger* t)
+(defparameter *no-debugger* nil)
 
 (format t "~%")
 (format t "*********************************************~%")

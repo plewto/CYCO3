@@ -153,3 +153,54 @@ Example
      (funcall fn tsig '(1 1 4)) --> 1.25    first 16th note after beat 1
      (funcall fn tsig '(nil 4)) --> 4.00    start of bar 2")
 
+
+(labels ((ebar (n n-beats n-subbeats)
+	       (let ((q (* n-beats n-subbeats)))
+	 	 (1+ (truncate (/ n q)))))
+	 (ebeat (n n-beats n-subbeats)
+	 	(let ((q (* n-beats n-subbeats)))
+	 	  (1+ (truncate (/ (rem n q) n-subbeats)))))
+	 (esub (n subbeats)
+	       (cnth n subbeats)))
+
+	(defun enumerate-cue (n &key (n-beats 4)(subbeats '(1 2 3 4)))
+	  "Converts integer index to BAR function cue specification.
+n - index
+:n-beats - number of beats per bar
+:subbeats - list of possible sub beats"
+	  (let ((n-subbeats (length subbeats)))
+	    (list (ebar n n-beats n-subbeats)
+		  (ebeat n n-beats n-subbeats)
+		  (esub n subbeats)))))
+
+
+(labels ((convert-spec (arg)
+		       (cond ((numberp arg)
+			      (range 1 (1+ arg)))
+			     (t (->list arg)))))
+
+	(defun gencue (&key (bars 4)(beats 4)(subbeats '(1 3))
+			    (filter #'(lambda (br bt sb)
+					(declare (ignore br bt sb))
+					nil)))
+						       
+	  "Generates BAR function cue-list by iterating bar, beat and subbeats
+All arguments time arguments may either be a positive integer or list of possible values.
+Integers n are converted to list  (1 2 3 ... n)
+
+:bars - possible bar-numbers
+:beats - possible beat-numbers
+:subbeats - possible subbeat numbers
+:filter - function suppresses specific combinations of bar, beat and subbeat.
+filter takes three arguments and returns bool, if the result is true, the combination
+is suppressed.
+
+returns nested list."
+	  (let ((acc '()))
+	    (dolist (br (convert-spec bars))
+	      (dolist (bt (convert-spec beats))
+		(dolist (sb (convert-spec subbeats))
+		  (if (not (funcall filter br bt sb))
+		      (push (list br bt sb) acc)))))
+	    (reverse acc))))
+

@@ -142,6 +142,31 @@
     CUE5 (1 4) --&gt; time 3.2
   </pre>
   <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
+  <a id="gencue"></a>
+  
+  <!-- (GENCUE &key bars beats subbeats filter) -->
+  <!--  -->
+  <!--  -->
+  <b class="definition">(GENCUE &key bars beats subbeats filter)</b><br>
+  <p class="summery">Generates <a href='#bar'>BAR</a> cuelist by iterating bars, beats and subbeats.</p>
+  <pre class="description">
+    Creates a cuelist containing all combinations of bars, beats and subbeats. 
+    Selective combinations may be supressed by the filter argument.  The :BARS. :BEATS and
+    :SUBBEATS arguments may be either a positive integer or a list of positive integers.
+  </pre>
+  <pre class="description">
+    The :FILTER argument takes a three-argument predicate (lambda bar beat subbeat). 
+    If the function returns true the specific combination is excluded.
+  </pre>
+  <pre class="code">
+    
+    (gencue :bars 1 :beats '(1 3) :subbeats '(1 2)) 
+    --&gt; ((1 1 1)(1 1 2)(1 3 1)(1 3 2))
+    
+    (gencue :bars 1 :beats '(1 3) :subebats '(1 2) :filter #'(lambda (br bt sb)(and (= bt 3)(= sb 1))))
+    --&gt; ((1 1 1)(1 1 2)(1 3 2))
+  </pre>
+  <hr style='height:4px;border-width:0;color:green;background-color:gray'/>
   <a id="shuffle"></a>
   <H2 class="heading">Shuffle Functions</H2>
   <p class="body">

@@ -5,7 +5,7 @@
 
 (in-package :cyco)
 
-(constant +CYCO-VERSION+  (list 3 0 0))
+(constant +CYCO-VERSION+  (list 3 0 1))
 (constant +BUILD-TIME+  (multiple-value-bind
 			    (second minute hour date month year day-of-week dst-p tz)
 			    (decode-universal-time (get-universal-time))

@@ -54,7 +54,7 @@ The default pattern-type is Cycle."))
 :repeat   - int, number of times to repeat contents, default 1.  If repeat is too 
 large stack depth may be exhausted.           
 :pad      - float, number of seconds to add to end of file, default 2.
-:no-stripe - bool, if non-nil do not render with MIDI clock events, default nil"))
+:no-stripe - DEPRECIATED, has no effect."))
 
 (defgeneric ->string (object)
   (:documentation

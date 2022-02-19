@@ -205,18 +205,7 @@ same name.
 	(retrograde part)))
   section)
 
-(defmethod stripe-section ((section section)(event-list list) &key (offset 0.0)(count 1))
-  (let* ((quarter (beat-duration section))
-	(division 24.0)
-	(time-delta (/ quarter division))
-	(time offset)
-	(end-time (+ offset (* count (duration section)))))
-    (while (< time end-time)
-      (push (cons time (midi-clock)) event-list)
-      (setf time (+ time time-delta)))
-    event-list))
-
-(defmethod render-once ((section section) &key (offset 0.0)(no-stripe t) &allow-other-keys)
+(defmethod render-once ((section section) &key (offset 0.0) &allow-other-keys)
   (let* ((event-list (list (cons offset
 				 (midi-meta-marker (name section)))
 			   (cons offset
@@ -228,23 +217,17 @@ same name.
       (let* ((count (truncate (/ period (phrase-duration part)))))
 	(dolist (event (render-n part count :offset offset))
 	  (push (clone event) event-list))))
-    (setf event-list (if (not no-stripe)
-			 (stripe-section section event-list :offset offset)
-		       event-list))
     (sort-midi-events event-list)))
 
-(defmethod render-n ((section section)(n integer) &key (offset 0.0)(no-stripe t) &allow-other-keys)
+(defmethod render-n ((section section)(n integer) &key (offset 0.0) &allow-other-keys)
   (let ((event-list '())
 	(period (phrase-duration section))
-	(template (render-once section :no-stripe t)))
+	(template (render-once section)))
     (dotimes (i n)
       (dolist (event template)
 	(let ((relative-time (car event))
 	      (message (cdr event)))
 	  (push (cons (+ offset (* i period) relative-time) message) event-list))))
-    (setf event-list (if (not no-stripe)
-			 (stripe-section section event-list :offset offset :count n)
-		       event-list))
     (sort-midi-events event-list)))
 
 (defmethod dump-events ((s section) &key
@@ -285,7 +268,8 @@ is appended to the name if needed."   ))
 	       
 (defmethod section->smf ((section section) &key (offset 0.0)(repeat 1)(no-stripe nil))
   "Creates Standard MIDI File from Section contents."
-  (let* ((events (render-n section repeat :offset offset :no-stripe no-stripe))
+  (declare (ignore no-stripe))
+  (let* ((events (render-n section repeat :offset offset))
 	 (track (make-instance 'smf-track :events events))
 	 (midi-file (smf :format 1 :track-count 1)))
     (setf (aref (smf-tracks midi-file) 0) track)
@@ -293,7 +277,8 @@ is appended to the name if needed."   ))
 
 (defmethod ->midi ((section section) &key (filename nil)(offset 0.0)(repeat 1)(pad 2.0)(no-stripe nil))
   "Write section contents to Standard MIDI file."
-  (let* ((midi-file (section->smf section :offset offset :repeat repeat :no-stripe no-stripe))
+  (declare (ignore no-stripe))
+  (let* ((midi-file (section->smf section :offset offset :repeat repeat))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
     midi-file))

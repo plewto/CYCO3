@@ -6,7 +6,7 @@
 [github/plewto/cyco3](https://github.com/plewto/CYCO3) 
 
 
-Detailed HTML documentation may be found under the docs folder.
+Detailed HTML documentation may be found at https://plewto.github.io/cyco3-docs/
 
 
 ## Brief Overview

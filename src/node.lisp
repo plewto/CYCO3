@@ -214,7 +214,11 @@ not."))
 			(if (null found)
 			    (dolist (c (children parent))
 			      (-find-child c child-name)))))
+
 	  (defmethod find-child ((parent cyco-node)(child-name symbol))
 	    (setf found nil)
 	    (-find-child parent child-name)
-	    found)))
+	    found)
+
+	  (defmethod find-child ((parent cyco-node)(child cyco-node))
+	    (and (member child (children parent)) child))))

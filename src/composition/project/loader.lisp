@@ -92,8 +92,8 @@ it reloads the most recent project-file.  Do not quote the argument."))
     (defmacro lpf (&optional name)
       `(if ',name
 	   (progn
-	     (load-project-file ',name)
-	     (setf *current-lpf-filename* ',name))
+	     (setf *current-lpf-filename* ',name)
+	     (load-project-file ',name))
 	 (if *current-lpf-filename*
 	     (progn 
 	       (format t "Reloading ~A~%" *current-lpf-filename*)

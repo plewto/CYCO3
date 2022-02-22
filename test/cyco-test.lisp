@@ -60,6 +60,7 @@
 (load-test "12-channels")
 (load-test "13-patterns")
 (load "test/load-mock-projects")
+(load "test/14-examples")
 
 (format t "~%**********************************~%")
 (format t "**** All test have succeeded. ****~%")

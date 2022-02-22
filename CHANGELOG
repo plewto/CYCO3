@@ -4,6 +4,7 @@ CYCO3 Changelog
 Version 3.0.1
     1. 2022-02-19 Depreciated SMF striping. 
     2. 2022-02-19 Moved html documentation to separate git repository.
-    3. Changes LPF to save filename when there is an error loading the file.
-
+    3. 2022-02-21 Changes LPF to save filename when there is an error loading the file.
+    4. 2022-02-21 Adds exclude, rename and bind options to section clone method.
+    
 

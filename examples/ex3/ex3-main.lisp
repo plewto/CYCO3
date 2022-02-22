@@ -91,4 +91,5 @@
 ;; Write main MIDI file.
 ;;
 (section-order '(preroll score reset))
+
 (project->midi)

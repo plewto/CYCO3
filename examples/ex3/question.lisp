@@ -57,4 +57,5 @@
     (envelope 'eq4 '(38 T5))
     (envelope 'eq5 '(45 T3))
     (envelope 'eq6 '(51  1))
-    (envelope 'eq7 '(58 T5) :decay-start '(2 1 1))))
+    (envelope 'eq7 '(58 T5) :decay-start '(2 1 1))
+	  ))

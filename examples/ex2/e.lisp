@@ -3,12 +3,20 @@
 ;;;; Part E adds an ersatz guitar.  The synth part drops the lowest 
 ;;;; octave and is mixed back to give the guitar space.
 
-(param e (clone d :new-name "E"))
-(bulk-rename-parts e 1 "E")
+(param e (clone d :new-name "E" :exclude '(d-synth)))
 
-;; Remove original synth part, see documentation for nodes.
-;; 
-(disconnect (get-section-part e 'e-synth))
+;;;; ******************************
+;;;; *** Prior to version 3.0.1 ***
+;;;; ******************************
+;;;; Remove original synth part, see documentation for nodes.
+;;;;
+;;;; Version 3.0.1 adds :exclude keyword to section clone method.
+;;;; It is no longer necessary to manually 'disconnect' undesired
+;;;; parts.  The disconnect function is still useful in other
+;;;; context.
+;;;;
+;;
+;; (disconnect (get-section-part e 'e-synth))
 
 ;; Replacement synth part
 ;;

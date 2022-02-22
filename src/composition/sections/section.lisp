@@ -169,24 +169,64 @@ same name.
 	(format t "~A " (name part)))
       (format t "~%"))))
 
-(defmethod clone ((mother section) &key new-name new-parent)
-  (let* ((frmt (or new-name "~A"))
-	 (name (->symbol (sformat frmt (name mother))))
-	 (parent (or new-parent (parent mother)))
-	 (daughter (make-section name
-				 :project parent
-				 :cuefn (property mother :cue-function)
-				 :shuffle (property mother :shuffle-function)
-				 :transposable (property mother :transposable)
-				 :reversible (property mother :reversible)
-				 :remarks (remarks mother))))
-    (copy-time-signature mother daughter)
-    (dolist (child (children mother))
-      (let ((child-daughter (clone child :new-parent daughter)))
-	(copy-time-signature child child-daughter)))
-    (reset daughter)
-    daughter))
-	 
+(defun bulk-rename-parts (section prefix-trim new-prefix)
+  "Renames all section parts.
+section     - The section.
+prefix-trim - Number of characters to remove from the left of each name.
+new-prefix  - prefix added to each name."
+  (dolist (child (remove-if-not #'part-p (children section)))
+    (let* ((old-name (->string (name child)))
+	   (suffix (subseq old-name prefix-trim))
+	   (new-name (str+ new-prefix suffix)))
+      (set-name child (->symbol new-name)))))
+
+
+(labels ((exclude-parts (mother daughter child-list)
+			   (dolist (name (->list child-list))
+		    (let ((child (find-child daughter name)))
+		      (if child
+			  (disconnect child)
+			(cyco-error (sformat "Clone section ~A exclude list contains non-eixstant child: ~A"
+					     (name mother) name))))))
+	 (bulk-rename (mother daughter)
+		      (let ((trim (length (sformat "~A" (name mother))))
+			    (prefix (name daughter)))
+			(bulk-rename-parts daughter trim prefix)))
+
+	 (bind-parts (daughter)
+		     (dolist (child (children daughter))
+		       (let ((sym (->symbol (name child))))
+			 (set sym child)))))
+
+	(defmethod clone ((mother section) &key new-name new-parent exclude
+			  (rename-parts t)(bind t))
+	  "Makes clone of section.
+:new-name symbol, if non-nil assigns symbol as the name of the resulting section.
+:new-parent If non-nil sets the resulting section as a child of new-parent.
+By default the cloned section has the same parent as the original.
+:exclude List of part names to be excluded from the cloned copy.
+:rename-parts If non-nil all of the parts in the cloned copy will be renamed.
+:bind If true all of the parts in the cloned copy will be bound to symbols eq to their names."
+	  (let* ((frmt (or new-name "~A"))
+		 (name (->symbol (sformat frmt (name mother))))
+		 (parent (or new-parent (parent mother)))
+		 (daughter (make-section name
+					 :project parent
+					 :cuefn (property mother :cue-function)
+					 :shuffle (property mother :shuffle-function)
+					 :transposable (property mother :transposable)
+					 :reversible (property mother :reversible)
+					 :remarks (remarks mother))))
+	    (copy-time-signature mother daughter)
+	    (dolist (child (children mother))
+	      (let ((child-daughter (clone child :new-parent daughter)))
+		(copy-time-signature child child-daughter)))
+	    (exclude-parts mother daughter exclude)
+	    (if rename-parts (bulk-rename mother daughter))
+	    (if bind (bind-parts daughter))
+	    (reset daughter)
+	    daughter)))
+
 (defmethod transpose ((section section)(n t))
   (if (property section :transposable)
       (dolist (part (children section))
@@ -290,17 +330,7 @@ It is a CYCO-ERROR if the part does not exists."
       (cyco-error
        (sformat "Section ~A does not contain part named: ~A" (name section) part-name))))
 
-(defun bulk-rename-parts (section prefix-trim new-prefix)
-  "Renames all section parts.
 
-section     - The section.
-prefix-trim - Number of characters to remove from the left of each name.
-new-prefix  - prefix added to each name."
-  (dolist (child (remove-if-not #'part-p (children section)))
-    (let* ((old-name (->string (name child)))
-	   (suffix (subseq old-name prefix-trim))
-	   (new-name (str+ new-prefix suffix)))
-      (set-name child (->symbol new-name)))))
 
 
 (constant +NULL-SECTION+ (make-instance 'section

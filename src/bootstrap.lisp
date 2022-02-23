@@ -45,6 +45,7 @@
 		   "src/util/seq-utilities"
 		   "src/util/math-utilities"
 		   "src/util/paths"
+		   "src/util/cwd"
 		   "src/util/table-wrapper"
 		   "src/keynumbers"
 		   "src/keytables"

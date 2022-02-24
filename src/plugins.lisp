@@ -40,7 +40,10 @@
 	"Add new directory to plugin search-path.
 
 Later additions shadow earlier ones."
-	(push directory search-path))
+	(let ((key (sformat "@plugin-~D" (length search-path))))
+	  (prog1
+	      (push directory search-path)
+	    (push-special-directory key "Plugin directory" #'(lambda () (namestring directory))))))
 
       (defun forget-plugins ()
 	"Marks all plugins as 'unloaded'

@@ -203,11 +203,25 @@ a symbol named name."
   (dolist (child (children project))
     (if (eq (name child) section-name)
 	(disconnect child))))
-  
+
+(defun project-location (&optional (prj *project*))
+  (if (project-p prj)
+      (join-path (property prj :project-directory)
+		 (string-downcase (name prj)))))
+
 (constant +NULL-PROJECT+ (make-instance 'project
 					:name 'null-project
 					:properties +PROJECT-PROPERTIES+))
-	  
+
+(push-special-directory "@project" "Current project" #'project-location)
+(push-special-directory "@out" "Current project output"
+			#'(lambda ()
+			    (if (project-p *project*)
+				(join-path (project-location)
+					   (property *project* :output-directory))
+			      (user-home))))
+			
+
 (put +NULL-PROJECT+ :tempo 60)
 (put +NULL-PROJECT+ :bars 1)
 (put +null-project+ :unit 'q)

@@ -20,6 +20,7 @@
   (if (not *rebuild-manifest*)
       (build-cyco)
     (dolist (file *rebuild-manifest*)
+      (format t "Loading ~A~%" file)
       (load file)))
   (rebuild-hook))
 

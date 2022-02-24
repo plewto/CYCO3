@@ -6,5 +6,5 @@ Version 3.0.1
     2. 2022-02-19 Moved html documentation to separate git repository.
     3. 2022-02-21 Changes LPF to save filename when there is an error loading the file.
     4. 2022-02-21 Adds exclude, rename and bind options to section clone method.
-    
+    5. 2022-02-23 Adds directory list utilities.
 

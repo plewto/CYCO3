@@ -46,6 +46,7 @@
 		   "src/util/math-utilities"
 		   "src/util/paths"
 		   "src/util/cwd"
+		   "src/util/dirlist"
 		   "src/util/table-wrapper"
 		   "src/keynumbers"
 		   "src/keytables"

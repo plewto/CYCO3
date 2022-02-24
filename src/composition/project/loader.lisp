@@ -19,6 +19,8 @@ name should be a symbol matching the project's directory.
 The optional project-directory and main-file arguments are used to 
 specify a non-standard location.
 
+The CWD is set to the projects location. 
+
 See LP as a more convenient method of loading a project.")
       
       (lp-docstring
@@ -60,7 +62,9 @@ it reloads the most recent project-file.  Do not quote the argument."))
 	      (setf current-project-main-file fqn)
 	      (if *enable-banners*
 		  (format t frmt fqn))
-	      (load fqn))
+	      (load fqn)
+	      (cwd (car (split-path fqn)))
+	      t)
 	  (cyco-composition-error
 	   'load-project
 	   "Either there is no default project name,"

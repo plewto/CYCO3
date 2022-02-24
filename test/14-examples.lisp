@@ -8,3 +8,6 @@
     (format t "Loading example project ~A~%" project-name)
     (load-project project-name))
   (setf *projects-root* temp))
+
+
+

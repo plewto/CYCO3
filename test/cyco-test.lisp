@@ -60,8 +60,11 @@
 (load-test "12-channels")
 (load-test "13-patterns")
 (load "test/load-mock-projects")
+(cwd "@cyco")
 (load "test/14-examples")
 
 (format t "~%**********************************~%")
 (format t "**** All test have succeeded. ****~%")
 (format t "**********************************~%")
+
+(cwd "@cyco")

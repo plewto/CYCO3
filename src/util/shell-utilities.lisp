@@ -123,18 +123,16 @@
 	      acc)))
 
 	(defun grep2 (pat1 pat2 &key dir (options "-i")(ignore "")(invert nil)(print nil))
-	  (let ((raw-results (grep pat1 :dir dir :options options :ignore ignore :invert invert))
-		(acc '()))
-	    (dolist (item raw-results)
-	      (if (search pat2 item)
-		  (push item acc)))
-	    (setf acc (reverse acc))
+	  (if (not (search "-no-messages" options))
+	      (setf options (sformat "~A --no-messages" options)))
+	  (let* ((a (mapcar #'cdr (grep-count pat1 :dir dir :options options :ignore ignore :invert invert)))
+		 (b (mapcar #'cdr (grep-count pat2 :dir dir :options options :ignore ignore :invert invert)))
+		 (results (intersection a b :test #'string=)))
 	    (if print
-		(progn
-		  (dolist (item acc)
-		    (format t "~A~%" item))
-		  nil)
-	      acc))) )
+		(dolist (item results)
+		  (format t "~A~%" item))
+	      results))) )
+
 
 ;; Docstrings
 ;;
@@ -186,10 +184,8 @@ Returns list of :print is nil.")
 Files with 0 count are ignored.   All arguments are identical to GREP")
 
 (setf (documentation 'grep2 'function)
-      "Version of grep which search for two patterns.
-First grep is called with pattern pat1 for the initial results.
-Only the initial results which also contain pat2 as a substring are returned.
-NOTE: pat1 and pat2 use different syntax.  pat1 is a regular expression, 
-pat2 is a substring.
+      "Serial version, runs grep twice in sequence.
+Returns only those files which contain both patterns pat1 and pat2.
+With exception of the second pattern argument, usage is exactly the
+same as grep.")
 
-With exception of pat2 arguments are identical to GREP.")

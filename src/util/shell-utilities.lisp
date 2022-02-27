@@ -88,7 +88,7 @@
 				    (cons name count))
 			       (cons item 0)))) )
 	 
-	(defun grep (pattern &key (dir (cwd))(options "-ir")(ignore "")(invert nil)(print nil))
+	(defun grep (pattern &key (dir (cwd))(options "-ir")(ignore "")(invert nil)(print t))
 	  (let* ((temp-dir (cwd)))
 	    (cwd (resolve-special-directory dir))
 	    (prog1
@@ -109,7 +109,7 @@
 		    (reverse acc)))
 	      (cwd temp-dir))))
 
-	(defun grep-count (pattern &key dir (options "-ir")(ignore "")(invert nil)(print nil))
+	(defun grep-count (pattern &key dir (options "-ir")(ignore "")(invert nil)(print t))
 	  (if (not (search "-c" options))
 	      (setf options (sformat "~A -c " options)))
 	  (if (not (search "--no-messages" options))
@@ -128,7 +128,7 @@
 		  nil)
 	      acc)))
 
-	(defun grep2 (pat1 pat2 &key dir (options "-ir")(ignore "")(invert nil)(print nil))
+	(defun grep2 (pat1 pat2 &key dir (options "-ir")(ignore "")(invert nil)(print t))
 	  (if (not (search "-no-messages" options))
 	      (setf options (sformat "~A --no-messages" options)))
 	  (let* ((a (mapcar #'cdr (grep-count pat1 :dir dir :options options :ignore ignore :invert invert)))
@@ -146,7 +146,7 @@
       "Call shell ls command
 
 dir     - Optional directory, defaults to (CWD).
-options - Flags passed to ls
+options - Flags passed to shell ls command.
 
 Returns string")
 
@@ -176,21 +176,24 @@ Returns list of strings.")
 
 pattern  - Regular expression search pattern.
 :dir     - Directory, defaults to (CWD)
-:options - String, command line flags passed to grep, default -i
+:options - String, command line flags passed to grep, default -ir
 :ignore  - String, suppress all files which includes value as substring.
 :invert  - Bool, invert sense of :ignore.
-:print   - Bool, if true print results to terminal
+:print   - Bool, if true print results to terminal, default t
 
 Returns list of :print is nil.")
 
 
 (setf (documentation 'grep-count 'function)
       "Version of grep which returns count of pattern in each file.
-Files with 0 count are ignored.   All arguments are identical to GREP")
+Files with 0 count are ignored.   All arguments are identical to GREP.
+Options -c and --no-messages are set and can not be changed.")
 
 (setf (documentation 'grep2 'function)
       "Serial version, runs grep twice in sequence.
 Returns only those files which contain both patterns pat1 and pat2.
 With exception of the second pattern argument, usage is exactly the
-same as grep.")
+same as grep.
+Options -c and --no-messages are set and can not be changed.")
+
 

@@ -47,6 +47,7 @@
 		   "src/util/paths"
 		   "src/util/cwd"
 		   "src/util/shell-utilities"
+		   "src/util/head"
 		   "src/util/table-wrapper"
 		   "src/keynumbers"
 		   "src/keytables"

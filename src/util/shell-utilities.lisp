@@ -31,7 +31,11 @@
 				  (char= c (char (string-downcase s) 0))))
 
 	 (format-long (item) item)
-	 (format-short (item) (str+ "** " item))
+	 (format-short (item)
+		       (let ((pos (search ":" item)))
+			 (if (numberp pos)
+			     (subseq item (+ pos 4))
+			   item)))
 	 
 	 (format-item (item form)
 		      (cond ((eq form :long)
@@ -84,7 +88,7 @@
 				    (cons name count))
 			       (cons item 0)))) )
 	 
-	(defun grep (pattern &key (dir (cwd))(options "-i")(ignore "")(invert nil)(print nil))
+	(defun grep (pattern &key (dir (cwd))(options "-ir")(ignore "")(invert nil)(print nil))
 	  (let* ((temp-dir (cwd)))
 	    (cwd (resolve-special-directory dir))
 	    (prog1
@@ -105,9 +109,11 @@
 		    (reverse acc)))
 	      (cwd temp-dir))))
 
-	(defun grep-count (pattern &key dir (options "-i")(ignore "")(invert nil)(print nil))
+	(defun grep-count (pattern &key dir (options "-ir")(ignore "")(invert nil)(print nil))
 	  (if (not (search "-c" options))
-	      (setf options (sformat "~A -c --no-messages" options)))
+	      (setf options (sformat "~A -c " options)))
+	  (if (not (search "--no-messages" options))
+	      (setf options (sformat "~A --no-messages " options)))
 	  (let ((raw-results (grep pattern :dir dir :options options :ignore ignore :invert invert :print nil))
 		(acc '()))
 	    (dolist (item raw-results)
@@ -122,7 +128,7 @@
 		  nil)
 	      acc)))
 
-	(defun grep2 (pat1 pat2 &key dir (options "-i")(ignore "")(invert nil)(print nil))
+	(defun grep2 (pat1 pat2 &key dir (options "-ir")(ignore "")(invert nil)(print nil))
 	  (if (not (search "-no-messages" options))
 	      (setf options (sformat "~A --no-messages" options)))
 	  (let* ((a (mapcar #'cdr (grep-count pat1 :dir dir :options options :ignore ignore :invert invert)))
@@ -132,7 +138,6 @@
 		(dolist (item results)
 		  (format t "~A~%" item))
 	      results))) )
-
 
 ;; Docstrings
 ;;

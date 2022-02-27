@@ -34,12 +34,6 @@
 
 (defun counter (from to &key (by 1)
 		     (hook #'(lambda (n) n))
-		     (monitor #'(lambda (value)
-				  (declare (ignore value))
-				  nil))
-		     (action #'(lambda (generator value)
-				 (declare (ignore generator))
-					  value))
 		     &allow-other-keys)
   (let* ((v0 (truncate from))
 	 (v1 (truncate to))
@@ -49,8 +43,6 @@
 		      (* -1 (abs increment))))
     (reset (make-instance 'counter
 			  :hook hook
-			  :monitor monitor
-			  :action action
 			  :seed v0
 			  :from v0
 			  :to v1
@@ -60,10 +52,7 @@
   (counter (initial-value mother)
 	   (final-value mother)
 	   :by (counter-increment mother)
-	   :hook (value-hook mother)
-	   :monitor (monitor mother)
-	   :action (action mother)))
-
+	   :hook (value-hook mother)))
 
 (labels ((clip (value increment limit)
 	       (if (minusp increment)
@@ -77,15 +66,12 @@
 	     (limit (final-value counter))
 	     (v0 (internal-value counter))
 	     (v1 (clip (+ v0 increment) increment limit)))
-	(setf (internal-value counter)
-	      (if (funcall (monitor counter) v1)
-		  (funcall (action counter) counter v1)
-		v1))))) )
+	(setf (internal-value counter) v1)))) )
 
 (setf (documentation 'counter 'function)
       "Returns new instance of COUNTER.
 
-(counter from to &key by hook monitor action)
+(counter from to &key by hook)
 
 from  - Integer, initial value.
 to    - Integer, final value.
@@ -93,11 +79,5 @@ to    - Integer, final value.
         The correct increment sign is automatically adjusted based on
         from and to values. Default +1 or -1.
 :hook    - Function applied by the value method to the 'natural'
-           value of the counter.  Default (lambda (value)) -> value
-:monitor - Predicate called by next-1 to determine if action function
-           should be executed.  Default (lambda (value)) -> Boole.
-:action  - Function executed within next-1 whenever monitor returns
-           non-nil.  The action return becomes the next internal-value
-           Default (lambda (counter value)) -> value.
-           The counter argument may be used to alter the internal
-           state of the counter.")
+           value of the counter.  Default (lambda (value)) -> value")
+

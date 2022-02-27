@@ -35,25 +35,17 @@ https://oeis.org/A005132"))
   rec)
 
 (defun recaman (seed &key
-		     (monitor #'(lambda (value)
-				  (declare (ignore value))
-				  nil))
-		     (action #'(lambda (value) value))
 		     (hook #'(lambda (n) n))
 		     (length 128)
 		     &allow-other-keys)
   (reset (make-instance 'recaman
 			:seed seed 
 			:hook hook 
-			:monitor monitor 
-			:action action
 			:length length)))
 
 (defmethod clone ((mother recaman) &key &allow-other-keys)
   (recaman (slot-value mother 'initial-value)
 	   :hook (value-hook mother)
-	   :monitor (monitor mother)
-	   :action (action mother)
 	   :length (pattern-length mother)))
 
 (defmethod next-1 ((rec recaman))
@@ -67,8 +59,6 @@ https://oeis.org/A005132"))
 			   (not (member v1 (slot-value rec 'seen))))
 		      v1)
 		     (t (+ v0 n))))
-      (if (funcall (monitor rec) v1)
-	  (setf v1 (funcall (action rec) v1)))
       (push v1 (slot-value rec 'seen))
       (setf (slot-value rec 'counter) n
 	    (internal-value rec) v1))))
@@ -80,14 +70,9 @@ https://oeis.org/A005132"))
 (setf (documentation 'recaman 'function)
       "Returns new RECAMAN generator.
 
-(RECAMAN seed &key hook monitor action)
+(RECAMAN seed &key hook)
 
 seed - Integer, intial value
 :hook    - Function applied by value method to the internal value.
-           Default (lambda (n) n)
-:monitor - Predicate called within next-1 to determine if action
-           function should be executed.
-           Default (lambda (value) nil)
-:action  - Function executed within next-1 whenever the monitor 
-           predicate returns non-nil.  
-           Default (lambda (value) value)")
+           Default (lambda (n) n)")
+

@@ -38,9 +38,6 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
   e)
 
 (defun euclid (length points &key (shift 0)
-		      (monitor #'(lambda (value)
-				   (declare (ignore value))))
-		      (action #'(lambda (value) value))
 		      (hook #'(lambda (n) n)))
   (if (not (and (numberp length)(plusp length)))
       (cyco-error (sformat "Euclid length argument must be positive number, got ~A" length)))
@@ -51,17 +48,13 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 			:points points
 			:increment (/ length points)
 			:shift shift
-			:monitor monitor
-			:action action
 			:hook hook)))
 
 (defmethod clone ((mother euclid) &key &allow-other-keys)
   (euclid (slot-value mother 'length)
 	  (slot-value mother 'points)
 	  :shift (slot-value mother 'shift)
-	  :hook (value-hook mother)
-	  :monitor (monitor mother)
-	  :action (action mother)))
+	  :hook (value-hook mother)))
 
 (defmethod value ((gen euclid))
   (funcall (slot-value gen 'value-hook)
@@ -70,13 +63,10 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 
 (defmethod next-1 ((gen euclid))
   (prog1
-      (progn
-	(if (funcall (monitor gen)(internal-value gen))
-	    (funcall (action gen) gen))
-	(value gen))
-    (setf (internal-value gen)
-	  (+ (internal-value gen)
-	     (slot-value gen 'increment)))))
+      (value gen))
+  (setf (internal-value gen)
+	(+ (internal-value gen)
+	   (slot-value gen 'increment))))
 	  
 
 ;; NOTES: Returns incorrect value when points > length.

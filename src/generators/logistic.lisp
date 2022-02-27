@@ -32,19 +32,11 @@
 
 (defun logistic (&key (prerun 0)(seed 0.5)(mu 3.25)
 		      (hook #'(lambda (n) n))
-		      (monitor #'(lambda (value)
-				   (declare (ignore value))
-				   nil))
-		      (action #'(lambda (logistic value)
-				  (declare (ignore logistic))
-				  value))
 		      &allow-other-keys)
   (reset (make-instance 'logistic
 			:prerun prerun
 			:seed seed
 			:mu mu
-			:monitor monitor
-			:action action
 			:hook hook)))
 
 (defmethod reset ((gen logistic))
@@ -59,19 +51,12 @@
    :prerun (logistic-prerun mother)
    :seed (slot-value mother 'seed)
    :mu (logistic-mu mother)
-   :monitor (monitor mother)
-   :action (action mother)
-   :monitor (monitor mother)
-   :action (action mother)
    :hook (value-hook mother)))
 
 (defmethod next-1 ((gen logistic))
   (let* ((v0 (internal-value gen))
 	 (v1 (* (logistic-mu gen) v0 (- 1 v0))))
-    (setf (internal-value gen)
-	  (if (funcall (monitor gen) v1)
-	      (funcall (action gen) gen v1)
-	    v1))
+    (setf (internal-value gen) v1)
     (funcall (value-hook gen) v0)))
 
 (defmethod pattern-length ((lg logistic) &key (max 128) &allow-other-keys)
@@ -88,13 +73,9 @@
 (setf (documentation 'logistic 'function)
       "Returns new instance of LOGISTIC.
 
-(logistic &key prerun seed mu hook monitor action)
+(logistic &key prerun seed mu hook)
 
 :prerun  - Integer, number of times to increment map prior to use, default 0
 :seed    - Float, initial value 0 <= seed <= 1, default 0.5
 :hook    - Function applied by value method to internal value
-           Default (lambda (n) n)
-:monitor - Predicate called within next-1 to determine if action function
-           should be called.  Default (lambda (value) nil)
-:action  - Function called within next-1 whenever the monitor predicate 
-           returns non-nil.  Default (lambda (logistic value) value)")
+           Default (lambda (n) n)")

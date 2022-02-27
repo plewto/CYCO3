@@ -72,20 +72,12 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 		       (decay 1)
 		       (sustain 4)
 		       (loop nil)
-		       (monitor #'(lambda (envelope value)
-				    (declare (ignore envelope value))
-				    nil))
-		       (action #'(lambda (envelope value)
-				   (declare (ignore envelope))
-				   value))
 		       (hook #'(lambda (n) n)) &allow-other-keys)
   (let ((floor (min a b))
 	(ceiling (max a b)))
     (make-instance 'asr-envelope
 		   :loop loop
 		   :hook hook
-		   :monitor monitor
-		   :action action
 		   :seed floor
 		   :attack (abs attack)
 		   :decay (* -1 (abs decay))
@@ -101,9 +93,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 		:decay (envelope-decay mother)
 		:sustain (slot-value mother 'sustain-reset)
 		:loop (slot-value mother 'loop-flag)
-		:hook (value-hook mother)
-		:monitor (monitor mother)
-		:action (action mother)))
+		:hook (value-hook mother)))
 
 (flet ((next-attack
 	(env)
@@ -113,10 +103,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 	  (if (= value ceiling)
 	      (setf (envelope-state env) :sustain
 		    (slot-value env 'sustain-counter)(slot-value env 'sustain-reset)))
-	  (setf (internal-value env)
-		(if (funcall (monitor env) env value)
-		    (funcall (action env) env value)
-		  value))))
+	  (setf (internal-value env) value)))
        
        
        (next-decay
@@ -126,11 +113,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 	       (value (max floor (+ (internal-value env) delta))))
 	  (if (= value floor)
 	      (setf (envelope-state env)(if (slot-value env 'loop-flag) :attack :off)))
-	  (setf (internal-value env)
-		(if (funcall (monitor env) env value)
-		    (funcall (action env) env value)
-		  value))))
-       
+	  (setf (internal-value env) value)))
 
        (next-sustain
 	(env)
@@ -151,7 +134,7 @@ values  :ATTACK  :SUSTAIN or :DECAY")
 (setf (documentation 'asr-envelope 'function)
       "Returns new instance of ASR-ENVELOPE.
 
-(asr-envelope a b &key attack decay sustain loop hook monitor action)
+(asr-envelope a b &key attack decay sustain loop hook)
 
 a - Number, initial value.
 b - Number, peak value.
@@ -161,18 +144,4 @@ b - Number, peak value.
 :loop    - Boolean, if true envelope returns to attack stage
            after final decay value.  Default nil
 :hook    - Function applied by the value method to the internal-value,
-           Default (lambda (n) n)
-:monitor - Predicate, called within next-1 to determine if action 
-           function should be executed.  
-
-           (lambda (envelope value)) --> Boole
-
-           Where envelope may be examined for its current state
-           and value is the next output value.  The default always
-           returns nil.
-:action  - Function executed within next-1 if the monitor function 
-           returns non-nil.
-
-           (lambda (envelope value)) --> next-value
-
-           The internal state of envelope may be altered.")
+           Default (lambda (n) n)")

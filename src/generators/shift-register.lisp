@@ -42,17 +42,9 @@ https://en.wikipedia.org/wiki/Linear-feedback_shift_register"))
 			    mask
 			    (prerun 0)
 			    (hook #'(lambda (n) n))
-			    (monitor #'(lambda (value)
-					 (declare (ignore value))
-					 nil))
-			    (action #'(lambda (shift-register value)
-					(declare (ignore shift-register))
-					value))
 			    &allow-other-keys)
   (reset (make-instance 'shift-register
 			:hook hook
-			:monitor monitor
-			:action action
 			:seed seed
 			:taps taps
 			:mask (or mask #b1111111111111111)
@@ -69,8 +61,6 @@ https://en.wikipedia.org/wiki/Linear-feedback_shift_register"))
 		  (shift-register-taps mother)
 		  :mask (shift-register-mask mother)
 		  :prerun (shift-register-prerun mother)
-		  :monitor (monitor mother)
-		  :action (action mother)
 		  :hook (value-hook mother)))
 
 
@@ -88,10 +78,7 @@ https://en.wikipedia.org/wiki/Linear-feedback_shift_register"))
     (prog1
 	(value sr)
       (let ((v-next (logand v1 mask)))
-	(setf (internal-value sr)
-	      (if (funcall (monitor sr) v-next)
-		  (funcall (action sr) sr v-next)
-		v-next))))))
+	(setf (internal-value sr) v-next)))))
 
 (defmethod pattern-length ((sr shift-register) &key (max 128) &allow-other-keys)
   (reset sr)
@@ -118,7 +105,7 @@ https://en.wikipedia.org/wiki/Linear-feedback_shift_register"))
 (setf (documentation 'shift-register 'function)
       "Creates new SHIFT-REGISTER generator.
 
-(shift-register seed taps &key mask prerun hook monitor action)
+(shift-register seed taps &key mask prerun hook)
 
 seed    - Integer, initial register state,  seed > 0.
           If seed is expressed in binary it directly reflects the 
@@ -138,8 +125,4 @@ taps    - Integer, feedback taps, taps >= 0.
 :hook   - Function applied to the 'raw' register value.  Shift register
           outputs have a tendency to 'blow up' and produce very high 
           values.  The hook function may be used to reign in excessive 
-          register values.  Defaults to identity (lambda n) --> n.
-:monitor - Predicate called within next-1 to determine if action 
-           function should be executed. Default (lambda (value) nil)
-:action  - Function called within next-1 whenever the monitor predicate
-           returns non-nil  Default (lambda (shift-register value) value)")
+          register values.  Defaults to identity (lambda n) --> n.")

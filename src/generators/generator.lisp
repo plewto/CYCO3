@@ -15,26 +15,6 @@ value method is called, the internal-value is passed as an argument to
 the value-hook function.   The result of value-hook then becomes the 
 return for the value method.  The default value-hook is an identity
 (lambda (n) n)")
-   (monitor
-    :type function
-    :initform #'(lambda (value)(declare (ignore value)) nil)
-    :accessor monitor
-    :initarg :monitor
-    :documentation
-    "Whenever the next-1 method is called, the new internal-value is
-passed to the monitor function.  If the monitor returns non-nil the 
-action function is executed.   The default monitor returns a constant
-nil  (lambda (value) nil)")
-   (action
-    :type function
-    :initform #'(lambda (generator value)(declare (ignore generator)) value)
-    :accessor action
-    :initarg :action
-    :documentation
-    "If the monitor function returns non-nil within a call to next-1, 
-the action function is executed.  The exact form of the action function 
-is different for specific generator sub classes.   In most cases it is
-able to alter the internal state of the generator.")
    (internal-value
     :type number
     :initform 0
@@ -43,12 +23,7 @@ able to alter the internal state of the generator.")
   (:documentation
    "A GENERATOR is a pattern like object for producing numeric sequences.
 Unlike true patterns, generators may not contain nested elements, they 
-may however be nested within patterns.
-
-Each Generator instance has associated monitor and action functions.
-When the next-1 method is called, the monitor function looks at the 
-new value and returns either nil or t.  If the result is t, the 
-action function is executed."))
+may however be nested within patterns."))
 
 (defgeneric generator-p (item))
 (defmethod generator-p ((item t)) nil)

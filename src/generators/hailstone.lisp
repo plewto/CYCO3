@@ -33,27 +33,17 @@
 		       (even #'(lambda (n)(/ n 2)))
 		       (odd #'(lambda (n)(1+ (* 3 n))))
 		       (hook #'(lambda (n) n))
-		       (monitor #'(lambda (value)
-				    (declare (ignore value))
-				    nil))
-		       (action #'(lambda (hailstone value)
-				   (declare (ignore hailstone))
-				   value))
 		       &allow-other-keys)
   (reset (make-instance 'hailstone
 			:hook hook
 			:even even
 			:odd odd
-			:monitor monitor
-			:action action
 			:seed seed)))
 
 (defmethod clone ((mother hailstone) &key &allow-other-keys)
   (hailstone (slot-value mother 'initial-value)
 	     :even (slot-value mother 'even-rule)
 	     :odd (slot-value mother 'odd-rule)
-	     :monitor (monitor mother)
-	     :action (action mother)
 	     :hook (value-hook mother)))
 
 (defmethod next-1 ((gen hailstone))
@@ -62,10 +52,7 @@
     (let* ((v0 (internal-value gen))
 	   (rule (slot-value gen (if (oddp v0) 'odd-rule 'even-rule)))
 	   (v1 (funcall rule v0)))
-      (setf (internal-value gen)
-	    (if (funcall (monitor gen) v1)
-		(funcall (action gen) gen v1)
-	      v1)))))
+      (setf (internal-value gen) v1))))
 
 (labels ((whole-number-p (n)
 			 (zerop (- n (truncate n))))
@@ -87,7 +74,7 @@
 (setf (documentation 'hailstone 'function)
       "Returns new instance of HAILSTONE.
 
-(hailstone seed &key event odd hook monitor action)
+(hailstone seed &key event odd hook)
 
 seed  - Integer, initial value.
 :even - Function applied for even values,
@@ -95,10 +82,5 @@ seed  - Integer, initial value.
 :odd  - Function applied to odd values.
         Default (lambda (n)(1+ (* 3 n)))
 :hook    - Function applied by VALUE method on the internal value.
-           Default (lambda (n) n)   
-:monitor - Predicate called within next-1 to determine if action
-           function should be executed.  
-           Default (lambda (value)) -> nil
-:action  - Function executed within next-1 whenever monitor returns 
-           non-nil.  Default (lambda (hailstone value)) -> value")
+           Default (lambda (n) n)")   
            

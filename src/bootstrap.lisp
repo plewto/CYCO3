@@ -186,3 +186,13 @@
 (build-cyco :verbose nil)
 
 
+;; Rebinding build-cyco to use CWD.
+;;
+(let ((old-build (symbol-function 'build-cyco)))
+  (defun build-cyco (&key verbose print)
+      (if (fboundp 'cwd)
+	  (let ((temp (cwd)))
+	    (cwd "@cyco")
+	    (funcall old-build :verbose verbose :print print)
+	    (cwd temp))
+	(funcall old-build :verbose verbose :print print))))

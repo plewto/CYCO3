@@ -32,7 +32,12 @@ SB - Sub beat within beat, 1,2,3,... <= (subbeats time-signature), default 1
      Use 'T' prefix for triplet version of sub-bet
      T1,T2,T3,... <= (tsubbeats time-signature)
 
-TK - Tick offset, may be positive or negative integer, default 0.")
+TK - Tick offset, may be signed integer (absolute) or signed float (relative). 
+     For integer +/- n, n tick-duration added/subtracted from time.
+     For float +/- f, where 0 <= |f| <= 1, a fraction of a single subbeat is 
+     added or subtracted from the time. 
+
+     For example if tk is 0.333, the result is increased by a third of a subbeat.")
 
       (tbar-docstring
        "TBAR is an alternate cueing function which is easier to use for triplets.
@@ -89,11 +94,21 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 				(subbeat-triplet-value time-signature time-specification stoken)
 			      (subbeat-normal-value time-signature time-specification token))))
 	   
+	   (tick-int-value (time-signature token)
+			   (* (tick-duration time-signature) token))
+
+	   (tick-float-value (time-signature token)
+			     (let* ((ratio (- token (truncate token)))
+				    (ticks (round (* ratio (ticks-per-subbeat time-signature)))))
+			       (* (tick-duration time-signature) ticks)))
+	   
 	   (tick-value (time-signature time-specification token)
-		       (or (and (not token) 0)
-			   (and (integerp token)
-				(* (tick-duration time-signature) token))
-			   (warnfn time-specification))) )
+		       (cond ((not token) 0)
+			     ((integerp token)
+			      (tick-int-value time-signature token))
+			     ((floatp token)
+			      (tick-float-value time-signature token))
+			     (t (warnfn time-specification)))) )
     
     (defun bar (time-signature time-specification)
       bar-docstring

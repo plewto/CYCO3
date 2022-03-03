@@ -9,3 +9,4 @@ Version 3.0.1
     5. 2022-02-23 Adds shell based utilities: cwd, ls and grep.
     6. 2022.02.26 Removes monitor and action functions from generator class.
     7. 2022.02.27 Adds file head utility.
+    8. 2022.03.02 Adds fractional tick argument to BAR and TBAR functions.

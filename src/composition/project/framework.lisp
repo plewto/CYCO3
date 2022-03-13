@@ -5,13 +5,14 @@
 
 (in-package :cyco)
 
-(defun ?projects (&optional (print t))
+(defun ?projects (&optional (pat "")(print t))
   (let ((count 0)
 	(acc '()))
     (dolist (fqn (directory (sformat "~A/*" *projects-root*)))
       (let* ((nstr (namestring fqn))
 	     (pname (second (split-path (subseq nstr 0 (1- (length nstr)))))))
-	(push (cons count pname) acc)
+	(if (search pat pname)
+	    (push (cons count pname) acc))
 	(setf count (1+ count))))
     (setf acc (reverse acc))
     (if print
@@ -68,6 +69,9 @@
 Each item is preceded by an index number.
 Please note, --ALL-- sub-directories under *PROJECTS-ROOTS* are included 
 regardless if they are actual project folders or not.
+
+If optional pat argument is non-empty string, include only directoies which 
+include pat as a sub-string.
 
 If optional print argument is nil, returns list of directories instead of 
 printing them. 

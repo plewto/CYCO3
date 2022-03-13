@@ -18,7 +18,7 @@
 			    (read-persistent-project-name)))))
 
 	   (project-name-by-number (n)
-				   (let* ((plst (?projects nil))
+				   (let* ((plst (?projects "" nil))
 					  (name (cdr (nth n plst))))
 				     (or name
 					 (cyco-warning (sformat "Illegal project number: ~A" n))))) )

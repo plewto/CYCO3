@@ -10,3 +10,5 @@ Version 3.0.1
     6. 2022.02.26 Removes monitor and action functions from generator class.
     7. 2022.02.27 Adds file head utility.
     8. 2022.03.02 Adds fractional tick argument to BAR and TBAR functions.
+    9. 2022.04.01 Defines sub-instruments for MODX plugin new-maple-kit.
+   10. 2022.04.04 Adds permutations function.

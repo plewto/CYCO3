@@ -295,3 +295,15 @@ Default is to split list at keyword boundaries.
       (dolist (i indexes)
 	(setf acc (str+ acc (subseq s i (1+ i)))))
       acc))
+
+
+;; Credit permutations is taken from source-forge post
+;; https://stackoverflow.com/questions/2087693/how-can-i-get-all-possible-permutations-of-a-list-with-common-lisp
+
+(defun permutations (list)
+  "Returns all permutations of list elements"
+  (cond ((null list) nil)
+        ((null (cdr list)) (list list))
+        (t (loop for element in list
+             append (mapcar (lambda (l) (cons element l))
+                            (permutations (remove element list)))))))

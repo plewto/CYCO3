@@ -297,13 +297,17 @@ Default is to split list at keyword boundaries.
       acc))
 
 
-;; Credit permutations is taken from source-forge post
+;; Credit: permutations is taken from Stack Overflow example 
+;; originally posted by Orm Finnendahl
+;;
 ;; https://stackoverflow.com/questions/2087693/how-can-i-get-all-possible-permutations-of-a-list-with-common-lisp
-
-(defun permutations (list)
-  "Returns all permutations of list elements"
-  (cond ((null list) nil)
-        ((null (cdr list)) (list list))
-        (t (loop for element in list
-             append (mapcar (lambda (l) (cons element l))
-                            (permutations (remove element list)))))))
+;; 
+(defun permutations (lst &optional (remain lst))
+  "Returns all permutation of list elements.  
+Duplicate entries are preserved."
+  (cond ((null remain) nil)
+        ((null (rest lst)) (list lst))
+        (t (append
+            (mapcar (lambda (l) (cons (first lst) l))
+                    (permutations (rest lst)))
+            (permutations (append (rest lst) (list (first lst))) (rest remain))))))

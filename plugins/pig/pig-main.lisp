@@ -116,6 +116,11 @@
       (pig-send "exec" (sformat "select-channel, ~A, ~A" *pig-distributor-op* c)))
     *pig-output-channels*)
 
+
+  (defun pigout (&rest inst)
+    "Alias for pig:output-channel"
+    (funcall #'output-channel inst))
+
   
   (defun pig-notes (keylist &key (vel 64)(dur 1.0))
     (let ((keys (keynumber (->list keylist)))

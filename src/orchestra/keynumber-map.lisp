@@ -196,3 +196,4 @@ The map defines three event types:
 			(docfn)
 		      (or (gethash kn ktab) +rest+)))))
 	fn))))
+

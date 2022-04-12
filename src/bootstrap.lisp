@@ -77,6 +77,7 @@
 		   "src/orchestra/channel-assignments"
 		   "src/orchestra/program-map"
 		   "src/orchestra/keynumber-map"
+		   "src/orchestra/round-robin-map"
 		   "src/orchestra/dynamic-map"
 		   "src/orchestra/articulation-map"
 		   "src/orchestra/instrument"

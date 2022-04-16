@@ -1,5 +1,5 @@
 ;;;; CYCO Yamaha MODX plugin
-;;;; new-maple-custum-kit
+;;;; new-maple-custom-kit
 ;;;;
 
 (in-package :cyco)
@@ -81,12 +81,7 @@
   (defun new-maple-kit (channel &key (performance *current-modx-performance*))
     (let ((inst (modx-instrument new-maple-kit channel
 				 :performance performance
-				 :keynumber-map (symbolic-keynumber-map global-key-list)
-				 :remarks
-				 "May sub for following kits:
-New Oak Custom
-BeachwoodSnare"
-	)))			 
+				 :keynumber-map (symbolic-keynumber-map global-key-list))))
       (defparameter new-maple-kit inst)
       (instrument maple-kick :parent inst
 		  :keynumber-map (symbolic-keynumber-map
@@ -181,3 +176,4 @@ BeachwoodSnare"
       inst)))
   
 	  
+(register-modx-drumkit-info 'new-maple-kit)

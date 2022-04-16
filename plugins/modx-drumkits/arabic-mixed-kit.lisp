@@ -149,8 +149,8 @@
 
   (defun arabic-mixed-kit-2 (channel &key (performance *current-modx-performance*))
     (let ((amk (modx-instrument arabic-mixed-kit-2 channel
-				:performance performance
-				:keynumber-map (symbolic-keynumber-map general-key-list))))
+  				:performance performance
+  				:keynumber-map (symbolic-keynumber-map general-key-list))))
       (defparameter arabic-mixed-kit-2 amk)
       (instrument amk-kick :parent amk :keynumber-map (symbolic-keynumber-map kick-klist))
       (instrument amk-snare :parent amk :keynumber-map (symbolic-keynumber-map snare-klist))
@@ -175,4 +175,4 @@
       (instrument amk-cow :parent amk :keynumber-map (symbolic-keynumber-map cow-klist))
       amk))) 
       
-									
+(register-modx-drumkit-info 'arabic-mixed-kit-2)									

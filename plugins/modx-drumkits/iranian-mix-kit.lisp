@@ -213,4 +213,5 @@
 
       
   
+(register-modx-drumkit-info 'iranian-mix-kit)
 

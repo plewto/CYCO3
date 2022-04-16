@@ -188,5 +188,5 @@
       inst)))
     
     
-	       
+(register-modx-drumkit-info 'real-brushes-kit)	       
 	       

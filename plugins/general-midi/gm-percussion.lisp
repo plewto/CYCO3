@@ -15,6 +15,54 @@
 ;;;;      +-- gm-timbale
 ;;;;      +-- gm-tom
 ;;;;
+;;;; 35 kick1
+;;;; 36 kick2
+;;;; 37 stick
+;;;; 38 snare1
+;;;; 39 clap
+;;;; 40 snare2
+;;;; 41 tom1
+;;;; 42 hat-closed
+;;;; 43 tom2
+;;;; 44 hat-ped
+;;;; 45 tom3
+;;;; 46 hat-open
+;;;; 47 tom4
+;;;; 48 tom5
+;;;; 49 crash1
+;;;; 50 tom6
+;;;; 51 ride1
+;;;; 52 chinese
+;;;; 53 ride-bell
+;;;; 54 tambourine
+;;;; 55 splash
+;;;; 56 cow
+;;;; 57 crash2
+;;;; 58 vibraslap
+;;;; 59 ride2
+;;;; 60 bongo-high
+;;;; 61 bongo-low
+;;;; 62 conga-high
+;;;; 63 conga-open
+;;;; 64 conga-low
+;;;; 65 timbale-high
+;;;; 66 timbale-low
+;;;; 67 agogo-high
+;;;; 68 agogo-low
+;;;; 69 cabasa
+;;;; 70 maracas
+;;;; 71 whistle1
+;;;; 72 whistle2
+;;;; 73 guiro-short
+;;;; 74 guiro-long
+;;;; 75 clave
+;;;; 76 block-high
+;;;; 77 block-low
+;;;; 78 cuica-mute
+;;;; 79 cuica-open
+;;;; 80 triangle-mute
+;;;; 81 triangle
+;;;;
 
 (constant +general-midi-percussion-keylist+ 
 	  '((kick1 . (35))
@@ -68,14 +116,18 @@
 (constant +general-midi-percussion-keymap+
 	  (symbolic-keynumber-map +general-midi-percussion-keylist+))
 
-(defun general-midi-drum-keylist (&optional modifications)
+(defun general-midi-drum-keylist (&optional modifications strike)
   "Returns general-midi drum kit key assignment association list.
 If optional modifications is specified, it should be an association list 
 of form ((symbol-1 . (keynumber-1))(symbol-2 . (keynumber-2)) ...)
 The modification list is appended to the default key-list.   If a default 
 symbol appears in the modification list, the default assignment is replaced 
-with the modified one."
+with the modified one.
+
+Symbols which appear in the strike list are deleted from the result."
   (let ((acc (clone +general-midi-percussion-keylist+)))
+    (dolist (key strike)
+      (setf acc (remove key acc :test #'(lambda (a b)(eq a (car b))))))
     (dolist (entry modifications)
       (setf acc (remove entry acc :test #'(lambda (a b)(eq (car a)(car b))))))
     (append acc modifications)))

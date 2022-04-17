@@ -23,6 +23,8 @@
 (load-plugin-file "arabic-mixed-kit")
 (load-plugin-file "iranian-mix-kit")
 (load-plugin-file "new-maple-custom-kit")
+(load-plugin-file "midnight-funk")
 (load-plugin-file "real-brushes-kit")
 (load-plugin-file "real-drums-kit")
 (load-plugin-file "schlager-weapon")
+

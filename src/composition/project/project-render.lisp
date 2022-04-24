@@ -5,29 +5,39 @@
 
 (in-package :cyco)
 
+
+;; *NOTE about render-project
+;; As part of rendering a project all of the sections are cloned.
+;; If a section happens to be the 'current-section' then cloning it replaces
+;; the current-section with the cloned version.   Normally this is desired.
+;; However it is undesirable in the context of rendering a project.
+;; The purpose of temp-current-section is to restore the current-section
+;; after rendering the project.
+;;
 (defun render-project (&optional (project *project*))
   "Converts project to a MIDI event list."
   (banner1 (sformat "Rendering Project: ~A" (name project)))
   (let ((acc '())
-	(time 0.0))
+	(time 0.0)
+	(temp-current-section (property project :current-section))) ;; *see note above
     (dolist (smode (property project :section-order))
       (let* ((section-name (section-render-mode-section-name smode))
 	     (count (section-render-mode-count smode))
 	     (xpose (section-render-mode-transpose smode))
 	     (shift (section-render-mode-shift smode))
 	     (invert-pivot (section-render-mode-invert smode))
-	     (section (clone (find-child project section-name) :rename-parts nil :bind nil)))
-	(if (section-p section)
-	    (let ((period (phrase-duration section)))
-	      (if (not (zerop xpose))(transpose section xpose))
-	      (if invert-pivot (invert section invert-pivot))
-	      (setf acc (append acc (render-n section count :offset (+ shift time))))
-	      (setf time (+ time (* count period)))
-	      (disconnect section))
-	  (cyco-warning
-	   (sformat t "Section ~A does not exists" section-name)))))
+	     (working-section (clone (find-child project section-name) :rename-parts nil :bind nil)))
+    	(if (section-p working-section)
+    	    (let ((period (phrase-duration working-section)))
+    	      (if (not (zerop xpose))(transpose working-section xpose))
+    	      (if invert-pivot (invert working-section invert-pivot))
+    	      (setf acc (append acc (render-n working-section count :offset (+ shift time))))
+    	      (setf time (+ time (* count period)))
+    	      (disconnect working-section))
+    	  (cyco-warning
+    	   (sformat t "Section ~A does not exists" section-name)))))
+    (put project :current-section temp-current-section)
     (sort-midi-events acc)))
-
 
 (defun project->midi (&key (project *project*)
 			   (filename nil))

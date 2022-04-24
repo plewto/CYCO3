@@ -74,7 +74,6 @@ and chord-model parameters from the project but may selectively override them.")
       (connect project section)
       (init-time-signature section)
       (put project :current-section section)
-      
       (set-cyco-prompt)
       section)))
 
@@ -189,7 +188,7 @@ new-prefix  - prefix added to each name."
 		    (let ((child (find-child daughter name)))
 		      (if child
 			  (disconnect child)
-			(cyco-error (sformat "Clone section ~A exclude list contains non-eixstant child: ~A"
+			(cyco-error (sformat "Clone section ~A exclude list contains non-existent child: ~A"
 					     (name mother) name))))))
 	 (bulk-rename (mother daughter)
 		      (let ((trim (length (sformat "~A" (name mother))))
@@ -209,7 +208,10 @@ new-prefix  - prefix added to each name."
 By default the cloned section has the same parent as the original.
 :exclude List of part names to be excluded from the cloned copy.
 :rename-parts If non-nil all of the parts in the cloned copy will be renamed.
-:bind If true all of the parts in the cloned copy will be bound to symbols eq to their names."
+:bind If true all of the parts in the cloned copy will be bound to symbols eq to their names.
+
+NOTE: The new clone becomes the projects 'current-section'."
+
 	  (let* ((frmt (or new-name "~A"))
 		 (name (->symbol (sformat frmt (name mother))))
 		 (parent (or new-parent (parent mother)))
@@ -223,7 +225,7 @@ By default the cloned section has the same parent as the original.
 	    (copy-time-signature mother daughter)
 	    (dolist (child (children mother))
 	      (let ((child-daughter (clone child :new-parent daughter)))
-		(copy-time-signature child child-daughter)))
+	    	(copy-time-signature child child-daughter)))
 	    (exclude-parts mother daughter exclude)
 	    (if rename-parts (bulk-rename mother daughter))
 	    (if bind (bind-parts daughter))

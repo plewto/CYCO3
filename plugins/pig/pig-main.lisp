@@ -173,6 +173,30 @@
 (defun p (&optional name)
   (play name))
 
+(defun play-main ()
+  "Play project's main MIDI file."
+  (if *project*
+      (let ((fname (property *project* :midi-filename)))
+	(if fname
+	    (progn 
+	      (play fname)
+	      fname)
+	  (cyco-warning "Project :MIDI-FILENAME property is NIL.")))
+    (cyco-error "No current project. *PROJECT* is NIL.")))
+
+(defun play-section (&optional section)
+  "Play section's most recent MIDI file.
+Section defaults to the project's current-section."
+
+  (let* ((s (or section (and *project* (property *project* :current-section))))
+	 (fname (and s (property s :midi-filename))))
+    (if fname
+	(progn
+	  (play fname)
+	  fname)
+      (cyco-warning "No current section defined."))))
+    
+
 (defun lpp (&optional name)
   (lpf)
   (play name))

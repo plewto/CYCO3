@@ -67,10 +67,20 @@ The available functions are:
    (P &optional name)
 
        A convenience alias for (PLAY name)
+    
+   (PLAY-MAIN)
 
+       Play project's main MIDI file.
+
+   (PLAY-SECTION &optional s)
+
+       Play section's most recent MIDI file.
+       Section defaults to the project's current-section.
      
    (OUTPUT-CHANNEL c)
+   (PIGOUT c)
 
+      OUTPUT-CHANNEL and PIGOUT are identical.
       Sets output MIDI channel(s). 
       This command is useful for setting the destination channels for any MIDI inputs.
       The c argument may be an explicit MIDI channel or a CYCO instrument.   Multiple 

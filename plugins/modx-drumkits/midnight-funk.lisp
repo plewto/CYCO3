@@ -207,4 +207,4 @@
       mfnk))) 
   
 
-
+(register-modx-drumkit-info 'midnight-funk)

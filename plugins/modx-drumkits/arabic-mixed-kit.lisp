@@ -146,7 +146,7 @@
       (wood-klist '((lo . (64 "2872 Wood Block"))
 		    (hi . (62 "2872 Wood Block"))
 		    (clave . (60 "3219 Claves3"))))
-      (cow-klist '((x . (58 "3228 Cowbell4")))) )
+      (cow-klist '((x . (59 "3228 Cowbell4")))) )
 
   (defun arabic-mixed-kit-2 (channel &key (performance *current-modx-performance*))
     (let ((amk (modx-instrument arabic-mixed-kit-2 channel

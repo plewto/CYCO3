@@ -47,6 +47,7 @@ file is  <user-home>/cyco-projects/foo/MIDI/foo.mid"
 					 (property project :main-file))
 				   :as-file))
 		 ".mid")))
+    (put project :midi-filename fname)
     (write-smf smf fname)
     smf))
 

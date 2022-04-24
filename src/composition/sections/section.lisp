@@ -9,7 +9,8 @@
 		    :chord-model
 		    :groups
 		    :reversible
-		    :transposable)))
+		    :transposable
+		    :midi-filename)))
 
 (defclass section (time-signature) nil
   (:Documentation
@@ -69,9 +70,11 @@ and chord-model parameters from the project but may selectively override them.")
       (put section :groups '())
       (put section :transposable transposable)
       (put section :reversible reversible)
+      (put section :midi-filename nil)
       (connect project section)
       (init-time-signature section)
       (put project :current-section section)
+      
       (set-cyco-prompt)
       section)))
 
@@ -321,6 +324,7 @@ is appended to the name if needed."   ))
   (let* ((midi-file (section->smf section :offset offset :repeat repeat))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
+    (put section :midi-filename output-filename)
     midi-file))
 
 (defun  get-section-part (section part-name)

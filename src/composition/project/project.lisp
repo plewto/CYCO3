@@ -14,6 +14,7 @@
 		    :project-directory
 		    :main-file
 		    :output-directory
+		    :midi-filename  ;; filename of most recently rendered MIDI file
 		    :chord-model
 		    :section-order
 		    :current-section)))
@@ -134,6 +135,7 @@ abbreviations lp and lpf."))
       (put project :beats (truncate beats))
       (put project :subbeats (truncate subbeats))
       (put project :section-order '())
+      (put project :midi-filename nil)
       (put project :current-section nil)
       (init-time-signature project)
       (if make-current

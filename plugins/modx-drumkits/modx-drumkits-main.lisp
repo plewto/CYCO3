@@ -22,6 +22,8 @@
 
 (load-plugin-file "arabic-mixed-kit")
 (load-plugin-file "iranian-mix-kit")
+(load-plugin-file "new-iranian-kit")
+(load-plugin-file "new-iranian-kit-2")
 (load-plugin-file "new-maple-custom-kit")
 (load-plugin-file "midnight-funk")
 (load-plugin-file "real-brushes-kit")

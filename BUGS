@@ -69,7 +69,7 @@ BUG 0006 2020.09.03 Status OPEN
 --------------------------------------------------------------------
 BUG 0007 2020.09.23 Status OPEN
 
-    ?PROJECTS function does not work uder CLISP.
+    ?PROJECTS function does not work under CLISP.
     It is functional with SBCL.
 
 --------------------------------------------------------------------
@@ -84,7 +84,7 @@ BUG 0009 2021.01.12  Status OPEN  (May be closed, pending test on win32)
     The function (SOFTWARE-VERSION) does not return a consistent format
     under SBCL and CLISP.   This causes issues when setting various
     global values in util/paths.lisp    As coded SBCL works as expected
-    but CLIPS elisits a warning.  On linux this does not pose any problems
+    but CLIPS elicits a warning.  On Linux this does not pose any problems
     but would cause CYCO to fail under windows using CLSIP.
 
     2021.11.06
@@ -102,8 +102,27 @@ BUG 0010 2021.01.31  Status CLOSED
     by default is 0) was being saved.
 
 --------------------------------------------------------------------
-BUG 0020 2021.11.02 Status OPEN
+BUG 0020 2021.11.02 Status CLOSED
 
     ->midi clock stripe events do not always have the correct time delta.
     All clock events after bar 4 have time-delta 0.
 
+    Stripe feature was ill-conceived and removed.
+--------------------------------------------------------------------
+BUG 0021 2022.04.29 Status OPEN
+
+    Transformer part inherits bar-count from parent section and not the
+    source part.   This becomes an issue when the bar-count of the original
+    source is less then section.
+
+    (section foo :bars 4)
+    (qball alpha piano :bars 2 ...)   ;; 2-bars
+    (transformer beta alpha ....)     ;; 4-bars
+
+    The 2-bar alpha part is repeated twice within the section.  Since the
+    beta part is 4-bars it is not repeated; only the first two bars are
+    played.
+
+
+     
+    

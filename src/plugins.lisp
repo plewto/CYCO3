@@ -4,7 +4,7 @@
 ;;;; Plugins may be located in multiple locations but the following
 ;;;; two are expected:
 ;;;;
-;;;;    cyco/plugins/            ;; Plugins provided with CYCO
+;;;;    cyco/plugins/             ;; Plugins provided with CYCO
 ;;;;    ~/.config/cyco/plugins/   ;; User defined plugins
 ;;;;
 ;;;; Additional locations may be specified by calling
@@ -60,7 +60,7 @@ memory.  Instead it simply marks them as never having been loaded."
 	  (format t "    ~A~%" item)))
       
       (defun find-plugin (name &optional verbose)
-	"Locates directory for named plugin.
+	"Locates main file for named plugin.
 A nil result indicates a matching plugin can not be found."
 	(find-plugin-location (format-name name) search-path verbose))
 
@@ -76,7 +76,40 @@ A nil result indicates a matching plugin can not be found."
 		(format t "Loading plugin file: ~A~%" fqn)
 		(load fqn))
 	    (cyco-error
-	     (sformat "Plugin file ~A does not exists" fqn)))))
+	     (sformat "Plugin file ~S does not exists" fqn)))))
+
+      (defun external-load-plugin-file (name plugin)
+	"Loads file relative to plugin directory.
+
+name - file name relative to plugin directory, may be string or symbol
+       Adding .lisp extension is not necessary.
+plugin - plugin name, may be string or symbol.
+
+While this function allows a plugin file to be loaded from anywhere, 
+that's probably not the best practice.   It's real intent is to allow 
+a plugin to load optional files after the plugin itself has been loaded.
+The LOAD-PLUGIN-FILE function is only usable while the main plugin file
+is being loaded.   
+
+A use case is a plugin which defines a bunch of synth drum kits.
+Collectively these tend to define a lot of static data.
+external-load-plugin-file may be used to load only those specific kits
+actually being used."
+       
+	(let* ((directory (find-plugin-location (string-downcase (->string plugin)) search-path))
+	       (fqn (and directory (join-path directory (string-downcase (->string name)) :as-file))))
+	  (if fqn
+	      (progn
+		(setf fqn (append-filename-extension fqn ".lisp"))
+		(if (probe-file fqn)
+		    (progn
+		      (format t "Loading plugin file: ~A~%" fqn)
+		      (load fqn)
+		      fqn)
+		  (cyco-error
+		   (sformat "Plugin file ~S does not exists" fqn))))
+	    (cyco-error (sformat "Can not load external ~A plugin file: ~A" plugin name)))))
+	    
       
       (defun load-plugin (name &key reload verbose)
 	"Loads the main plugin file.  
@@ -118,3 +151,4 @@ An asterisk at the beginning of a line indicates that plugin has been loaded."
 	      (format t "    ~A " (if (member plugin-name registry) "*" " "))
 	      (format t "~A~%" plugin-name))))
 	  nil) ))
+

@@ -17,10 +17,12 @@ Do not quote the argument.  Use (?a foo)  not (?a 'foo)"
 
 (defun ?kmap (instrument)
   "Displays instrument's keymap documentation."
+  (format t ";; ~A~%" (name instrument))
   (funcall (keynumber-map instrument) :doc))
 
 (defun ?pmap (instrument)
   "Displays instrument's program-map documentation"
+  (format t ";; ~A~%" (name instrument))
   (funcall (program-map instrument) 0 :program :doc))
 
 (defmethod ? ((n integer))

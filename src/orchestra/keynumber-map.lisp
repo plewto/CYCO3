@@ -222,7 +222,7 @@ The map defines three event types:
 
 	(defun extract-sub-symbolic-keylist (prefix klist)
 	  "Extracts a sub-list from general symbolic keymap specification.
-          The intended use is to automatically generate sub-instrument
+      The intended use is to automatically generate sub-instrument
 	  key-assignments for general percussion-kit instruments.
 
           (param drum-kit-keylist '((kick        . (20))

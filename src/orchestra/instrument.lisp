@@ -286,9 +286,8 @@ Child nodes of an instrument must also be instruments."
       (dolist (c (children n))
 	(format t "      ~12A ~A~%" (type-of c)(name c)))))
   (format t "  properties :~%")
-  (dolist (k '(:channel :channel-index :program-number :program-bank))
+  (dolist (k '(:channel :program-number :program-bank))
     (format t "      [~24A] --> ~A~%" k (property n k)))
-
   ;; Interactive menu
   (format t "Options: ~%")
   (format t "   A   - Articulation map~%")
@@ -300,12 +299,16 @@ Child nodes of an instrument must also be instruments."
     (cond ((string= option "Q")
 	   (format t "~%"))
 	  ((string= option "A")
+	   (format t "~%;; ~A~%" (name n))
 	   (funcall (articulation-map n) :doc))
 	  ((string= option "D")
+	   (format t "~%;; ~A~%" (name n))
 	   (funcall (dynamic-map n) :doc))
 	  ((string= option "K")
+	   (format t "~%;; ~A~%" (name n))
 	   (funcall (keynumber-map n) :doc))
 	  ((string= option "P")
+	   (format t "~%;; ~A~%" (name n))
 	   (funcall (program-map n) 0.0 :program :doc)))))
   
 (defmethod print-tree ((instrument instrument) &optional (depth 0))

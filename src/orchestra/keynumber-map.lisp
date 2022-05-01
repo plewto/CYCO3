@@ -197,3 +197,54 @@ The map defines three event types:
 		      (or (gethash kn ktab) +rest+)))))
 	fn))))
 
+(labels ((prefix-match-p (prefix key)
+			 (let* ((sprefix (string-upcase (->string prefix)))
+				(skey (string-upcase (->string key)))
+				(pos (search sprefix skey)))
+			   (and pos (zerop pos))))
+
+	 (strip-prefix (key)
+		       (let* ((skey (->string key))
+			      (pos (position #\- skey))
+			      (suffix nil))
+			 (if pos
+			     (progn 
+			       (setf suffix (subseq skey (1+ pos)))
+			       (->symbol suffix))
+			   nil)))
+	 
+	 (find-matching-prefixes (prefix klist)
+				 (let ((acc '()))
+				   (dolist (item klist)
+				     (if (prefix-match-p prefix (car item))
+					 (push item acc)))
+				   (reverse acc))) )
+
+	(defun extract-sub-symbolic-keylist (prefix klist)
+	  "Extracts a sub-list from general symbolic keymap specification.
+          The intended use is to automatically generate sub-instrument
+	  key-assignments for general percussion-kit instruments.
+
+          (param drum-kit-keylist '((kick        . (20))
+                                    (kick-analog . (21))
+                                    (snare       . (30))
+                                    (snare-rim   . (31))
+                                    (snare-edge  . (32))))
+
+           (extract-sub-symbolic-key-list 'snare drum-kit-keylist)
+
+             --> ((x    30)
+                  (rim  31)
+                  (edge 32))
+
+            The resulting list is suitable for use with symbolic-keynumber-list"
+	  (let ((acc '()))
+	    (dolist (item klist)
+	      (let ((key (car item)))
+		(if (prefix-match-p prefix key)
+		    (cond ((eq prefix key)
+			   (push (cons 'x (cdr item)) acc))
+			  (t (push (cons (strip-prefix key)(cdr item)) acc))))))
+	    (reverse acc))) )
+	
+

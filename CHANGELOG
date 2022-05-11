@@ -12,3 +12,5 @@ Version 3.0.1
     9. 2022.04.01 Defines sub-instruments for MODX plugin new-maple-kit.
    10. 2022.04.04 Adds permutations function.
    11. 2022.04.12 Adds round-robin keymap.
+   12. 2022.05.11 Moves modx plugin into it's own package.
+   13. 2022.05.11 Replaces modx-drumkits plugin with modx-drums.

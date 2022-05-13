@@ -124,7 +124,7 @@ BUG 0021 2022.04.29 Status OPEN
     played.
 
 --------------------------------------------------------------------
-BUG 0022 2022.05.13  OPEN
+BUG 0022 2022.05.13  CLOSED
 
     MODX-DRUMS drumkit instruments have wrong parent instrument if they
     are reloaded.
@@ -140,7 +140,12 @@ BUG 0022 2022.05.13  OPEN
     (parent new-iranian-kit)    --> nil
 
 
+    FIX:
+    The drum-loader macro was only loading the drum-kit definition
+    one time.  On the 2nd load of a kit, the previous kit was reused
+    but now it had an invalid parent instrument.
 
+    drum-loader now explicitly loads the kit definition each time.
 
    
     

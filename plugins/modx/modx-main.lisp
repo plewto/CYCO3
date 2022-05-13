@@ -39,8 +39,7 @@
 		:basic-articulation-map
 		:symbolic-keynumber-map
 		:external-load-plugin-file
-		:extract-sub-symbolic-keylist
-		))
+		:extract-sub-symbolic-keylist))
 
 (in-package :modx)
 
@@ -111,7 +110,7 @@
   (format t ";;    095 Super Knob~%"))
 
 
-(modx-performance default-modx 0 0 0)
+;; (modx-performance default-modx 0 0 0)
 
 (export '(*current-modx-performance*
 	  modx-performance

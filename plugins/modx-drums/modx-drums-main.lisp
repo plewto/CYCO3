@@ -29,10 +29,8 @@
      (defun ,kit-name (channel &key (performance *current-modx-performance*))
        (setf *current-drum-channel* channel)
        (setf *current-drum-parent* performance)
-       (if (not (member ',kit-name *loaded-kits*))
-	   (progn
-	     (push ',kit-name *loaded-kits*)
-	     (external-load-plugin-file ',kit-name 'modx-drums))))))
+       (setf *loaded-kits* (adjoin ',kit-name *loaded-kits*))
+       (external-load-plugin-file ',kit-name 'modx-drums))))
 
 (defmacro make-main-instrument (name keylist &key (remarks ""))
   `(modx-instrument ,name *current-drum-channel*

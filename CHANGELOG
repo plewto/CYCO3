@@ -16,3 +16,5 @@ Version 3.0.1
    13. 2022.05.11 Replaces modx-drumkits plugin with modx-drums.
 
 Version 3.0.2 (2022.05.11)
+    1. 2022-05-13 Redefined ? inspection function to be interactive.
+    

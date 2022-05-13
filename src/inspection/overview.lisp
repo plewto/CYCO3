@@ -1,4 +1,4 @@
-;;;; CYCO util inspection.lisp
+;;;; CYCO inspection/overview
 ;;;;   
 ;;;; Defines functions for inspecting objects.
 ;;;;
@@ -24,9 +24,6 @@ Do not quote the argument.  Use (?a foo)  not (?a 'foo)"
   "Displays instrument's program-map documentation"
   (format t ";; ~A~%" (name instrument))
   (funcall (program-map instrument) 0 :program :doc))
-
-(defmethod ? ((n integer))
-  (format t "INTEGER~%"))
 
 (let ((ary (->vector (copies 16 '()))))
   (labels ((walk (inst)
@@ -58,7 +55,7 @@ Do not quote the argument.  Use (?a foo)  not (?a 'foo)"
 
 (defun ?? ()
   "Displays list of available inspection functions."
-  (format t "(? object)      Displays info about object.~%")
+  (format t "(? object)      Interactive object inspection~%.")
   (format t "(?a symbol)     Shortcut for (apropos symbol)  do not quote symbol~%")
   (format t "(?d symbol)     Shortcut for (describe symbol) do not quote symbol~%")
   (format t "(?o)            Displays orchestra tree.~%")

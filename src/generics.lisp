@@ -87,19 +87,6 @@ If object is a non-vector sequence, return new vector using elements of object.
 For all other cases return new vector with object as its only element.
 See ->list"))
 
-(defgeneric ? (object)
-  (:documentation
-   "Generalized help/inspection function."))
-
-(defmethod ? ((object t))
-  (format t "~A~%" (type-of object)))
-
-(defmethod ? ((object symbol))
-  (if (boundp object)
-      (format t "Symbol ~A --> value ~A~%" object (symbol-value object)))
-  (if (fboundp object)
-      (describe object)))
-
 (defgeneric add-group (section group)
   (:documentation
    "Adds group to section."))

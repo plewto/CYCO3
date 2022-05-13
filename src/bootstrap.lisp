@@ -136,7 +136,8 @@
 		   
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
-		   "src/util/inspection"
+		   "src/inspection/interactive"
+		   "src/inspection/overview"
 		   "src/plugins"
 		   "src/local-config"
 		   "src/exports")))

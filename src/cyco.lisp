@@ -75,9 +75,6 @@ a warning message is displayed and CYCO terminates."
 			(sformat "Specified version : (~A ~A NIL)" major minor))
 	  (exit)))))
 
-
-
-
 (in-package :common-lisp-user)
 
 (defun cyco ()

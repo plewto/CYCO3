@@ -174,24 +174,24 @@
   (make-sub nik-zarb nik zarb-klist)
   (make-sub nik-dayereh nik dayereh-klist))
 
-(export '(udho
-	  bendir
-	  tombak
-	  daf
-	  naghareh
-	  dohol
-	  req
-	  tempo-tombak
-	  zarb
-	  dayereh) :modx)
+(export '(nik-udho
+	  nik-bendir
+	  nik-tombak
+	  nik-daf
+	  nik-naghareh
+	  nik-dohol
+	  nik-req
+	  nik-tempo-tombak
+	  nik-zarb
+	  nik-dayereh) :modx)
 
-(import '(modx:udho
-	  modx:bendir
-	  modx:tombak
-	  modx:daf
-	  modx:naghareh
-	  modx:dohol
-	  modx:req
-	  modx:tempo-tombak
-	  modx:zarb
-	  modx:dayereh) :cyco)
+(import '(modx:nik-udho
+	  modx:nik-bendir
+	  modx:nik-tombak
+	  modx:nik-daf
+	  modx:nik-naghareh
+	  modx:nik-dohol
+	  modx:nik-req
+	  modx:nik-tempo-tombak
+	  modx:nik-zarb
+	  modx:nik-dayereh) :cyco)

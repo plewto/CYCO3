@@ -83,7 +83,7 @@ BUG 0009 2021.01.12  Status OPEN  (May be closed, pending test on win32)
 
     The function (SOFTWARE-VERSION) does not return a consistent format
     under SBCL and CLISP.   This causes issues when setting various
-    global values in util/paths.lisp    As coded SBCL works as expected
+    global values in until/paths.lisp    As coded SBCL works as expected
     but CLIPS elicits a warning.  On Linux this does not pose any problems
     but would cause CYCO to fail under windows using CLSIP.
 
@@ -123,6 +123,26 @@ BUG 0021 2022.04.29 Status OPEN
     beta part is 4-bars it is not repeated; only the first two bars are
     played.
 
+--------------------------------------------------------------------
+BUG 0022 2022.05.13  OPEN
 
+    MODX-DRUMS drumkit instruments have wrong parent instrument if they
+    are reloaded.
+
+    (plugin modx-drums)
+    (modx-performance modx-parent 0 0 0)
+    (new-iranian-kit 10)
+
+    (parent new-iranian-kit)   --> modx-parent as expected.
+
+    ;; reload kit
+    (new-iranian-kit 10)
+    (parent new-iranian-kit)    --> nil
+
+
+
+
+   
+    
      
     

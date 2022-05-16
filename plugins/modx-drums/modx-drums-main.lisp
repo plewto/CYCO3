@@ -53,6 +53,7 @@
 (drum-loader real-brushes-kit)
 (drum-loader real-drums-kit)
 (drum-loader schlager-weapon)
+(drum-loader songwriter-2015 "Modification of Schlager-weapon")
 
 (export '(?modx-drums
 	  arabic-mixed-kit-2
@@ -64,6 +65,7 @@
 	  real-brushes-kit
 	  real-drums-kit
 	  schlager-weapon
+	  songwriter-2015
 	  ) :modx)
 
 (import '(modx:?modx-drums
@@ -76,4 +78,5 @@
 	  modx:real-brushes-kit
 	  modx:real-drums-kit
 	  modx:schlager-weapon
+	  modx:songwriter-2015
 	  ) :cyco)

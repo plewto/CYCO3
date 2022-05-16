@@ -146,7 +146,11 @@ The assignments list has the form  ((sym1 . keynumber1)
                                      ..................)
 
 For integer arguments the map functions as with circular-list-keynumber-map
-The spacial symbol 'x returns the first keynumber in the list."
+The spacial symbol 'x returns the first keynumber in the list.
+
+If the yenumber is has the value :assignments, the keynumber-map
+returns two values (+rest+ assignemnts) where the 2nd value is the 
+assignment list."
   (flet ((docfn ()
 		(format t ";; Symbolic keynumber map~%")
 		(let ((index 0))
@@ -163,6 +167,8 @@ The spacial symbol 'x returns the first keynumber in the list."
 	  (cond ((eq kn :doc)
 		 (docfn)
 		 +rest+)
+		((eq kn :assignments)
+		 (values +rest+ assignments))
 		((rest-p kn)
 		 +rest+)
 		((eq kn 'x)

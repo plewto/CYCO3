@@ -28,16 +28,20 @@
   (:use :cl)
   (:import-from :cyco
 		:->string
+		:->symbol
 		:+root-instrument+
 		:instrument
 		:make-instrument
 		:set-program-map
+		:set-keynumber-map
 		:midi-control-change
 		:midi-program-change
+		:keynumber-map
 		:basic-keynumber-map
 		:basic-dynamic-map
 		:basic-articulation-map
 		:symbolic-keynumber-map
+		:set-name
 		:external-load-plugin-file
 		:extract-sub-symbolic-keylist))
 
@@ -58,7 +62,7 @@
 	    :channel 1
 	    :transient nil)
 
-(defmacro modx-performance (name bank-msb bank-lsb program-number)
+(defmacro modx-performance (name &optional (bank-msb 0) (bank-lsb 0) (program-number 0))
   `(let ((inst (make-instrument ',name
 				:parent +modx+
 				:transient t)))

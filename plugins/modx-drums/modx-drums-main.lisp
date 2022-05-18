@@ -1,7 +1,6 @@
 ;;;; CYCO modx-drums plugin
 ;;;; Defines drum-kit instruments for Yamaha MODX.
 
-
 (plugin modx)
 (in-package :modx)
 
@@ -45,8 +44,13 @@
 
 
 (drum-loader arabic-mixed-kit-2)
+(drum-loader brazil-kit)
+(drum-loader dub-rock-4 "Instrument 4 for factory performance 'Dub Rock Bass'")
+(drum-loader dub-rock-5 "Instrument 5 for factory performance 'Dub Rock Bass'")
 (drum-loader iranian-mix-kit)
 (drum-loader midnight-funk)
+(drum-loader new-arabic-kit-1)
+(drum-loader new-arabic-kit-2)
 (drum-loader new-iranian-kit)
 (drum-loader new-iranian-kit-2)
 (drum-loader new-maple-custom-kit)
@@ -54,11 +58,18 @@
 (drum-loader real-drums-kit)
 (drum-loader schlager-weapon)
 (drum-loader songwriter-2015 "Modification of Schlager-weapon")
+(drum-loader t3-uber-funk)
+(drum-loader turkish-kit)
 
 (export '(?modx-drums
 	  arabic-mixed-kit-2
+	  brazil-kit
+	  dub-rock-4
+	  dub-rock-5
 	  iranian-mix-kit
 	  midnight-funk
+	  new-arabic-kit-1
+	  new-arabic-kit-2
 	  new-iranian-kit
 	  new-iranian-kit-2
 	  new-maple-custom-kit
@@ -66,12 +77,19 @@
 	  real-drums-kit
 	  schlager-weapon
 	  songwriter-2015
+	  t3-uber-funk
+	  turkish-kit
 	  ) :modx)
 
 (import '(modx:?modx-drums
 	  modx:arabic-mixed-kit-2
+	  modx:brazil-kit
+	  modx:dub-rock-4
+	  modx:dub-rock-5
 	  modx:iranian-mix-kit
 	  modx:midnight-funk
+	  modx:new-arabic-kit-1
+	  modx:new-arabic-kit-2
 	  modx:new-iranian-kit
 	  modx:new-iranian-kit-2
 	  modx:new-maple-custom-kit
@@ -79,4 +97,6 @@
 	  modx:real-drums-kit
 	  modx:schlager-weapon
 	  modx:songwriter-2015
+	  t3-uber-funk
+	  turkish-kit
 	  ) :cyco)

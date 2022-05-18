@@ -1,6 +1,7 @@
 ;;;; CYCO Yamaha MODX plugin
 ;;;; new-maple-custom-kit
-;;;;
+;;;; May stand in for following kits 'New Oak Kit'
+;;;;                                 'Beechwood Snare Kit'
 
 (in-package :modx)
 

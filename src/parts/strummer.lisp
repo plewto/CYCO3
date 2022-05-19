@@ -2,7 +2,6 @@
 ;;;;
 ;;;; A STRUMMER generates MIDI events from an events-list
 ;;;; with particular attention to how chords are produced.
-;;;; See SIMPLE-PART for a version with less overhead/features.
 ;;;;
 
 (in-package :cyco-part)

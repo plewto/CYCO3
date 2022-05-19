@@ -15,7 +15,6 @@
 ;;;;            |    +-- metronome (pseudo part)
 ;;;;            |
 ;;;;            +-- RAW-PART
-;;;;            +-- SIMPLE-PART
 ;;;;            +-- STRUMMER
 ;;;;            +-- STRIPPER
 ;;;;          

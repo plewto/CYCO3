@@ -21,7 +21,6 @@
 ;;;;    |          +-- programs
 ;;;;    |          +-- qball
 ;;;;    |          +-- raw-part
-;;;;    |          +-- simple-part
 ;;;;    |          +-- strummer
 ;;;;    |     
 ;;;;    +-- instrument

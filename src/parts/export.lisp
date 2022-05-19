@@ -17,7 +17,6 @@
 	  make-programs
 	  make-qball
 	  make-raw-part
-	  make-simple-part
 	  make-strummer
 	  make-sysex-part
 	  make-text-part
@@ -30,8 +29,6 @@
 	  qball-p
 	  raw-part
 	  raw-part-p
-	  simple-part
-	  simple-part-p
 	  strummer
 	  strummer-p
 	  sysex
@@ -52,7 +49,6 @@
           cyco-part:make-programs
           cyco-part:make-qball
           cyco-part:make-raw-part
-          cyco-part:make-simple-part
           cyco-part:make-strummer
 	  cyco-part:make-sysex-part
 	  cyco-part:make-text-part
@@ -65,8 +61,6 @@
           cyco-part:qball-p
           cyco-part:raw-part
           cyco-part:raw-part-p
-          cyco-part:simple-part
-          cyco-part:simple-part-p
           cyco-part:strummer
           cyco-part:strummer-p
 	  cyco-part:transformer

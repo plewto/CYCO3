@@ -323,6 +323,7 @@
       (put part :no-thin no-thin)
       (setf (controllers-states part)
 	    (process-controllers-events part (->list events)))
+      (validate-render part)
       (reset part)
       part))
 
@@ -360,6 +361,7 @@
       (put part :no-thin no-thin)
       (setf (bender-states part)
 	    (process-bender-events part (->list events)))
+      (validate-render part)
       (reset part)
       part)) )
 

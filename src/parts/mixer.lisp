@@ -94,6 +94,8 @@
 	      (dolist (midi-event (process-event mixer event))
 		(push midi-event midi-events)))
 	    (setf (mixer-events mixer)(reverse midi-events))
+	    (validate-render mixer)
+	    (reset mixer)
 	    mixer)))
 
 

@@ -377,6 +377,8 @@
 	(put new-strummer :shift (scale-time-parameter (or shift 0) new-strummer))
 	(setf (strummer-states new-strummer)
 	      (process-states new-strummer (->list events)))
+	(validate-render new-strummer)
+	(reset new-strummer)
 	new-strummer)) ))
 
 (setf (documentation 'make-strummer 'function) +make-strummer-docstring+)

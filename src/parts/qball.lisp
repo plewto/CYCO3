@@ -100,6 +100,7 @@
       (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
       (put new-qball :shift (scale-time-parameter (or shift 0) new-qball))
       (put new-qball :reset-on-repeat reset-on-repeat)
+      (validate-render new-qball)
       (reset new-qball)
       new-qball))) 
 

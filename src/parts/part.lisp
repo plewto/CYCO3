@@ -8,16 +8,21 @@
 ;;;;       |
 ;;;;       +-- PART
 ;;;;            |
+;;;;            +-- BENDER
 ;;;;            +-- CONTROLLERS
+;;;;            +-- MIXER
+;;;;            +-- PART
 ;;;;            +-- PROGRAMS
 ;;;;            +-- QBALL
 ;;;;            |    |
-;;;;            |    +-- metronome (pseudo part)
+;;;;            |    +-- METRONOME (psudo part)
 ;;;;            |
 ;;;;            +-- RAW-PART
 ;;;;            +-- STRUMMER
-;;;;            +-- STRIPPER
-;;;;          
+;;;;            +-- SYSEX
+;;;;            +-- TEXT-PART
+;;;;            +-- TRANSFORMER
+
 
 (in-package :cyco-part)
 
@@ -138,4 +143,9 @@ used directly."))
 		  midi-events)))))
     (sort-midi-events midi-events)))
     
+
+(defmethod validate-render ((prt part))
+  (reset prt)
+  (render-once prt))
+  
 

@@ -20,4 +20,5 @@ Version 3.0.2 (2022.05.11)
     2. 2022-05-13 Fixed MODX-DRUMS bug.
     3. 2022-05-18 Defines new kits for MODX-DRUMS.	
     4. 2022-05-18 Removes dead code for depreciated "simple-part"
-    
+    5. 2022-05-19 Adds render validation test at part creation time.
+    6. 2022-05-20 Adds pattern/generator comprehension.

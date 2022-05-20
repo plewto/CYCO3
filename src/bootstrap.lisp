@@ -66,6 +66,7 @@
 		   "src/patterns/switch"
 		   "src/patterns/slowglass"
 		   "src/patterns/sample"
+		   "src/patterns/comprehension"
 		   "src/node"
 		   "src/midi/midi-message"
 		   "src/midi/midi-util"

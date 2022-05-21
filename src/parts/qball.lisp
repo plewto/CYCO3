@@ -21,88 +21,76 @@
 (defmethod qball-p ((object qball)) t)
 
 
-(labels ((validate-section (part-name section)
-			   (cond ((section-p section)
-				  section)
-				 ((and section (not (section-p section)))
-				  (cyco-type-error 'make-qball '(section nil) section)
-				  nil)
-				 ((not (project-p *project*))
-				  (cyco-composition-error
-				   'make-qball
-				   (sformat "No default project while creating qball ~A" part-name))
-				  nil)
-				 (t (property *project* :current-section))))
-	 
-	 ;; Checks that instruments argument is valid.
-	 ;;   1) A single instrument      --> converted to list --> 2
-	 ;;   2) A list of instruments    --> converted to INSTRUMENT-LAYER pattern.
-	 ;;   3) A Pattern of instruments --> Use as is.
-	 ;; Returns Pattern.
-	 (validate-instruments (part-name instruments)
-			       (cond
-				((pattern-p instruments)
-				 instruments) ;; does not check pattern elements
-				((listp instruments)
-				 (or (and (every #'instrument-p instruments)
-					  (instrument-layer :of instruments))
-				     (cyco-type-error 'make-qball "List of instruments"
-						      instruments
-						      (sformat "part name is ~A" part-name))))
-				((instrument-p instruments)
-				 (instrument-layer :of (->list instruments)))
-				(t (cyco-type-error 'make-qball
-						    "Instrument or list of instruments"
-						    instruments
-						    (sformat "part name is ~A" part-name))))) )
-  
-  (defun make-qball (name instruments &key
-			  section
-			  cuefn
-			  shuffle 
-			  shift
-			  tempo unit bars beats subbeats
-			  render-once
-			  (transposable nil)
-			  (reversible nil)
-			  cue
-			  (key '(60))
-			  (dur '(q))
-			  (amp '(mf))
-			  (reset-on-repeat nil)
-			  remarks)
-    (let* ((parent (or (validate-section name section)
-		       (return-from make-qball nil)))
-	   (instrument-pattern (or (validate-instruments name instruments)
-				   (return-from make-qball nil)))
-	   (new-qball (make-instance 'qball
-				     :properties +qball-properties+
-				     :name name
-				     :remarks (->string (or remarks ""))
-				     :transient t)))
-      (connect parent new-qball)
-      (put new-qball :instruments instrument-pattern)
-      (put new-qball :tempo tempo)
-      (put new-qball :unit unit)
-      (put new-qball :bars bars)
-      (put new-qball :beats beats)
-      (put new-qball :subbeats subbeats)
-      (init-time-signature new-qball)
-      (put new-qball :cue-function cuefn)
-      (put new-qball :shuffle-function shuffle)
-      (put new-qball :render-once render-once)
-      (put new-qball :transposable transposable)
-      (put new-qball :reversible reversible)
-      (put new-qball :muted nil)
-      (put new-qball :cue-cycle (->cycle cue))
-      (put new-qball :key-pattern (->pattern (or key '(60))))
-      (put new-qball :articulation-pattern (->pattern (or dur 1.0)))
-      (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
-      (put new-qball :shift (scale-time-parameter (or shift 0) new-qball))
-      (put new-qball :reset-on-repeat reset-on-repeat)
-      (validate-render new-qball)
-      (reset new-qball)
-      new-qball))) 
+;; Checks that instruments argument is valid.
+;;   1) A single instrument      --> converted to list --> 2
+;;   2) A list of instruments    --> converted to INSTRUMENT-LAYER pattern.
+;;   3) A Pattern of instruments --> Use as is.
+;; Returns Pattern.
+;;
+(defun validate-qball-instruments (part-name instruments)
+    (cond
+     ((pattern-p instruments)
+      instruments) ;; does not check pattern elements
+     ((listp instruments)
+      (or (and (every #'instrument-p instruments)
+	       (instrument-layer :of instruments))
+	  (cyco-type-error 'make-qball "List of instruments"
+			   instruments
+			   (sformat "part name is ~A" part-name))))
+     ((instrument-p instruments)
+      (instrument-layer :of (->list instruments)))
+     (t (cyco-type-error 'make-qball
+			 "Instrument or list of instruments"
+			 instruments
+			 (sformat "part name is ~A" part-name)))))
+
+(defun make-qball (name instruments &key
+			section
+			cuefn
+			shuffle 
+			shift
+			tempo unit bars beats subbeats
+			render-once
+			(transposable nil)
+			(reversible nil)
+			cue
+			(key '(60))
+			(dur '(q))
+			(amp '(mf))
+			(reset-on-repeat nil)
+			remarks)
+  (let* ((parent (or (validate-section name section)
+		     (return-from make-qball nil)))
+	 (instrument-pattern (or (validate-qball-instruments name instruments)
+				 (return-from make-qball nil)))
+	 (new-qball (make-instance 'qball
+				   :properties +qball-properties+
+				   :name name
+				   :remarks (->string (or remarks ""))
+				   :transient t)))
+    (connect parent new-qball)
+    (put new-qball :instruments instrument-pattern)
+    (put new-qball :tempo tempo)
+    (put new-qball :unit unit)
+    (put new-qball :bars bars)
+    (put new-qball :beats beats)
+    (put new-qball :subbeats subbeats)
+    (init-time-signature new-qball)
+    (put new-qball :cue-function cuefn)
+    (put new-qball :shuffle-function shuffle)
+    (put new-qball :render-once render-once)
+    (put new-qball :transposable transposable)
+    (put new-qball :reversible reversible)
+    (put new-qball :muted nil)
+    (put new-qball :cue-cycle (->cycle cue))
+    (put new-qball :key-pattern (->pattern (or key '(60))))
+    (put new-qball :articulation-pattern (->pattern (or dur 1.0)))
+    (put new-qball :dynamic-pattern (->pattern (or amp 0.5)))
+    (put new-qball :shift (scale-time-parameter (or shift 0) new-qball))
+    (put new-qball :reset-on-repeat reset-on-repeat)
+    (validate-render new-qball)
+    (reset new-qball)
+    new-qball)) 
 
 (setf (documentation 'make-qball 'function) +qball-docstring+)
 
@@ -149,7 +137,6 @@
       (sformat "The QBALL macro is identical to MAKE-QBALL function except that it binds the
 new object to a symbol named name. ~%~A"
 	       +qball-docstring+))
-       
 
 
 (defmethod transpose ((qball qball)(n t))

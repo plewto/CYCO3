@@ -74,7 +74,7 @@
 (setf (documentation 'hailstone 'function)
       "Returns new instance of HAILSTONE.
 
-(hailstone seed &key event odd hook)
+(hailstone seed &key even odd hook)
 
 seed  - Integer, initial value.
 :even - Function applied for even values,

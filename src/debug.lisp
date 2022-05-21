@@ -6,7 +6,9 @@
 ;; List of source files to reload.
 ;; If empty all cyco sources files are loaded.
 ;;
-(param *rebuild-manifest* '())
+(param *rebuild-manifest* '(
+			    "src/debug"
+			    ))
 
 
 ;; Hook function executed after rebuild.
@@ -17,6 +19,7 @@
 ;; Reloads cyco source file.
 ;;
 (defun rebuild ()
+  (cwd "@cyco")
   (if (not *rebuild-manifest*)
       (build-cyco)
     (dolist (file *rebuild-manifest*)
@@ -24,6 +27,8 @@
       (load file)))
   (rebuild-hook))
 
+
+(defun rb ()(rebuild))
 
 ;; Insert in code under test to trace execution.
 ;;

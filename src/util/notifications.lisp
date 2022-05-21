@@ -85,4 +85,5 @@ a warning and CYCO does not terminate."
 			 (sformat "Function name : ~A" function-name))
 		   msg))) )
 
-
+(defun not-implemented-warning (item)
+  (cyco-warning 'NOT-IMPLEMENTED item))

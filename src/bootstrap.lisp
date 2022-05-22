@@ -115,10 +115,9 @@
 		   "src/parts/qball-docs"
 		   "src/parts/qball"
 		   "src/parts/qball-midi-render"
-
 		   "src/parts/xball"
 		   "src/parts/xball-midi-render"
-		   
+		   "src/parts/xball-docs"
 		   "src/parts/metronome"
 		   "src/parts/programs"
 		   "src/parts/strummer-docs"
@@ -136,7 +135,6 @@
 		   "src/parts/sysex-docs"
 		   "src/parts/sysex"
 		   "src/parts/export"
-		   
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
 		   "src/inspection/interactive"

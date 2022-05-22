@@ -178,4 +178,9 @@ Example 4 (Curly brackets)
 	    (let* ((str (post-process (parse exp))))
 	      (eval (read-from-string str))))
 
+	  (defun pattern-comprehension-p (item)
+	    "Returns non-nil if argument defines a pattern-comprehension."
+	    (and (listp item)
+		 (gethash (->string (car item)) commands)))
+
 	  (setf (documentation 'pattern-comprehension 'function) docs) ))

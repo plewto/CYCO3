@@ -20,7 +20,6 @@
 (defmethod qball-p ((object t)) nil)
 (defmethod qball-p ((object qball)) t)
 
-
 ;; Checks that instruments argument is valid.
 ;;   1) A single instrument      --> converted to list --> 2
 ;;   2) A list of instruments    --> converted to INSTRUMENT-LAYER pattern.

@@ -8,6 +8,8 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
+			    "src/parts/xball"
+			    "src/parts/xball-midi-render"
 			    ))
 
 

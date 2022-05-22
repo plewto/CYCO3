@@ -6,6 +6,7 @@
 (defpackage :cyco-part
   (:use :cl)
   (:import-from :cyco
+		:*chord-table*
                 :*metronome*
                 :*project*
                 :+default-keytable+
@@ -50,6 +51,7 @@
                 :dump-events
                 :duration
                 :dynamic
+		:dynamic->velocity
                 :dynamic-map
                 :dynamic-p
                 :elements
@@ -104,6 +106,8 @@
                 :parent
                 :part-p
                 :partition-list
+		:pattern-comprehension
+		:pattern-comprehension-p
                 :pattern-p
                 :period
                 :permute

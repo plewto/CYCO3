@@ -22,3 +22,4 @@ Version 3.0.2 (2022.05.11)
     4. 2022-05-18 Removes dead code for depreciated "simple-part"
     5. 2022-05-19 Adds render validation test at part creation time.
     6. 2022-05-20 Adds pattern/generator comprehension.
+    7. 2022-05-22 Adds new XBALL part type.

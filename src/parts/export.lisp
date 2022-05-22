@@ -16,6 +16,7 @@
 	  make-metronome
 	  make-programs
 	  make-qball
+	  make-xball
 	  make-raw-part
 	  make-strummer
 	  make-sysex-part
@@ -35,7 +36,9 @@
 	  transformer
 	  transformer-p
 	  text-part
-	  text-part-p)
+	  text-part-p
+	  xball
+	  xball-p)
 	:cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
@@ -53,6 +56,7 @@
 	  cyco-part:make-sysex-part
 	  cyco-part:make-text-part
 	  cyco-part:make-transformer
+	  cyco-part:make-xball
           cyco-part:metronome
 	  cyco-part:mixer
 	  cyco-part:make-mixer
@@ -67,7 +71,9 @@
 	  cyco-part:transformer-p
 	  cyco-part:sysex
 	  cyco-part:text-part
-	  cyco-part:text-part-p)
+	  cyco-part:text-part-p
+	  cyco-part:xball
+	  cyco-part:xball-p)
 	:cyco)
 
 (in-package :cyco)

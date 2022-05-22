@@ -96,7 +96,6 @@
 		   "src/composition/project/loader"
 		   "src/composition/group"
 		   "src/composition/sections/section"
-
 		   "src/generators/generator"
 		   "src/generators/counter"
 		   "src/generators/ramp"
@@ -109,7 +108,6 @@
 		   "src/generators/logistic"
 		   "src/generators/alloy"
 		   "src/generators/euclid"
-		   
 		   "src/parts/parts-header"
 		   "src/parts/expect"
 		   "src/parts/part"
@@ -117,6 +115,10 @@
 		   "src/parts/qball-docs"
 		   "src/parts/qball"
 		   "src/parts/qball-midi-render"
+
+		   "src/parts/xball"
+		   "src/parts/xball-midi-render"
+		   
 		   "src/parts/metronome"
 		   "src/parts/programs"
 		   "src/parts/strummer-docs"

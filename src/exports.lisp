@@ -1,7 +1,8 @@
 ;;;; CYCO package exports
 ;;;;
 
-(export '(*cyco-config-directory*
+(export '(*chord-table*
+	  *cyco-config-directory*
           *cyco-config-file*
           *cyco-config-profile*
           *default-osc-send-address*
@@ -220,6 +221,8 @@
 	  part-p
 	  partition-list
 	  path-to-root
+	  pattern-comprehension
+	  pattern-comprehension-p
 	  pattern-length
 	  pattern-p
 	  period

@@ -33,16 +33,6 @@
     
 (defmethod chord-model-p ((object abstract-chord-model)) t)
 
-(defmethod defines-chord-p ((chord-model abstract-chord-model)(ctype t))
-  (error (sformat "DEFINES-CHORD-P not implemented for ~A" (type-of chord-model))))
-
-(defmethod dump-chords ((chord-model abstract-chord-model))
-  (error (sformat "DUMP-CHORDS not implemented for ~A" (type-of chord-model))))
-
-(defmethod chord-template ((chord-model abstract-chord-model)(name t)(keynumber t))
-  (declare (ignore keynumber))
-  (error (sformat "CHORD-TEMPLATE not implemented for ~A" (type-of chord-model))))
-
 (defmethod chord-description ((chord-model abstract-chord-model)(chord-name t))
   (gethash chord-name (chord-table-descriptions chord-model)))
 

@@ -181,5 +181,19 @@ subbeats"))
     (put destination key (property source key)))
   destination)
 
-
+(defmethod enumerate-cue-points ((tsig time-signature) &key (cuefn 'bar))
+    "Returns list of all time-signature cue-points for BAR or TBAR
+  cue-functions.  Uses BAR by default."
+  (let ((acc '()))
+    (cond ((eq cuefn 'bar)
+	   (dolist (br (range 1 (1+ (bars tsig))))
+	     (dolist (bt (range 1 (1+ (beats tsig))))
+	       (dolist (sb (range 1 (1+ (subbeats tsig))))
+		 (push (list br bt sb) acc)))))
+	  ((eq cuefn 'tbar)
+	   (dolist (br (range 1 (1+ (bars tsig))))
+	     (dolist (trip (range 1 (/ (1+ (* (beats tsig)(tsubbeats tsig))) 2)))
+	       (push (list 't br trip) acc))))
+	  (t (cyco-error (sformat "Invalid cuefn argument to ENUMERATE-CUE-POINTS: ~A" cuefn))))
+    (reverse acc)))
 

@@ -22,12 +22,13 @@
 ;;;;    Patterns do not have a value hook function.
 ;;;;    Generators have a value hook function.   The hook is applied to the
 ;;;;    generators internal or natural value.
-;;;;
+
+;;;; <STRIKE> *** ACTION FUNCTIONS HAVE BEEN DEPRECIATED ***
 ;;;; Action functions
 ;;;;    Patterns do not have action functions.
 ;;;;    Generators may have an action function which is called whenever the
 ;;;;    they produce specific values. 
-;;;;
+;;;;  </STRIKE>
 
 (version 3)
 (plugin general-midi)
@@ -43,7 +44,7 @@
 (lpf d)   ;; dice and walker patterns
 (lpf e)   ;; coin and wrapper patterns
 (lpf f)   ;; Nessted patterns
-(lpf g)   ;; Counter, ramp and asr-envelope generators
+;; (lpf g)   ;; Counter, ramp and asr-envelope generators
 (lpf i)   ;; Shift-register
 (lpf j)   ;; recaman generator
 (lpf k)   ;; hailstone generator

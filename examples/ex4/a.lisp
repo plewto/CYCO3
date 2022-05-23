@@ -3,7 +3,7 @@
 ;;;; Section A uses QBALLs to create a basic drum pattern.
 ;;;; Qballs are heavily reliant on implicit CYCLE patterns.
 ;;;;
-;;;; The CYCLE pattern returns it's element in sequence.  Once the final
+;;;; The CYCLE pattern returns its element in sequence.  Once the final
 ;;;; value has been reached, the cycle repeats.
 ;;;;
 ;;;; The :KEY, :DUR and :AMP arguments to QBALL may take any of the

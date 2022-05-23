@@ -8,7 +8,7 @@
 ;; The shift-register generator is capable of producing a wide array of
 ;; numeric patterns.  At the extreme, these approach pseudo-random.
 ;;
-;;   (shift-register seed taps &key mask hook monitor action prerun)
+;;   (shift-register seed taps &key mask hook prerun)
 ;;
 ;; When constructing a shift register it is convenient to use binary notation
 ;; for the seed, taps and mask values, binary notation directly represents the

@@ -2,6 +2,7 @@
 ;;;;
 ;;;; Counter and Ramp generators.
 ;;;;
+;;;; NOTE: *** ACTION and MONITOR FUNCTIONS HAVE BEEN DEPRECIATED ***
 
 (section g :bars 6 :tempo 90)
 

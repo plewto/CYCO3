@@ -137,6 +137,7 @@
 		   "src/parts/export"
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
+		   "src/composition/bincue"
 		   "src/inspection/interactive"
 		   "src/inspection/overview"
 		   "src/plugins"

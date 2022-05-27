@@ -116,3 +116,10 @@ shift - optional number of spaces to shift text right."
     (if (minusp diff)
 	text
       (str+ pad text pad))))
+
+(defun string-pad-left (str width &optional (c #\space))
+  (let ((diff (- width (length str))))
+    (if (plusp diff)
+	(str+ (scopies diff c) str)
+      str)))
+	

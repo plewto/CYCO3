@@ -15,6 +15,10 @@ number of bars in a phrase and the number of sub-beats to a beat.
 The properties tbeats and tsubbeats are tripplet version of beats and 
 subbeats"))
 
+(defgeneric time-signature-p (obj))
+(defmethod time-signature-p ((tsig time-signature)) t)
+(defmethod time-signature-p ((obj t)) nil)
+
 (constant +time-signature-properties+
 	  '(:tempo :unit :bars :beats :tbeats :subbeats :tsubbeats
 		   :phrase-duration :bar-duration :beat-duration :tbeat-duration
@@ -181,19 +185,18 @@ subbeats"))
     (put destination key (property source key)))
   destination)
 
-(defmethod enumerate-cue-points ((tsig time-signature) &key (cuefn 'bar))
-    "Returns list of all time-signature cue-points for BAR or TBAR
-  cue-functions.  Uses BAR by default."
-  (let ((acc '()))
-    (cond ((eq cuefn 'bar)
-	   (dolist (br (range 1 (1+ (bars tsig))))
-	     (dolist (bt (range 1 (1+ (beats tsig))))
-	       (dolist (sb (range 1 (1+ (subbeats tsig))))
-		 (push (list br bt sb) acc)))))
-	  ((eq cuefn 'tbar)
-	   (dolist (br (range 1 (1+ (bars tsig))))
-	     (dolist (trip (range 1 (/ (1+ (* (beats tsig)(tsubbeats tsig))) 2)))
-	       (push (list 't br trip) acc))))
-	  (t (cyco-error (sformat "Invalid cuefn argument to ENUMERATE-CUE-POINTS: ~A" cuefn))))
-    (reverse acc)))
+(defmethod cue-gamut ((tsig time-signature) &optional (use-tsub nil))
+    "Returns list of all time-signature cue-points for BAR 
+If optional use-tsub is true, use tsubbeats instead of subbeats."
+    (let ((acc '()))
+      (if  use-tsub
+	  (dolist (br (range 1 (1+ (bars tsig))))
+	    (dolist (bt (range 1 (1+ (beats tsig))))
+	      (dolist (tsb (range 1 (1+ (tsubbeats tsig))))
+		(push (list br bt (->symbol (Sformat "t~D" tsb))) acc))))
+	(dolist (br (range 1 (1+ (bars tsig))))
+	  (dolist (bt (range 1 (1+ (beats tsig))))
+	    (dolist (sb (range 1 (1+ (subbeats tsig))))
+	      (push (list br bt sb) acc)))))
+      (reverse acc)))
 

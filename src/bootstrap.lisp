@@ -138,6 +138,7 @@
 		   "src/composition/sections/preroll"
 		   "src/composition/sections/fin"
 		   "src/composition/bincue"
+		   "src/composition/binball"
 		   "src/inspection/interactive"
 		   "src/inspection/overview"
 		   "src/plugins"

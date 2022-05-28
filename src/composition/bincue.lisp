@@ -56,7 +56,6 @@
 			      (symlist (slot-value bincue 'symbols)))
 			  (dolist (token cuelist)
 			    (setf acc (sformat "~A~A" acc (process-token token symlist width))))
-			  (format t "DEBUG BINCUE INTERMEDIATE-FORM: ~S~%" acc)
 			  acc)) )
 
 	(defun bincue (&key (symbols '())(timesig nil)(use-subbeats t))

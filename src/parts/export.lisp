@@ -25,6 +25,7 @@
 	  metronome
 	  mixer
 	  make-mixer
+	  part-banner
 	  programs
 	  qball
 	  qball-p
@@ -60,6 +61,7 @@
           cyco-part:metronome
 	  cyco-part:mixer
 	  cyco-part:make-mixer
+	  cyco-part:part-banner
           cyco-part:programs
           cyco-part:qball
           cyco-part:qball-p

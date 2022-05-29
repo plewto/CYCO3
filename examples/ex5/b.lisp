@@ -42,7 +42,7 @@
 		    (:time (4 2 1) :key g5  :strum* 0.5)  ;; accelerate
 		    (:time (4 3 1) :key a6  :strum* 1.5)  ;; decelerate
 
-		    ;; Note amplitude may be scale across a chord.
+		    ;; Note amplitude may be scaled across a chord.
 		    ;; The first chord is played without amplitude scaling
 		    ;;
 		    (:strum s :direction down :chord (0 3 7 12) :strum* 1.0 :amp f :dur q)

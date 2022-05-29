@@ -46,5 +46,16 @@ ex4   Pattern and Generators
       - Logistic generator
       - SLOW-GLASS and PALINDROME
       - Using ALLOY to compose two generators.
-      
+
+ex5   The Strummer part
+      - Strumming chords
+      - Alternate chord tables
+
+ex6   - MIDI controllers, after touch and pitch-bend.
+
+ex7   - XBALL, an extension of QBALL.
+
+ex8   - Binary cuelist
+
+
       

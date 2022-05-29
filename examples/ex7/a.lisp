@@ -16,7 +16,7 @@
        :dur 'q
        :amp 'ff)
 
-;; The XBALL equivalent to the above uses named chords. 
+;; The XBALL equivalent uses named chords. 
 ;;
 (xball a2 piano
        :render-once t
@@ -30,7 +30,7 @@
 ;; pattern.  The default pattern is the cycle.  The next example alternates
 ;; between major and minor chords.
 ;;
-;; Another major difference is that a QBALL may take a pattern of
+;; Another difference is that a QBALL may take a pattern of
 ;; instruments while an XBALL may take only a -single- instrument.
 ;;
 (xball a3 piano

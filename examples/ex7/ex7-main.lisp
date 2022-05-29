@@ -10,4 +10,4 @@
 (prune-orchestra)
 (general-midi-instrument piano :channel 1)
 (lpf a)   ;; XBALL Basics.
-
+(lpf b)   ;; Pattern comprehension

@@ -63,10 +63,10 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 
 (defmethod next-1 ((gen euclid))
   (prog1
-      (value gen))
-  (setf (internal-value gen)
-	(+ (internal-value gen)
-	   (slot-value gen 'increment))))
+      (value gen)
+    (setf (internal-value gen)
+	  (+ (internal-value gen)
+	     (slot-value gen 'increment)))))
 	  
 
 ;; NOTES: Returns incorrect value when points > length.

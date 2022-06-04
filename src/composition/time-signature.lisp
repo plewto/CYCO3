@@ -166,7 +166,7 @@ subbeats"))
     daughter))
 	 
 (defmethod ->string ((time-signature time-signature))
-  (let ((frmt "~A: ~A ~A BPM ~A bars ~A/~A subbeat=~A"))
+  (let ((frmt "~A: ~A ~A BPM ~A bars ~A/~A subbeats=~A"))
     (sformat frmt
 	     (type-of time-signature)
 	     (name time-signature)
@@ -200,3 +200,9 @@ If optional use-tsub is true, use tsubbeats instead of subbeats."
 	      (push (list br bt sb) acc)))))
       (reverse acc)))
 
+(defmethod cue-points ((tsig time-signature) &optional (use-tsub nil))
+  "Returns number of cue-points for standard BAR cue function.
+In short returns length of (cue-gamut time-signature)"
+  (* (bars tsig)
+     (beats tsig)
+     (if use-tsub (tsubbeats tsig)(subbeats tsig))))

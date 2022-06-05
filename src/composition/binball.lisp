@@ -137,6 +137,16 @@
       1) :cuefn argument is not available, the QBALL uses the BAR function.
       
       2) The :cue argument takes a 'binary' cue-list as with BINCUE.
+         Alternatively a 'Euclidean rhythm' may be produced by using a cuelist 
+         of form '(euclid points shift)  where:
+ 
+             points is an integer less then or equal to the -total- number of 
+             subbeats. For 4 bars of 4/4 with 4 subbeats to the beat, the 
+             total number of 16th notes is 64.   If points is nil the default 
+             is subbeats/2 + 1.
+
+             shift is an optional integer to shift the rhythm by shift 
+             subbeats. Default 0.
 
       3) If :print-cue-list is true the translated cue-list is printed.
 

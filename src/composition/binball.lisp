@@ -29,7 +29,11 @@
 				      :subbeats (or ,subbeats (subbeats parent)))
 		    parent))
 	    (bincue (bincue :symbols ,symbols :timesig tsig :use-subbeats ,use-subbeats))
-	    (bar-cue-list (bincue-translate bincue ,cue))
+	    (bar-cue-list (if (eq (car ,cue) 'euclid)
+			      (let ((points (or (second ,cue) (1+ (/ (cue-points tsig) 2))))
+				    (shift (or (third ,cue) 0)))
+				(euclid->binary-cuelist points :shift shift :timesig tsig :use-subbeats ,use-subbeats))
+			    (bincue-translate bincue ,cue)))
 	    (qb (make-qball ',name ,instruments
 			    :section parent
 			    :cuefn #'bar
@@ -68,7 +72,11 @@
 				      :subbeats (or ,subbeats (subbeats parent)))
 		    parent))
 	    (bincue (bincue :symbols ,symbols :timesig tsig :use-subbeats ,use-subbeats))
-	    (bar-cue-list (bincue-translate bincue ,cue))
+	     (bar-cue-list (if (eq (car ,cue) 'euclid)
+			      (let ((points (or (second ,cue) (1+ (/ (cue-points tsig) 2))))
+				    (shift (or (third ,cue) 0)))
+				(euclid->binary-cuelist points :shift shift :timesig tsig :use-subbeats ,use-subbeats))
+			     (bincue-translate bincue ,cue)))
 	    (xb (make-xball ',name ,instrument
 			    :section parent
 			    :cuefn #'bar
@@ -105,10 +113,20 @@
       1) :cuefn argument is not available, the QBALL uses the BAR function.
       
       2) The :cue argument takes a 'binary' cue-list as with BINCUE.
+         Alternatively a 'Euclidean rhythm' may be produced by using a cuelist 
+         of form '(euclid points shift)  where:
+ 
+             points is an integer less then or equal to the -total- number of 
+             subbeats. For 4 bars of 4/4 with 4 subbeats to the beat, the 
+             total number of 16th notes is 64.   If points is nil the default 
+             is subbeats/2 + 1.
+
+             shift is an optional integer to shift the rhythm by shift 
+             subbeats. Default 0.
 
       3) If :print-cue-list is true the translated cue-list is printed.
 
-      The resulting obkect will appear in the project tree as a QBALL.")
+      The resulting object will appear in the project tree as a QBALL.")
 
 
 (setf (documentation 'binxball 'function)

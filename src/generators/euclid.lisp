@@ -94,6 +94,38 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
 	(funcall fn time-signature (list 0 point)))))
 
 
+(labels ((get-time-signature (arg)
+			     (cond ((time-signature-p arg)
+				    arg)
+				   (arg
+				    (let* ((lst (->list arg))
+					   (br (or (car lst) 4))
+					   (bt (or (second lst) 4))
+					   (sb (or (third lst) 4)))
+				      (time-signature :bars br :beats bt :subbeats sb)))
+				   (*project*
+				    (or (property *project* :current-section)
+					*project*))
+				   (t (time-signature :bars 2 :beats 4 :subbeats 4)))) )
+
+	(defun euclid->binary-cuelist (points &key (shift 0)(timesig nil)(use-subbeats t))
+	  (let* ((tsig (get-time-signature timesig))
+		 (length (cue-points tsig (not use-subbeats)))
+		 (increment (/ length points))
+		 (value shift)
+		 (acc '())
+		 (cue ""))
+	    (while (< value length)
+	      (push (truncate (round value)) acc)
+	      (setf value (+ value increment)))
+	    (loop for i from 0 below length do
+		  (setf cue (str+ cue (if (member i acc) "1" "0"))))
+	    (let* ((symlist (list (cons 'euclid cue)))
+		   (bc (bincue :symbols symlist :timesig tsig :use-subbeats use-subbeats)))
+	      (bincue-translate bc (list 'euclid))))) )
+		   
+
+
 (setf (documentation 'euclid 'function)
       "Creates 'Euclidean Rhythm' Generator.
 
@@ -137,5 +169,18 @@ cuing-function specifically for that instance.
        :key 'hit))")
 
 
+(setf (documentation 'euclid->binary-cuelist 'function)
+      "Generates a Euclidean-rhythm cuelist for use with BINCUE.
 
+points - Number of events, should be less then or equal to the -total-
+         number of time-signature subbeats.  The time-signature method
+         (CUE-POINTS tsig) returns the maximum allowed value.
 
+:shift   - Number of subbeats to shift rhythm, default 0.
+:timesig - Reference time-signature, may be one of the following.
+           1) An instance of TIME-SIGNATURE.
+           2) A list of form (BARS BEATS SUBBEATS)
+           3) Defaults to either the current project section.
+              If there is no current section defaults to *PROJECT*.
+:use-subbeats - If true use time-signature subbeats for base unit,
+           Otherwise use tsubbeats. Default T.")

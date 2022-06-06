@@ -37,7 +37,7 @@
 	      (not (starts-with-p test-string " This")))))
 
 (pass? "sformat 3.16" (string= (sformat "~A~A" 'A 'B) "AB"))
-(pass? "format-binary 3.17" (string= (format-binary 9 :bits 4) " 1001"))
+(pass? "format-binary 3.17" (string= (format-binary 9 :bits 4) "1001"))
 (pass? "center-string 3.18" (string= "   APE   " (center-string "APE" 9)))
 
 ;;; string pick test

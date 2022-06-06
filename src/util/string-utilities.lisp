@@ -86,7 +86,7 @@ Returns string."
       (if (zerop brk)
 	  (setf acc (str+ " " acc)
 		brk (or group bits))))
-    acc))
+    (string-left-trim '(#\space) acc)))
 
 (defmethod palindrome ((s string) &key (elide nil))
   (let ((r (reverse s)))

@@ -219,3 +219,15 @@ returns nested list."
 		      (push (list br bt sb) acc)))))
 	    (reverse acc))))
 
+
+(defun pprint-cue-list (cue-list &optional header)
+  (let ((current (caar cue-list)))
+    (if header
+	(format t "~A CUE-LIST:~%" header))
+    (dolist (q cue-list)
+      (if (not (eq (car q) current))
+	  (progn
+	    (format t "~%")
+	    (setf current (car q))))
+      (format t "~A " q))
+    (format t "~%")))

@@ -5,17 +5,6 @@
 (in-package :cyco)
 
 
-(defun pprint-cue-list (name cue-list)
-  (let ((current (caar cue-list)))
-    (format t "~A CUE-LIST:~%" name)
-    (dolist (q cue-list)
-      (if (not (eq (car q) current))
-	  (progn
-	    (format t "~%")
-	    (setf current (car q))))
-      (format t "~A " q))
-    (format t "~%")))
-
 (defmacro binball (name instruments &key
 			section shuffle shift tempo unit bars beats
 			subbeats render-once transposable reversible 
@@ -53,7 +42,7 @@
 			    :amp (or ,amp '(fff))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list (name qb) bar-cue-list))
+       (if ,print-cue-list (pprint-cue-list bar-cue-list (name qb)))
        (defparameter ,name qb)
        qb)))
 
@@ -100,7 +89,7 @@
 			    :direction (or ,direction '(down))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list (name xb) bar-cue-list))
+       (if ,print-cue-list (pprint-cue-list bar-cue-list (name xb)))
        (defparameter ,name xb)
        xb)))
 				 

@@ -21,22 +21,7 @@
     :type list
     :initform '())))
 
-(labels ((select-time-signature (arg)
-				(cond ((time-signature-p arg)
-				       arg)
-				      ((and arg (listp arg))
-				       (let ((bars (or (car arg) 2))
-					     (beats (or (second arg) 4))
-					     (sub (or (third arg) 4)))
-					 (time-signature :bars bars :beats beats :subbeats sub)))
-				      (t
-				       (or (and *project* (property *project* :current-section))
-					     (let ((frmt "Invalid time-signature argument for BINCUE ~A"))
-					       (cyco-warning (sformat frmt arg)
-							     "Using default 4/4 time.")
-					       (time-signature :bars 8 :beats 4 :subbeats 4))))))
-
-	 (zeros (n)(scopies n #\0))
+(labels ((zeros (n)(scopies n #\0))
 
 	 (one+zeros (n)(sformat "1~A" (zeros (1- n))))
 

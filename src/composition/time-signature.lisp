@@ -206,3 +206,31 @@ In short returns length of (cue-gamut time-signature)"
   (* (bars tsig)
      (beats tsig)
      (if use-tsub (tsubbeats tsig)(subbeats tsig))))
+
+(defun select-time-signature (obj)
+  "Returns time-signature.
+Argument may be any of the following:
+
+1) An instance of TIME-SIGNATURE, the argument is returned.
+
+2) A list of form (bars beats subbeats)
+   A time-signature with the given parameters is constructed.
+
+3) nil.  If the argument is nil a default time-signature is taken 
+   from one of the following sources:
+   A) The current section of *project*
+   B) If there is no current-section, the value of *project* is used.
+   C) If *project* is nil a default 2-bar signature in 4/4 time is 
+      returned."
+
+  (cond ((time-signature-p obj)
+	 obj)
+	((and obj (listp obj))
+	 (let ((br (or (car obj) 2))
+	       (bt (or (second obj) 4))
+	       (sb (or (third obj) 4)))
+	   (time-signature :bars br :beats bt :subbeats sb :tempo 60)))
+	((and *project* (property *project* :current-section)))
+	(*project* *project*)
+	(t (time-signature :bars 2 :beats 4 :subbeats 4 :tempo 60))))
+	

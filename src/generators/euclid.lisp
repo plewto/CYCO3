@@ -84,46 +84,27 @@ https://en.wikipedia.org/wiki/Euclidean_rhythm"))
     (1- points)))
 
 
-;; (defmethod cue-function ((gen euclid))
-;;   "Returns cue-function for this specific instance of Euclid."
-;;   (cue-n (slot-value gen 'length)))
-
 (defmethod cue-function ((gen euclid) &key division)
   (let ((fn (cue-n (or division (slot-value gen 'length)))))
     #'(lambda (time-signature point)
 	(funcall fn time-signature (list 0 point)))))
 
 
-(labels ((get-time-signature (arg)
-			     (cond ((time-signature-p arg)
-				    arg)
-				   (arg
-				    (let* ((lst (->list arg))
-					   (br (or (car lst) 4))
-					   (bt (or (second lst) 4))
-					   (sb (or (third lst) 4)))
-				      (time-signature :bars br :beats bt :subbeats sb)))
-				   (*project*
-				    (or (property *project* :current-section)
-					*project*))
-				   (t (time-signature :bars 2 :beats 4 :subbeats 4)))) )
-
-	(defun euclid->binary-cuelist (points &key (shift 0)(timesig nil)(use-subbeats t))
-	  (let* ((tsig (get-time-signature timesig))
-		 (length (cue-points tsig (not use-subbeats)))
-		 (increment (/ length points))
-		 (value shift)
-		 (acc '())
-		 (cue ""))
-	    (while (< value length)
-	      (push (truncate (round value)) acc)
-	      (setf value (+ value increment)))
-	    (loop for i from 0 below length do
-		  (setf cue (str+ cue (if (member i acc) "1" "0"))))
-	    (let* ((symlist (list (cons 'euclid cue)))
-		   (bc (bincue :symbols symlist :timesig tsig :use-subbeats use-subbeats)))
-	      (bincue-translate bc (list 'euclid))))) )
-		   
+(defun euclid->binary-cuelist (points &key (shift 0)(timesig nil)(use-subbeats t))
+  (let* ((tsig (select-time-signature timesig))
+	 (length (cue-points tsig (not use-subbeats)))
+	 (increment (/ length points))
+	 (value shift)
+	 (acc '())
+	 (cue ""))
+    (while (< value length)
+      (push (truncate (round value)) acc)
+      (setf value (+ value increment)))
+    (loop for i from 0 below length do
+	  (setf cue (str+ cue (if (member i acc) "1" "0"))))
+    (let* ((symlist (list (cons 'euclid cue)))
+	   (bc (bincue :symbols symlist :timesig tsig :use-subbeats use-subbeats)))
+      (bincue-translate bc (list 'euclid)))))
 
 
 (setf (documentation 'euclid 'function)

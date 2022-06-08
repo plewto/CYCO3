@@ -1,9 +1,33 @@
 ;;;; cyco composition binball.lisp
 ;;;;
 ;;;; Defines combined structures for BINCUE+QBALL and BINCUE+XBALL.
+;;;;
+;;;; Changes: Now returns two values, the part object and the cue-list.
 
 (in-package :cyco)
 
+
+;; (euclid points shift)
+;; (euclid2 p1 p2 split s1 s2)
+;;
+;; TODO: Documentation
+(defun binball-cuelist (cuelist bincue time-signature use-subbeats)
+  (cond ((eq (car cuelist) 'euclid)
+	 (let ((points (or (second cuelist) 1))
+	       (shift (or (third cuelist) 0)))
+	   (euclid points :shift shift :timesig time-signature :use-subbeats use-subbeats)))
+
+	((eq (car cuelist) 'euclid2)
+	 (let ((p1 (or (second cuelist) 1))
+	       (p2 (or (third cuelist) 1))
+	       (split (fourth cuelist))
+	       (s1 (or (fifth cuelist) 0))
+	       (s2 (or (sixth cuelist) 0)))
+	   (euclid2 p1 p2 :shift1 s1 :shift2 s2 :split split
+		    :timesig time-signature :use-subbeats use-subbeats)))
+
+	(t (bincue-translate bincue cuelist))))
+	
 
 (defmacro binball (name instruments &key
 			section shuffle shift tempo unit bars beats
@@ -18,11 +42,7 @@
 				      :subbeats (or ,subbeats (subbeats parent)))
 		    parent))
 	    (bincue (bincue :symbols ,symbols :timesig tsig :use-subbeats ,use-subbeats))
-	    (bar-cue-list (if (eq (car ,cue) 'euclid)
-			      (let ((points (or (second ,cue) (1+ (/ (cue-points tsig) 2))))
-				    (shift (or (third ,cue) 0)))
-				(euclid->binary-cuelist points :shift shift :timesig tsig :use-subbeats ,use-subbeats))
-			    (bincue-translate bincue ,cue)))
+	    (bar-cuelist (binball-cuelist ,cue bincue tsig ,use-subbeats))
 	    (qb (make-qball ',name ,instruments
 			    :section parent
 			    :cuefn #'bar
@@ -36,15 +56,15 @@
 			    :bars ,bars
 			    :beats ,beats
 			    :subbeats ,subbeats
-			    :cue bar-cue-list
+			    :cue bar-cuelist
 			    :key (or ,key '(60))
 			    :dur (or ,dur '(q))
 			    :amp (or ,amp '(fff))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list bar-cue-list (name qb)))
+       (if ,print-cue-list (pprint-cue-list bar-cuelist (name qb)))
        (defparameter ,name qb)
-       qb)))
+       (values qb bar-cuelist))))
 
 		      
 (defmacro binxball (name instrument &key
@@ -61,11 +81,7 @@
 				      :subbeats (or ,subbeats (subbeats parent)))
 		    parent))
 	    (bincue (bincue :symbols ,symbols :timesig tsig :use-subbeats ,use-subbeats))
-	     (bar-cue-list (if (eq (car ,cue) 'euclid)
-			      (let ((points (or (second ,cue) (1+ (/ (cue-points tsig) 2))))
-				    (shift (or (third ,cue) 0)))
-				(euclid->binary-cuelist points :shift shift :timesig tsig :use-subbeats ,use-subbeats))
-			     (bincue-translate bincue ,cue)))
+	    (bar-cuelist (binball-cuelist ,cue bincue tsig ,use-subbeats))
 	    (xb (make-xball ',name ,instrument
 			    :section parent
 			    :cuefn #'bar
@@ -77,7 +93,7 @@
 			    :transposable ,transposable
 			    :reversible ,reversible
 			    :chord-model (or ,chord-model *chord-table*)
-			    :cue bar-cue-list
+			    :cue bar-cuelist
 			    :key (or ,key '(60))
 			    :dur (or ,dur '(q))
 			    :amp (or ,amp '(fff))
@@ -89,13 +105,15 @@
 			    :direction (or ,direction '(down))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list bar-cue-list (name xb)))
+       (if ,print-cue-list (pprint-cue-list bar-cuelist (name xb)))
        (defparameter ,name xb)
-       xb)))
+       (values xb bar-cuelist))))
 				 
        
 (setf (documentation 'binball 'function)
-      "Combines QBALL with integral BINCUE binary cue-list translator.
+      "TODO: Documentation does not include euclid2 return values.
+
+Combines QBALL with integral BINCUE binary cue-list translator.
       All arguments are identical to those for QBALL and BINCUE with the
       following exceptions:
 
@@ -119,7 +137,9 @@
 
 
 (setf (documentation 'binxball 'function)
-      "Combines XBALL with integral BINCUE binary cue-list translator.
+      "TODO: Documentation does not include euclid2 or current return values.
+
+Combines XBALL with integral BINCUE binary cue-list translator.
       All arguments are identical to those for XBALL and BINCUE with the
       following exceptions:
 

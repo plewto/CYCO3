@@ -26,9 +26,11 @@
 
 (in-package :cyco-part)
 
+
 (constant +part-specific-properties+ 
 	  '(:chord-model
 	    :cue-function
+	    :cuelist
 	    :group
 	    :instruments
 	    :muted
@@ -41,8 +43,7 @@
 (constant +part-properties+
 	  (append +time-signature-properties+
 		  +part-specific-properties+))
-		 
-		    
+
 (defclass part (time-signature) nil
   (:documentation
    "Parts form the lowest element of a composition.  They combine a set of 

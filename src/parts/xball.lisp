@@ -75,6 +75,7 @@
 	    (put xb :subbeats subbeats)
 	    (init-time-signature xb)
 	    (put xb :cue-function cuefn)
+	    (put xb :cuelist (->list cue))
 	    (put xb :shuffle-function shuffle)
 	    (put xb :render-once render-once)
 	    (put xb :transposable transposable)

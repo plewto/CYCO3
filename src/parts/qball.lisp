@@ -76,6 +76,7 @@
     (put new-qball :subbeats subbeats)
     (init-time-signature new-qball)
     (put new-qball :cue-function cuefn)
+    (put new-qball :cuelist (->list cue))
     (put new-qball :shuffle-function shuffle)
     (put new-qball :render-once render-once)
     (put new-qball :transposable transposable)

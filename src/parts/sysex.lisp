@@ -48,6 +48,7 @@
 	    (connect parent sysex-part)
 	    (init-time-signature sysex-part)
 	    (put sysex-part :cue-function cuefn)
+	    (put sysex-part :cuelist (loop for e in events collect (car e)))
 	    (put sysex-part :shuffle-function shuffle)
 	    (put sysex-part :render-once render-once)
 	    (put sysex-part :transposable nil)

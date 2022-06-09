@@ -7,6 +7,7 @@
 
 
 (export '(*strummer-render-trace*
+	  *cuelist*
 	  bender
 	  bender-p
 	  controllers
@@ -43,6 +44,7 @@
 	:cyco-part)
 
 (import '(cyco-part:*strummer-render-trace*
+	  cyco-part:*cuelist*
 	  cyco-part:bender
 	  cyco-part:bender-p
           cyco-part:controllers

@@ -58,6 +58,7 @@
 	      (connect parent new-text-part)
 	      (init-time-signature new-text-part)
 	      (put new-text-part :cue-function cuefn)
+	      (put new-text-part :cuelist (loop for e in events collect (car e)))
 	      (put new-text-part :render-once render-once)
 	      (put new-text-part :transposable nil)
 	      (put new-text-part :reversible nil)

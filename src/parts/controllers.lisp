@@ -4,9 +4,10 @@
 ;;;;
 ;;;; CONTROLLERS is a part for generating MIDI control-change and
 ;;;; channel-pressure events.
-;;;; 
-;;;; BENDER is a part for generating MIDI pitch-bend events.
+;;;; NOTE: Controllers does not set cue-list property
 ;;;;
+;;;; BENDER is a part for generating MIDI pitch-bend events.
+;;;; NOTE: Bender does not set cue-list property
 
 (in-package :cyco-part)
 

@@ -90,6 +90,7 @@
 	    (put mixer :render-once render-once)
 	    (put mixer :transposable nil)
 	    (put mixer :reversible nil)
+	    (put mixer :cuelist (loop for e in events collect (car e)))
 	    (dolist (event (->list events))
 	      (dolist (midi-event (process-event mixer event))
 		(push midi-event midi-events)))

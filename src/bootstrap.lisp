@@ -88,6 +88,7 @@
 		   "src/composition/time-signature"
 		   "src/composition/shuffle"
 		   "src/composition/cueing-functions"
+		   "src/composition/cueutil"
 		   "src/composition/euclid"
 		   "src/composition/project/framework"
 		   "src/composition/project/persistence"

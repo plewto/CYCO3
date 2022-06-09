@@ -27,3 +27,4 @@ Version 3.0.2 (2022.05.11)
     9. 2022-05-28 Adds BINBALL and BINXBALL macros.
    10. 2022-06-04 Adds optional Euclidean rhythms for BINBALL and BINXBALL.
    11. 2022-06-04 Moves Euclid generator to legacy-euclid plugin.
+   12. 2022-06-86 Adds cuelist masking and ducking.

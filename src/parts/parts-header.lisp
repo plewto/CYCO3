@@ -48,6 +48,7 @@
                 :data
                 :defines-chord-p
                 :disconnect
+		:duck
                 :dump-events
                 :duration
                 :dynamic

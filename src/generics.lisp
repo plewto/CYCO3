@@ -928,3 +928,9 @@ If index is out of bounds, returns out-of-bounds-value"))
 (defgeneric partition (object &key &allow-other-keys)
   (:documentation
    "Split or render object into mutually-exclusive components."))
+
+(defgeneric duck (cuelist object)
+  (:documentation
+   "Eliminates cuelist points which overlap with object."))
+ 
+

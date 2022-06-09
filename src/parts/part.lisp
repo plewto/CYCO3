@@ -150,3 +150,5 @@ used directly."))
   (render-once prt))
   
 
+(defmethod duck ((cuelist list)(prt part))
+  (duck cuelist (property prt :cuelist)))

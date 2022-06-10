@@ -128,3 +128,24 @@ shift - optional number of spaces to shift text right."
     (if (plusp diff)
 	(str+ str (scopies diff c))
       str)))
+
+
+(flet ((+rot (str)
+		(str+ (subseq str 1)(char str 0)))
+       (-rot (str)
+	     (let ((tail (char str (1- (length str))))
+		   (head (subseq str 0 (1- (length str)))))
+	       (str+ tail head))))
+
+      (defmethod rotate ((str string) &optional (n 1))
+	(cond ((plusp n)
+	       (dotimes (i n)
+		 (setf str (+rot str))))
+	      ((minusp n)
+	       (dotimes (i (abs n))
+		 (setf str (-rot str))))
+	      (t nil))
+	str))
+	      
+	
+  

@@ -73,7 +73,8 @@
        (-rotate (lst)
 		(cons (car (last lst))
 		      (butlast lst))))
-  (defun rotate (lst &optional (n 1))
+      
+  (defmethod rotate ((lst list) &optional (n 1))
     "Rotates list n positions.
 If n < 0, rotate left.
 If n > 0, rotate right."

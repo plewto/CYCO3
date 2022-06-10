@@ -934,3 +934,4 @@ If index is out of bounds, returns out-of-bounds-value"))
    "Eliminates cuelist points which overlap with object."))
  
 
+(defgeneric rotate (seq &optional n))

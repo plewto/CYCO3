@@ -31,22 +31,25 @@
 		 (reject-p #'(lambda (cp)
 			       (member (simplify-cue-point cp) reject-list :test #'equal))))
 	    (remove-if reject-p cuelist)))
-	    
-	(defmethod duck ((cuelist list)(mask list))
+
+	(defmethod duck ((cuelist list)(mask list) &key (invert nil))
 	  (let ((sig (mapcar #'simplify-cue-point cuelist))
 		(exclude (mapcar #'simplify-cue-point mask)))
 	    (remove-if #'null (loop for i from 0 below (length cuelist) collect
-				    (if (not (member (nth i sig) exclude :test #'equal))
-					(nth i cuelist))))))
+				    (let ((m (member (nth i sig) exclude :test #'equal)))
+				      (if (or (and invert m)(not m))
+					  (nth i cuelist)))))))
 
-	(defmethod duck ((cuelist list)(mask string))
+	
+	(defmethod duck ((cuelist list)(mask string) &key (invert nil))
 	  (let* ((sig (mapcar #'simplify-cue-point cuelist))
 		 (msk (pad-zeros mask (length sig)))
+		 (accept (if invert #\1 #\0))
 		 (acc '()))
 	    (dotimes (i (length sig))
-	      (if (char= (char msk i) #\1)
+	      (if (char= (char msk i) accept)
 		  (push (nth i sig) acc)))
-	    (reverse acc))) )
+	    (reverse acc))) ) 
 
 (setf (documentation 'mask-cuelist 'function)
       "Produces new cuelist by applying mask to to cuelist elements.
@@ -69,17 +72,18 @@ Only cuelist elements with corresponding mask '1' are included in the result.
 (setf (documentation 'duck 'function)
       "Remove cuelist elements which correspond to mask elements.
 
-cuelist - List in 'BAR' form ((bar beat subbeat) ...)
-mask    - List in 'BAR' form.
+cuelist - List in 'BAR' format ((bar beat subbeat) ...)
+mask    - Mask may take any of following forms:
+          A) Cuelist in 'BAR' format.
+          B) Binary string, white space is ignored.
+             The length of the string is automatically padded 
+             with zeros.
+          C) An instance of the PART type.
+             (Currently STRUMMER is not suported)
+:invert - Boolean, it true invert selection.
 
-Returns new list which contains only those elements in cuelist which 
-are NOT in mask.
+Let C be the cuelist and M the mask. 
+If invert is nil the result is:  C and (not M).
+If invert is non-nil the result is: C and M.")
 
--------------------------------------------------------------
-cuelist - List in 'BAR' form.
-mask    - String of binary digits, embedded spaces are ignored.
-          The length of the mask is right-padded with 0s to 
-          match length of cuelist
 
-Returns new list with only those elements of cuelist which correspond
-to a '0' in the mask string.")

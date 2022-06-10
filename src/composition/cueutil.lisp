@@ -5,9 +5,6 @@
 
 (in-package :cyco)
 
-
-(defgeneric duck (cuelist mask))
-
 (labels ((compress (str)
 		   (let ((white '(#\space #\newline #\tab)))
 		     (remove-if #'(lambda (c)(member c white :test #'char=)) str)))

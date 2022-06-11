@@ -929,7 +929,7 @@ If index is out of bounds, returns out-of-bounds-value"))
   (:documentation
    "Split or render object into mutually-exclusive components."))
 
-(defgeneric duck (cuelist object)
+(defgeneric duck (cuelist object &key invert &allow-other-keys)
   (:documentation
    "Eliminates cuelist points which overlap with object."))
  

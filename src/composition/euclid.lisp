@@ -62,7 +62,7 @@
 		  (push (aref gamut i) acc)))
 	    (reverse acc)))
 
-
+	
 	(defun euclid2 (p1 p2 &key (s1 0)(s2 0)(inv1 nil)(inv2 nil)(timesig nil)(split nil)(use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
 		 (e1 (euclid p1 :shift s1 :invert inv1 :timesig tsig :use-subbeats use-subbeats))

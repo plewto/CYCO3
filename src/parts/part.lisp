@@ -150,5 +150,5 @@ used directly."))
   (render-once prt))
   
 
-(defmethod duck ((cuelist list)(prt part))
-  (duck cuelist (property prt :cuelist)))
+(defmethod duck ((cuelist list)(prt part) &key (invert nil) &allow-other-keys)
+  (duck cuelist (property prt :cuelist) :invert invert))

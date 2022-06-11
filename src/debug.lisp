@@ -8,6 +8,9 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
+			    "src/util/string-utilities"
+			    "src/composition/cueutil"
+			    "src/composition/binball"
 			    ))
 
 
@@ -29,6 +32,7 @@
 
 
 (defun rb ()(rebuild))
+(defun x ()(exit))
 
 ;; Insert in code under test to trace execution.
 ;;

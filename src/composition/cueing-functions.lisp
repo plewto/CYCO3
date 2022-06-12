@@ -220,7 +220,7 @@ returns nested list."
 	    (reverse acc))))
 
 
-(defun pprint-cue-list (cue-list &optional header)
+(defun pprint-cuelist (cue-list &optional header)
   (let ((current (caar cue-list)))
     (if header
 	(format t "~A CUE-LIST:~%" header))

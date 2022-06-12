@@ -48,7 +48,7 @@
 			section shuffle shift tempo unit bars beats
 			subbeats render-once transposable reversible 
 			cue key dur amp reset-on-repeat duck
-			remarks symbols (use-subbeats t) print-cue-list)
+			remarks symbols (use-subbeats t) print-cuelist)
   `(let ((parent (or ,section (property *project* :current-section))))
      (part-banner (name parent) ',name)
      (let* ((tsig (if (or ,bars ,beats ,subbeats)
@@ -77,7 +77,7 @@
 			    :amp (or ,amp '(fff))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list bar-cuelist (name qb)))
+       (if ,print-cuelist (pprint-cuelist bar-cuelist (name qb)))
        (defparameter ,name qb)
        qb)))
 
@@ -87,7 +87,7 @@
 			 subbeats transposable reversible chord-model cue key
 			 dur amp chord inversion octave strum end-together
 			 direction reset-on-repeat duck
-			 symbols remarks print-cue-list (use-subbeats t))
+			 symbols remarks print-cuelist (use-subbeats t))
   `(let ((parent (or ,section (property *project* :current-section))))
      (part-banner (name parent) ',name)
      (let* ((tsig (if (or ,bars ,beats ,subbeats)
@@ -120,7 +120,7 @@
 			    :direction (or ,direction '(down))
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
-       (if ,print-cue-list (pprint-cue-list bar-cuelist (name xb)))
+       (if ,print-cuelist (pprint-cuelist bar-cuelist (name xb)))
        (defparameter ,name xb)
        xp)))
 				 
@@ -196,7 +196,7 @@ instruments      - Pattern of instruments, as per QBALL.
                   If invert is true then cuelist events which are not in mask 
                   are suppressed.   C ^ MASK --> accept.
 
-:print-cue-list  - Boolean, if true pretty-print the final cuelist.
+:print-cuelist   - Boolean, if true pretty-print the final cuelist.
 :remarks         - Optional remarks text.")
 
 
@@ -229,7 +229,7 @@ instrument       - Instance of Instrument
 :end-together    - As per XBALL.
 :direction       - As per XBALL.
 :remarks         - As per XBALL.
-:print-cue-list  - Boolean, if true pretty-print cuelist.
+:print-cuelist   - Boolean, if true pretty-print cuelist.
 :symbols         - Symbol list, as per BINCUE.
 :use-subbeats    - Boolean, as per BINCUE.
 :cue             - As per BINBALL.

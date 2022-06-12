@@ -220,14 +220,29 @@ returns nested list."
 	    (reverse acc))))
 
 
-(defun pprint-cuelist (cue-list &optional header)
-  (let ((current (caar cue-list)))
+;; (defun pprint-cuelist (cue-list &key header form)
+;;   (let ((current (caar cue-list)))
+;;     (if header
+;; 	(format t "~A CUE-LIST:~%" header))
+;;     (dolist (q cue-list)
+;;       (if (not (eq (car q) current))
+;; 	  (progn
+;; 	    (format t "~%")
+;; 	    (setf current (car q))))
+;;       (format t "~A " q))
+;;     (format t "~%")))
+
+
+(defmethod pprint-cuelist ((cuelist list) &key header form)
+  (declare (ignore form))
+  (let ((current-bar (caar cuelist)))
     (if header
-	(format t "~A CUE-LIST:~%" header))
-    (dolist (q cue-list)
-      (if (not (eq (car q) current))
+	(format t ";; ~A cuelist:~%" header))
+    (dolist (q cuelist)
+      (if (not (eq (car q) current-bar))
 	  (progn
-	    (format t "~%")
-	    (setf current (car q))))
+	    (format t "~%;; ")
+	    (setf current-bar (car q))))
       (format t "~A " q))
     (format t "~%")))
+    

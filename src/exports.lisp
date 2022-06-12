@@ -232,6 +232,7 @@
 	  pick
 	  pitch-class
 	  print-tree
+	  pprint-cuelist
 	  priority
 	  program-bank
 	  program-change-events

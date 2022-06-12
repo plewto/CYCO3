@@ -152,3 +152,9 @@ used directly."))
 
 (defmethod duck ((cuelist list)(prt part) &key (invert nil) &allow-other-keys)
   (duck cuelist (property prt :cuelist) :invert invert))
+
+
+(defmethod pprint-cuelist ((prt part) &key header form)
+  (pprint-cuelist (property prt :cuelist)
+		  :header (or header (name prt))
+		  :form form))

@@ -933,5 +933,11 @@ If index is out of bounds, returns out-of-bounds-value"))
   (:documentation
    "Eliminates cuelist points which overlap with object."))
  
-
 (defgeneric rotate (seq &optional n))
+
+(defgeneric pprint-cuelist (cuelist &key header form)
+  (:documentation
+   "Pretty prints cuelist.
+:header - extra heading text.
+The form keyword is currently unused. It is provided for future use."))
+

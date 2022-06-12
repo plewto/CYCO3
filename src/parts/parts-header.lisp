@@ -68,6 +68,7 @@
                 :instrument-p
                 :invert
                 :pulse
+		:pprint-cuelist
                 :sawtooth
                 :triangle
                 :keynumber

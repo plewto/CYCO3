@@ -338,7 +338,15 @@
 		    (progn
 		      (push (clone state) acc)
 		      (soft-reset state))))
-	      (setf (strummer-states strummer)(reverse acc)))) )
+	      (setf (strummer-states strummer)(reverse acc))))
+
+	   (extract-cuelist (events)
+			    (let ((acc '()))
+			      (loop for event in events do
+				    (let ((time (member :time event)))
+				      (if time (push (second time) acc))))
+			      (reverse acc)))
+	   )
     
     (defun make-strummer (name instrument &key
 			       section
@@ -378,6 +386,7 @@
 	(setf (strummer-states new-strummer)
 	      (process-states new-strummer (->list events)))
 	(validate-render new-strummer)
+	(put new-strummer :cuelist (extract-cuelist events))
 	(reset new-strummer)
 	new-strummer)) ))
 

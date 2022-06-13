@@ -13,7 +13,10 @@
 (project ex8 :bars 4 :beats 4)
 
 (prune-orchestra)
-(general-midi-instrument piano :channel 1)
+(general-midi-instrument bass :channel 1 :program 33)
+(general-midi-instrument guitar :channel 2 :program 27)
+(general-midi-instrument piano :channel 3)
+
 
 (lpf a) ;; The basics, the hard way but with important details.
 (lpf b) ;; The easy way: BINBALL and BINXBALL.

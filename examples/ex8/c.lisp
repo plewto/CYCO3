@@ -8,7 +8,7 @@
 ;;;; time unit.  This is usually 4 subbeats to the beat corresponding to 4
 ;;;; 16th notes per beat.
 ;;;;
-;;;;  '(1000 1000 1000 1000)   ;; Hit on each down beat useing 16th notes.
+;;;;  '(1000 1000 1000 1000)   ;; Hit on each down beat using 16th notes.
 ;;;;
 ;;;; If the :use-subbeat argument is nil, then the tsubbeats are used
 ;;;; instead.   Each tsubbeat has 2/3 the value of a subbeat.  For the

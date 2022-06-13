@@ -8,15 +8,16 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
-			    "src/util/string-utilities"
-			    "src/composition/cueutil"
-			    "src/composition/binball"
+			    "src/parts/xball"
 			    ))
+
 
 
 ;; Hook function executed after rebuild.
 ;;
-(defun rebuild-hook () )
+(defun rebuild-hook ()
+  (plugin pig)
+  (setf *projects-root* "~/cyco3/examples"))
 
 
 ;; Reloads cyco source file.

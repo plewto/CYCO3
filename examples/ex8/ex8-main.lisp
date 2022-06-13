@@ -14,7 +14,7 @@
 
 (prune-orchestra)
 (general-midi-instrument bass :channel 1 :program 33)
-(general-midi-instrument guitar :channel 2 :program 27)
+(general-midi-instrument guitar :channel 2 :program 30)
 (general-midi-instrument piano :channel 3)
 
 

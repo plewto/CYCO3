@@ -8,16 +8,15 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
-			    "src/parts/xball"
+			    "src/patterns/comprehension"
 			    ))
 
 
 
 ;; Hook function executed after rebuild.
 ;;
-(defun rebuild-hook ()
-  (plugin pig)
-  (setf *projects-root* "~/cyco3/examples"))
+(defun rebuild-hook () )
+ 
 
 
 ;; Reloads cyco source file.

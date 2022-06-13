@@ -99,6 +99,9 @@
 	    (xb (make-xball ',name ,instrument
 			    :section parent
 			    :cuefn #'bar
+			    :bars ,bars
+			    :beats ,beats
+			    :subbeats ,subbeats
 			    :tempo ,tempo
 			    :unit ,unit
 			    :shuffle (or ,shuffle #'no-shuffle)
@@ -120,7 +123,7 @@
 			    :reset-on-repeat ,reset-on-repeat
 			    :remarks (->string (or ,remarks "")))))
        (defparameter ,name xb)
-       xp)))
+       xb)))
 				 
        
 (setf (documentation 'binball 'function)

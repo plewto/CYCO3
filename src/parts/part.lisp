@@ -154,7 +154,13 @@ used directly."))
   (duck cuelist (property prt :cuelist) :invert invert))
 
 
-(defmethod pprint-cuelist ((prt part) &key header form)
-  (pprint-cuelist (property prt :cuelist)
-		  :header (or header (name prt))
-		  :form form))
+
+(defmethod pprint-cuelist ((prt part) &key header (form 'list) (use-subbeats t) &allow-other-keys)
+  (declare (ignore use-subbeats))
+  (cond
+   ((eq form :binary)
+    (format t "PPRINT-CUELIST BINARY NOT IMPLEMENTED~%")
+    )
+   (t
+    (pprint-cuelist (property prt :cuelist)
+		    :header (or header (name prt))))))

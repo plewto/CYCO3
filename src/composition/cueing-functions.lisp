@@ -220,29 +220,49 @@ returns nested list."
 	    (reverse acc))))
 
 
-;; (defun pprint-cuelist (cue-list &key header form)
-;;   (let ((current (caar cue-list)))
-;;     (if header
-;; 	(format t "~A CUE-LIST:~%" header))
-;;     (dolist (q cue-list)
-;;       (if (not (eq (car q) current))
-;; 	  (progn
-;; 	    (format t "~%")
-;; 	    (setf current (car q))))
-;;       (format t "~A " q))
-;;     (format t "~%")))
-
-
-(defmethod pprint-cuelist ((cuelist list) &key header form)
-  (declare (ignore form))
-  (let ((current-bar (caar cuelist)))
-    (if header
-	(format t ";; ~A cuelist:~%" header))
-    (dolist (q cuelist)
-      (if (not (eq (car q) current-bar))
-	  (progn
-	    (format t "~%;; ")
-	    (setf current-bar (car q))))
-      (format t "~A " q))
-    (format t "~%")))
     
+
+
+(let ((max-line-length 8)
+      )
+
+  (flet ((print-header (text)
+		       (if text (format t ";; ~A" text)))
+	 (print-bar (bar-number)
+		    (format t "~%;; BAR ~A~%;; " bar-number))
+
+	 )
+  
+	(defmethod pprint-cuelist ((cuelist list) &key header &allow-other-keys)
+	  (let ((current-bar (caar cuelist))
+		(line-length 0))
+	    (print-header header)
+	    (print-bar current-bar)
+	    (dolist (q cuelist)
+	      (if (not (equal (car q) current-bar))
+		  (progn
+		    (setf current-bar (car q))
+		    (setf line-length 0)
+		    (print-bar current-bar)))
+	      (if (> line-length max-line-length)
+		  (progn
+		    (format t "~%;; ")
+		    (setf line-length 0)))
+	      (format t "~A" q)
+	      (setf line-length (1+ line-length))))
+	  (format t "~%"))
+
+	(defmethod pprint-cuelist ((cuelist string) &key header (break 4) &allow-other-keys)
+	  (print-header header)
+	  (dotimes (i (length cuelist))
+	    (if (zerop (rem i break)) (format t " "))
+	    (format t "~A" (char cuelist i)))
+	  (format t "~%"))
+	    
+
+	  
+
+	
+	) ;; END FLET
+  ) ;; END LET
+  

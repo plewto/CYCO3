@@ -17,20 +17,15 @@
 				     (diff (- width (length cp))))
 				(if (plusp diff)
 				    (append cp (copies diff 1))
-				  (subseq cp 0 width)))) )
+				  (subseq cp 0 width))))
 
-	;; (defun mask-cuelist (cuelist mask &key timesig invert (use-subbeats t))
-	;;   (let* ((reject-token (if invert #\1 #\0))
-	;; 	 (tsig (select-time-signature timesig))
-	;; 	 (gamut (cue-gamut tsig (not use-subbeats)))
-	;; 	 (bits (pad-zeros (compress mask)(length gamut)))
-	;; 	 (reject-list (remove-if #'null (loop for i from 0 below (length gamut) collect
-	;; 					      (let ((flag (char bits i)))
-	;; 						(if (char= flag reject-token)
-	;; 						    (nth i gamut))))))
-	;; 	 (reject-p #'(lambda (cp)
-	;; 		       (member (simplify-cue-point cp) reject-list :test #'equal))))
-	;;     (remove-if reject-p cuelist)))
+	 (print-header (text)
+		       (if text (format t ";; ~A" text)))
+	  
+	 (print-bar (bar-number)
+		    (format t "~%;; BAR ~A~%;; " bar-number))
+
+	 )
 
 	(defmethod duck ((cuelist list)(mask list) &key (invert nil) &allow-other-keys)
 	  (let ((sig (mapcar #'simplify-cue-point cuelist))
@@ -42,42 +37,48 @@
 					(if (not m)(nth i cuelist))))))))
 					  
 
-	
-	;; (defmethod duck ((cuelist list)(mask string) &key (invert nil) &allow-other-keys)
-	;;   (let* ((sig (mapcar #'simplify-cue-point cuelist))
-	;; 	 (msk (pad-zeros (compress mask) (length sig)))
-	;; 	 (accept (if invert #\1 #\0))
-	;; 	 (acc '()))
-	;;     (format t "DEBUG msk ~A~%" msk)
-	;;     (dotimes (i (length sig))
-	;;       (if (char= (char msk i) accept)
-	;; 	  (push (nth i sig) acc)))
-	;;     (reverse acc)))
-
-	(defmethod duck ((cuelist list)(mask string) &key (invert nil)(timesig nil) (use-subbeats nil) &allow-other-keys)
+	(defmethod duck ((cuelist list)(mask string) &key
+			 (invert nil)(timesig nil) (use-subbeats nil) &allow-other-keys)
 	  (let ((bc (bincue :timesig timesig :use-subbeats use-subbeats
 			    :symbols (list (cons 'mask mask)))))
 	    (duck cuelist (bincue-translate bc '(mask)) :invert invert)))
 
 
-	) 
+	(defmethod pprint-cuelist ((cuelist list) &key header &allow-other-keys)
+	  (let ((max-line-length 8)
+		(current-bar (caar cuelist))
+		(line-length 0))
+	    (print-header header)
+	    (print-bar current-bar)
+	    (dolist (q cuelist)
+	      (if (not (equal (car q) current-bar))
+		  (progn
+		    (setf current-bar (car q))
+		    (setf line-length 0)
+		    (print-bar current-bar)))
+	      (if (> line-length max-line-length)
+		  (progn
+		    (format t "~%;; ")
+		    (setf line-length 0)))
+	      (format t "~A" q)
+	      (setf line-length (1+ line-length))))
+	  (format t "~%"))
 
-;; (setf (documentation 'mask-cuelist 'function)
-;;       "Produces new cuelist by applying mask to to cuelist elements.
-;; cuelist  - A cuelist in 'BAR' format  (bar beat subbeat ...) 
-;; mask     - A string of binary digits.  Embedded white-space is ignored.
-;;            The mask is automatically right-padded with 0s so that its
-;;            length matches (cue-points time-signature)
-;; :timesig - Reference time-signature, see SELECT-TIME-SIGNATURE
-;;            Defaults to current-section of *project* if defined.
-;; :invert  - Boolean, if true invert mask values.
-;; :use-subbeats - If true use time-signature subbeats as rhythmic unit,
-;;                 otherwise use tsubbeats. Default t.
-;;
-;; Only cuelist elements with corresponding mask '1' are included in the result. 
-;;
-;;
-;; (mask-cuelist '((1 1 1)(1 2 1)(1 3 1)(1 4 1)) ''1010'') --> ((1 1 1)(1 3 1))")
+	(defmethod pprint-cuelist ((cuestring string) &key header (div 4) (bar-length 16) &allow-other-keys)
+	  (print-header header)
+	  (setf cuestring (compress cuestring))
+	  (let ((bar-count 1))
+	    (dotimes (i (length cuestring))
+	      (if (zerop (rem i bar-length))
+		  (progn 
+		    (format t "~%;; BAR ~2D : " bar-count)
+		    (setf bar-count (1+ bar-count))))
+	      (if (zerop (rem i div)) (format t " "))
+	      (format t "~A" (char cuestring i))))
+	  (format t "~%"))
+			 
+	)
+
 
 
 (setf (documentation 'duck 'function)

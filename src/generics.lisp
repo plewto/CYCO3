@@ -935,9 +935,6 @@ If index is out of bounds, returns out-of-bounds-value"))
  
 (defgeneric rotate (seq &optional n))
 
-(defgeneric pprint-cuelist (cuelist &key header form)
-  (:documentation
-   "Pretty prints cuelist.
-:header - extra heading text.
-The form keyword is currently unused. It is provided for future use."))
-
+(defgeneric pprint-cuelist (cuelist &key header &allow-other-keys))
+  
+(defgeneric cuelist (object &key &allow-other-keys))

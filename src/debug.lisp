@@ -8,7 +8,9 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
-			    "src/patterns/comprehension"
+			    "src/generics"
+			    "src/composition/cueutil"
+			    "src/parts/part"
 			    ))
 
 

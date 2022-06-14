@@ -20,98 +20,63 @@
 ;; (programs b-programs (list bass guitar)
 ;; 	  :render-once t)
 
-;; (binball b-kick gm-kick
-;; 	 :bars 2
-;; 	 :cue '(1010 0000 0010 0100
-;; 		1010 0000 0100 0100)
-;; 	 :key 'X1
-;; 	 :amp 'ff)
+(binball b-kick gm-kick
+	 :bars 2
+	 :cue '(1010 0000 0010 0100               ;; BINBALL may not use
+		     1010 0000 0100 0100)         ;; pattern-comprehension.
+	 :key 'X1
+	 :amp 'ff)
 
-;; (binball b-snare gm-snare
-;; 	 :bars 2
-;; 	 :cue '(0000 1001 0101 1001
-;; 		0000 1001 0011 1001)
-;; 	 :key '(x1 x2 x2 x2 x1 x2)
-;; 	 :amp 'ff)
+(binball b-snare gm-snare
+	 :bars 2
+	 :cue '(0000 1001 0101 1001
+		0000 1001 0011 1001)
+	 :key '(x1 x2 x2 x2 x1 x2)
+	 :amp 'ff)
 
-;; (binball b-hat gm-hihat
-;; 	 :bars 2
-;; 	 :cue '(1111 1111 1111 1111
-;; 		     1111 1111 1111 1111)
-;; 	 :duck b-kick
-;; 	 :key '(dice (closed closed closed closed open ped))
-;; 	 :amp 'ff)
+(binball b-hat gm-hihat                           ;; Duck the hats on each 
+	 :bars 2                                  ;; snare hit.
+	 :cue '(1111 1111 1111 1111
+		     1111 1111 1111 1111)
+	 :duck b-snare
+	 :key '(dice (closed closed open open ped))
+	 :amp 'ff)
 
-;; (binball b-clave gm-woodblock
-;; 	 :bars 2
-;; 	 :symbols '((clave-1 . "1000 0010 0010 0000")
-;; 		    (clave-2 . "0000 1000 1000 0000"))
-;; 	 :cue '(clave-1 clave-2)
-;; 	 :key 'clave
-;; 	 :amp 'ff)
+(binball b-conga gm-drum                          ;; The conga uses an inverted
+	 :bars 2                                  ;; Euclidean rhythm and is 
+	 :cue '(euclid 0.7 2 :invert)             ;; ducked by the kick drum.
+	 :duck b-kick
+	 :key '(dice (conga-low conga-hi conga-open))
+	 :amp 'ff)
 
-
-;; (binball b-bass bass
-;; 	 :bars 2
-;; 	 :cue '(euclid 0.3 0 nil)
-;; 	 :key '(b3 fs5  e4 e4 a3
-;; 		   b3 fs5  b4 r e3)
-;; 	 :dur '(e. s s s e.)
-;; 	 :amp '(mf ff  f f f
-;; 		   mf ff   f f f))
-
-;; Define chord-table
-;;
-(let ((tab (make-hash-table :size 4)))
-  (setf (gethash '[min7] tab) '(0 3 10)
-	(gethash '[3rd]  tab) '(0 4)
-	(gethash '[4th]  tab) '(0 5)
-	(gethash '[maj]  tab) '(0 5 9)
-	(gethash '[min6] tab) '(0 3 8)
-	(gethash '[klstr-1] tab) '(0 4 9 14)
-	(gethash '[klstr-2] tab) '(0 5 9 13))
-  (param chordtab (make-instance 'chord-table :templates tab)))
-
-	  
-;; (binxball b-guitar guitar
-;; 	  :chord-model chordtab
-;; 	  :bars 2
-;; 	  :cue '(1101 0100 1100 1100
-;; 		      1101 0100 1111 0000)
-;; 	  :key '(b5 b5 fs5   e6   a5 b5   a5 b5
-;; 		 b5 b5 a5    b5   c6 b5   a5)
-;; 	  :chord '(cycle ([min7] [min7] [3rd] [3rd] [4th] [4th] [4th]
-;; 			  [min7] [min7] [min6] [maj] [4th] [4th] [4th]))
-;; 	  :direction '(down up)
-;; 	  :strum '(dice (0.01 0.01 0.01 0.02 0.03))
-;; 	  :end-together t
-;; 	  :dur (append (copies 14 's+x) '(q+s))
-;; 	  :amp 'mf)
+(binball b-clave gm-woodblock                    ;; Defines user cue symbols.
+	 :bars 2
+	 :symbols '((clave-1 . "1000 0010 0010 0000")
+		    (clave-2 . "0000 1000 1000 0000"))
+	 :cue '(clave-1 clave-2)
+	 :key 'clave
+	 :amp 'ff)
 
 
-;; (binxball b-scratch guitar
-;; 	  :chord-model chordtab
-;; 	  :bars 2
-;; 	  :cue '(0010 1011 0011 0011
-;; 		      0010 1011 0000 0011)
-;; 	  :key 'e4
-;; 	  :chord '(dice ([klstr-1] [klstr-2]))
-;; 	  :direction 'dice
-;; 	  :strum '(dice (0.01 0.02))
-;; 	  :end-together t
-;; 	  :dur 't
-;; 	  :amp '(dice (pp pp mp)))
+(binXBall b-bass bass                            ;; Base part defined by binXBALL
+	 :bars 4                                 ;; with a Euclidean rhythm
+	 :cue '(euclid 0.4 0 nil)
+	 :key '(cycle (b3 fs5  e4 e4 a3                    ;; pattern-comprehension
+			  b3 fs5  b4 d4 (cycle (e3 d4))))  ;; produces alternate final 
+	 :dur '(e. s s s e.  e. s s s s)                   ;; note on each repetition.
+	 :amp '(mf ff  f f f
+		   mf ff  f f f))
 
-;; (->midi b :filename "loop-b" :repeat 4)
+(binXBall b-guitar guitar                                  ;; guitar part uses a spliced
+	  :bars 4                                          ;; Euclidean rhythm where bar
+	  :cue '(euclid2 3 (0.6 0 nil)(0.4 1 t))           ;; 4 has a different pattern then 
+	  :key '(b4 b4 fs5 e4 e4 a4 b4 fs5 d5 c5 b4)       ;; bars 1, 2 & 3.
+	  :chord '(dice ([solo] [solo] [solo] [solo] [min]))
+	  :strum 0.01
+	  :direction '(up down)
+	  :dur 's
+	  :amp 'mp)
+
+(->midi b :filename "loop-b" :repeat 4)
 
 
-(param spec '(cycle ([min7] [min7] [3rd] [3rd] [4th] [4th] [4th] [min7] [min7] [min6] [maj] [4th] [4th] [4th])))
-
-(param spec '(cycle ([min7] [min7] [3rd] [3rd] [4th] [4th] [4th] [min7] [4th] [4th] [4th])))
-
-;; (param spec '(cycle (A B C D E F G H I J K L M N)))
-
-(param pat (pattern-comprehension spec))
-
-(print pat)
-;; (print  (next pat :all))

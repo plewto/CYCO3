@@ -13,23 +13,23 @@
 					:timesig tsig :use-subbeats use-subbeats)))
 			 rs))
 
-	 ;; cuelist: (euclid points shift invert)
+	 ;; cuelist: (euclid points rotation invert)
 	 ;;
 	 (eu1 (cuelist tsig use-subbeats)
 	      (euclid (second cuelist)
-		      :shift (third cuelist)
+		      :rot (third cuelist)
 		      :invert (fourth cuelist)
 		      :timesig tsig
 		      :use-subbeats use-subbeats))
 
-	 ;; cuelist: (euclid2 split (P1 S1 I1)(P2 S2 I2))
+	 ;; cuelist: (euclid2 split (P1 R1 I1)(P2 R2 I2))
 	 ;;
 	 (eu2 (cuelist tsig use-subbeats)
 	      (let ((split (second cuelist))
 		    (e1 (third cuelist))
 		    (e2 (fourth cuelist)))
 		(euclid2 (car e1)(car e2)
-			 :s1 (second e1) :s2 (second e2)
+			 :r1 (second e1) :r2 (second e2)
 			 :inv1 (third e1) :inv2 (third e2)
 			 :split split
 			 :timesig tsig
@@ -156,7 +156,7 @@ instruments      - Pattern of instruments, as per QBALL.
 :cue             - The cue list may take any of the following forms.
                    A) A list of binary tokens as per BINCUE.
 
-                   B) A list of form (EUCLID POINTS SHIFT INVERT)
+                   B) A list of form (EUCLID POINTS ROTATION INVERT)
                       Generates Euclidean rhythm. The Euclidean length is 
                       automatically determined by the time-signature.  Where
 
@@ -165,17 +165,17 @@ instruments      - Pattern of instruments, as per QBALL.
                         2) float (relative to length),  0.0 < points <= 1.0
                         3) nil, use random point count.
 
-                      SHIFT is number of steps to rotate rhythm and may be:
-                        1) integer (absolute) 0 <= shift <= length, default 0.
-                        2) float (relative) 0.0 <= shift <= 1.0
+                      rot is number of steps to rotate rhythm and may be:
+                        1) integer (absolute) 0 <= rot <= length, default 0.
+                        2) float (relative) 0.0 <= rot <= 1.0
                         3) nil, random.
 
                       INVERT is Boolean, if t invert selected events. Default nil.
 
-                   C) A list of form: (EUCLID2 SPLIT (P1 S1 I1)(P2 S2 I2))
+                   C) A list of form: (EUCLID2 SPLIT (P1 R1 I1)(P2 R2 I2))
                       Splices 2 Euclidean rhythms. 
-                      The sub list (P1 S1 I1) and (P2 S2 I2) are the 
-                      points, shift and invert parameters for the two rhythms.
+                      The sub list (P1 R1 I1) and (P2 R2 I2) are the 
+                      points, rot and invert parameters for the two rhythms.
                       
                       Split defines where the splice is made and is always at 
                       a bar boundary.  Split may be

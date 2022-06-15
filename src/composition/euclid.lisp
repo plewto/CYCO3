@@ -19,14 +19,14 @@
 			    (limit (round (* points length)) 0 length))
 			   (t (random length))))
 
-	 (shift-arg (shift length)
-	 	       (cond ((integerp shift)
-	 		      shift)
-	 		     ((floatp shift)
-	 		      (limit (round (* shift length)) 0 length))
+	 (rot-arg (rot length)
+	 	       (cond ((integerp rot)
+	 		      rot)
+	 		     ((floatp rot)
+	 		      (limit (round (* rot length)) 0 length))
 	 		     (t (let* ((r (random 1.0))
 	 			       (r3 (* r r r)))
-	 			  (shift-arg r3 length)))))
+	 			  (rot-arg r3 length)))))
 
 	 (invert-cuelist (flag bincuelist)
 			(if flag
@@ -36,9 +36,9 @@
 			      s)
 			  bincuelist)) )
 
-	(defun euclid->binary-cuelist (length points &key (shift 0)(invert nil))
+	(defun euclid->binary-cuelist (length points &key (rot 0)(invert nil))
 	  (setf points (points-arg points length))
-	  (setf shift (shift-arg shift length))
+	  (setf rot (rot-arg rot length))
 	  (let ((increment (/ length points))
 		(value 0)
 		(acc '())
@@ -48,14 +48,14 @@
 	      (setf value (+ value increment)))
 	    (loop for i from 0 below length do
 		  (setf bincuelist (str+ bincuelist (if (member i acc) "1" "0"))))
-	    (rotate (invert-cuelist invert bincuelist) shift)))
+	    (rotate (invert-cuelist invert bincuelist) rot)))
 
 
-	(defun euclid (points &key (shift 0)(invert nil)(timesig nil)(use-subbeats t))
+	(defun euclid (points &key (rot 0)(invert nil)(timesig nil)(use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
 		 (gamut (->vector (cue-gamut tsig (not use-subbeats))))
 		 (length (length gamut))
-		 (bcuelist (euclid->binary-cuelist length points :shift shift :invert invert))
+		 (bcuelist (euclid->binary-cuelist length points :rot rot :invert invert))
 		 (acc '()))
 	    (dotimes (i (length bcuelist))
 	      (if (char= (char bcuelist i) #\1)
@@ -63,10 +63,10 @@
 	    (reverse acc)))
 
 	
-	(defun euclid2 (p1 p2 &key (s1 0)(s2 0)(inv1 nil)(inv2 nil)(timesig nil)(split nil)(use-subbeats t))
+	(defun euclid2 (p1 p2 &key (r1 0)(r2 0)(inv1 nil)(inv2 nil)(timesig nil)(split nil)(use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
-		 (e1 (euclid p1 :shift s1 :invert inv1 :timesig tsig :use-subbeats use-subbeats))
-		 (e2 (euclid p2 :shift s2 :invert inv2 :timesig tsig :use-subbeats use-subbeats))
+		 (e1 (euclid p1 :rot r1 :invert inv1 :timesig tsig :use-subbeats use-subbeats))
+		 (e2 (euclid p2 :rot r2 :invert inv2 :timesig tsig :use-subbeats use-subbeats))
 		 (bars (bars tsig))
 		 (crossover (limit (or split (round (/ bars 2))) 0 (1- bars))))
 	    (append (remove-if #'(lambda (cue)(> (car cue) crossover)) e1)
@@ -80,9 +80,9 @@ points  - Number of events.  points may be one of following:
           A) integer, absolute number of events. 0 < points <= length.
           B) float, event count relative to length. 0.0 < points <= 1.0
           C) nil, use random value.
-:shift  - Amount of cuelist rotation, may be one of following:
+:rot  - Amount of cuelist rotation, may be one of following:
           A) integer, absolute number of steps.
-          B) float, steps relative to length.  0.0 <= shift <= 1.0
+          B) float, steps relative to length.  0.0 <= rot <= 1.0
           C) nil, use random value.
           Default 0.
 :invert - Boolean, if true invert binary values.
@@ -93,7 +93,7 @@ Returns string of binary digits '0's or '1's.")
 (setf (documentation 'euclid 'function)
       "Generates cuelist using Euclid's formula
 points   - Number of events, may integer, float or nil as per EUCLID->BINARY-CUELIST.
-:shift   - List rotation amount, as per EUCLID->BINARY-CUELIST, default 0.
+:rot     - List rotation amount, as per EUCLID->BINARY-CUELIST, default 0.
 :invert  - Boolean, if true invert event selection. Default nil.
 :timesig - Reference time signature, may be one of.
            A) An instance of TIME-SIGNATURE
@@ -115,8 +115,8 @@ usage as the EUCLID function.
 
 p1     - point count 1, as per EUCLID.
 p2     - point count 2.
-:s1    - shift amount 1, as per EUCLID.
-:s2    - shift amount 2
+:r1    - rot amount 1, as per EUCLID.
+:r2    - rot amount 2
 :inv1  - invert 1, as per EUCLID
 :inv2  - invert 2
 :split - Splice point bar number.  Euclid sequence 1 is used for all bars <= split.

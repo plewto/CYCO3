@@ -23,7 +23,7 @@
 ;;;;  1) 'cuelist' refers to a list of cue-points as used by the BAR
 ;;;;      cue-function.   ((bar beat subbeat)(bar beat subbeat) ...)
 ;;;;
-;;;;      Further cuelist is simplified. The BAR function allows
+;;;;      Further the cuelist is simplified. The BAR function allows
 ;;;;      for an optional tick value.   (bar beat subbeat tick).
 ;;;;      The functions described below ignore any tick values,
 ;;;;      and the two cue-points (4 2 3 5) and (4 2 3) are considered 
@@ -36,7 +36,7 @@
 ;;;; ----------------------------------------------------------
 ;;;; Printing cuelist and cuestring with PPRINT-CUESTRING.
 ;;;;
-;;;; The function PPRINT-CUESTRING provides formatted output of cuelist and
+;;;; The function PPRINT-CUELIST provides formatted output of cuelist and
 ;;;; cuestrings. 
 ;;;;
 ;;;; (PPRINT-CUELIST arg &key header form timesig use-subbeats)
@@ -47,7 +47,7 @@
 ;;;;
 ;;;; :form    - Defaults to list format.
 ;;;;            If :form has the value :binary, output is formatted as
-;;;;            binary strings.
+;;;;            binary cuestrings.
 ;;;;
 ;;;; :timesig - Reference time-signature. May be any of the following:
 ;;;;            1) Any instance of time-signature (such as a part or section)
@@ -94,17 +94,27 @@
 
 ;;;; The above code only works because d-clave inherits the time-signature from
 ;;;; section D.  If it had a different signature (most likely a different bar-count,
-;;;; remember CYCO time-signatures include the bar count), then  you would pass
+;;;; remember CYCO time-signatures include the bar count), then you would pass
 ;;;; the part to the :timesig argument.
 ;;;;
 ;;;;  (pprint-cuelist d-clave :timesig d-clave)
 ;;;;
 
+(banner2 "CUELIST function")
 
+;;;; ----------------------------------------------------------
+;;;;
+;;;; The CUELIST function returns, and optionally formats, a cuelist.
+;;;; It takes the same arguments as PPRINT-CUELIST except for :HEADER.
+;;;;
+;;;;  (cuelist d-clave)                --> a cuelist
+;;;;  (cuelist b-clave :form :binary)  --> binary custring
+;;;;  (cuelist "1100111 111000")      --> a cuelist
+;;;;  (cuelist '(...) :form binary)    --> binary cuestring
 
 (banner2 "MASK-CUELIST")
+
 ;;;; ----------------------------------------------------------
-;;;; Using MASK-CUELIST
 ;;;;
 ;;;; MASK-CUELIST applies bit-wise binary operations to cuelist. 
 ;;;; It may apply any one of the following operations:

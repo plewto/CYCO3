@@ -71,6 +71,7 @@
 	  copies
 	  counter
 	  cue
+	  cuelist
 	  cycle
 	  cycle-p
 	  cyco

@@ -928,13 +928,64 @@ If index is out of bounds, returns out-of-bounds-value"))
 (defgeneric partition (object &key &allow-other-keys)
   (:documentation
    "Split or render object into mutually-exclusive components."))
+ 
+(defgeneric rotate (seq &optional n))
+
+(defgeneric cuelist (object &key form timesig use-subbeats)
+  (:documentation
+   "Return object's cuelist.
+:form   - selects resulting format, maybe 
+          1) :binary - string of binary values.
+          2) :list (default) - list in BAR form ((bar beat sub) ...)
+:timsig - Selects reference time-signature. May be
+          1) An instance of time-signature
+          2) A time-signature designator, list of form (bars beats subbeats)
+          3) NIL (default) 
+               A) Use current-section of *project*
+               B) If there is no current-section, use *project*
+               c) If *project* is NIL, use fallback 2-bar signature in 4/4 time.")) 
+
+(defgeneric pprint-cuelist (cuelist &key header timesig use-subbeats))
+
+(defgeneric mask-cuelist (cuelist mask &key op shift rotate timesig use-subbeats)
+  (:documentation
+   "Applies bit wise operations to 2 cuelist.
+cuelist  - The source cuelist.  
+           May be a list, binary cuestring or an instance of Part.
+mask     - The second logical operand.
+           May be a list, binary cuestring or an instance of Part.
+:shift   - Integer, number of steps to shift cuelist.
+           shift > 0 --> shift bits right, add 0s to left.
+           shift < 0 --> shift left , add 0s to left.
+           shift = 0 --> default, noop.
+           Bit shifting is applied prior to logical operation.
+:rotate  - Integer, number of steps to rotate cuelist.
+           Default 0.
+           Bit rotation is applied prior to logical operation
+:op      - Logical operation, may be one of:
+           :and  :or  :xor  :nand  :nor  :nxor 
+           :and! :or! :xor! :nand! :nor! :nxor!
+           :not and :no-op (defaults to :no-op)
+
+           Performs indicated operations on the 2 cuelist.
+           Operators ending in ! invert mask 
+               :and   --> cuelist and mask
+               :and!  --> cuelist and (not mask)
+
+           The :not operator inverts the cuelist ignoring the mask
+           The :no-op operator is the default 
+:timesig - Reference time-signature, may be one of:
+           1) An instance of time-signature
+           2) A list of form (bars beats subbeats)
+           3) nil
+              A) Defaults to current-section of *project*
+              B) If there is no current-section, uses *project*
+              C) If *project* is nil, uses a fallback 2-bar signature in 4/4 time.
+
+:use-subbeats - If true use the time-signature subbeats for base time unit.
+                Otherwise use tsubbeats. Default t."))
+
 
 (defgeneric duck (cuelist object &key invert &allow-other-keys)
   (:documentation
    "Eliminates cuelist points which overlap with object."))
- 
-(defgeneric rotate (seq &optional n))
-
-(defgeneric pprint-cuelist (cuelist &key header &allow-other-keys))
-  
-(defgeneric cuelist (object &key &allow-other-keys))

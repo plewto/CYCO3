@@ -10,6 +10,7 @@
 			    "src/debug"
 			    "src/generics"
 			    "src/composition/cueutil"
+			    "src/composition/time-signature"
 			    "src/parts/part"
 			    ))
 

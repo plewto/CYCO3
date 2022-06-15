@@ -39,6 +39,7 @@
 		:controller-p
                 :copies
                 :copy-time-signature
+		:cuelist
                 :cycle
                 :cyco-composition-error
                 :cyco-node

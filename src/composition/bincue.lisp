@@ -52,10 +52,8 @@
 			(while (or (null sym)(assoc sym (slot-value bincue 'symbols)))
 			  (setf sym (->symbol (sformat "tempsym-~d" counter)))
 			  (setf counter (1+ counter)))
-			sym))
+			sym)) )
 
-			  
-	 )
 
 	(defun bincue (&key (symbols '())(timesig nil)(use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
@@ -177,7 +175,16 @@ the BAR cue-function.
 
 
 (setf (documentation 'bincue-translate 'function)
-      "BINCUE method which performs the actual binary cue-list conversion.")
+      "BINCUE method which performs the actual binary cue-list conversion.
+Defined for list and strings.
+
+(param bc (bincue :timesig '(1 4 4)))
+(bincue-translate bc '(1000 1010 1000 0001)) --> ((1 1 1)(1 2 1)(1 2 3)(1 3 1)(1 4 4))
+
+A string 'cuestring' may also be used
+
+(bincue-translate bc ''1000 1010 1000 0001'') produces same result, white-space is ignored.")
+
 
 (setf (documentation '?bincue 'function)
       "Displays list of BINCUE cue-list symbols.")

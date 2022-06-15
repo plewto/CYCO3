@@ -150,8 +150,8 @@ used directly."))
   (render-once prt))
   
 
-(defmethod duck ((cuelist list)(prt part) &key (invert nil) &allow-other-keys)
-  (duck cuelist (property prt :cuelist) :invert invert))
+(defmethod duck ((cuelist list)(prt part) &key (invert nil) timesig (use-subbeats t))
+  (duck cuelist (property prt :cuelist) :invert invert :timesig timesig :use-subbeats use-subbeats))
 
 
 (defmethod cuelist ((prt part) &key (form :list) timesig (use-subbeats t))

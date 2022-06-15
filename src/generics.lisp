@@ -1008,6 +1008,6 @@ mask     - The second logical operand.
                 Otherwise use tsubbeats. Default t."))
 
 
-(defgeneric duck (cuelist object &key invert &allow-other-keys)
+(defgeneric duck (cuelist object &key invert timesig use-subbeats)
   (:documentation
    "Eliminates cuelist points which overlap with object."))

@@ -186,9 +186,7 @@
 		     (let ((ca (char a i))
 			   (cb (char b i)))
 		       (setf s (str+ s (if (char= ca cb) "1" "0")))))
-		   s))
-		  
-	 )
+		   s)) )
 
 	(defmethod cuelist ((clist list) &key (form :list) timesig (use-subbeats t))
 	  (cond ((eq form :binary)
@@ -205,26 +203,6 @@
 		       (cyco-error "Invalid binary-cuestring" cuestring))
 		   (pad-zeros cstr event-count)))
 		(t (cuestring->cuelist cuestring timesig use-subbeats))))
-	
-	;; (defmethod duck ((cuelist list)(mask list) &key (invert nil) &allow-other-keys)
-	;;   (let ((sig (mapcar #'simplify-cue-point cuelist))
-	;; 	(exclude (mapcar #'simplify-cue-point mask)))
-	;;     (remove-if #'null (loop for i from 0 below (length cuelist) collect
-	;; 			    (let ((m (member (nth i sig) exclude :test #'equal)))
-	;; 			      (if invert
-	;; 				  (if m (nth i cuelist))
-	;; 				(if (not m)(nth i cuelist))))))))
-					  
-
-	;; (defmethod duck ((cuelist list)(mask string) &key
-	;; 		 (invert nil)(timesig nil) (use-subbeats nil) &allow-other-keys)
-	;;   (let ((bc (bincue :timesig timesig :use-subbeats use-subbeats
-	;; 		    :symbols (list (cons 'mask mask)))))
-	;;     (duck cuelist (bincue-translate bc '(mask)) :invert invert)))
-
-	;; (defmethod duck ((cuelist t)(mask t) &key (invert nil) timesig (use-subbeats t))
-	;;   (let ((op (if invert :and! :and)))
-	;;     (mask-cuelist cuelist mask :op op :timesig timesig :use-subbeats use-subbeats)))
 
 	(defmethod duck ((cuelist t)(mask t) &key (invert nil) timesig (use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
@@ -279,9 +257,7 @@
 		     (op-nxor a b t))
 		    ((eq op :not)
 		     (invert-cuestring a))
-		    (t a)))))
-	)
-
+		    (t a))))) )
 
 
 (setf (documentation 'duck 'function)

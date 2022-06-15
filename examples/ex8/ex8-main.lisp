@@ -15,9 +15,11 @@
 (prune-orchestra)
 (general-midi-instrument bass :channel 1 :program 33)
 (general-midi-instrument guitar :channel 2 :program 30)
-(general-midi-instrument piano :channel 3)
+(general-midi-instrument piano  :channel 3)
 
 
 (lpf a) ;; The basics, the hard way but with important details.
-(lpf b) ;; The easy way: BINBALL and BINXBALL.
+(lpf b) ;; The easy way: BINBALL and BINXBALL
+        ;; Includes Euclidean rhythms and ducking.
 (lpf c) ;; Complex time signatures.
+(lpf d) ;; cuelist manipulation with mask-cuelist

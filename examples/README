@@ -53,11 +53,12 @@ ex5   The Strummer part
 
 ex6   - MIDI controllers, after touch and pitch-bend.
 
-ex7   - XBALL, an extension of QBALL.
+ex7   - XBALL, an extension of QBALL with chords and strumming.
       - XBALL basics
       - Pattern Comprehension
 
 ex8   - Binary cuelist
       - Basics
-      - BINBALL & BINXBALL with Euclid abd ducking.
+      - BINBALL & BINXBALL with Euclid and ducking.
       - Complex time signatures
+      - Cuelist manipulation with mask-cuelist.

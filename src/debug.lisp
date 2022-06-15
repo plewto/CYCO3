@@ -10,8 +10,9 @@
 			    "src/debug"
 			    "src/generics"
 			    "src/composition/cueutil"
-			    ;; "src/composition/time-signature"
 			    "src/parts/part"
+			    "src/composition/bincue"
+			    "src/composition/binball"
 			    ))
 
 

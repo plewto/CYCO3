@@ -27,8 +27,6 @@
 ;;;; fractional value and may not be used with BINCUE.
 ;;;;
 
-
-
 (section c :bars 1 :beats 4 :subbeats 6)
 
 (param bc (bincue :use-subbeats t))

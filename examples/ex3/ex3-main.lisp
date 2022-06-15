@@ -24,9 +24,9 @@
 
 
 ;; NOTE: The following block illustrates using a custom cue-function called
-;; "TBAR".  The utility of TBAR became so obvious that it has since been 
-;; included as a standard CYCO function.  The version of TBAR developed 
-;; below is slightly different then the new standard version. 
+;;       "TBAR".  The utility of TBAR became so obvious that it has since been 
+;;       included as a standard CYCO function.  The version of TBAR developed 
+;;       below is slightly different then the new standard version. 
 ;;
 
 ;; Due to rhythmic complexity, particularly with the woodwind "answers",

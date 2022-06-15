@@ -18,7 +18,7 @@ Version 3.0.1
 Version 3.0.2 (2022.05.11)
     1. 2022-05-13 Redefined ? inspection function to be interactive.
     2. 2022-05-13 Fixed MODX-DRUMS bug.
-    3. 2022-05-18 Defines new kits for MODX-DRUMS.	
+    3. 2022-05-18 Defines new kits for MODX-DRUMS.      
     4. 2022-05-18 Removes dead code for depreciated "simple-part"
     5. 2022-05-19 Adds render validation test at part creation time.
     6. 2022-05-20 Adds pattern/generator comprehension.
@@ -31,3 +31,6 @@ Version 3.0.2 (2022.05.11)
    12. 2022-06-86 Adds cuelist ducking.
    13. 2022-06-13 Extends example project ex8.
    14. 2022-06-14 Adds logical operations on cuelist (see mask-cuelist)
+                  Rewrites ducking as a mask-cuelist special case.
+
+

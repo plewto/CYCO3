@@ -945,7 +945,29 @@ If index is out of bounds, returns out-of-bounds-value"))
                B) If there is no current-section, use *project*
                c) If *project* is NIL, use fallback 2-bar signature in 4/4 time.")) 
 
-(defgeneric pprint-cuelist (cuelist &key header timesig use-subbeats))
+(defgeneric pprint-cuelist (cuelist &key header form timesig use-subbeats)
+  (:documentation
+   "Pretty prints cuelist.
+
+cuelist  - cuelist may be one of:
+           1) cuelist in 'BAR' form  ((bar beat subbeat ...))
+           2) A binary cuestring ''00011...''  white-space is ignored.
+           3) An instance of PART.
+:header  - Optional header text.
+:form    - Output format options are:
+           :binary - format is a binary cuestring.
+           nil     - the default, format as cuelist.
+:timesig - Reference time-signature, may be one of:
+           1) An instance of time-signature
+           2) List of form (bars beats subbeats)
+           3) nil 
+               1) Defaults to current-section of *project*
+               2) If there is no current-section, uses *project*
+               3) If *project* is nil uses fallback 2-bat signature in 4/4 time.
+   
+:use-subbeats - Boolean. If true use time-signature subbeats as smallest time
+                division, otherwise use tsubbeats. Default t."))
+    
 
 (defgeneric mask-cuelist (cuelist mask &key op shift rotate timesig use-subbeats)
   (:documentation
@@ -957,7 +979,7 @@ mask     - The second logical operand.
 :shift   - Integer, number of steps to shift cuelist.
            shift > 0 --> shift bits right, add 0s to left.
            shift < 0 --> shift left , add 0s to left.
-           shift = 0 --> default, noop.
+           shift = 0 --> default, no-op.
            Bit shifting is applied prior to logical operation.
 :rotate  - Integer, number of steps to rotate cuelist.
            Default 0.

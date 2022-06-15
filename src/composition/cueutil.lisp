@@ -38,8 +38,45 @@
 		       (if text (format t ";; ~A" text)))
 	  
 	 (print-bar (bar-number)
-		    (format t "~%;; BAR ~A~%;; " bar-number))
+		    (format t "~%;; BAR ~3D : " bar-number))
 
+	 (-pprint-cuestring (cuestring timesig use-subbeats)
+			    (let* ((tsig (select-time-signature timesig))
+				   (group (property tsig (if use-subbeats :subbeats :tsubbeats)))
+				   (bar-length (* group (property tsig :beats)))
+				   (event-count (* bar-length (property tsig :bars)))
+				   (cstr (pad-zeros (cuelist cuestring :form :binary :timesig tsig
+							     :use-subbeats use-subbeats) event-count))
+				   (bar-count 1))
+			      (dotimes (i (length cstr))
+				(if (zerop (rem i bar-length))
+				    (progn
+				      (format t "~%;; BAR ~3D :" bar-count)
+				      (setf bar-count (1+ bar-count))))
+				(if (zerop (rem i group))(format t " "))
+				(format t "~A" (char cstr i))))
+			    (format t "~%"))
+
+	 (-pprint-cuelist (cuelist)
+			   (let ((max-line-length 8)
+				 (current-bar (caar cuelist))
+				 (line-length 0))
+			     (print-bar current-bar)
+			     (dolist (q cuelist)
+			       (if (not (equal (car q) current-bar))
+				   (progn
+				     (setf current-bar (car q))
+				     (setf line-length 0)
+				     (print-bar current-bar)))
+			       (if (> line-length max-line-length)
+				   (progn
+				     (format t "~%;;           ")
+				     (setf line-length 0)))
+			       (format t "~A" q)
+			       (setf line-length (1+ line-length))))
+			   (format t "~%"))
+			     
+	 
 	 (cuelist->cuestring (cuelist timesig use-subbeats)
 			     (setf cuelist (mapcar #'simplify-cue-point cuelist))
 			     (let* ((tsig (select-time-signature timesig))
@@ -53,7 +90,7 @@
 	 (cuestring->cuelist (cuestring timesig use-subbeats)
 			     (let ((cstr (compress cuestring)))
 			       (if (notevery #'binary-char-p cstr)
-				   (cyco-error "Invalid bianry-cuestring" cuestring))
+				   (cyco-error "Invalid binary-cuestring" cuestring))
 			       (let* ((tsig (select-time-signature timesig))
 				      (gamut (cue-gamut tsig (not use-subbeats)))
 				      (cuelist '()))
@@ -187,46 +224,18 @@
 			    :symbols (list (cons 'mask mask)))))
 	    (duck cuelist (bincue-translate bc '(mask)) :invert invert)))
 
-
-	(defmethod pprint-cuelist ((cuelist list) &key header timesig use-subbeats)
-	  (declare (ignore timesig use-subbeats))
-	  (let ((max-line-length 8)
-		(current-bar (caar cuelist))
-		(line-length 0))
-	    (print-header header)
-	    (print-bar current-bar)
-	    (dolist (q cuelist)
-	      (if (not (equal (car q) current-bar))
-		  (progn
-		    (setf current-bar (car q))
-		    (setf line-length 0)
-		    (print-bar current-bar)))
-	      (if (> line-length max-line-length)
-		  (progn
-		    (format t "~%;; ")
-		    (setf line-length 0)))
-	      (format t "~A" q)
-	      (setf line-length (1+ line-length))))
-	  (format t "~%"))
-
-	(defmethod pprint-cuelist ((cuestring string) &key header timesig (use-subbeats t))
+	(defmethod pprint-cuelist ((cuelist list) &key header form timesig (use-subbeats t))
 	  (print-header header)
-	  (let* ((tsig (select-time-signature timesig))
-		 (group (property tsig (if use-subbeats :subbeats :tsubbeats)))
-		 (bar-length (* group (property tsig :beats)))
-		 (event-count (* bar-length (property tsig :bars)))
-		 (cstr (pad-zeros (cuelist cuestring :form :binary :timesig tsig
-					   :use-subbeats use-subbeats) event-count))
-		 (bar-count 1))
-	    (dotimes (i (length cstr))
-	      (if (zerop (rem i bar-length))
-		  (progn 
-		    (format t "~%;; BAR ~3D :" bar-count)
-		    (setf bar-count (1+ bar-count))))
-	      (if (zerop (rem i group))(format t " "))
-	      (format t "~A" (char cstr i))))
-	  (format t "~%"))
-		  
+	  (cond ((eq form :binary)
+		 (-pprint-cuestring (cuelist cuelist :form :binary :timesig timesig :use-subbeats use-subbeats)
+				    timesig use-subbeats))
+		(t (-pprint-cuelist cuelist))))
+
+	(defmethod pprint-cuelist ((cuestring string) &key header form timesig (use-subbeats t))
+	  (print-header header)
+	  (cond ((eq form :binary)
+		 (-pprint-cuestring cuestring timesig use-subbeats))
+		(t (-pprint-cuelist (cuelist cuestring :timesig timesig :use-subbeats use-subbeats)))))
 
 	(defmethod mask-cuelist ((cuelist t) mask &key op shift rotate timesig (use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))

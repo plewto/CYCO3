@@ -161,6 +161,6 @@ used directly."))
 	   :use-subbeats use-subbeats))
 
 
-(defmethod pprint-cuelist ((prt part) &key header timesig use-subbeats)
+(defmethod pprint-cuelist ((prt part) &key header form timesig use-subbeats)
   (declare (ignore timesig use-subbeats))
-  (pprint-cuelist (property prt :cuelist) :header header))
+  (pprint-cuelist (property prt :cuelist) :form form :header header))

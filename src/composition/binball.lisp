@@ -5,11 +5,13 @@
 
 (in-package :cyco)
 
-(labels ((binball-duck (cuelist duck-param tsig use-subbeats)    ;; duck-param (object invert)
+(labels ((binball-duck (cuelist duck-param tsig use-subbeats)
 		       (let* ((p (->list duck-param))
 			      (mask (car p))
-			      (invert (second p)))
-			 (duck cuelist mask :invert invert :timesig tsig :use-subbeats use-subbeats)))
+			      (invert (second p))
+			      (rs (duck cuelist mask :invert invert
+					:timesig tsig :use-subbeats use-subbeats)))
+			 rs))
 
 	 ;; cuelist: (euclid points shift invert)
 	 ;;
@@ -41,7 +43,9 @@
 			      ((eq (car cuelist) 'euclid2)
 			       (eu2 cuelist tsig use-subbeats))
 			      (t (bincue-translate bincue cuelist)))))
-	    (binball-duck clist duck tsig use-subbeats))) )
+	    (bincue-translate bincue (binball-duck clist duck tsig use-subbeats)))) )
+
+	    
 	
 
 (defmacro binball (name instruments &key

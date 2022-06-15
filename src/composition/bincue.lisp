@@ -21,6 +21,9 @@
     :type list
     :initform '())))
 
+(defgeneric bincue-translate (bc cue))
+
+
 (labels ((zeros (n)(scopies n #\0))
 
 	 (one+zeros (n)(sformat "1~A" (zeros (1- n))))
@@ -41,7 +44,18 @@
 			      (symlist (slot-value bincue 'symbols)))
 			  (dolist (token cuelist)
 			    (setf acc (sformat "~A~A" acc (process-token token symlist width))))
-			  acc)) )
+			  acc))
+	 
+	 (temp-symbol (bincue)
+		      (let* ((counter 0)
+			     (sym nil))
+			(while (or (null sym)(assoc sym (slot-value bincue 'symbols)))
+			  (setf sym (->symbol (sformat "tempsym-~d" counter)))
+			  (setf counter (1+ counter)))
+			sym))
+
+			  
+	 )
 
 	(defun bincue (&key (symbols '())(timesig nil)(use-subbeats t))
 	  (let* ((tsig (select-time-signature timesig))
@@ -96,6 +110,14 @@
 		    (push (aref gamut index) acc))))
 	    (reverse acc)))
 
+	(defmethod bincue-translate ((bincue bincue)(cuestring string))
+	  (let* ((sym (temp-symbol bincue))
+		 (symbols (slot-value bincue 'symbols)))
+	    (push (cons sym cuestring) symbols)
+	    (setf (slot-value bincue 'symbols) symbols)
+	    (prog1
+		(bincue-translate bincue (list sym))
+	      (setf (slot-value bincue 'symbols) (cdr symbols)))))
 
 	(defmethod ?bincue ((bincue bincue))
 	  (let* ((tsig (slot-value bincue 'timesig))

@@ -222,10 +222,18 @@
 	;; 		    :symbols (list (cons 'mask mask)))))
 	;;     (duck cuelist (bincue-translate bc '(mask)) :invert invert)))
 
+	;; (defmethod duck ((cuelist t)(mask t) &key (invert nil) timesig (use-subbeats t))
+	;;   (let ((op (if invert :and! :and)))
+	;;     (mask-cuelist cuelist mask :op op :timesig timesig :use-subbeats use-subbeats)))
+
 	(defmethod duck ((cuelist t)(mask t) &key (invert nil) timesig (use-subbeats t))
-	  (let ((op (if invert :and! :and)))
-	    (mask-cuelist cuelist mask :op op :timesig timesig :use-subbeats use-subbeats)))
-	
+	  (let* ((tsig (select-time-signature timesig))
+		 (points (cue-points tsig (not use-subbeats)))
+		 (msk (or mask (scopies points "0")))
+		 (op (if invert :and :and!))
+		 (rs (mask-cuelist cuelist msk :op op :timesig tsig :use-subbeats use-subbeats)))
+	    rs))
+	    
 	(defmethod pprint-cuelist ((cuelist list) &key header form timesig (use-subbeats t))
 	  (print-header header)
 	  (cond ((eq form :binary)

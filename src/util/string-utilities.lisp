@@ -147,5 +147,14 @@ shift - optional number of spaces to shift text right."
 	      (t nil))
 	str))
 	      
-	
-  
+(defun string-compress (s &optional (bag '(#\space #\tab #\newline)))
+  "Removes all characters in string which are elements of bag.
+By default removes all white space."
+  (remove-if #'(lambda (c)(member c bag :test #'char=)) s))
+
+(defun string-white-trim (s &key (bag '(#\space #\tab #\newline)) (end :both))
+  (if (or (null end)(eq end :left)(eq end :both))
+      (setf s (string-left-trim bag s)))
+  (if (or (null end)(eq end :right)(eq end :both))
+      (string-right-trim bag s)
+    s))

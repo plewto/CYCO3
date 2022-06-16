@@ -153,6 +153,9 @@ By default removes all white space."
   (remove-if #'(lambda (c)(member c bag :test #'char=)) s))
 
 (defun string-white-trim (s &key (bag '(#\space #\tab #\newline)) (end :both))
+  "Trims string of white space from either end.
+:bag - List of characters to remove, defaults to white space.
+:end - end of string to trim. May be :left :right or :both, defaults to :both."
   (if (or (null end)(eq end :left)(eq end :both))
       (setf s (string-left-trim bag s)))
   (if (or (null end)(eq end :right)(eq end :both))

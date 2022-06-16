@@ -5,11 +5,7 @@
 
 (in-package :cyco)
 
-(labels ((compress (str)
-		   (let ((white '(#\space #\newline #\tab)))
-		     (remove-if #'(lambda (c)(member c white :test #'char=)) str)))
-
-	 (pad-zeros (str width)
+(labels ((pad-zeros (str width)
 		    (string-pad-right str width #\0))
 
 	 (invert-cuestring (str)
@@ -88,7 +84,7 @@
 			       (pad-zeros cstr (length gamut))))
 
 	 (cuestring->cuelist (cuestring timesig use-subbeats)
-			     (let ((cstr (compress cuestring)))
+			     (let ((cstr (string-compress cuestring)))
 			       (if (notevery #'binary-char-p cstr)
 				   (cyco-error "Invalid binary-cuestring" cuestring))
 			       (let* ((tsig (select-time-signature timesig))
@@ -195,7 +191,7 @@
 
 	(defmethod cuelist ((cuestring string) &key (form :list) timesig (use-subbeats t))
 	  (cond ((eq form :binary)
-		 (let* ((cstr (compress cuestring))
+		 (let* ((cstr (string-compress cuestring))
 			(tsig (select-time-signature timesig))
 			(event-count (* (bars tsig)(beats tsig)
 					(if use-subbeats (subbeats tsig)(tsubbeats tsig)))))

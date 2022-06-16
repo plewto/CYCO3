@@ -89,10 +89,7 @@ Example 4 (Curly brackets)
     (param p3 (pattern-comprehension '(cycle (x y {a} z))))
     (next p3 3) --> x y ape z"))
   
-  (labels ((trim-white (word)
-		       (string-trim '(#\space #\tab #\newline) word))
-	   
-	   (command-p (word)
+  (labels ((command-p (word)
 		      (gethash word commands))
 	 
 	   (car-p (word)
@@ -152,9 +149,9 @@ Example 4 (Curly brackets)
 			 (next-word "")
 			 (acc ""))
 		    (while words
-		      (setf word (trim-white (car words)))
+		      (setf word (string-white-trim (car words)))
 		      (setf words (cdr words))
-		      (setf next-word (and words (trim-white (car words))))
+		      (setf next-word (and words (string-white-trim (car words))))
 		      (cond
 		       ((string= word "(")
 			(if (command-p next-word)
@@ -184,6 +181,7 @@ Example 4 (Curly brackets)
 
 	  (defun pattern-comprehension (exp)
 	    (let* ((str (post-process (parse exp))))
+	      (format t "DEBUG comprehension  str = ~s~%" str)
 	      (eval (read-from-string str))))
 
 	  (defun pattern-comprehension-p (item)
@@ -192,3 +190,4 @@ Example 4 (Curly brackets)
 		 (gethash (->string (car item)) commands)))
 
 	  (setf (documentation 'pattern-comprehension 'function) docs) ))
+

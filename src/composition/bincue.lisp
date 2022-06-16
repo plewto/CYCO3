@@ -28,13 +28,9 @@
 
 	 (one+zeros (n)(sformat "1~A" (zeros (1- n))))
 
-	 (trim-white (s)
-		     (string-trim '(#\space #\tab #\newline) (->string s)))
-
-
 	 (process-token (token symlist width)
-			(trim-white (or (cdr (assoc token symlist))
-					(string-pad-left (->string token) width #\0))))
+			(string-white-trim (or (cdr (assoc token symlist))
+					       (string-pad-left (->string token) width #\0))))
 	 
 	 (parse-cuelist (bincue cuelist)
 			(let ((acc "")

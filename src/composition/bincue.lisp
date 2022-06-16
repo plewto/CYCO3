@@ -107,7 +107,7 @@
 	(defmethod bincue-translate ((bincue bincue)(cuestring string))
 	  (let* ((sym (temp-symbol bincue))
 		 (symbols (slot-value bincue 'symbols)))
-	    (push (cons sym cuestring) symbols)
+	    (push (cons sym (string-compress cuestring)) symbols)
 	    (setf (slot-value bincue 'symbols) symbols)
 	    (prog1
 		(bincue-translate bincue (list sym))

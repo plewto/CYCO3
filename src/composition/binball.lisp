@@ -38,14 +38,14 @@
 	(defun binball-cuelist (cuelist bincue time-signature use-subbeats duck)
 	  "Helper function for binball and binxball macros."
 	  (let* ((tsig (select-time-signature time-signature))
-		 (clist (cond ((eq (car cuelist) 'euclid)
+		 (clist (cond ((stringp cuelist)
+			       (bincue-translate bincue cuelist))
+			      ((eq (car cuelist) 'euclid)
 			       (eu1 cuelist tsig use-subbeats))
 			      ((eq (car cuelist) 'euclid2)
 			       (eu2 cuelist tsig use-subbeats))
 			      (t (bincue-translate bincue cuelist)))))
 	    (bincue-translate bincue (binball-duck clist duck tsig use-subbeats)))) )
-
-	    
 	
 
 (defmacro binball (name instruments &key

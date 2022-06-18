@@ -135,6 +135,7 @@
                 :signed-norm->midi-data
                 :solo
                 :sort-midi-events
+		:str+
                 :tempo
 		:thin-bend-events
 		:thin-controller-events

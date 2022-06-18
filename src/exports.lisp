@@ -310,6 +310,7 @@
 	  sort-midi-events
 	  split-list
 	  split-string
+	  str+
 	  strummer
 	  strummer-p
 	  subbeat-duration

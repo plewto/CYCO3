@@ -30,6 +30,7 @@
 	  programs
 	  qball
 	  qball-p
+	  qball->strummer
 	  raw-part
 	  raw-part-p
 	  strummer
@@ -40,6 +41,7 @@
 	  text-part
 	  text-part-p
 	  xball
+	  xball->strummer
 	  xball-p)
 	:cyco-part)
 
@@ -67,6 +69,7 @@
           cyco-part:programs
           cyco-part:qball
           cyco-part:qball-p
+	  cyco-part:qball->strummer
           cyco-part:raw-part
           cyco-part:raw-part-p
           cyco-part:strummer
@@ -77,6 +80,7 @@
 	  cyco-part:text-part
 	  cyco-part:text-part-p
 	  cyco-part:xball
+	  cyco-part:xball->strummer
 	  cyco-part:xball-p)
 	:cyco)
 

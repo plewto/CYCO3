@@ -117,6 +117,7 @@
 		   "src/parts/qball-docs"
 		   "src/parts/qball"
 		   "src/parts/qball-midi-render"
+		   "src/parts/qball-transform"
 		   "src/parts/xball"
 		   "src/parts/xball-midi-render"
 		   "src/parts/xball-docs"

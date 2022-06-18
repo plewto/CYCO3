@@ -9,10 +9,7 @@
 (param *rebuild-manifest* '(
 			    "src/debug"
 			    "src/generics"
-			    "src/composition/cueutil"
-			    "src/parts/part"
-			    "src/composition/bincue"
-			    "src/composition/binball"
+			    "src/parts/qball-transform"
 			    ))
 
 

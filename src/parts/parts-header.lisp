@@ -48,6 +48,7 @@
 		:cyco-warning
 		:cyco-error
                 :data
+		:data-array
                 :defines-chord-p
                 :disconnect
 		:duck
@@ -75,6 +76,8 @@
                 :triangle
                 :keynumber
                 :keynumber-map
+		:keynumber-p
+		:keyname
                 :limit
                 :line
                 :metric-expression

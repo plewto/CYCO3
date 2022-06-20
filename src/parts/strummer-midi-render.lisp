@@ -203,5 +203,9 @@
 	      (progn 
 		(format t "~A~%" state)
 		(dump-events state-events)))))
-      midi-events)) )
+      (if (property strummer :hold)
+	  (hold-repeated-notes (sort-midi-events midi-events))
+	(sort-midi-events midi-events))))
+
+  )
 

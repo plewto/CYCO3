@@ -8,6 +8,7 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
+			    "src/parts/parts-header"
 			    "src/parts/strummer"
 			    "src/parts/istrum"
 			    ))

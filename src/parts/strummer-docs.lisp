@@ -60,7 +60,7 @@
 
 (in-package :cyco-part)
 
-(constant +make-strummer-docstring+
+(setf (documentation 'make-strummer 'function)
 "Creates an instance of STRUMMER, a type of PART for producing strummed chords. 
 
 name          - Part name.
@@ -80,6 +80,8 @@ instrument    - Single instance of INSTRUMENT.
 :reversible   - Boolean, if true the part is subject to being reversed by
                 retrograde. 
 :chord-model  - Defaults to parent section.
+:hold         - Boolean, if true filter out overlapping key events with the
+                the same keynumber. Default nil.
 :remarks      - Optional remarks text.
 :events       - List of event specifications, see below.
 
@@ -235,10 +237,7 @@ The available clause types are detailed below.
 
 
 
-(constant +strummer-docstring+
-       (sformat "~A~%~%~A"
-		"The STRUMMER macro has the same usage as MAKE-STRUMMER
-       except it binds the result to a symbol with the same name as the
-       strummer."
-		+make-strummer-docstring+))
-		
+(setf (documentation 'strummer 'function)
+      "The STRUMMER macro has the same usage as MAKE-STRUMMER
+except it binds the result to a symbol name.  Quote the name
+argument to make-strummer, leave it unquoted for strummer.")

@@ -80,6 +80,7 @@
 	  cyco-node
 	  cyco-warning
 	  data
+	  data-array
 	  data-count
 	  defdynamic
 	  define-chord

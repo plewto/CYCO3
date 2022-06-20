@@ -6,7 +6,8 @@
 
 (in-package :cyco-part)
 
-(constant +strummer-properties+ +part-properties+)
+(constant +strummer-properties+ (append +part-properties+
+					(list :hold)))
 
 
 (defclass strummer (part)
@@ -358,6 +359,7 @@
 					       transposable
 					       reversible
 					       chord-model
+					       hold
 					       remarks)
 	    (let* ((part-name (->cyco-symbol name))
 	  	   (parent (validate-section part-name section))
@@ -381,6 +383,7 @@
 	      (put new-strummer :reversible reversible)
 	      (put new-strummer :chord-model chord-model)
 	      (put new-strummer :muted nil)
+	      (put new-strummer :hold hold)
 	      (put new-strummer :shift (scale-time-parameter (or shift 0) new-strummer))
 	      new-strummer))
 
@@ -395,6 +398,7 @@
 	  			     reversible
 	  			     chord-model
 	  			     remarks
+				     hold
 	  			     events)
 	    (let ((new-strummer (make-eventless-strummer name instrument
                                                          :section section
@@ -410,6 +414,7 @@
                                                          :transposable transposable
                                                          :reversible reversible
                                                          :chord-model chord-model
+							 :hold hold
                                                          :remarks remarks)))
 	      (setf (strummer-states new-strummer)
 	  	    (process-strummer-states new-strummer (->list events)))
@@ -418,7 +423,6 @@
 	      (reset new-strummer)
 	      new-strummer))))
 
-(setf (documentation 'make-strummer 'function) +make-strummer-docstring+)
 
 (defmacro strummer (name instrument &key
 			 section
@@ -431,6 +435,7 @@
 			 reversible
 			 chord-model
 			 remarks
+			 hold
 			 events)
   `(progn
      (part-banner (name ,section) ',name)
@@ -449,12 +454,11 @@
 					:reversible ,reversible
 					:chord-model ,chord-model
 					:remarks ,remarks
+					:hold ,hold
 					:events ,events)))
        (defparameter ,name new-strummer)
        new-strummer)))
 					
-(setf (documentation 'strummer 'function) +strummer-docstring+)
-
 (defmethod clone ((mother strummer) &key new-parent new-name)
   (let* ((name (->cyco-symbol (sformat (or new-name "~A")(name mother))))
 	 (parent (or new-parent (parent mother)))

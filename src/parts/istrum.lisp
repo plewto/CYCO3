@@ -6,7 +6,25 @@
 
 (in-package :cyco-part)
 
-(labels ((increment-time (previous-1 previous-2 cue-gamut)
+(labels (;; Returns -/+ integer starting at position start of string.
+	 ;; Returns nil if invalid.
+	 ;;
+	 (parse-int (str &optional (start 0))
+		    (let ((digits '(#\0 #\1 #\2 #\3 #\4 #\5
+				    #\6 #\7 #\8 #\9 #\- #\+)) 
+			  (v (subseq str start)))
+		      (if (every #'(lambda (n)
+				     (member n digits :test #'char=)) v)
+			  (parse-integer v)
+			nil)))
+
+	 (is-signed-p (str)
+		    (and (plusp (length str))
+			 (let ((c (char str 0)))
+			   (or (char= c #\-)
+			       (char= c #\+)))))
+	 
+	 (increment-time (previous-1 previous-2 cue-gamut)
 			 (let ((pos-1 (position previous-1 cue-gamut :test #'equal))
 			       (pos-2 (position previous-2 cue-gamut :test #'equal)))
 			   (if (and pos-1 pos-2 (>= pos-1 pos-2))
@@ -14,22 +32,31 @@
 				      (new-pos (+ diff pos-1)))
 				 (nth new-pos cue-gamut))
 			     nil)))
-	 	 (parse-time (token previous previous-2 cue-gamut)
+
+	 (parse-time (token previous previous-2 cue-gamut)
 		     (cond ((eq token '=)
 			    previous)
 			   ((eq token '+)
 			    (or (increment-time previous previous-2 cue-gamut)
 				previous))
 			   (t token)))
-
-	 ;; Need do nothing special.  Keynumbers may take several forms and are
-	 ;; recognized solely by event-list position.
-	 ;;
+	
 	 (parse-keynumber (token previous)
-			  (cond ((eq token '=)
-				 previous)
-				(t token)))
-
+			  (let* ((name (name token))
+				 (tail (char (reverse name) 0))
+				 (sign (cond ((char= tail #\-) -1)
+					     ((char= tail #\+) +1)
+					     (t nil))))
+			    (cond ((eq token '=)
+				   previous)
+				  ((and sign (keynumber-p previous))
+				   (let ((n (parse-int (subseq name 0 (1- (length name))))))
+				     (or (and (numberp n)
+					      (keyname (transpose previous (* sign n))))
+					 (cyco-error "Expected ISTRUM key transpose"
+						     (sformat "GOT ~A" token)))))
+				  (t previous))))
+	 
 	 ;; Chords recognized as either a member of the chord-model or a list.
 	 ;; ISSUE: It would be nice to check that any list only contains
 	 ;;        integers.  For some presently unknown reason trying
@@ -41,18 +68,6 @@
 			      (defines-chord-p chord-model (->cyco-symbol token)))
 			  token))
 
-	 ;; Returns -/+ integer starting at position start of string.
-	 ;; Returns nil if invalid.
-	 ;;
-	 (parse-int (str &optional (start 0))
-		    (let ((digits '(#\0 #\1 #\2 #\3 #\4 #\5
-				    #\6 #\7 #\8 #\9 #\- #\+)) 
-			  (v (subseq str start)))
-		      (if (every #'(lambda (n)
-				     (member n digits :test #'char=)) v)
-			  (parse-integer v)
-			nil)))
-	
 	 (parse-chord-inversion (token)
 				(or (and (eq token :inv-off) 0)
 				    (let ((name (name token)))
@@ -81,7 +96,9 @@
 				(let ((conversion '((:up . up)
 						    (:down . down)
 						    (:rand . random)
-						    (:rand-up . dice))))
+						    (:rand-up . dice)
+						    (:up-down . (up down))
+						    (:down-up . (down up)))))
 				  (cdr (assoc token conversion))))
 	 ;; :prog-xxx
 	 (parse-program (token)
@@ -137,7 +154,7 @@
                                   section cuefn shuffle shift 
                                   tempo unit bars beats subbeats
                                   render-once transposable reversible
-                                  chord-model remarks events form)
+                                  chord-model remarks hold events form)
 	  (let* ((strummer (make-eventless-strummer name instrument
 						    :section section
 						    :cuefn cuefn
@@ -152,6 +169,7 @@
 						    :transposable transposable
 						    :reversible reversible
 						    :chord-model chord-model
+						    :hold hold
 						    :remarks remarks))
 		 (s-events (istrum->events events strummer (property strummer :chord-model))))
 	    (setf (strummer-states strummer)
@@ -167,7 +185,7 @@
 		       section cuefn shuffle shift 
 		       tempo unit bars beats subbeats
 		       render-once transposable reversible
-		       chord-model remarks events)
+		       chord-model remarks hold events)
   `(progn
      (part-banner (name ,section) '.name)
      (let ((new-istrum (make-istrum ',name ,instrument
@@ -184,7 +202,8 @@
 				    :transposable ,transposable 
 				    :reversible ,reversible 
 				    :chord-model ,chord-model 
-				    :remarks ,remarks 
+				    :remarks ,remarks
+				    :hold ,hold
 				    :events ,events)))
        (defparameter ,name new-istrum)
        new-istrum)))
@@ -233,17 +252,15 @@ are
             (time keynumber ...) 
 
            Ultimately the instrument's keynumber-map is responsible for
-           processing all keynumbers.  The special value of = repeats 
-           the previous keynumber.
+           processing all keynumbers.  There are a few special cases
 
-           (time 60 ... )        MIDI key 60, assuming the keynumber-map 
-                                 doesn't change it to something else.
-           (time c4 ...)
-           (time strike ...)     Assuming the keynumber-map knows how 
-                                 to translate 'strike'
-           (time = ...)          = repeats the previous value.
-
-           Use the rest symbol r to suppress note creation.
+           A) The = symbol repeats the previous key
+           B) Numbers of the form n- and n+ transpose the previous key
+              by -/+ n steps.  Transpose may only be used if the predicate
+              KEYNUMBER-P would return true for the previous key number.
+              
+           Otherwise the keynumber is free to be any symbol the instrument's
+           keynumber-map recognizes.
 
          3) CHORDS are recognized by either a valid chord name or as a 
             list of keynumber offsets.
@@ -296,6 +313,8 @@ are
             :UP      - reverse order
             :RAND    - random order
             :RAND-UP - select up or down at random.
+            :UP-DOWN - cycle between up and down
+            :DOWN-UP - cycle between down and up
 
          9) DYNAMICS. Note dynamics are set by and any of the dynamic symbols
 

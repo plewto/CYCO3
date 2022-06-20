@@ -8,8 +8,8 @@
 ;;
 (param *rebuild-manifest* '(
 			    "src/debug"
-			    "src/generics"
-			    "src/parts/qball-transform"
+			    "src/parts/strummer"
+			    "src/parts/istrum"
 			    ))
 
 

@@ -33,5 +33,5 @@ Version 3.0.2 (2022.05.11)
    14. 2022-06-14 Adds logical operations on cuelist (see mask-cuelist)
                   Rewrites ducking as a mask-cuelist special case.
    15. 2022-06-17 Adds qball->strummer and xball->strummer part translation functions.
-
+   16. 2022-06-19 Adds ISTRUM preprocessor for STRUMMER.
 

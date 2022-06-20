@@ -127,6 +127,7 @@
 		   "src/parts/strummer-state"
 		   "src/parts/strummer"
 		   "src/parts/strummer-midi-render"
+		   "src/parts/istrum"
 		   "src/parts/controllers-docs"
 		   "src/parts/controllers-state"
 		   "src/parts/controllers"

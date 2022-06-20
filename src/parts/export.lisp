@@ -20,6 +20,7 @@
 	  make-xball
 	  make-raw-part
 	  make-strummer
+	  make-istrum
 	  make-sysex-part
 	  make-text-part
 	  make-transformer
@@ -35,6 +36,7 @@
 	  raw-part-p
 	  strummer
 	  strummer-p
+	  istrum
 	  sysex
 	  transformer
 	  transformer-p
@@ -58,6 +60,7 @@
           cyco-part:make-qball
           cyco-part:make-raw-part
           cyco-part:make-strummer
+	  cyco-part:make-istrum
 	  cyco-part:make-sysex-part
 	  cyco-part:make-text-part
 	  cyco-part:make-transformer
@@ -74,6 +77,7 @@
           cyco-part:raw-part-p
           cyco-part:strummer
           cyco-part:strummer-p
+	  cyco-part:istrum
 	  cyco-part:transformer
 	  cyco-part:transformer-p
 	  cyco-part:sysex

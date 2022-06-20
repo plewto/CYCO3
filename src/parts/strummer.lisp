@@ -324,71 +324,99 @@
 	       (t
 		;; Should never see this.
 		;; validate-argument-count catches invalid commands.
-		(error "strummer-event dispatch fall through.")))))
-	   
-	   (process-states 
-	    (strummer event-list)
-	    (let ((acc '())
-		  (state (make-strummer-state)))
-	      (reset state)
-	      (dolist (event event-list)
-		(dolist (clause (partition-list event))
-		  (dispatch-event-clause strummer state event clause))
-		(if (real-event-p state)
-		    (progn
-		      (push (clone state) acc)
-		      (soft-reset state))))
-	      (setf (strummer-states strummer)(reverse acc))))
+		(error "strummer-event dispatch fall through."))))) )
 
-	   (extract-cuelist (events)
-			    (let ((acc '()))
-			      (loop for event in events do
-				    (let ((time (member :time event)))
-				      (if time (push (second time) acc))))
-			      (reverse acc)))
-	   )
-    
-    (defun make-strummer (name instrument &key
-			       section
-			       cuefn
-			       shuffle
-			       shift 
-			       tempo unit bars beats subbeats
-			       render-once
-			       transposable
-			       reversible
-			       chord-model
-			       remarks
-			       events)
-      (let* ((part-name (->cyco-symbol name))
-	     (parent (validate-section part-name section))
-	     (new-strummer (make-instance 'strummer
-					  :properties +strummer-properties+
-					  :name part-name
-					  :remarks (->string (or remarks ""))
-					  :transient t)))
-	(connect parent new-strummer)
-	(put new-strummer :instruments instrument)
-	(put new-strummer :tempo tempo)
-	(put new-strummer :unit unit)
-	(put new-strummer :bars bars)
-	(put new-strummer :beats beats)
-	(put new-strummer :subbeats subbeats)
-	(init-time-signature new-strummer)
-	(put new-strummer :cue-function cuefn)
-	(put new-strummer :shuffle-function shuffle)
-	(put new-strummer :render-once render-once)
-	(put new-strummer :transposable transposable)
-	(put new-strummer :reversible reversible)
-	(put new-strummer :chord-model chord-model)
-	(put new-strummer :muted nil)
-	(put new-strummer :shift (scale-time-parameter (or shift 0) new-strummer))
-	(setf (strummer-states new-strummer)
-	      (process-states new-strummer (->list events)))
-	(validate-render new-strummer)
-	(put new-strummer :cuelist (extract-cuelist events))
-	(reset new-strummer)
-	new-strummer)) ))
+	  (defun extract-strummer-cuelist (events)
+	    (let ((acc '()))
+	      (loop for event in events do
+		    (let ((time (member :time event)))
+		      (if time (push (second time) acc))))
+	      (reverse acc)))
+	   
+	   
+	   (defun process-strummer-states (strummer event-list)
+	     (let ((acc '())
+		   (state (make-strummer-state)))
+	       (reset state)
+	       (dolist (event event-list)
+		 (dolist (clause (partition-list event))
+		   (dispatch-event-clause strummer state event clause))
+		 (if (real-event-p state)
+		     (progn
+		       (push (clone state) acc)
+		       (soft-reset state))))
+	       (setf (strummer-states strummer)(reverse acc))))
+
+	  
+	  (defun make-eventless-strummer (name instrument &key
+					       section
+					       cuefn
+					       shuffle
+					       shift 
+					       tempo unit bars beats subbeats
+					       render-once
+					       transposable
+					       reversible
+					       chord-model
+					       remarks)
+	    (let* ((part-name (->cyco-symbol name))
+	  	   (parent (validate-section part-name section))
+	  	   (new-strummer (make-instance 'strummer
+	  					:properties +strummer-properties+
+	  					:name part-name
+	  					:remarks (->string (or remarks ""))
+	  					:transient t)))
+	      (connect parent new-strummer)
+	      (put new-strummer :instruments instrument)
+	      (put new-strummer :tempo tempo)
+	      (put new-strummer :unit unit)
+	      (put new-strummer :bars bars)
+	      (put new-strummer :beats beats)
+	      (put new-strummer :subbeats subbeats)
+	      (init-time-signature new-strummer)
+	      (put new-strummer :cue-function cuefn)
+	      (put new-strummer :shuffle-function shuffle)
+	      (put new-strummer :render-once render-once)
+	      (put new-strummer :transposable transposable)
+	      (put new-strummer :reversible reversible)
+	      (put new-strummer :chord-model chord-model)
+	      (put new-strummer :muted nil)
+	      (put new-strummer :shift (scale-time-parameter (or shift 0) new-strummer))
+	      new-strummer))
+
+	  (defun make-strummer (name instrument &key
+	  			     section
+	  			     cuefn
+	  			     shuffle
+	  			     shift 
+	  			     tempo unit bars beats subbeats
+	  			     render-once
+	  			     transposable
+	  			     reversible
+	  			     chord-model
+	  			     remarks
+	  			     events)
+	    (let ((new-strummer (make-eventless-strummer name instrument
+                                                         :section section
+                                                         :cuefn cuefn
+                                                         :shuffle shuffle
+                                                         :shift  shift 
+                                                         :tempo tempo
+                                                         :unit unit
+                                                         :bars bars
+                                                         :beats beats
+                                                         :subbeats subbeats
+                                                         :render-once render-once
+                                                         :transposable transposable
+                                                         :reversible reversible
+                                                         :chord-model chord-model
+                                                         :remarks remarks)))
+	      (setf (strummer-states new-strummer)
+	  	    (process-strummer-states new-strummer (->list events)))
+	      (validate-render new-strummer)
+	      (put new-strummer :cuelist (extract-strummer-cuelist events))
+	      (reset new-strummer)
+	      new-strummer))))
 
 (setf (documentation 'make-strummer 'function) +make-strummer-docstring+)
 

@@ -72,6 +72,7 @@
 	  counter
 	  cue
 	  cuelist
+	  cue-gamut
 	  cycle
 	  cycle-p
 	  cyco

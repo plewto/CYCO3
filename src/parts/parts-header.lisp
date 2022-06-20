@@ -40,6 +40,7 @@
                 :copies
                 :copy-time-signature
 		:cuelist
+		:cue-gamut
                 :cycle
                 :cyco-composition-error
                 :cyco-node

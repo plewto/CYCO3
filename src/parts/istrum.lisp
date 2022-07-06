@@ -14,7 +14,8 @@
 				    #\6 #\7 #\8 #\9 #\- #\+)) 
 			  (v (subseq str start)))
 		      (if (every #'(lambda (n)
-				     (member n digits :test #'char=)) v)
+				     (member n digits :test #'char=))
+				 v)
 			  (parse-integer v)
 			nil)))
 
@@ -40,7 +41,7 @@
 			    (or (increment-time previous previous-2 cue-gamut)
 				previous))
 			   (t token)))
-	
+
 	 (parse-keynumber (token previous)
 			  (let* ((name (name token))
 				 (tail (char (reverse name) 0))
@@ -55,7 +56,8 @@
 					      (keyname (transpose previous (* sign n))))
 					 (cyco-error "Expected ISTRUM key transpose"
 						     (sformat "GOT ~A" token)))))
-				  (t previous))))
+				  (t
+				   token))))
 	 
 	 ;; Chords recognized as either a member of the chord-model or a list.
 	 ;; ISSUE: It would be nice to check that any list only contains
@@ -102,10 +104,12 @@
 				  (cdr (assoc token conversion))))
 	 ;; :prog-xxx
 	 (parse-program (token)
-			(let ((name (name token)))
-			  (if (and (> (length name) 5)
-				   (string= (subseq name 0 5) "PROG-"))
-			      (subseq name 5)))) )
+	 		(let ((name (name token)))
+	 		  (if (and (> (length name) 5)
+	 			   (string= (subseq name 0 5) "PROG-"))
+			      (let ((value (parse-int name 5)))
+				(or value
+				    (->cyco-symbol (subseq name 5))))))) )
 
 	 
 	;; Translates istrum event-list to strummer event-list.

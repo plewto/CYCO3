@@ -159,7 +159,7 @@
        (riq-klist (extract-sub-symbolic-keylist 'riq general-klist))
        (hollo-klist (extract-sub-symbolic-keylist 'hollo general-klist))
        (kasik-klist (extract-sub-symbolic-keylist 'kasik general-klist))
-       (tombak-klist (extract-sub-symbolic-keylist 'tombak general-klist))
+       (tombek-klist (extract-sub-symbolic-keylist 'tombek general-klist))
        (darbuka-klist (extract-sub-symbolic-keylist 'darbuka general-klist))
        (bonges-klist (extract-sub-symbolic-keylist 'bonges general-klist))
        (trk (make-main-instrument turkish-kit general-klist)))
@@ -171,7 +171,7 @@
   (make-sub trk-riq trk riq-klist)
   (make-sub trk-hollo trk hollo-klist)
   (make-sub trk-kasik trk kasik-klist)
-  (make-sub trk-tombak trk tombak-klist)
+  (make-sub trk-tombek trk tombek-klist)
   (make-sub trk-darbuka trk darbuka-klist)
   (make-sub trk-bonges trk bonges-klist))
 
@@ -183,7 +183,7 @@
 	  trk-riq
 	  trk-hollo
 	  trk-kasik
-	  trk-tombak
+	  trk-tombek
 	  trk-darbuka
 	  trk-bonges) :modx)
 
@@ -195,7 +195,7 @@
 	  modx:trk-riq
 	  modx:trk-hollo
 	  modx:trk-kasik
-	  modx:trk-tombak
+	  modx:trk-tombek
 	  modx:trk-darbuka
 	  modx:trk-bonges) :cyco)
 

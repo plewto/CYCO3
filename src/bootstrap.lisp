@@ -147,7 +147,8 @@
 		   "src/inspection/overview"
 		   "src/plugins"
 		   "src/local-config"
-		   "src/exports")))
+		   "src/exports"
+		   "src/debug")))
 
   (labels  ((load-cyco-source (filename &key (verbose nil)(print nil))
 		"Loads CYCO source file."

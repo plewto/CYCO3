@@ -191,7 +191,7 @@
 		       render-once transposable reversible
 		       chord-model remarks hold events)
   `(progn
-     (part-banner (name ,section) '.name)
+     (part-banner (name ,section) ',name)
      (let ((new-istrum (make-istrum ',name ,instrument
 				    :section ,section 
 				    :cuefn ,cuefn 

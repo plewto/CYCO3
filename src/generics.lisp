@@ -523,6 +523,7 @@ Mnemonic is primarily used for MIDI message type abbreviations."))
   (:documentation
    "Sets mute state of object.
 Possible states are :mute :unmute :solo and nil
+:m :u :s may also be used for :mute :unmute and :solo respectively. 
 For solo this object is switched to non-muted while all sibling objects
 are muted.  A nil value leaves the current state as is."))
 

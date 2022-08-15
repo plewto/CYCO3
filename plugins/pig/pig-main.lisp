@@ -121,6 +121,10 @@
     "Alias for pig:output-channel"
     (funcall #'output-channel inst))
 
+  (defun pigoff ()
+    "Alias for pig:output-channel nil" 
+    (output-channel nil))
+  
   
   (defun pig-notes (keylist &key (vel 64)(dur 1.0))
     (let ((keys (keynumber (->list keylist)))

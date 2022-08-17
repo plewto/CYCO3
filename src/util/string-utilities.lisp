@@ -70,79 +70,29 @@ Returns two values:
 Convenience function, same as calling (format nil frmt args...)"
   (apply #'format (append (list nil frmt) args)))
 
-;; (defun format-binary (n &key (bits 16) group)
-;;   "Format binary value
-;; n      - The number 
-;; :bits  - Number of bits, default 16
-;; :group - Insert space every group bits, defaults to bits.
-;; Returns string."
-;;   (let ((acc "")
-;; 	(brk (or group bits))
-;; 	(probe 1))
-;;     (dotimes (bit bits)
-;;       (setf acc (str+ (if (zerop (logand probe n)) "0" "1") acc))
-;;       (setf brk (1- brk))
-;;       (setf probe (ash probe 1))
-;;       (if (zerop brk)
-;; 	  (setf acc (str+ " " acc)
-;; 		brk (or group bits))))
-;;     (string-left-trim '(#\space) acc)))
 
-
-(defun format-binary (n &key (bits 16) group line)
-  (let ((grp (or group bits))
-	(cr (or line bits))
-	(probe 1)
-	(acc ""))
-    (loop for bit from 0 below bits do
-    	  (setf acc (str+ (if (zerop (logand probe n)) "0" "1") acc))
-    	  (if (zerop (rem bit cr))
-	      (setf acc (str+ #\newline acc))
-    	    (if (zerop (rem bit grp))
-	    	(setf acc (str+ #\space acc))))
-    	  (setf probe (ash probe 1)))
-    (string-left-trim '(#\space #\newline) acc)))
 	  
-	  
-(labels (
-
-
-	 (insert-every (s n c)
-		       (if n
-			   (let ((acc ""))
-			     (dotimes (i (length s))
-			       (setf acc (str+ acc (char s i)))
-			       (if (and (plusp i)(= (1- n)(rem i n)))
-				   (setf acc (str+ acc c))))
-			     (string-left-trim (list c) acc))
-			 s))
-
-	 (insert-spaces (s group line)
+(labels ((insert-spaces (s group line)
 			(let ((acc ""))
 			  (loop for i from 0 below (length s) do
 				(setf acc (str+ acc (char s i)))
-			      (if (plusp i)
-				  (if (and line (= (1- line) (rem i line)))
-				      (setf acc (str+ acc #\newline))
-				    (if (and group (= (1- group) (rem i group)))
-					(setf acc (str+ acc #\space))))))
-			  (string-right-trim '(#\space #\newline) acc)))
-					   
+				(if (plusp i)
+				    (if (and line (= (1- line) (rem i line)))
+					(setf acc (str+ acc #\newline))
+				      (if (and group (= (1- group) (rem i group)))
+					  (setf acc (str+ acc #\space))))))
+			  (string-right-trim '(#\space #\newline) acc))) )
 
-	 
-	 )
 
 	(defun format-binary (n &key (bits 16) group line)
+	  "Format number as binary string.
+Insert linefeed every line bits.
+Insert space every group bits."
 	  (let* ((acc (sformat "~B" n))
-		 (pad (- bits (length acc))))
-	    (if (plusp pad)
-		(setf acc (str+ (scopies pad "0") acc)))
-	    
+		 (pad-count (- bits (length acc))))
+	    (if (plusp pad-count)
+		(setf acc (str+ (scopies pad-count "0") acc)))
 	    (insert-spaces acc group line))))
-					       
-
-    
-	    
 
 
 (defmethod palindrome ((s string) &key (elide nil))

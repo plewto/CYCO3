@@ -27,6 +27,10 @@
 ;;;;   Highly specialized symbolic map for use with metronomes.
 ;;;;
 ;;;;
+;;;; These special argument values are defined for all keynumber-maps
+;;;;  :doc  - prints documentation.
+;;;;  :gamut - returns list of used keynumbers.
+;;;;
 
 (in-package :cyco)
 
@@ -38,6 +42,8 @@ The transpose amount is applied after the key range test."
 		(format t ";; Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+)
+	 (gamutfn (mn mx transpose)
+	 	  (loop for i from mn to mx collect (+ i transpose)))
 	 (warnfn (kn)
 		 (progn 
 		   (cyco-keynumber-warning (sformat "BASIC-KEYNUMBER-MAP  unknown keynumber ~A" kn))
@@ -45,6 +51,8 @@ The transpose amount is applied after the key range test."
     #'(lambda (kn)
 	(cond ((eq kn :doc)
 	       (docfn))
+	      ((eq kn :gamut)
+	       (gamutfn min max transpose))
 	      ((keynumber-p kn)
 	       (let ((kn2 (keynumber kn)))
 		 (if (minusp kn2)
@@ -62,13 +70,17 @@ The transpose amount is applied after the key range test."
 (defun wrapping-keynumber-map (&key (min 0)(max 127)(transpose 0))
   "Similar to basic-keynumber-map but transposes out of bounds values as needed.
 The transpose parameter is applied prior to the range-test."
-  (flet ((docfn ()
+  (flet ((gamutfn (mn mx transpose)
+	 	  (loop for i from mn to mx collect (+ i transpose)))
+	 (docfn ()
 		(format t ";; WRAPPING-KEYNUMBER-MAP Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
 		+rest+))
     #'(lambda (kn)
 	(cond ((eq kn :doc)
 	       (docfn))
+	      ((eq kn :gamut)
+	       (gamutfn min max transpose))
 	      ((keynumber-p kn)
 	       (let ((kn2 (keynumber kn)))
 		 (if (minusp kn2)
@@ -84,7 +96,9 @@ The transpose parameter is applied prior to the range-test."
 (defun circular-keynumber-map (start end)
   "Creates a circular keynumber map.
 Keynumbers outside range (start end) are reflected back into the range."
-  (flet ((docfn ()
+  (flet ((gamutfn (mn mx transpose)
+	 	  (loop for i from mn to mx collect (+ i transpose)))
+	 (docfn ()
 		(format t ";; CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
 		(let ((diff (- end start)))
 		  (dotimes (i diff)
@@ -98,6 +112,8 @@ Keynumbers outside range (start end) are reflected back into the range."
 	   (fn #'(lambda (kn)
 		   (cond ((eq kn :doc)
 			  (docfn))
+			 ((eq kn :gamut)
+			  (gamutfn start end 0))
 			 ((rest-p kn)
 			  +rest+)
 			 (t (let ((k (keynumber kn)))
@@ -115,6 +131,8 @@ Keynumbers outside range (start end) are reflected back into the range."
     #'(lambda (kn)
 	(cond ((eq kn :doc)
 	       (docfn))
+	      ((eq kn :gamut)
+	       key-list)
 	      ((rest-p kn)
 	       +rest+)
 	      (t (cnth kn key-list))))))
@@ -132,6 +150,7 @@ Out of bounds indexes return a +REST+"
 	  (limit (length key-list)))
       #'(lambda (kn)
 	  (cond ((eq kn :doc)(docfn))
+		((eq kn :gamut) key-list)
 		((rest-p kn) +rest+)
 		((and (integerp kn)(>= kn 0)(< kn limit))
 		 (aref key-vector kn))
@@ -148,9 +167,12 @@ The assignments list has the form  ((sym1 . keynumber1)
 For integer arguments the map functions as with circular-list-keynumber-map
 The spacial symbol 'x returns the first keynumber in the list.
 
-If the yenumber is has the value :assignments, the keynumber-map
-returns two values (+rest+ assignemnts) where the 2nd value is the 
-assignment list."
+<DEPRECIATED>
+If the kenumber has the value :assignments, the keynumber-map
+returns two values (+rest+ assignments) where the 2nd value is the 
+assignment list.
+</DEPRECIATED>"
+
   (flet ((docfn ()
 		(format t ";; Symbolic keynumber map~%")
 		(let ((index 0))
@@ -161,13 +183,21 @@ assignment list."
 		+rest+)
 	 (warnfn (kn)
 		 (cyco-keynumber-warning (sformat "Unknown keynumber ~A" kn))
-		 +rest+))
+		 +rest+)
+	 (gamutfn (htab)
+		  (remove-duplicates
+		   (flatten
+		    (loop for v being the hash-value in htab collect (car v))))) )
+
     (let* ((htab (alist->hash-table assignments (length assignments))))
       #'(lambda (kn)
 	  (cond ((eq kn :doc)
 		 (docfn)
 		 +rest+)
+		((eq kn :gamut)
+		 (gamutfn htab))
 		((eq kn :assignments)
+		 (cyco-warning ":ASSIGNMENTS argument to symbolic-keynumber-map has been depreciated")
 		 (values +rest+ assignments))
 		((rest-p kn)
 		 +rest+)
@@ -198,9 +228,11 @@ The map defines three event types:
 		  (format t ";;   :BEAT    --> ~3D~%" (gethash 'beat ktab))
 		  +rest+))
       (let ((fn #'(lambda (kn)
-		    (if (eq kn :doc)
-			(docfn)
-		      (or (gethash kn ktab) +rest+)))))
+		    (cond ((eq kn :doc)
+			   (docfn))
+			  ((eq kn :gamut)
+			   (list phrase bar beat))
+			  (t (or (gethash kn ktab) +rest+))))))
 	fn))))
 
 (labels ((prefix-match-p (prefix key)

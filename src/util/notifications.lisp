@@ -26,7 +26,7 @@
     "Display warning message."
     (if *enable-warnings*
 	(progn
-	  (warning-banner (car msg))
+	  (warning-banner "")
 	  (dolist (m msg)(format t "WARNING: ~A~%" m))
 	  (format t "~%"))))
 
@@ -52,7 +52,7 @@ a warning and CYCO does not terminate."
     (if *cyco-error-as-warning*
 	(apply #'cyco-warning msg)
       (progn 
-	(error-banner (car msg))
+	(error-banner "")
 	(dolist (m msg)(format t "ERROR: ~A~%" m))
 	(format t "~%")
 	(format t "~A~%" (->string (car msg)))

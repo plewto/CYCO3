@@ -48,8 +48,12 @@ key-number - an integer in interval (-1..127) inclusive."
 	   (or (eq object 'r)
 	       (and (numberp object)(minusp object)))))
 
+;; (defmethod keynumber ((object t))
+;;   (cyco-type-error 'keynumber '(integer symbol list) object))
+
 (defmethod keynumber ((object t))
-  (cyco-type-error 'keynumber '(integer symbol list) object))
+  (cyco-warning (sformat "Unrecognized keynumber: ~A" object))
+  +rest+)
 
 (defmethod keynumber ((n integer))
   (cond ((minusp n) +REST+)

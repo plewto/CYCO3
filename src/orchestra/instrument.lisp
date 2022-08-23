@@ -275,3 +275,7 @@ Child nodes of an instrument must also be instruments."
   (format t "~A~%" (name instrument))
   (dolist (c (children instrument))
     (print-tree c (1+ depth))))
+
+(defmethod key-gamut ((instrument instrument))
+  (sort (funcall (keynumber-map instrument) :gamut) #'<))
+		      

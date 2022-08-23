@@ -1012,3 +1012,8 @@ mask     - The second logical operand.
 (defgeneric duck (cuelist object &key invert timesig use-subbeats)
   (:documentation
    "Eliminates cuelist points which overlap with object."))
+
+
+(defgeneric key-gammut (object)
+  (:documentation
+   "Returns set of MIDI keynumbers object uses."))

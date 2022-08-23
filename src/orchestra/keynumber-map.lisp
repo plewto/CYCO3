@@ -43,7 +43,7 @@ The transpose amount is applied after the key range test."
 			min max transpose)
 		+rest+)
 	 (gamutfn (mn mx transpose)
-	 	  (loop for i from mn to mx collect (+ i transpose)))
+	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (warnfn (kn)
 		 (progn 
 		   (cyco-keynumber-warning (sformat "BASIC-KEYNUMBER-MAP  unknown keynumber ~A" kn))
@@ -71,7 +71,7 @@ The transpose amount is applied after the key range test."
   "Similar to basic-keynumber-map but transposes out of bounds values as needed.
 The transpose parameter is applied prior to the range-test."
   (flet ((gamutfn (mn mx transpose)
-	 	  (loop for i from mn to mx collect (+ i transpose)))
+	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (docfn ()
 		(format t ";; WRAPPING-KEYNUMBER-MAP Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
@@ -97,7 +97,7 @@ The transpose parameter is applied prior to the range-test."
   "Creates a circular keynumber map.
 Keynumbers outside range (start end) are reflected back into the range."
   (flet ((gamutfn (mn mx transpose)
-	 	  (loop for i from mn to mx collect (+ i transpose)))
+	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (docfn ()
 		(format t ";; CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
 		(let ((diff (- end start)))
@@ -185,9 +185,10 @@ assignment list.
 		 (cyco-keynumber-warning (sformat "Unknown keynumber ~A" kn))
 		 +rest+)
 	 (gamutfn (htab)
-		  (remove-duplicates
-		   (flatten
-		    (loop for v being the hash-value in htab collect (car v))))) )
+		  (keynumber (remove-duplicates
+			      (flatten
+			       (loop for v being the hash-value in htab
+				     collect (car v)))))) )
 
     (let* ((htab (alist->hash-table assignments (length assignments))))
       #'(lambda (kn)
@@ -231,7 +232,7 @@ The map defines three event types:
 		    (cond ((eq kn :doc)
 			   (docfn))
 			  ((eq kn :gamut)
-			   (list phrase bar beat))
+			   (keynumber (list phrase bar beat)))
 			  (t (or (gethash kn ktab) +rest+))))))
 	fn))))
 

@@ -329,3 +329,15 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
   (midi-pitch-bend (1- (or channel (channel message)))
 		   (or data1 (data message 0))
 		   (or data2 (data message 1))))
+
+
+(defun event-p (object)
+  "Predicate returns t if object is a valid MIDI event."
+  (and (consp object)
+       (numberp (car object))
+       (midi-message-p (cdr object))))
+
+(defun event-list-p (object)
+  "Predicate returns t if object is a valid MIDI event list."
+  (and (listp object)
+       (every #'event-p object)))

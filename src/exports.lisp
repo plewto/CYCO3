@@ -131,6 +131,7 @@
 	  keynumber
 	  keynumber-map
 	  keynumber-p
+	  keylist
 	  limit
 	  line
 	  line-p

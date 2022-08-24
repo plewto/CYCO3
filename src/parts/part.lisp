@@ -164,3 +164,7 @@ used directly."))
 (defmethod pprint-cuelist ((prt part) &key header form timesig use-subbeats)
   (declare (ignore timesig use-subbeats))
   (pprint-cuelist (property prt :cuelist) :form form :header header))
+
+
+(defmethod keylist ((prt part) &key (blur 0.0))
+  (keylist (render-once prt) :blur blur))

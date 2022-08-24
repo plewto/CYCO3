@@ -341,3 +341,60 @@ NOTE: Poly-pressure is defined for completeness but is not otherwise supported."
   "Predicate returns t if object is a valid MIDI event list."
   (and (listp object)
        (every #'event-p object)))
+
+
+(labels ((same-time-p (t0 t1 blur)
+		      (<= (abs (- t1 t0)) blur))
+
+	 (remove-non-notes (events)
+			   (remove-if #'(lambda (event)
+					  (not (midi-note-on-p (cdr event))))
+				      events))
+
+	 (pull-chord (events blur)
+		     (let* ((ev0 (car events))
+			    (t0 (car ev0))
+			    (acc (list ev0))
+			    (i 1))
+		       (while (and (< i (length events))
+				   (same-time-p t0 (car (nth i events)) blur))
+			 (push (nth i events) acc)
+			 (setf i (1+ i)))
+		       (reverse acc)))
+
+	 (flatten-non-chords (keylist)
+			     (if (not keylist)
+				 nil
+			       (let ((head (car keylist)))
+				 (if (= (length head) 1)
+				     (setf head (car head)))
+				 (cons head (flatten-non-chords (cdr keylist))))))
+
+	 (from-event-list (events blur)
+			  (setf events (remove-non-notes (sort-midi-events events)))
+			  ;; group events by chord
+			  (let ((chords '())
+				(acc '()))
+			    (while events
+			      (let ((chord (pull-chord events blur)))
+				(dolist (ev chord)
+				  (setf events (remove ev events)))
+				(push chord chords)))
+			    ;; extract keynumbers
+			    (dolist (chord chords)
+			      (push (mapcar #'(lambda (q)(data (cdr q) 0)) chord) acc))
+			    (flatten-non-chords acc))) )
+			   
+	(defmethod keylist ((lst list) &key (blur 0))
+	  (cond ((event-list-p lst)
+		 (from-event-list lst blur))
+	   
+		((every #'midi-message-p lst)
+		 (remove nil (loop for msg in lst collect
+				   (if (midi-note-on-p msg)
+				       (data msg 0)))))
+	   
+		(t (remove-if #'(lambda (q)
+				  (or (and (numberp q)(minusp q))
+				      (null q)))
+			      (keynumber lst))))) )

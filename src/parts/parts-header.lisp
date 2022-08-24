@@ -78,6 +78,7 @@
                 :keynumber-map
 		:keynumber-p
 		:keyname
+		:keylist
                 :limit
                 :line
                 :metric-expression

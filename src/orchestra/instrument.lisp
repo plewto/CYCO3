@@ -279,3 +279,5 @@ Child nodes of an instrument must also be instruments."
 (defmethod key-gamut ((instrument instrument))
   (sort (funcall (keynumber-map instrument) :gamut) #'<))
 		      
+(defmethod reset ((instrument instrument))
+  (funcall (keynumber-map instrument) :reset))

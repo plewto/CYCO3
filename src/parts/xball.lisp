@@ -166,6 +166,7 @@
   xb)
 
 (defmethod reset ((xb xball))
+  (call-next-method)
   (reset (property xb :cue-cycle))
   (reset (property xb :key-pattern))
   (reset (property xb :articulation-pattern))

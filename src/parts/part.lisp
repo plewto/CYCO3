@@ -168,3 +168,8 @@ used directly."))
 
 (defmethod keylist ((prt part) &key (blur 0.0))
   (keylist (render-once prt) :blur blur))
+
+
+(defmethod reset ((p part))
+  (reset (property p :instruments))
+  p)

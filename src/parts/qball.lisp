@@ -158,6 +158,7 @@ new object to a symbol named name. ~%~A"
   qball)
 
 (defmethod reset ((qball qball))
+  (call-next-method)
   (reset (property qball :cue-cycle))
   (reset (property qball :key-pattern))
   (reset (property qball :articulation-pattern))

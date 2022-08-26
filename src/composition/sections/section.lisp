@@ -382,3 +382,8 @@ Creates one file for each non-empty channel."
 			(push-event (car event)(cdr event) trk))
 		      (format t "Sec: ~A  Chan: ~02D  Count: ~4D : " (name sec) c (length c-events))
 		      (write-smf smf filename))))))))
+
+(defmethod reset ((s section))
+  (dolist (part (children s))
+    (reset part))
+  s)

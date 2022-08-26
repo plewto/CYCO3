@@ -1,6 +1,8 @@
 ;;;; CYCO orchestra keynumber-map.lisp
 ;;;;
-;;;; Functions to map elements to MIDI keynumbers.
+;;;; A keynumber-map is a function which maps an arbitary value to a
+;;;; MIDI keynumber.
+;;;; 
 ;;;;
 ;;;;  basic-keynumber-map
 ;;;;     The default mapping with optional key range and transposition.
@@ -22,7 +24,10 @@
 ;;;;   kmap(0) --> 36
 ;;;;   kmap(1) --> 42
 ;;;;   kmap(2) --> 36
-;;;;     
+;;;;
+;;;; pattern-keynumber-map
+;;;;   Like symbolic-keynumber-map but values maybe patterns.
+;;;;
 ;;;; metronome-keynumber-map
 ;;;;   Highly specialized symbolic map for use with metronomes.
 ;;;;
@@ -35,9 +40,6 @@
 (in-package :cyco)
 
 (defun basic-keynumber-map (&key (min 0)(max 127)(transpose 0))
-  "Creates a basic keynumber-map
-Keynumbers outside range (min max) return +REST+ 
-The transpose amount is applied after the key range test."
   (flet ((docfn ()
 		(format t ";; Basic keynumber map,  Range [~3D,~3D] transpose ~D.~%"
 			min max transpose)
@@ -68,8 +70,6 @@ The transpose amount is applied after the key range test."
 
 
 (defun wrapping-keynumber-map (&key (min 0)(max 127)(transpose 0))
-  "Similar to basic-keynumber-map but transposes out of bounds values as needed.
-The transpose parameter is applied prior to the range-test."
   (flet ((gamutfn (mn mx transpose)
 	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (docfn ()
@@ -94,8 +94,7 @@ The transpose parameter is applied prior to the range-test."
 
 
 (defun circular-keynumber-map (start end)
-  "Creates a circular keynumber map.
-Keynumbers outside range (start end) are reflected back into the range."
+ 
   (flet ((gamutfn (mn mx transpose)
 	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (docfn ()
@@ -114,6 +113,8 @@ Keynumbers outside range (start end) are reflected back into the range."
 			  (docfn))
 			 ((eq kn :gamut)
 			  (gamutfn start end 0))
+			 ((eq kn :reset)
+			  +rest+)
 			 ((rest-p kn)
 			  +rest+)
 			 (t (let ((k (keynumber kn)))
@@ -133,6 +134,8 @@ Keynumbers outside range (start end) are reflected back into the range."
 	       (docfn))
 	      ((eq kn :gamut)
 	       key-list)
+	      ((eq kn :reset)
+	       +rest+)
 	      ((rest-p kn)
 	       +rest+)
 	      (t (cnth kn key-list))))))
@@ -151,6 +154,7 @@ Out of bounds indexes return a +REST+"
       #'(lambda (kn)
 	  (cond ((eq kn :doc)(docfn))
 		((eq kn :gamut) key-list)
+		((eq kn :reset) +rest+)
 		((rest-p kn) +rest+)
 		((and (integerp kn)(>= kn 0)(< kn limit))
 		 (aref key-vector kn))
@@ -158,21 +162,6 @@ Out of bounds indexes return a +REST+"
 
 
 (defun symbolic-keynumber-map (assignments)
-  "Creates a symbolic keynumber-map.
-Symbolic maps are most useful with percussion instruments.
-The assignments list has the form  ((sym1 . keynumber1)
-                                    (sym2 . keynumber2)
-                                     ..................)
-
-For integer arguments the map functions as with circular-list-keynumber-map
-The spacial symbol 'x returns the first keynumber in the list.
-
-<DEPRECIATED>
-If the kenumber has the value :assignments, the keynumber-map
-returns two values (+rest+ assignments) where the 2nd value is the 
-assignment list.
-</DEPRECIATED>"
-
   (flet ((docfn ()
 		(format t ";; Symbolic keynumber map~%")
 		(let ((index 0))
@@ -195,11 +184,12 @@ assignment list.
 	  (cond ((eq kn :doc)
 		 (docfn)
 		 +rest+)
+		((eq kn :reset)
+		 +rest+)
 		((eq kn :gamut)
 		 (gamutfn htab))
 		((eq kn :assignments)
-		 (cyco-warning ":ASSIGNMENTS argument to symbolic-keynumber-map has been depreciated")
-		 (values +rest+ assignments))
+		 assignments)
 		((rest-p kn)
 		 +rest+)
 		((eq kn 'x)
@@ -213,11 +203,7 @@ assignment list.
 
 		
 (defun metronome-keynumber-map (&key (phrase 72)(bar 67)(beat 60))
-  "Creates specialized symbolic keynumber-map for metronomes.
-The map defines three event types:
-:PHRASE - A strong accent on the first beat of the phrase.
-:BAR    - A strong accent on the first beat of each bar, except the first.
-:BEAT   - all other beats."
+
   (let ((ktab (make-hash-table :size 3)))
     (setf (gethash :phrase ktab)(keynumber phrase))
     (setf (gethash :bar ktab)(keynumber bar))
@@ -233,6 +219,8 @@ The map defines three event types:
 			   (docfn))
 			  ((eq kn :gamut)
 			   (keynumber (list phrase bar beat)))
+			  ((eq kn :reset)
+			   +rest+)
 			  (t (or (gethash kn ktab) +rest+))))))
 	fn))))
 
@@ -260,23 +248,6 @@ The map defines three event types:
 				   (reverse acc))) )
 
 	(defun extract-sub-symbolic-keylist (prefix klist)
-	  "Extracts a sub-list from general symbolic keymap specification.
-      The intended use is to automatically generate sub-instrument
-	  key-assignments for general percussion-kit instruments.
-
-          (param drum-kit-keylist '((kick        . (20))
-                                    (kick-analog . (21))
-                                    (snare       . (30))
-                                    (snare-rim   . (31))
-                                    (snare-edge  . (32))))
-
-           (extract-sub-symbolic-key-list 'snare drum-kit-keylist)
-
-             --> ((x    30)
-                  (rim  31)
-                  (edge 32))
-
-            The resulting list is suitable for use with symbolic-keynumber-list"
 	  (let ((acc '()))
 	    (dolist (item klist)
 	      (let ((key (car item)))
@@ -287,3 +258,174 @@ The map defines three event types:
 	    (reverse acc))) )
 	
 
+(labels ((process-assignments (assignments)
+			      (let ((htab (make-hash-table :size (length assignments))))
+				(dolist (item assignments)
+				  (let ((key (car item))
+					(value (second item))
+					(remarks (->string (or (third item) ""))))
+				    (setf value (cond ((pattern-p value)
+						       value)
+						      ((atom value)
+						       (line :of (->list value)))
+						      (t (dice :of (->list value)))))
+				    (setf (gethash key htab) (list value remarks))))
+				htab))
+	 (next-key (pat)
+		   (cond ((null pat)
+			  +rest+)
+			 (t 
+			  (next-1 pat))))
+
+	 (docfn (assignments htab)
+		(format t ";; PATTERN-KEYNUMBER-MAP~%")
+		(loop for i from 0
+		      for item in assignments do
+		      (let* ((key (car item))
+			     (value (gethash key htab))
+			     (pattern (car value))
+			     (remark (->string (or (second value) "")))
+			     (elements (elements pattern)))
+			(format t ";; [~2D] ~8A ~8A : ~16A ~A~%"
+				i key (type-of pattern) elements remark)))
+		+rest+)
+
+	 ;; TODO gamutfn fails for nested patterns.
+	 ;;
+	 (gamutfn (htab)
+		  (sort 
+		   (remove-duplicates 
+		    (flatten (loop for v being the hash-value of htab  do
+				   (reset v)
+				   collect (elements (car v)))))
+		   #'<)) )
+
+	(defun pattern-keynumber-map (assignments)
+	  (let ((htab (process-assignments assignments))
+		(first-key (caar assignments)))
+	    #'(lambda (kn)
+		(cond
+		 ((eq kn :reset)
+		  (maphash #'(lambda (key value)
+			       (declare (ignore key))
+			       (reset (car value)))
+			   htab)
+		  +rest+)
+		 ((eq kn :doc)
+		  (docfn assignments htab))
+		 
+		 ((eq kn :gamut)
+		  (gamutfn htab))
+		 
+		 ((eq kn 'x)
+		       (next-key (car (gethash first-key htab))))
+		      
+		 ((numberp kn)
+		  (let* ((key  (car (cnth kn assignments))))
+		    (next-key (car (gethash key htab)))))
+
+		 (t (next-key (car (gethash kn htab)))))))) )
+
+
+(setf (documentation 'basic-keynumber-map 'function)
+"Creates a basic keynumber-map
+Keynumbers outside range (min max) return +REST+ 
+The transpose amount is applied after the key range test.")
+
+(setf (documentation 'wrapping-keynumber-map 'function)
+"Similar to basic-keynumber-map but transposes out of bounds values as needed.
+The transpose parameter is applied prior to the range-test.")
+
+(setf (documentation 'circular-keynumber-map 'function)
+ "Creates a circular keynumber map.
+Keynumbers outside range (start end) are reflected back into the range.")
+
+(setf (documentation 'symbolic-keynumber-map 'function)
+"Creates a symbolic keynumber-map.
+Symbolic maps are most useful with percussion instruments.
+The assignments list has the form  ((sym1 . keynumber1)
+                                    (sym2 . keynumber2)
+                                    (sym3 . (keynumber  optional-remark))
+                                     ..................)
+
+For integer arguments the map functions as with circular-list-keynumber-map
+The spacial symbol 'x returns the first keynumber in the list.
+
+If the kenumber has the value :assignments, the keynumber-map
+returns two values (+rest+ assignments) where the 2nd value is the 
+assignment list.")
+
+(setf (documentation 'metronome-keynumber-map 'function)
+"Creates specialized symbolic keynumber-map for metronomes.
+The map defines three event types:
+:PHRASE - A strong accent on the first beat of the phrase.
+:BAR    - A strong accent on the first beat of each bar, except the first.
+:BEAT   - all other beats.")
+
+(setf (documentation 'extract-sub-symbolic-keylist 'function)
+"Extracts a sub-list from general symbolic keymap specification.
+The intended use is to automatically generate sub-instrument
+arguments for general percussion-kit instruments.
+                                 
+     (param drum-kit-keylist '((kick        . (20))
+                               (kick-analog . (21))
+                               (snare       . (30))
+                               (snare-rim   . (31))
+                               (snare-edge  . (32))))
+                           
+      (extract-sub-symbolic-key-list 'snare drum-kit-keylist)
+                           
+        --> ((x    30)
+             (rim  31)
+             (edge 32))
+                        
+The resulting list is suitable for use with symbolic-keynumber-list")
+
+
+(setf (documentation 'pattern-keynumber-map 'function)
+"A PATTERN-KEYNUMBER map is similar to a SYMBOLIC-KEYNUMBER-MAP but allows 
+keynumber patterns. The general form of the assignments list is:
+
+      ((key-1 pattern-1 optional-remarks)
+       (key-2 pattern-2 optional-remarks)
+        ...
+       (key-n pattern-n optional-remarks))
+
+Where keys and remarks have the same usage as symbolic-keynumber-map and 
+pattern may be any of the following forms:
+
+      1) A single keynumber - 
+      2) A list of keynumbers - converted to a dice pattern
+      3) A pattern - used directly
+
+      (param kmap (pattern-keynumber-map 
+                    (list '(ape a4)
+                          '(bat (30 40 50))
+                          (list 'cat (cycle :of '(60 70))))))
+
+      (funcall kmap 'ape)   --> 57  ;; 57 = A4
+      (funcall kmap 'bat)   --> 40  ;; selects 30, 40 or 50 
+      (funcall kmap 'bat)   --> 30  ;; at random
+      (funcall kmap 'bat)   --> 30
+      (funcall kmap 'cat)   --> 60  ;; returns 60 or 70 alternately
+      (funcall kmap 'cat)   --> 70
+      (funcall kmap 'cat)   --> 60
+
+      Unrecognized keys return -1 (a rest) without warning.
+
+      The following special keys are predefined.
+
+      'x       returns the default (first) key 
+               (funcall kmap 'x) --> 57
+       
+      number   behaves like a circular-keymap
+               (funcall kmap 0) --> 57
+               (funcall kmap 4) --> 40  
+
+      :gamut   returns list of possible results.
+               WARNING: gamut does not work properly for nested patterns.
+               (funcall kmap :gamut) -> (30 40 50 57 60 70)
+
+      :reset   Resets internal patterns, returns -1
+ 
+      :doc     Prints documentation.")

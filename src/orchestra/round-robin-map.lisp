@@ -2,7 +2,7 @@
 ;;;;
 ;;;; Defines keynumber-map function factories with round-robin support.
 ;;;;
-;;;;
+
 
 (labels ((rr-select (entry counters)
 		    ;; entry (key . ((options) optional_remarks))
@@ -22,8 +22,11 @@
 	 		   (setf index (1+ index))
 			   (format t "~%"))
 	 		 (format t ";; ~%"))
-	 	       +rest+) )
-
+	 	       +rest+)
+	 
+	 (gamutfn (assignments)
+		  (let ((keys (mapcar #'second assignments)))
+		    (sort (delete-duplicates (keynumber (flatten keys))) #'<))) )
 
 	(defun round-robin-keymap (assignments)
 	  (let ((counters (make-hash-table :size (length assignments))))
@@ -37,6 +40,10 @@
 		      ((eq kn :doc)
 		       (doc-function assignments)
 		       +rest+)
+		      ((eq kn :gamut)
+		       (gamutfn assignments))
+		      ((eq kn 'x)
+		       (keynumber (caar assignments)))
 		      (t (let ((entry (assoc kn assignments)))
 			   (if entry
 			       (rr-select entry counters)
@@ -47,12 +54,12 @@
 
 assignments argument should be an alist of form:
      
-     ((key-1 . ((keynumbers-1) optional-remarks))
-      (key-2 . ((keynumbers-2) optional-remarks))
+     ((key-1 . ((keynumbers-1 ...) optional-remarks))
+      (key-2 . ((keynumbers-2 ...) optional-remarks))
        ........................................
-      (key-n . ((keynumbers-n) optional-remarks)))
+      (key-n . ((keynumbers-n ...) optional-remarks)))
 
-Where (keynumbers-i) is a list of MIDI key numbers.
+Where (keynumbers-i ...) is a list of MIDI key numbers.
 
 
 Example:
@@ -60,4 +67,5 @@ Example:
      (param rrmap (round-robin-keymap '((A . (10 11 12))(B . (20 21)))))
      (dotimes (i 7)
         (print (funcall rrmap 'A)))
+
      --> 10 11 12 10 11 12 10")

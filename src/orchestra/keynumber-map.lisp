@@ -1,6 +1,6 @@
 ;;;; CYCO orchestra keynumber-map.lisp
 ;;;;
-;;;; A keynumber-map is a function which maps an arbitary value to a
+;;;; A keynumber-map is a function which maps an arbitrary value to a
 ;;;; MIDI keynumber.
 ;;;; 
 ;;;;
@@ -26,16 +26,19 @@
 ;;;;   kmap(2) --> 36
 ;;;;
 ;;;; pattern-keynumber-map
-;;;;   Like symbolic-keynumber-map but values maybe patterns.
+;;;;   Like symbolic-keynumber-map but values may be patterns.
+;;;;
+;;;; round-robin-keymap
 ;;;;
 ;;;; metronome-keynumber-map
 ;;;;   Highly specialized symbolic map for use with metronomes.
 ;;;;
-;;;;
 ;;;; These special argument values are defined for all keynumber-maps
-;;;;  :doc  - prints documentation.
+;;;;  :doc   - prints documentation.
 ;;;;  :gamut - returns list of used keynumbers.
-;;;;
+;;;;  :reset - resets internal patterns where used.
+;;;;  'x     - default (first key assignment
+;;;; 
 
 (in-package :cyco)
 
@@ -55,6 +58,8 @@
 	       (docfn))
 	      ((eq kn :gamut)
 	       (gamutfn min max transpose))
+	      ((eq kn 'x)
+	       (transpose min transpose))
 	      ((keynumber-p kn)
 	       (let ((kn2 (keynumber kn)))
 		 (if (minusp kn2)
@@ -81,6 +86,8 @@
 	       (docfn))
 	      ((eq kn :gamut)
 	       (gamutfn min max transpose))
+	      ((eq kn 'x)
+	       (transpose min transpose))
 	      ((keynumber-p kn)
 	       (let ((kn2 (keynumber kn)))
 		 (if (minusp kn2)
@@ -92,11 +99,10 @@
 		     kn2))))))))
 
 
-
 (defun circular-keynumber-map (start end)
  
   (flet ((gamutfn (mn mx transpose)
-	 	  (keynumber (loop for i from mn to mx collect (+ i transpose))))
+		  (keynumber (loop for i from mn to mx collect (+ i transpose))))
 	 (docfn ()
 		(format t ";; CIRCULAR-KEYNUMBER-MAP range (~A ~A)~%" start end)
 		(let ((diff (- end start)))
@@ -115,47 +121,55 @@
 			  (gamutfn start end 0))
 			 ((eq kn :reset)
 			  +rest+)
+			 ((eq kn 'x)
+			  (keynumber start))
 			 ((rest-p kn)
 			  +rest+)
 			 (t (let ((k (keynumber kn)))
 			      (+ offset (rem k delta))))))))
       fn)))
 
-(defun circular-list-keynumber-map (key-list)
+
+(defun circular-list-keynumber-map (keylist)
   "Creates circular keynumber map over list of keynumbers."
   (flet ((docfn ()
-		(format t ";; CIRCULAR-LIST-KEYNUMBER-MAP ~A~%" key-list)
-		(dotimes (i (length key-list))
-		  (format t ";;  [~3d] --> ~3d~%" i (nth i key-list)))
+		(format t ";; CIRCULAR-LIST-KEYNUMBER-MAP ~A~%" keylist)
+		(dotimes (i (length keylist))
+		  (format t ";;  [~3d] --> ~3d~%" i (nth i keylist)))
 		(format t ";; ~%")
-		+rest+))
+		+rest+) )
     #'(lambda (kn)
 	(cond ((eq kn :doc)
 	       (docfn))
 	      ((eq kn :gamut)
-	       key-list)
+	       (sort (remove-duplicates (keynumber keylist)) #'<))
 	      ((eq kn :reset)
 	       +rest+)
+	      ((eq kn 'x)
+	       (keynumber (car keylist)))
 	      ((rest-p kn)
 	       +rest+)
-	      (t (cnth kn key-list))))))
+	      (t (cnth kn keylist))))))
 
-(defun finite-list-keynumber-map (key-list)
+(defun finite-list-keynumber-map (keylist)
   "Indexes into list for keynumber.
 Out of bounds indexes return a +REST+"
   (flet ((docfn ()
-		(format t ";; FINITE-LIST-KEYNUMBER-MAP ~A~%" key-list)
-		(dotimes (i (length key-list))
-		  (format t ";;  [~3d] --> ~3d~%" i (nth i key-list)))
+		(format t ";; FINITE-LIST-KEYNUMBER-MAP ~A~%" keylist)
+		(dotimes (i (length keylist))
+		  (format t ";;  [~3d] --> ~3d~%" i (nth i keylist)))
 		(format t ";;~%")
 		+rest+))
-    (let ((key-vector (->vector key-list))
-	  (limit (length key-list)))
+    (let ((key-vector (->vector keylist))
+	  (limit (length keylist)))
       #'(lambda (kn)
 	  (cond ((eq kn :doc)(docfn))
-		((eq kn :gamut) key-list)
+		((eq kn :gamut)
+		 (sort (remove-duplicates (keynumber keylist)) #'<))
 		((eq kn :reset) +rest+)
 		((rest-p kn) +rest+)
+		((eq kn 'x)
+		 (keynumber (first keylist)))
 		((and (integerp kn)(>= kn 0)(< kn limit))
 		 (aref key-vector kn))
 		(t +rest+))))))
@@ -218,7 +232,7 @@ Out of bounds indexes return a +REST+"
 		    (cond ((eq kn :doc)
 			   (docfn))
 			  ((eq kn :gamut)
-			   (keynumber (list phrase bar beat)))
+			   (sort (keynumber (list phrase bar beat)) #'<))
 			  ((eq kn :reset)
 			   +rest+)
 			  (t (or (gethash kn ktab) +rest+))))))
@@ -290,15 +304,18 @@ Out of bounds indexes return a +REST+"
 				i key (type-of pattern) elements remark)))
 		+rest+)
 
-	 ;; TODO gamutfn fails for nested patterns.
-	 ;;
+	 ;; We call next an excessive number of times (50) to increase
+	 ;; chance of capturing values from deeply nested or random
+	 ;; patterns.   Would rather get all of the values the be efficient.
+	 ;; Still there is no guarantee all values possible values will be
+	 ;; captured.
 	 (gamutfn (htab)
-		  (sort 
-		   (remove-duplicates 
-		    (flatten (loop for v being the hash-value of htab  do
-				   (reset v)
-				   collect (elements (car v)))))
-		   #'<)) )
+		  (let ((acc '()))
+		    (loop for v being the hash-value of htab do
+			  (push (next (car v) 50) acc))
+		    (sort (remove-duplicates (keynumber (flatten acc))) #'<)))
+
+	 )
 
 	(defun pattern-keynumber-map (assignments)
 	  (let ((htab (process-assignments assignments))
@@ -318,7 +335,7 @@ Out of bounds indexes return a +REST+"
 		  (gamutfn htab))
 		 
 		 ((eq kn 'x)
-		       (next-key (car (gethash first-key htab))))
+		  (next-key (car (gethash first-key htab))))
 		      
 		 ((numberp kn)
 		  (let* ((key  (car (cnth kn assignments))))

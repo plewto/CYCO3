@@ -97,8 +97,16 @@
       (copies (truncate n) obj)
     obj))
 
+;; (defmethod ->string ((p pattern))
+;;   (sformat "~A :of ~A" (type-of p)(elements p)))
+
 (defmethod ->string ((p pattern))
-  (sformat "~A :of ~A" (type-of p)(elements p)))
+  (let ((acc (sformat "(~A :of (" (type-of p))))
+    (loop for e in (elements p) do
+	  (setf acc (str+ acc " " (->string e))))
+    (setf acc (str+ acc "))"))
+    acc))
+
 
 (defmethod ->pattern ((pat pattern) &key pattern-type)
   (declare (ignore pattern-type))

@@ -105,11 +105,11 @@
 	    	     (t (key-warning 'basic-keynumber-map kn)
 			+rest+)))))
 
-	(defun circular-list-keynumber-map (keylist)
+	(defun circular-list-keynumber-map (keylist &optional (map-type 'circular-list-keynumber-map))
 	  (setf keylist (keynumber keylist))
 	  #'(lambda (kn)
 	      (cond ((eq kn :doc)
-		     (format t ";; CIRCULAR-KEYNUMBER-MAP~%")
+		     (format t ";; ~A~%" map-type)
 		     (loop for i from 0 below (length keylist) do
 			   (format t ";;   [~3D] --> ~3D~%" i (nth i keylist)))
 		     (format t "~%"))
@@ -122,8 +122,12 @@
 		    (t (key-warning 'circular-keynumber-map kn)
 		       +rest+))))
 		    
-	(defun circular-keynumber-map (&rest keys)
-	  (circular-list-keynumber-map keys))
+	(defun circular-keynumber-map (start end)
+	  (circular-list-keynumber-map
+	   (if (> end start)
+	       (range start (1+ end))
+	     (range start (1- end)))
+	   'circular-keynumber-map))
 		     
 	(defun finite-list-keynumber-map (keylist)
 	  (setf keylist (keynumber keylist))
@@ -262,7 +266,7 @@ All keynumber maps take the following special arguments
 ")
        (general-symbolic-docs (str+ general-docs "
                                                                   
-    Behaves like circular-keynumber-map for numeric arguments.
+    Behaves like circular-list-keynumber-map for numeric arguments.
 ")))
 
 
@@ -287,8 +291,8 @@ All keynumber maps take the following special arguments
        (funcall kmap 3) -> 30" general-docs))
 
       (setf (documentation 'circular-keynumber-map 'function)
-      (str+ "Identical to circular-list-keynumber-map except takes an arbitrary
-      number of arguments instead of a single list." general-docs))
+      (str+ "Short cut for (circular-list-keynumber-map (range start (1+ end)))"))
+
 
       (setf (documentation 'finite-list-keynumber-map 'function)
       (str+ "Returns key function similar to circular-list-keynumber-map 

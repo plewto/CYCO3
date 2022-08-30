@@ -67,3 +67,17 @@
 						    articulation 
 						    dynamic)))))
 	(sort-midi-events midi-events))) )
+
+(defmethod render-n ((qball qball)(n integer) &key (offset 0.0) &allow-other-keys)
+  (reset qball)
+  (setf n (if (property qball :render-once) 1 n))
+  (let ((events '())
+	(update (not (property qball :reset-on-repeat)))
+	(template (render-once qball))
+	(period (phrase-duration qball)))
+    (dotimes (i n)
+      (let ((start-offset (+ offset (* i period))))
+	(dolist (event template)
+	  (push (cons (+ start-offset (car event))(clone (cdr event))) events))
+	(if update (setf template (render-once qball))) ))
+  (sort-midi-events events)))

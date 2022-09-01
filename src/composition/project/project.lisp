@@ -51,11 +51,11 @@ name  - Symbol, the project's name.
 :title - Composition title, defaults to name.
 :cuefn - Default cueing function, default #'bar
 :shuffle - Default shuffle function, defaults to #'no-shuffle
-:tempo - Default tempo in BPM, default 60.
-:unit  - Default time-signature unit, default 'Q
-:bars  - Default number of bars per phrase, default 4.
-:beats - Default number of beats per bar, default 4.
-:subbeats - Default number of sub-beats per beat, default 16
+:tempo - Defaults to *root-time-signature* tempo.
+:unit  - Defaults to *root-time-signature* unit.
+:bars  -Defaults to *root-time-signature* bars.
+:beats - Defaults to *root-time-signature* beats.
+:subbeats - Defaults to *root-time-signature* subbeats.
 :remarks  - Optional remarks text.
 :catalog-number - Optional catalog number.
 :make-current   - boolean, if true the new project is made the default 
@@ -107,11 +107,11 @@ abbreviations lp and lpf."))
 			    (output-directory *default-project-output-directory*)
 			    (cuefn #'bar)
 			    (shuffle #'no-shuffle)
-			    (tempo 60.0)
-			    unit
-			    (bars 4)
-			    (beats 4)
-			    (subbeats 4)
+			    (tempo (tempo *root-time-signature*))
+			    (unit (unit *root-time-signature*))
+			    (bars (bars *root-time-signature*))
+			    (beats (beats *root-time-signature*))
+			    (subbeats (subbeats *root-time-signature*))
 			    (remarks "")
 			    (make-current t))
     docstring
@@ -153,11 +153,11 @@ abbreviations lp and lpf."))
 			(output-directory *default-project-output-directory*)
 			(cuefn #'bar)
 			(shuffle #'no-shuffle)
-			(tempo 60.0)
+			tempo
 			unit
-			(bars 4)
-			(beats 4)
-			(subbeats 4)
+			bars
+			beats
+			subbeats
 			(remarks ""))
   "Identical to make-project except that the new project is also bound to 
 a symbol named name."
@@ -173,11 +173,11 @@ a symbol named name."
 		     :output-directory ,output-directory
 		     :cuefn ,cuefn
 		     :shuffle ,shuffle
-		     :tempo ,tempo
-		     :unit ,unit
-		     :bars ,bars
-		     :beats ,beats
-		     :subbeats ,subbeats
+		     :tempo (or ,tempo (tempo *root-time-signature*))
+		     :unit (or ,unit (unit *root-time-signature*))
+		     :bars (or ,bars (bars *root-time-signature*))
+		     :beats (or ,beats (beats *root-time-signature*))
+		     :subbeats (or ,subbeats  (subbeats  *root-time-signature*))
 		     :remarks ,remarks)
        (defparameter ,name *project*)
        *project*)))
@@ -222,7 +222,6 @@ a symbol named name."
 				(join-path (project-location)
 					   (property *project* :output-directory))
 			      (user-home))))
-			
 
 (put +NULL-PROJECT+ :tempo 60)
 (put +NULL-PROJECT+ :bars 1)

@@ -60,7 +60,19 @@ subbeats"))
 (put *root-time-signature* :beats 4)
 (put *root-time-signature* :subbeats 4)
 (init-time-signature *root-time-signature*)
-;; (global *current-time-signature* *root-time-signature*)  ;; DEPRECIATED
+
+(defun set-default-time-signature (&key tempo unit bars beats subbeats ticks)
+  (if tempo (put *root-time-signature* :tempo tempo))
+  (if unit (put *root-time-signature* :unit unit))
+  (if bars (put *root-time-signature* :bars bars))
+  (if beats (put *root-time-signature* :beats beats))
+  (if subbeats (put *root-time-signature* :subbeats subbeats))
+  (if ticks
+      (progn
+	(setf *ticks-per-beat* ticks)
+	(put *root-time-signature* :ticks-per-beat ticks)))
+  (init-time-signature *root-time-signature*)
+  *root-time-signature*)
 
 
 (let ((instance-counter 0))

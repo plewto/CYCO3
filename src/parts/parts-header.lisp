@@ -6,18 +6,19 @@
 (defpackage :cyco-part
   (:use :cl)
   (:import-from :cyco
+		:+default-keytable+
+                :+rest+
+                :+time-signature-properties+
+		:*default-cue-function*
 		:*chord-table*
                 :*metronome*
                 :*project*
-                :+default-keytable+
-                :+rest+
-                :+time-signature-properties+
+		:->vector
                 :->cycle
                 :->list
                 :->pattern
                 :->string
                 :->symbol
-		:->vector
                 :absolute-chords-p
                 :approximate
                 :articulation-map

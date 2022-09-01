@@ -64,7 +64,7 @@
 	    (bar-cuelist (binball-cuelist ,cue bincue tsig ,use-subbeats ,duck))
 	    (qb (make-qball ',name ,instruments
 			    :section parent
-			    :cuefn #'bar
+			    :cuefn *default-cue-function*
 			    :shuffle (or ,shuffle #'no-shuffle)
 			    :shift (or ,shift 0)
 			    :render-once ,render-once
@@ -102,7 +102,7 @@
 	    (bar-cuelist (binball-cuelist ,cue bincue tsig ,use-subbeats ,duck))
 	    (xb (make-xball ',name ,instrument
 			    :section parent
-			    :cuefn #'bar
+			    :cuefn *default-cue-function*
 			    :bars ,bars
 			    :beats ,beats
 			    :subbeats ,subbeats

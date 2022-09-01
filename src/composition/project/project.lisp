@@ -49,7 +49,7 @@ name  - Symbol, the project's name.
         A lowercase version of the name is used to locate the
         project's directories relative to project-directory.
 :title - Composition title, defaults to name.
-:cuefn - Default cueing function, default #'bar
+:cuefn - Default cueing function, default *default-cue-function*
 :shuffle - Default shuffle function, defaults to #'no-shuffle
 :tempo - Defaults to *root-time-signature* tempo.
 :unit  - Defaults to *root-time-signature* unit.
@@ -105,7 +105,7 @@ abbreviations lp and lpf."))
 			    (project-directory *projects-root*)
 			    main-file
 			    (output-directory *default-project-output-directory*)
-			    (cuefn #'bar)
+			    (cuefn *default-cue-function*)
 			    (shuffle #'no-shuffle)
 			    (tempo (tempo *root-time-signature*))
 			    (unit (unit *root-time-signature*))
@@ -151,7 +151,7 @@ abbreviations lp and lpf."))
 			(project-directory *projects-root*)
 			main-file
 			(output-directory *default-project-output-directory*)
-			(cuefn #'bar)
+			(cuefn *default-cue-function*)
 			(shuffle #'no-shuffle)
 			tempo
 			unit

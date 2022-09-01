@@ -49,7 +49,8 @@ subbeats"))
     (dolist (c (children time-signature))(init-time-signature c))
     time-signature))
 
-
+;; *root-time-signature* provides defaults for new instances of time-signature.
+;;
 (global *root-time-signature* (make-instance 'time-signature
 				      :name :root-time-signature
 				      :transient nil

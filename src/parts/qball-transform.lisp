@@ -50,7 +50,7 @@
 		 (acc (sformat "(strummer ~A ~A~%" (or name (name qball)) iname)))
 	    (reset qball)
 	    (setf acc (sformat "~A~A :bars ~D~%" acc tab (bars qball)))
-	    (setf acc (sformat "~A~A :cuefn ~A~%" acc tab (or cuefn "#'bar")))
+	    (setf acc (sformat "~A~A :cuefn ~A~%" acc tab (or cuefn "*default-cue-function")))
 	    (setf acc (sformat "~A~A :shuffle ~A~%" acc tab (or shuffle "#'no-shuffle")))
 	    (setf acc (sformat "~A~A :events '(" acc tab))
 	    (dolist (cue cuelist)
@@ -91,7 +91,7 @@
 		 (last-strum nil)     ;;
 		 (header (str+ (sformat "(strummer ~A ~A~%" (or name (name xball)) iname)
 			       (sformat "~A:bars ~D~%" tab (bars xball))
-			       (sformat "~A:cuefn ~A~%" tab (or cuefn "#'bar"))
+			       (sformat "~A:cuefn ~A~%" tab (or cuefn "*default-cue-function*"))
 			       (sformat "~A:shuffle ~A~%" tab (or shuffle "#'no-shuffle"))))
 		 (events (sformat "~A:events '((:chord [solo] :inversion 0 :octave 0 :direction down :strum 0.0)~%" tab)))
 	    (reset xball)
@@ -140,7 +140,7 @@ qball       - The source QBALL.
 :instrument - Optional strummer instrument name. defaults to first qball 
               instrument.  Note QBALL may take more then one instrument 
               while STRUMMER is limited to one.  
-:cuefn      - Optional cue-function, defaults to #'BAR
+:cuefn      - Optional cue-function, defaults to *default-cue-function*
 :shuffle    - Optional shuffle-function, defaults to #'NO-SHUFFLE
 :stream     - Result stream has same usage as Lisp format function.
               t   - (default) prints to terminal.

@@ -56,7 +56,7 @@ Programs are always a leaf node."))
 				 :name name
 				 :remarks (->string (or remarks "")))))   
 	(connect parent new-programs-part)
-	(put new-programs-part :cue-function (or cuefn #'bar))
+	(put new-programs-part :cue-function (or cuefn *default-cue-function*))
 	(put new-programs-part :shuffle-function (or shuffle #'no-shuffle))
 	(put new-programs-part :bars bars)
 	(put new-programs-part :cuelist time)

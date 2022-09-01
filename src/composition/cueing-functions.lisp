@@ -118,6 +118,8 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 	     (sb (subbeat-value time-signature time-specification (aref v 2)))
 	     (tk (tick-value time-signature time-specification (aref v 3))) )
 	(float (+ br bt sb tk))))
+
+(param *default-cue-function* #'bar)
     
     (defun tbar (time-signature time-cue)
       tbar-docstring

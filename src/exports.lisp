@@ -5,6 +5,7 @@
 	  *cyco-config-directory*
           *cyco-config-file*
           *cyco-config-profile*
+	  *default-cue-function*
           *default-osc-send-address*
           *default-osc-send-host*
           *default-osc-send-port*

@@ -74,7 +74,6 @@ and chord-model parameters from the project but may selectively override them.")
       (connect project section)
       (init-time-signature section)
       (put project :current-section section)
-      (set-cyco-prompt)
       section)))
 
 (defmacro section (name &key

@@ -140,8 +140,7 @@ abbreviations lp and lpf."))
       (init-time-signature project)
       (if make-current
 	  (progn
-	    (setf *project* project)
-	    (set-cyco-prompt)))
+	    (setf *project* project)))
       project))) 
 
 

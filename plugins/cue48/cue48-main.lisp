@@ -185,3 +185,12 @@ ticks  - number of subbeat ticks associated with the symbol."
 		 (format t "[~4A] -> ~3D~%" key value))
 	     *cue48-symbols*)))
 	     
+
+(defun cue48-prompt-function (s)
+  (let* ((dir (final (partition-path (cwd))))
+	 (sec (and (project-p *project*)(property *project* :current-section)))
+	 (sname (or (and sec (name sec)) "")))
+    (format s "~%CYCO(Q48) ~A ~A: " dir sname)))
+
+(if (equalp (lisp-implementation-type) "SBCL")
+    (setf sb-int:*REPL-PROMPT-FUN* #'cue48-prompt-function))

@@ -58,7 +58,10 @@
 (defun partition-path (fname)
   "Partition path namestring into components
 (partition-path '/a/b/c') --> ('a' 'b' 'c')"
-  (split-string (namestring fname) *os-path-separator*))
+  (let ((parts (split-string (namestring fname) *os-path-separator*)))
+    (if (string= (final parts) "")
+	(setf parts (butfinal parts)))
+    parts))
 
 
 

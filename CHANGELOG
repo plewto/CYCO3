@@ -35,4 +35,5 @@ Version 3.0.2 (2022.05.11)
    15. 2022-06-17 Adds qball->strummer and xball->strummer part translation functions.
    16. 2022-06-19 Adds ISTRUM preprocessor for STRUMMER.
    17. 2022-06-19 Adds :hold argument to STRUMMER.
-   18. 2022-08-30 Adds new pattern-keynumber-map.	
+   18. 2022-08-30 Adds new pattern-keynumber-map.
+   19. 2022-09-01 Adds cue48 plugin as an alternate cueing function.

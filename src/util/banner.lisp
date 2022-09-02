@@ -37,6 +37,7 @@
     (if *enable-banners*
 	(progn 
 	  "Prints text between banner bars."
+	  (format t "~%")
 	  (banner-bar +banner-bar1+)
 	  (banner-headline headline +banner-header1+ 75)
 	  (banner-more more +banner-header1+)

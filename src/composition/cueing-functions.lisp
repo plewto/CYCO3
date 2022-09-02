@@ -48,14 +48,14 @@ symbol 't, in which case it switches to eighth-note triplet mode.
 
 For a 4/4 bar  1 <= triplet-number <= 12") )
   
-  (labels ((warnfn (args)
-		   (cyco-cue-warning 'BAR args)
+  (labels ((errorfn (args)
+		   (cyco-cue-error 'BAR args)
 		   0.0)
 	   
 	   (bar-value (time-signature time-specification token)
 		      (or (and (integerp token)(plusp token)(<= token (bars time-signature))
 			       (* (bar-duration time-signature)(1- token)))
-			  (warnfn time-specification)))
+			  (errorfn time-specification)))
 	   
 	   (is-triplet-p (token-string)
 			 (char= #\T (char token-string 0)))
@@ -64,12 +64,12 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 			       (let ((n (parse-integer (subseq stoken 1))))
 				 (or (and (plusp n)(<= n (tbeats time-signature))
 					  (* (tbeat-duration time-signature)(1- n)))
-				     (warnfn time-specification))))
+				     (errorfn time-specification))))
 	   
 	   (beat-normal-value (time-signature time-specification token)
 			      (or (and (integerp token)(plusp token)(<= token (beats time-signature))
 				       (* (beat-duration time-signature)(1- token)))
-				  (warnfn time-specification)))
+				  (errorfn time-specification)))
 	   
 	   (beat-value (time-signature time-specification token)
 		       (let ((stoken (string-upcase (->string token))))
@@ -81,12 +81,12 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 				  (let ((n (parse-integer (subseq stoken 1))))
 				    (or (and (plusp n)(<= n (tsubbeats time-signature))
 					     (* (tsubbeat-duration time-signature)(1- n)))
-					(warnfn time-specification))))
+					(errorfn time-specification))))
 	   
 	   (subbeat-normal-value (time-signature time-specification token)
 				 (or (and (integerp token)(plusp token)(<= token (subbeats time-signature))
 					  (* (subbeat-duration time-signature)(1- token)))
-				     (warnfn time-specification)))
+				     (errorfn time-specification)))
 	   
 	   (subbeat-value (time-signature time-specification token)
 			  (let ((stoken (string-upcase (->string token))))
@@ -108,7 +108,7 @@ For a 4/4 bar  1 <= triplet-number <= 12") )
 			      (tick-int-value time-signature token))
 			     ((floatp token)
 			      (tick-float-value time-signature token))
-			     (t (warnfn time-specification)))) )
+			     (t (errorfn time-specification)))) )
     
     (defun bar (time-signature time-specification)
       bar-docstring

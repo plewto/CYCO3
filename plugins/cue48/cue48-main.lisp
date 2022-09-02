@@ -72,7 +72,7 @@ ticks  - number of subbeat ticks associated with the symbol."
 (def-cue48 'et3  32)
 
 (labels ((errorfn (args)
-		 (cyco-cue-warning 'CUE48 args)
+		 (cyco-cue-error 'CUE48 args)
 		 0.0)
 
 	 (bar-value (tsig cue token)

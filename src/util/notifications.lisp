@@ -30,14 +30,6 @@
 	  (dolist (m msg)(format t "WARNING: ~A~%" m))
 	  (format t "~%"))))
 
-  (defun cyco-cue-warning (function-name args &rest more)
-    "Display warning message that argument to cuing function 
-is invalid."
-    (apply #'cyco-warning
-	   (append (list 'cue-function-warning
-			 (sformat "Cuing function : ~A" function-name)
-			 (sformat "ARGS           : ~A" args))
-		   more)))
 
   (defun cyco-keynumber-warning (text)
     (if *enable-keynumber-warnings*
@@ -58,6 +50,16 @@ a warning and CYCO does not terminate."
 	(format t "~A~%" (->string (car msg)))
 	(abort))))
 
+  (defun cyco-cue-error (function-name args &rest more)
+    "Display error message that argument to cuing function 
+is invalid."
+    (apply #'cyco-error
+	   (append (list 'cue-function-error
+			 (sformat "Cuing function : ~A" function-name)
+			 (sformat "ARGS           : ~A" args))
+		   more)))
+
+  
   (defun cyco-type-error (function-name expected encounterd &rest more)
     "Error indicating wrong type was passed to a function."
     (let ((args (append

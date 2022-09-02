@@ -34,8 +34,8 @@
 (labels ((key-warning (map-type value)
 		      (if *enable-keynumber-warnings*
 			  (progn
-			    (format t "KEYNUMBER WARNING: ***********************~%")
-			    (format t "KEYNUMBER WARNING: ~A Unknown keynumber:  ~A" map-type value)))
+			    (format t "~%KEYNUMBER WARNING: ***********************~%")
+			    (format t "KEYNUMBER WARNING: ~A Unknown keynumber:  ~A~%" map-type value)))
 		      +rest+)
 
 	 (key-gamut (keylist)

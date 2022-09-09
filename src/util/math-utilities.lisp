@@ -54,3 +54,7 @@ value  - number,
       (if (not (member n lst))
 	  (push n acc)))
     (reverse acc)))
+
+(defun congruent (a b m)
+  "Returns ture if a congruent b mod m."
+  (= (rem b m) a))

@@ -43,10 +43,8 @@ ticks  - number of subbeat ticks associated with the symbol."
 (def-cue48 'e-    6) ;; basic sixteenth & thirty-second notes.
 (def-cue48 'e    12)
 (def-cue48 'e+   18)
-(def-cue48 '+-   18)
 (def-cue48 '+    24)
 (def-cue48 'a-   30)
-(def-cue48 '++   30)
 (def-cue48 'a    36)
 (def-cue48 'a+   42)
 (def-cue48 'tt1   0) ;; thirty-second triplets
@@ -160,7 +158,6 @@ ticks  - number of subbeat ticks associated with the symbol."
 
             thirty-second  numeric    0  6  12 18 24 30 36 42
                            symbolic   1  e- e  e- +  a- a  a+
-                                              +-    ++
              
             eighth         numeric   0   16  32
             triplet        symbolic  et1 et2 et3
@@ -168,7 +165,7 @@ ticks  - number of subbeat ticks associated with the symbol."
             sixteenth      numeric   0    8   16  24  32  40
             triplet        symbolic  st1  st2 st3 st4 st5 st6
 
-            thirty-second  numeric  0   4   8   12  16  20  24  28  32  36   40   44
+            thirty-second  numeric   0   4   8   12  16  20  24  28  32  36   40   44
             triplet        symbolic  tt1 tt2 tt3 tt4 tt5 tt6 tt7 tt7 tt9 tt10 tt11 tt12
  
  

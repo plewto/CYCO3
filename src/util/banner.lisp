@@ -61,5 +61,4 @@ BANNER3 is less bold then BANNER2."
 	(progn 
 	  (format t "~A~A~%" +banner-header2+ headline)
 	  (dolist (q more)
-	    (format t "~A   ~A~%" +banner-header2+ q))
-	  (format t "~%"))))) 
+	    (format t "~A   ~A~%" +banner-header2+ q))))) ) 

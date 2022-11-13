@@ -56,5 +56,19 @@ value  - number,
     (reverse acc)))
 
 (defun congruent (a b m)
-  "Returns ture if a congruent b mod m."
+  "Returns true if a congruent b mod m."
   (= (rem b m) a))
+
+
+(let ((cache (make-hash-table)))
+  (defun fibonacci (n)
+    "Returns the nth Fibonacci number.
+Results are cached as generated."
+    (or (gethash n cache)
+	(cond ((< n 1) 0)
+	      ((= n 1) 1)
+	      ((= n 2) 1)
+	      (t (let ((x (+ (fibonacci (- n 1))
+			     (fibonacci (- n 2)))))
+		   (setf (gethash n cache) x)))))))
+

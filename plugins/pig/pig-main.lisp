@@ -5,7 +5,9 @@
 ;;;; available at github.com/plewto/Pigiron
 ;;;;
 
-(load "~/quicklisp/setup")
+(cyco-warning "The PIG plugin is broken after OS update." "See BUG 0023" "")
+
+;; (load "~/quicklisp/setup")
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :osc)
   (ql:quickload :usocket)

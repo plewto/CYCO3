@@ -146,8 +146,11 @@ BUG 0022 2022.05.13  CLOSED
     but now it had an invalid parent instrument.
 
     drum-loader now explicitly loads the kit definition each time.
+--------------------------------------------------------------------
+BUG 0023 2023.03.05 OPEN
 
-   
+    The PIG plugin fails after an OS update.
     
-     
-    
+    After upgrading Ubuntu from 22.04 to 22.04.2 the function
+    osc:encode-message is no longer bound.   The function is
+    also unbound on Manjaro 22.0.4

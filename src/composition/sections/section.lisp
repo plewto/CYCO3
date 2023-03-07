@@ -21,6 +21,10 @@ and chord-model parameters from the project but may selectively override them.")
 
 (defmethod section-p ((s section)) t)
 
+(param *->midi-hook* #'(lambda (filename)
+			 (format t "->MIDI Hook function executed, filename: ~S~%" filename)))
+
+
 (flet ((type-error (parent child)
 		   (let ((msg1 "Section child must be a Part.")
 			 (msg2 (sformat"~A ~A can not be a child of Section ~A"
@@ -326,6 +330,7 @@ is appended to the name if needed."   ))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
     (put section :midi-filename output-filename)
+    (funcall *->midi-hook* output-filename)
     midi-file))
 
 (defun  get-section-part (section part-name)

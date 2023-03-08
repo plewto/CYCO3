@@ -1,0 +1,34 @@
+# CYCO3 Antipig plugin file, a Pigiron 'batch' file.
+#
+# Copy this file to a location where Pigiron can find it.  The default
+# location on Linux is   ~/.config/batch/
+# Start Pigiron and issue the command:  antipig
+# 
+# If all goes well the following structure should be created:
+#
+#   MIDIInput -> SingleChannelFilter -> Distributor -+-> MIDIOutput -> Monitor
+#                                                    |
+#                                        MIDIPlayer -+
+#
+# From an Operator name point of view, the same structure is:
+#
+#        in --> filter --> distributor --+--> out --> mon
+#                                        |
+#                               player --+
+#
+# The MIDIInput and MIDIOutput device names *MUST* be set to actual devices
+# for your system, change 'MiniLab' and 'FastTrack' below to the desired
+# devices.  To see list of available MIDI devices enter 'q-midi-inputs' and
+# 'q-midi-outputs' at the Pigiron prompt.
+#
+
+new MIDIInput, in, MiniLab
+new MIDIOutput, out, FastTrack
+new SingleChannelFilter, filter
+new Distributor, distributor
+new MIDIPlayer, player
+new Monitor, mon
+
+connect in, filter, distributor, out, mon
+connect player, out
+

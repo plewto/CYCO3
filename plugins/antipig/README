@@ -1,0 +1,78 @@
+cyco3 Antipig plugin README
+
+Antipig is a drop in replacement for the (currently broken) pig plugin, see
+BUG 0023.  It relies on an intermediate Python script to handle OSC
+transmission. 
+
+
+Requirements:
+
+    I.  Pigiron (none of this makes sense without it)
+        https://github.com/plewto/Pigiron
+
+    II. Python 3 with the python-osc module
+        pip install python-osc
+
+Configuration:
+
+    I.  Pigiron
+    
+        The file 'antipig' is a Pigiron script to setup the proper
+        MIDI process tree.
+
+       A) Copy antipig to a location visible to Pigiron.  The default
+          location on Linux is  ~/.config/pigiron/batch/
+
+       B) Two lines in this file establish the MIDI input and output
+          devices. Replace 'MiniLab' and 'FastTrack' in the following two
+          lines with the desired MIDI devices:
+	  
+              new MIDIInput, in, MiniLab
+	      new MIDIOutput, out, FastTrack
+
+	  To see a list of available MIDI devices, start Pigiron and enter
+	  the following two commands:
+
+              'q-midi-inputs'   and   'q-midi-outputs'
+
+          These commands will display list of MIDI device names.  It is
+          only necessary to specify a unique sub-string of the listed
+          names.
+
+       C) Start Pigiron and enter 'antipig'.  This will need to be done for
+          each session.
+
+    II.  CYCO
+    
+         The file antipig-main.lisp defines the CYCO interface to Pigiron.
+         Two lines may need to be edited.
+
+         A) Set *ANTIPIG-TEMP-DIRECTORY*
+	    The default location /tmp/antipig is probably fine. However if
+	    another location is used, it must also be changed in
+	    osc-handler.py
+
+         B) *ANTIPIG-OSC-HANDLER*
+	    This symbol holds the location of the Python osc-handler
+	    script.  The default value assumes the main cyco3 directory is
+	    located in the home directory  ~/cyco3/.   If it is elsewhere,
+	    set the value to the location of osc-handler.py.
+
+
+    III. Python
+    
+         The file osc-handler.py is a Python script which handles the
+         actual OSC transmissions to Pigiron.
+
+         A) The python-osc package must be available, to install use
+	    pip install python-osc
+
+         B) This file must be executable.
+
+         C) This files location must correspond with *ANTIPIG-OSC-HANDLER*
+            as describes above.
+
+         D) If the temporary directory is anything other then /tmp/antipig,
+	    the line temp_dir = 'xxx' must be changed accordingly.
+	    
+

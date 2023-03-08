@@ -4,7 +4,6 @@ Antipig is a drop in replacement for the (currently broken) pig plugin, see
 BUG 0023.  It relies on an intermediate Python script to handle OSC
 transmission. 
 
-
 Requirements:
 
     I.  Pigiron (none of this makes sense without it)

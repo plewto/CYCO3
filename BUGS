@@ -154,3 +154,9 @@ BUG 0023 2023.03.05 OPEN
     After upgrading Ubuntu from 22.04 to 22.04.2 the function
     osc:encode-message is no longer bound.   The function is
     also unbound on Manjaro 22.0.4
+
+    Workaround:
+    ANTIPIG is a drop-in replacement for the pig plugin which uses an
+    intermediary Python scrip to handle OSC transmissions.  See
+    cyco3/plugins/antipig/README for details.
+     

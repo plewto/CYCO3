@@ -21,7 +21,7 @@ and chord-model parameters from the project but may selectively override them.")
 
 (defmethod section-p ((s section)) t)
 
-(param *->midi-hook* #'(lambda (filename)
+(param *midi-save-hook* #'(lambda (filename)
 			 (format t "->MIDI Hook function executed, filename: ~S~%" filename)))
 
 
@@ -330,7 +330,7 @@ is appended to the name if needed."   ))
 	 (output-filename (section-filename :section section :fname filename)))
     (write-smf midi-file output-filename :pad pad)
     (put section :midi-filename output-filename)
-    (funcall *->midi-hook* output-filename)
+    (funcall *midi-save-hook* output-filename)
     midi-file))
 
 (defun  get-section-part (section part-name)

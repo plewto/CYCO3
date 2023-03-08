@@ -42,6 +42,9 @@ Most project level functions use *project* by default."))
 (defun format-project-main-filename (project-name &optional (format *project-main-filename-format*))
   (sformat format (string-downcase (->string project-name))))
 
+(param *make-project-hook* #'(lambda (_)(declare (ignore _))))
+			       
+
 
 (let ((docstring
         "Creates new instance of Project.
@@ -141,6 +144,9 @@ abbreviations lp and lpf."))
       (if make-current
 	  (progn
 	    (setf *project* project)))
+      (funcall *make-project-hook* (list (list :name name)
+					 (list :project-directory project-directory)
+					 (list :output-directory output-directory)))
       project))) 
 
 

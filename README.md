@@ -1,13 +1,15 @@
-# CYCO README
+# CYCO3 README
+© 2021, 2022, 2023 Steven Jones, plewto@gmail.com
 
-© 2021 Steven Jones, plewto@gmail.com
+# CYCO4
+Early development has begun on **CYCO4** to address issues that have
+arisen with CYCO3, particularly the ill-conceived 't-subbeats' method for
+handling triplets.  As such, updates to CYCO3 will be sporadic.
 
-**CYCO** is a Lisp based music composition language available from
+**CYCO3** is a Lisp based music composition language available from
 [github/plewto/cyco3](https://github.com/plewto/CYCO3) 
 
-
 Detailed HTML documentation may be found at https://plewto.github.io/cyco3-docs/
-
 
 ## Brief Overview
 

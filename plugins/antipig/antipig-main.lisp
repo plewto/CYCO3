@@ -1,5 +1,7 @@
 ;;;; cyco3 antipig plugin
 ;;;;
+;;;; Send commands to Pigiron via intermediate Python program.
+;;;;
 
 (param *ANTIPIG-TEMP-DIRECTORY* "/tmp/antipig/")
 (param *ANTIPIG-OSC-HANDLER* "~/cyco3/plugins/antipig/osc-handler.py")
@@ -44,83 +46,103 @@
 			      (format stream name)
 			      (format stream "~%"))))))
 
-
-(defun antipig-proxy ()
-  (resolve-user-home *ANTIPIG-OSC-HANDLER*))
+(defun pig-send (command &rest args)
+  "Sends command to Pigiron via external program.
+All arguments must Strings."
+  (let ((handler (resolve-user-home *antipig-osc-handler*)))
+    (sb-ext:run-program handler (cons command args) :output t)))
 
 (defun pig-ping ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("ping") :output t)))
+  "Transmits test 'ping' to Pigiron."
+  (pig-send "ping"))
 
-(defun pig-load-smf (name)
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd (list "load" (->string name)) :output t)))
+;;
+;; MIDI Input channel
+;;
+
+(defun pigin (channel)
+  "Selects MIDI input channel.
+If channel is :OFF, MIDI input is disabled."
+  (if (eq channel :off)
+      (pig-send "midi-off")
+    (pig-send "input-channel" (->string (channel channel)))))
+
+;;
+;; MIDI output channels
+;;
+
+(defun pigout (&rest channels)
+  "Selects MIDI output channels.
+Multiple channels may be enabled simultaneously."
+  (pig-send "clear-output-channels")
+  (loop for c in channels do
+	(sleep 0.5)
+	(pig-send "add-output-channel" (->string (channel c))))
+  (sleep 0.5)
+  (pig-send "display-output-channels"))
+
+
+;;
+;; player
+;;
+
+(defun pig-load (name)
+  "Instructs Pigiron player to load a MIDI file."
+  (pig-send "load" (->string name)))
 
 (defun stop ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd (list "stop" ) :output t)))
+  "Halts Pigiron playback."
+  (pig-send "stop"))
 
-(defun s ()(stop))
+(defun s ()
+  "Shortcut for Pigiron 'STOP' command."
+  (stop))
 
 (defun play (&optional name)
+  "Starts Pigiron playback."
   (when name
-    (progn 
-      (pig-load-smf name)
-      (sleep 1.0)))
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd (list "play" ) :output t)))
+    (pig-load-smf name)
+    (sleep 1.0))
+  (pig-send "play"))
 
 (defun p (&optional name)
+  "Shortcut for Pigiron PLAY command."
   (funcall #'play name))
 
-(defun pigout (&rest args)
-  (when args
-    (let ((cmd (antipig-proxy))
-	  (acc (list "out-channels")))
-      (loop for a in args do (push (->string (channel a)) acc))
-      (sb-ext:run-program cmd (reverse acc) :output t))))
-
-(defun pigoff ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("off") :output t)))
-    
-(defun play-main ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("play-main") :output t)))
-
 (defun play-section (&optional sname)
-  (let ((cmd (antipig-proxy))
-	(args (if sname
-		  (list "play-section" (string-downcase (->string sname)))
-		(list "play-section"))))
-    (sb-ext:run-program cmd args :output t)))
+  "Instructs Pigiron to play the current section's MID file."
+  (pig-send "play-section" sname))
+      
+(defun play-main ()
+  "Instructs Pigiron to play the current projects main MIDI file."
+  (pig-send "play-main"))
+
+;;
+;; Monitor
+;;
 
 (defun mon-on ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("mon" "on") :output t)))
+  "Enables Pigiron monitor."
+  (pig-send "mon" "on"))
 
 (defun mon-off ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("mon" "off") :output t)))
+  "Disables Pigiron monitor."
+  (pig-send "mon" "off"))
 
-(defun pig-debug ()
-  (let ((cmd (antipig-proxy)))
-    (sb-ext:run-program cmd '("debug") :output t)))
 
 (defun ?pig ()
   (format t "ANTIPIG plugin is used for remote control of the Pigiron MIDI routing program~%")
-  (format t "Commands:~%")
-  (format t "    (PIG-PING)                     Transmits diagnostic 'ping' message.~%")
-  (format t "    (PIG-LOAD-SMF FILENAME)        Loads MIDI file for playback.~%")
-  (format t "    (STOP) or (S)                  Stops playback.~%")
-  (format t "    (PLAY &OPTIONAL NAME) or (P)   Starts playback.~%")
-  (format t "    (PIGOUT CHANNELS...)           Sets MIDI output channels.~%")
-  (format t "    (PIGOFF)                       Disables all MIDI output channels.~%")
-  (format t "    (PLAY-MAIN)                    Plays project's main MIDI file.~%")
-  (format t "    (PLAY-SECTION &OPTIONAL NAME)  Plays current section's MIDI file.~%")
-  (format t "    (MON-OFF)                      Disable monitor.~%")
-  (format t "    (MON-ON)                       Enables monitor.~%")
-  (format t "~%Required Pigiron configuration and:~%~%")
+  (format t "~%Required Pigiron configuration:~%~%")
   (format t "    in --> filter --> distributor --+--> out --> mon~%")
   (format t "                                    |~%")
-  (format t "                           player --+~%"))
+  (format t "                           player --+~%~%")
+  (format t "    pig-ping      Transmits diagnostic 'ping' to Pigiron.~%")
+  (format t "    pigin         Selects MIDI input channel. If set to :OFF input is disabled.~%")
+  (format t "    pigout        Selects MIDI output channels. Multiple channels may be selected at once.~%")
+  (format t "    pig-load      Instructs player to load MIDI file.~%")
+  (format t "    stop          Stops playback.  The shortcut (s) is identical.~%")
+  (format t "    play          Starts playback.  The shortcut (p) is identical.~%")
+  (format t "    play-section  Starts playback of the current section.~%")
+  (format t "    play-main     Starts playback of the project's main MIDI file.~%")
+  (format t "    mon-off       Disables MIDI monitor.~%")
+  (format t "    mon-on        Enables MIDI monitor.~%"))

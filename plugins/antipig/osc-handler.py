@@ -10,17 +10,19 @@
 # least contain a command name to be run.  Some commands take mandatory or
 # optional arguments. 
 #
-# Commands:
-#    ping                             - Transmits diagnostic 'ping'
-#    load midi-file-name              - Loads specified MIDI file
-#    stop                             - Stops playback
-#    play                             - Starts playback
-#    play-main                        - Loads and plays main project MIDI file
-#    play-section [optional-name]     - Loads and plays current section's MIDI file
-#    out-channels ...                 - Selects MIDI output channels
-#    off                              - Disables all MIDI output channels
-#    mon [state]                      - Enables/Disables monitor
-#
+# ping                           : Transmits diagnostic ping.
+# midi-on                        : Enables MIDI input.
+# midi-off                       : Disables MIDI input.
+# input-channel <channel>        : Selects MIDI input channel.
+# clear-output-channels          : Disables all MIDI output channels.
+# add-output-channels <channel>  : Enables a MIDI output channel. 
+# display-output-channels        : Display list of enabled output channels.
+# load <filename>                : Instructs player to load a MIDI file.
+# stop                           : Stops playback.
+# play                           : Starts playback (A MIDI file must be loaded first)
+# play-section                   : Starts playback for the current CYCO section.
+# play-main                      : Starts playback of the current CYCO project's main MIDI file.
+# mon <state>                    : Disables/Enables MIDI monitor.  state is either 'false' or 'true'.
 
 import sys, time
 import os.path as path
@@ -67,6 +69,17 @@ def transmit(message, value):
 def ping():
     transmit("/pig/ping", "")
 
+def midi_off():
+    transmit("/pig/enable", ["filter", "false"])
+
+def midi_on():
+    transmit("/pig/enable", ["filter", "true"])
+
+def input_channel(c):
+    midi_on()
+    sleep()
+    transmit("/pig/select-channels", ["filter", c])
+    
 def pig_load(name):
     transmit("/pig/op", ["player", "load", name])
 
@@ -76,15 +89,20 @@ def stop():
 def play():
     transmit("/pig/op", ["player", "play"])
 
-def pigout(channels):
-    acc = ["distributor"]
-    for c in channels:
-        acc.append(c)
-    transmit("/pig/select-channels", acc)
-
-def pigoff():
+def clear_output_channels():
     transmit("/pig/deselect-all-channels", ["distributor"])
 
+def output_channel(channel):
+    print(f"PYTHON DEBUG  channels is {channels}")
+    no_out()
+    transmit("/pig/select-channel", ["distributor", channel])
+
+def add_output_channel(channel):
+    transmit("/pig/select-channel", ["distributor", channel])
+
+def display_output_channels():
+    transmit("/pig/q-selected-channels", ["distributor"])
+    
 def play_main():
     main_filename = get_current_project() + "-main.mid"
     directory = get_midi_directory()
@@ -105,7 +123,6 @@ def play_section(sname=None):
     sleep()
     play()
 
-
 def monitor(flag):
     if flag == "on":
         transmit("/pig/op", ["mon", "enable", "true"])
@@ -122,16 +139,24 @@ if __name__ == '__main__':
         cmd = argv[1]
         if cmd == "ping":
             ping()
+        elif cmd == "midi-on":
+            midi_on()
+        elif cmd == "midi-off":
+            midi_off()
+        elif cmd == "input-channel":
+            input_channel(argv[2])
+        elif cmd == "clear-output-channels":
+            clear_output_channels()
+        elif cmd == "add-output-channel":
+            add_output_channel(argv[2])
+        elif cmd == "display-output-channels":
+            display_output_channels()
         elif cmd == "load":
             pig_load(argv[2])
         elif cmd == "stop":
             stop()
         elif cmd == "play":
             play()
-        elif cmd == "out-channels":
-            pigout(argv[2:])
-        elif cmd == "off":
-            pigoff()
         elif cmd == "play-main":
             play_main()
         elif cmd == "play-section":
